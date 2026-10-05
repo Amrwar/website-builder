@@ -17,11 +17,25 @@ import type { NextResponse } from "next/server";
  * message plus the correlation id.
  */
 
-export type RouteContext = { requestId: string };
+/**
+ * Second argument Next.js passes to a route handler.
+ *
+ * `params` is a promise, so a dynamic segment must be awaited. It is threaded
+ * through rather than swallowed: without it a route like
+ * `/api/projects/[id]/route.ts` has no way to read its own id.
+ */
+export type RouteParams = Record<string, string | string[]>;
 
-export type RouteHandler = (
+export interface NextRouteContext<TParams extends RouteParams = RouteParams> {
+  params: Promise<TParams>;
+}
+
+export type RouteContext<TParams extends RouteParams = RouteParams> =
+  NextRouteContext<TParams> & { requestId: string };
+
+export type RouteHandler<TParams extends RouteParams = RouteParams> = (
   request: Request,
-  context: RouteContext,
+  context: RouteContext<TParams>,
 ) => Promise<NextResponse> | NextResponse;
 
 /** Converts Zod issues into the envelope's field-keyed `details`. */
@@ -34,8 +48,13 @@ function detailsFromZod(error: ZodError): Record<string, string[]> {
   return details;
 }
 
-export function createHandler(handler: RouteHandler) {
-  return async function route(request: Request): Promise<NextResponse> {
+export function createHandler<TParams extends RouteParams = RouteParams>(
+  handler: RouteHandler<TParams>,
+) {
+  return async function route(
+    request: Request,
+    context: NextRouteContext<TParams>,
+  ): Promise<NextResponse> {
     // Reuse the platform's id when present so a log line here can be joined to
     // the same request in Vercel's own logs.
     const requestId =
@@ -50,7 +69,7 @@ export function createHandler(handler: RouteHandler) {
     });
 
     try {
-      const response = await handler(request, { requestId });
+      const response = await handler(request, { ...context, requestId });
       response.headers.set("x-request-id", requestId);
       return response;
     } catch (error) {

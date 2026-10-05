@@ -143,6 +143,17 @@
   --duration-base: 220ms;
   --duration-slow: 360ms;
 
+  /* --- Spacing --------------------------------------------------------
+   * Tailwind v4 derives its whole spacing scale from this one unit, so
+   * `p-4` is 4 x 0.25rem = 1rem. Declared rather than inherited so the
+   * rhythm is a reviewable decision: changing this value rescales every
+   * margin, padding and gap in the product at once.
+   *
+   * 0.25rem (4px) keeps every step on a 4px grid, which is what makes
+   * optical alignment possible between type, icons and controls.
+   */
+  --spacing: 0.25rem;
+
   /* --- Responsive breakpoints ----------------------------------------
    * Declared explicitly rather than inherited, so the set is reviewable and
    * the product has one documented answer to "what is a tablet". Mobile-first:

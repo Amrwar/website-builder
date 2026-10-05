@@ -110,14 +110,13 @@ export function ToastProvider({ children, label, dismissLabel }: ToastProviderPr
   );
 
   /** Clear outstanding timers on unmount so nothing fires into a dead tree. */
-  const timersRef = timers;
   useEffect(() => {
-    const map = timersRef.current;
+    const map = timers.current;
     return () => {
       for (const timer of map.values()) clearTimeout(timer);
       map.clear();
     };
-  }, [timersRef]);
+  }, []);
 
   const value = useMemo(() => ({ toast, dismiss }), [toast, dismiss]);
 
