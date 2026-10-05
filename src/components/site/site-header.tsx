@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 
+import { AccountControl } from "@/components/site/account-control";
 import { LocaleSwitcher } from "@/components/i18n/locale-switcher";
 import { MobileNav } from "@/components/site/mobile-nav";
 import { Logo } from "@/components/site/logo";
@@ -58,6 +59,7 @@ export async function SiteHeader({ locale }: SiteHeaderProps) {
 
           <div className="flex items-center gap-2">
             <div className="hidden items-center gap-2 md:flex">
+              <AccountControl />
               <LocaleSwitcher current={locale} />
               <ThemeToggle />
             </div>

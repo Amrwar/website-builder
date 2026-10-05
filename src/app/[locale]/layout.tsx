@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, IBM_Plex_Sans_Arabic } from "next/font/google";
 import Script from "next/script";
 
+import { ClerkProvider } from "@clerk/nextjs";
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
@@ -130,14 +131,36 @@ export default async function LocaleLayout({
         {/* Chrome belongs to the route group, so marketing and application
          * surfaces can differ. Providers live here because they must wrap
          * every group, including the error and not-found screens. */}
-        <NextIntlClientProvider>
-          <ToastProvider label={t("notifications")} dismissLabel={t("dismiss")}>
-            {/* One shared tooltip provider: it is what lets the second
+        {/*
+         * ClerkProvider wraps everything so the sign-in widgets and the
+         * client-side session hooks work anywhere.
+         *
+         * Note what is NOT here: the `dynamic` prop. It opts the whole subtree
+         * into dynamic rendering so that server components can read the
+         * session during render -- which cost every marketing page its static
+         * generation, for one header link. The auth-dependent chrome is a
+         * client component instead (see AccountControl), and the pages that
+         * genuinely need the session server-side -- /account and /admin --
+         * become dynamic on their own by calling `auth()`.
+         */}
+        <ClerkProvider
+          // Routes given as props, not environment variables: these are
+          // application routes, and a variable that exists locally but not in
+          // production silently sends people to Clerk's hosted portal instead.
+          signInUrl="/sign-in"
+          signUpUrl="/sign-up"
+          signInFallbackRedirectUrl="/account"
+          signUpFallbackRedirectUrl="/account"
+        >
+          <NextIntlClientProvider>
+            <ToastProvider label={t("notifications")} dismissLabel={t("dismiss")}>
+              {/* One shared tooltip provider: it is what lets the second
                 tooltip in a group open instantly rather than re-waiting
                 the delay. */}
-            <TooltipProvider>{children}</TooltipProvider>
-          </ToastProvider>
-        </NextIntlClientProvider>
+              <TooltipProvider>{children}</TooltipProvider>
+            </ToastProvider>
+          </NextIntlClientProvider>
+        </ClerkProvider>
       </body>
     </html>
   );

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Menu } from "lucide-react";
 import { useTranslations } from "next-intl";
 
+import { AccountControl } from "@/components/site/account-control";
 import { LocaleSwitcher } from "@/components/i18n/locale-switcher";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -75,8 +76,14 @@ export function MobileNav({ locale }: MobileNavProps) {
         </div>
 
         <div className="mt-6 flex items-center justify-between border-t border-line-subtle pt-6">
-          <LocaleSwitcher current={locale} />
-          <ThemeToggle />
+          {/* No SheetClose here: it clones a single child, and this renders
+              one of two depending on the session. A real route change
+              unmounts the sheet on its own, unlike the anchor jumps above. */}
+          <AccountControl className="-mx-3" />
+          <div className="flex items-center gap-2">
+            <LocaleSwitcher current={locale} />
+            <ThemeToggle />
+          </div>
         </div>
       </SheetContent>
     </Sheet>

@@ -7,10 +7,13 @@ import { z } from "zod";
  * a readable message at startup rather than as an obscure error deep inside a
  * request.
  *
- * Only variables the application actually reads are declared. Provisioned but
- * unused ones (Stripe, Sentry, Clerk) are added as the features that consume
- * them land -- requiring a variable before anything reads it would break
- * builds for no safety gain.
+ * Only variables this module reads are declared. Clerk's and Sentry's SDKs
+ * read their own keys from `process.env` and validate them themselves, so
+ * restating them here would mean two sources of truth and would make a missing
+ * Clerk key break every database call. Variables that are provisioned but not
+ * yet consumed (Stripe) are added as the features that use them land --
+ * requiring a variable before anything reads it would break builds for no
+ * safety gain.
  */
 
 const serverSchema = z.object({

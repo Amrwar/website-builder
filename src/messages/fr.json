@@ -18,6 +18,7 @@
     "pricing": "Tarifs",
     "buildWall": "Mur des réalisations",
     "signIn": "Se connecter",
+    "account": "Compte",
     "startBuild": "Lancer un projet",
     "notifications": "Notifications",
     "dismiss": "Fermer",
@@ -866,6 +867,67 @@
     "accumulated_complexity": {
       "title": "Beaucoup de travail ordinaire",
       "body": "Rien n'est difficile seul, mais l'ensemble dépasse cinq jours."
+    }
+  },
+  "app": {
+    "nav": "Navigation du compte",
+    "account": "Compte",
+    "staff": "Équipe"
+  },
+  "account": {
+    "title": "Compte",
+    "lede": "Vos informations, celles de votre entreprise, et la façon dont nous vous contactons.",
+    "save": "Enregistrer les modifications",
+    "saved": "Modifications enregistrées",
+    "tabs": {
+      "profile": "Profil",
+      "business": "Entreprise",
+      "preferences": "Préférences"
+    },
+    "email": {
+      "label": "Adresse e-mail",
+      "help": "Votre adresse e-mail se modifie dans vos paramètres de connexion, où la nouvelle adresse peut être vérifiée."
+    },
+    "name": {
+      "label": "Nom"
+    },
+    "business": {
+      "name": "Nom de l’entreprise",
+      "website": "Site web",
+      "country": "Pays de facturation",
+      "countryHelp": "Code pays à deux lettres, par exemple CA ou FR.",
+      "taxId": "Numéro de TVA ou d’identification fiscale"
+    },
+    "prefs": {
+      "language": "Langue",
+      "currency": "Devise",
+      "currencyHelp": "Les prix sont fixés en dollars canadiens ; les autres devises sont converties pour l’affichage.",
+      "timezone": "Fuseau horaire",
+      "notifications": "Notifications par e-mail",
+      "buildUpdates": "Avancement de la production",
+      "buildUpdatesHelp": "Lorsque votre projet passe à une nouvelle étape.",
+      "messages": "Messages",
+      "messagesHelp": "Lorsqu’un membre de l’équipe vous répond.",
+      "deadlines": "Alertes de délai",
+      "deadlinesHelp": "Avant une date de livraison, et si la garantie entre en jeu.",
+      "productNews": "Actualités produit",
+      "productNewsHelp": "Quelques nouvelles de temps à autre sur les nouveaux types de projets et fonctionnalités."
+    }
+  },
+  "admin": {
+    "title": "Console de l’équipe",
+    "lede": "Ce que votre rôle permet de faire. Les outils eux-mêmes arrivent dans les phases suivantes.",
+    "yourRole": "Votre rôle",
+    "allowed": "Autorisé",
+    "denied": "Refusé",
+    "summary": "{count} permissions sur {total} accordées à ce rôle.",
+    "roles": {
+      "customer": "Client",
+      "admin": "Administrateur",
+      "project_manager": "Chef de projet",
+      "developer": "Développeur",
+      "designer": "Designer",
+      "support": "Support"
     }
   }
 }

@@ -9,7 +9,7 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 
-import { customers } from "./customers";
+import { users } from "./users";
 import { buildTypeEnum, currencyEnum, projectStatusEnum, scopeTierEnum } from "./enums";
 import { projectBriefs } from "./briefs";
 import { scopeAssessments } from "./scope-assessments";
@@ -39,11 +39,11 @@ export const projects = pgTable(
     /** Human-facing identifier shown to the customer, e.g. "BL-2026-0042". */
     reference: text("reference").notNull(),
 
-    customerId: uuid("customer_id")
+    ownerId: uuid("owner_id")
       .notNull()
-      // A customer cannot be hard-deleted while builds exist; their history is
+      // A user cannot be hard-deleted while builds exist; their history is
       // financial and contractual record.
-      .references(() => customers.id, { onDelete: "restrict" }),
+      .references(() => users.id, { onDelete: "restrict" }),
 
     buildType: buildTypeEnum("build_type").notNull(),
 
@@ -80,7 +80,7 @@ export const projects = pgTable(
   },
   (table) => [
     uniqueIndex("projects_reference_key").on(table.reference),
-    index("projects_customer_id_idx").on(table.customerId),
+    index("projects_owner_id_idx").on(table.ownerId),
     index("projects_status_idx").on(table.status),
     /** Drives deadline-risk detection in the admin queue. */
     index("projects_deadline_at_idx").on(table.deadlineAt),
@@ -88,9 +88,9 @@ export const projects = pgTable(
 );
 
 export const projectsRelations = relations(projects, ({ one, many }) => ({
-  customer: one(customers, {
-    fields: [projects.customerId],
-    references: [customers.id],
+  owner: one(users, {
+    fields: [projects.ownerId],
+    references: [users.id],
   }),
   brief: one(projectBriefs),
   assessments: many(scopeAssessments),

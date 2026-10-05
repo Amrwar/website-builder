@@ -2,7 +2,7 @@ import { ZodError } from "zod";
 
 import { logger } from "@/lib/logger";
 import { ApiError, apiFailure, type ApiFailure } from "./response";
-import type { NextResponse } from "next/server";
+import type { NextRequest, NextResponse } from "next/server";
 
 /**
  * Route handler wrapper.
@@ -33,8 +33,14 @@ export interface NextRouteContext<TParams extends RouteParams = RouteParams> {
 export type RouteContext<TParams extends RouteParams = RouteParams> =
   NextRouteContext<TParams> & { requestId: string };
 
+/**
+ * `NextRequest` rather than `Request`: that is what Next.js actually passes,
+ * and narrowing it to the web standard hides `cookies` and `nextUrl` and makes
+ * the request unusable with libraries that expect the real thing -- Clerk's
+ * `verifyWebhook` among them.
+ */
 export type RouteHandler<TParams extends RouteParams = RouteParams> = (
-  request: Request,
+  request: NextRequest,
   context: RouteContext<TParams>,
 ) => Promise<NextResponse> | NextResponse;
 
@@ -52,7 +58,7 @@ export function createHandler<TParams extends RouteParams = RouteParams>(
   handler: RouteHandler<TParams>,
 ) {
   return async function route(
-    request: Request,
+    request: NextRequest,
     context: NextRouteContext<TParams>,
   ): Promise<NextResponse> {
     // Reuse the platform's id when present so a log line here can be joined to

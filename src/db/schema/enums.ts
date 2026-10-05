@@ -1,6 +1,7 @@
 import { pgEnum } from "drizzle-orm/pg-core";
 
 import { BUILD_TYPES } from "@/config/products";
+import { USER_ROLES } from "@/config/roles";
 import { SUPPORTED_CURRENCIES } from "@/lib/pricing/money";
 
 /**
@@ -11,6 +12,12 @@ import { SUPPORTED_CURRENCIES } from "@/lib/pricing/money";
  * config produces a migration, which is the point: the change becomes visible
  * and reviewable instead of silent.
  */
+
+/**
+ * Authorization roles. Defined in `@/config/roles` so the union is reachable
+ * from client code without pulling the database layer with it.
+ */
+export const userRoleEnum = pgEnum("user_role", USER_ROLES);
 
 /** website | system | mobileApp */
 export const buildTypeEnum = pgEnum("build_type", BUILD_TYPES);

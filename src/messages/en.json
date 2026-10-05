@@ -18,6 +18,7 @@
     "pricing": "Pricing",
     "buildWall": "Build wall",
     "signIn": "Sign in",
+    "account": "Account",
     "startBuild": "Start a build",
     "notifications": "Notifications",
     "dismiss": "Dismiss",
@@ -866,6 +867,67 @@
     "accumulated_complexity": {
       "title": "A lot of ordinary work",
       "body": "No single item is hard, but together they exceed what five days allows."
+    }
+  },
+  "app": {
+    "nav": "Account navigation",
+    "account": "Account",
+    "staff": "Staff"
+  },
+  "account": {
+    "title": "Account",
+    "lede": "Your details, your business information, and how we reach you.",
+    "save": "Save changes",
+    "saved": "Changes saved",
+    "tabs": {
+      "profile": "Profile",
+      "business": "Business",
+      "preferences": "Preferences"
+    },
+    "email": {
+      "label": "Email address",
+      "help": "Your email is changed in your sign-in settings, where the new address can be verified."
+    },
+    "name": {
+      "label": "Name"
+    },
+    "business": {
+      "name": "Business name",
+      "website": "Website",
+      "country": "Billing country",
+      "countryHelp": "Two-letter country code, for example CA or FR.",
+      "taxId": "Tax or VAT number"
+    },
+    "prefs": {
+      "language": "Language",
+      "currency": "Currency",
+      "currencyHelp": "Prices are set in Canadian dollars; other currencies are converted for display.",
+      "timezone": "Time zone",
+      "notifications": "Email notifications",
+      "buildUpdates": "Build updates",
+      "buildUpdatesHelp": "When your build moves to a new stage.",
+      "messages": "Messages",
+      "messagesHelp": "When someone on the team replies to you.",
+      "deadlines": "Deadline alerts",
+      "deadlinesHelp": "Before a delivery date, and if the guarantee comes into effect.",
+      "productNews": "Product news",
+      "productNewsHelp": "Occasional notes about new build types and features."
+    }
+  },
+  "admin": {
+    "title": "Staff console",
+    "lede": "What your role is allowed to do. The tools themselves arrive in later phases.",
+    "yourRole": "Your role",
+    "allowed": "Allowed",
+    "denied": "Denied",
+    "summary": "{count} of {total} permissions granted to this role.",
+    "roles": {
+      "customer": "Customer",
+      "admin": "Administrator",
+      "project_manager": "Project manager",
+      "developer": "Developer",
+      "designer": "Designer",
+      "support": "Support"
     }
   }
 }

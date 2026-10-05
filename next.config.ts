@@ -4,6 +4,32 @@ import type { NextConfig } from "next";
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 /**
+ * Clerk's frontend API origin, decoded from the publishable key.
+ *
+ * ClerkJS and Clerk's UI bundle are served from a per-instance host (and that
+ * host differs between the development and production instances), so the CSP
+ * cannot name it as a literal. The key encodes it, is public by design, and is
+ * available at build time -- so it is read from there rather than duplicated
+ * into another variable that could disagree with it.
+ *
+ * Returning null when the key is absent is deliberate: a build without Clerk
+ * configured gets the tighter policy rather than a guessed wildcard.
+ */
+function clerkOrigin(): string | null {
+  const key = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  if (!key) return null;
+
+  const encoded = key.replace(/^pk_(test|live)_/, "");
+  const host = Buffer.from(encoded, "base64").toString("utf8").replace(/\$+$/, "");
+
+  // Guard against a malformed key turning into a nonsense CSP source, which
+  // browsers drop silently -- taking the rest of the directive with it.
+  return /^[a-z0-9][a-z0-9.-]*\.[a-z]{2,}$/i.test(host) ? `https://${host}` : null;
+}
+
+const clerk = clerkOrigin();
+
+/**
  * Content Security Policy.
  *
  * ── A deliberate, documented limitation ───────────────────────────────────
@@ -20,8 +46,15 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
  *   base-uri         <base> injection that re-points every relative URL
  *   object-src       legacy plugin execution
  *
- * When authentication and payments land, those routes are dynamic anyway;
- * the nonce-based policy goes in alongside them.
+ * The /sign-in, /sign-up, /account and /admin routes are dynamic anyway, so
+ * the nonce-based policy can go in for those alongside payments.
+ *
+ * ── Clerk's origins ───────────────────────────────────────────────────────
+ * Clerk is a hosted widget: it loads its own script and talks back to its
+ * frontend API, so `'self'` alone silently blocks sign-in altogether. The
+ * origins below are the narrowest set that works -- the instance host from
+ * the publishable key, Clerk's image CDN, and Cloudflare Turnstile, which is
+ * what Clerk's bot protection renders in an iframe.
  * ──────────────────────────────────────────────────────────────────────────
  */
 const contentSecurityPolicy = [
@@ -32,11 +65,21 @@ const contentSecurityPolicy = [
   "object-src 'none'",
   // Tailwind and the pre-paint theme script are inlined.
   "style-src 'self' 'unsafe-inline'",
-  `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""}`,
+  [
+    "script-src 'self' 'unsafe-inline'",
+    clerk,
+    process.env.NODE_ENV === "development" ? "'unsafe-eval'" : null,
+  ]
+    .filter(Boolean)
+    .join(" "),
   // next/font self-hosts Google fonts at build time, so no remote font origin.
   "font-src 'self' data:",
-  "img-src 'self' data: blob:",
-  "connect-src 'self'",
+  ["img-src 'self' data: blob: https://img.clerk.com", clerk].filter(Boolean).join(" "),
+  ["connect-src 'self'", clerk].filter(Boolean).join(" "),
+  // ClerkJS runs its session handling in a worker created from a blob.
+  "worker-src 'self' blob:",
+  // Clerk's bot protection renders Cloudflare Turnstile in an iframe.
+  ["frame-src 'self' https://challenges.cloudflare.com", clerk].filter(Boolean).join(" "),
   "manifest-src 'self'",
   "upgrade-insecure-requests",
 ].join("; ");

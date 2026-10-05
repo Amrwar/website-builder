@@ -5,13 +5,24 @@ CREATE TYPE "public"."currency" AS ENUM('CAD', 'USD', 'EUR', 'GBP', 'AED', 'SAR'
 CREATE TYPE "public"."design_approach" AS ENUM('design_for_me', 'supplied_brand', 'existing_design');--> statement-breakpoint
 CREATE TYPE "public"."project_status" AS ENUM('draft', 'quoted', 'awaiting_quote', 'awaiting_payment', 'awaiting_assets', 'in_build', 'in_preview', 'awaiting_approval', 'approved', 'launching', 'launched', 'cancelled');--> statement-breakpoint
 CREATE TYPE "public"."scope_tier" AS ENUM('essential', 'extended', 'advanced', 'custom');--> statement-breakpoint
-CREATE TABLE "customers" (
+CREATE TYPE "public"."user_role" AS ENUM('customer', 'admin', 'project_manager', 'developer', 'designer', 'support');--> statement-breakpoint
+CREATE TABLE "users" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"clerk_user_id" text NOT NULL,
 	"email" text NOT NULL,
 	"display_name" text,
+	"role" "user_role" DEFAULT 'customer' NOT NULL,
 	"preferred_locale" text DEFAULT 'en' NOT NULL,
+	"preferred_currency" "currency" DEFAULT 'CAD' NOT NULL,
+	"timezone" text DEFAULT 'America/Toronto' NOT NULL,
+	"notify_build_updates" boolean DEFAULT true NOT NULL,
+	"notify_messages" boolean DEFAULT true NOT NULL,
+	"notify_deadline_alerts" boolean DEFAULT true NOT NULL,
+	"notify_product_news" boolean DEFAULT false NOT NULL,
+	"business_name" text,
+	"business_website" text,
 	"billing_country" text,
+	"tax_id" text,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );
@@ -19,7 +30,7 @@ CREATE TABLE "customers" (
 CREATE TABLE "projects" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"reference" text NOT NULL,
-	"customer_id" uuid NOT NULL,
+	"owner_id" uuid NOT NULL,
 	"build_type" "build_type" NOT NULL,
 	"scope_tier" "scope_tier",
 	"status" "project_status" DEFAULT 'draft' NOT NULL,
@@ -82,14 +93,15 @@ CREATE TABLE "project_events" (
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-ALTER TABLE "projects" ADD CONSTRAINT "projects_customer_id_customers_id_fk" FOREIGN KEY ("customer_id") REFERENCES "public"."customers"("id") ON DELETE restrict ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "projects" ADD CONSTRAINT "projects_owner_id_users_id_fk" FOREIGN KEY ("owner_id") REFERENCES "public"."users"("id") ON DELETE restrict ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "project_briefs" ADD CONSTRAINT "project_briefs_project_id_projects_id_fk" FOREIGN KEY ("project_id") REFERENCES "public"."projects"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "scope_assessments" ADD CONSTRAINT "scope_assessments_project_id_projects_id_fk" FOREIGN KEY ("project_id") REFERENCES "public"."projects"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "project_events" ADD CONSTRAINT "project_events_project_id_projects_id_fk" FOREIGN KEY ("project_id") REFERENCES "public"."projects"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-CREATE UNIQUE INDEX "customers_clerk_user_id_key" ON "customers" USING btree ("clerk_user_id");--> statement-breakpoint
-CREATE INDEX "customers_email_idx" ON "customers" USING btree ("email");--> statement-breakpoint
+CREATE UNIQUE INDEX "users_clerk_user_id_key" ON "users" USING btree ("clerk_user_id");--> statement-breakpoint
+CREATE INDEX "users_email_idx" ON "users" USING btree ("email");--> statement-breakpoint
+CREATE INDEX "users_role_idx" ON "users" USING btree ("role");--> statement-breakpoint
 CREATE UNIQUE INDEX "projects_reference_key" ON "projects" USING btree ("reference");--> statement-breakpoint
-CREATE INDEX "projects_customer_id_idx" ON "projects" USING btree ("customer_id");--> statement-breakpoint
+CREATE INDEX "projects_owner_id_idx" ON "projects" USING btree ("owner_id");--> statement-breakpoint
 CREATE INDEX "projects_status_idx" ON "projects" USING btree ("status");--> statement-breakpoint
 CREATE INDEX "projects_deadline_at_idx" ON "projects" USING btree ("deadline_at");--> statement-breakpoint
 CREATE UNIQUE INDEX "project_briefs_project_id_key" ON "project_briefs" USING btree ("project_id");--> statement-breakpoint
