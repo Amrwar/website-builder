@@ -16,6 +16,11 @@ import { cn } from "@/lib/cn";
  *
  * The unanimated state is the finished diagram, so the reduced-motion rule in
  * base.css leaves a complete, legible graphic rather than a half-drawn one.
+ *
+ * The stages are deliberately unnumbered. These five are the summary of the
+ * ten-stage journey below, where Build is stage 05 and Launch is 08 -- so
+ * numbering them 01 to 05 here put two different numbers against the same
+ * words on one page. The rail already carries the direction.
  */
 
 const STAGES = ["idea", "configure", "build", "preview", "launch"] as const;
@@ -29,9 +34,16 @@ export async function ProductionLine({ className }: { className?: string }) {
   return (
     <div
       className={cn("w-full", className)}
-      // The diagram restates the stage names already in the How It Works
-      // section, so it is decoration for assistive technology.
-      role="presentation"
+      /*
+       * The diagram restates stage names that the How It Works section already
+       * gives in full, so it is decoration for assistive technology.
+       *
+       * `aria-hidden`, not `role="presentation"`: the latter only drops this
+       * element's own semantics and would leave the list and its five items
+       * announced anyway. Nothing inside is focusable, so hiding the subtree
+       * is safe.
+       */
+      aria-hidden
     >
       <ol className="relative flex flex-col gap-6 sm:flex-row sm:gap-0">
         {/* Rail: horizontal on tablet and up, vertical on phones. */}
@@ -71,9 +83,6 @@ export async function ProductionLine({ className }: { className?: string }) {
             </span>
 
             <div className="flex flex-col gap-1 sm:pe-6">
-              <span className="font-mono text-caption text-tertiary" data-numeric>
-                {String(index + 1).padStart(2, "0")}
-              </span>
               <span className="text-body-sm font-semibold text-primary">
                 {t(`${stage}.name`)}
               </span>
