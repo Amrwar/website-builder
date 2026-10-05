@@ -37,14 +37,14 @@ export async function SiteHeader({ locale }: SiteHeaderProps) {
             <Logo />
           </Link>
 
-          <nav aria-label={t("primary")} className="hidden md:block">
+          <nav aria-label={t("primary")} className="hidden shrink-0 md:block">
             <ul className="flex items-center gap-1">
               {items.map((item) => (
                 <li key={item.key}>
                   <Link
                     href={item.href}
                     className={cn(
-                      "rounded-md px-3 py-2 text-body-sm text-secondary",
+                      "rounded-md px-3 py-2 text-body-sm whitespace-nowrap text-secondary",
                       "duration-fast transition-colors ease-out-quint",
                       "hover:bg-hover hover:text-primary",
                     )}

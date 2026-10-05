@@ -166,7 +166,8 @@ function ToastViewport({
       className={cn(
         "pointer-events-none fixed z-50 flex flex-col gap-2",
         // Bottom on phones where the thumb is, top-end on larger screens.
-        "inset-x-4 bottom-4 sm:inset-x-auto sm:end-6 sm:top-6 sm:bottom-auto sm:w-90",
+        // Clears the 64px sticky header rather than covering its controls.
+        "inset-x-4 bottom-4 sm:inset-x-auto sm:end-6 sm:top-20 sm:bottom-auto sm:w-90",
       )}
     >
       {toasts.map((item) => (

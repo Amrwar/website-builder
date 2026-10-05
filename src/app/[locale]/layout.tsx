@@ -16,6 +16,7 @@ import {
   resolveLocale,
 } from "@/config/locales";
 import { ToastProvider } from "@/components/ui/toast";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/cn";
 import { THEME_SCRIPT } from "@/lib/theme";
 import "@/styles/globals.css";
@@ -131,7 +132,10 @@ export default async function LocaleLayout({
          * every group, including the error and not-found screens. */}
         <NextIntlClientProvider>
           <ToastProvider label={t("notifications")} dismissLabel={t("dismiss")}>
-            {children}
+            {/* One shared tooltip provider: it is what lets the second
+                tooltip in a group open instantly rather than re-waiting
+                the delay. */}
+            <TooltipProvider>{children}</TooltipProvider>
           </ToastProvider>
         </NextIntlClientProvider>
       </body>
