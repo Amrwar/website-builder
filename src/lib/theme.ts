@@ -21,8 +21,7 @@ export const DEFAULT_THEME_PREFERENCE: ThemePreference = "system";
 
 export function isThemePreference(value: unknown): value is ThemePreference {
   return (
-    typeof value === "string" &&
-    (THEME_PREFERENCES as readonly string[]).includes(value)
+    typeof value === "string" && (THEME_PREFERENCES as readonly string[]).includes(value)
   );
 }
 

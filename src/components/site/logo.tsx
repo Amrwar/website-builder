@@ -24,9 +24,30 @@ export function Logo({ className, markOnly = false }: LogoProps) {
         aria-hidden
         focusable="false"
       >
-        <rect x="0.75" y="0.75" width="6" height="6" stroke="currentColor" strokeWidth="1.5" />
-        <rect x="9.25" y="0.75" width="6" height="6" stroke="currentColor" strokeWidth="1.5" />
-        <rect x="0.75" y="9.25" width="6" height="6" stroke="currentColor" strokeWidth="1.5" />
+        <rect
+          x="0.75"
+          y="0.75"
+          width="6"
+          height="6"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        />
+        <rect
+          x="9.25"
+          y="0.75"
+          width="6"
+          height="6"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        />
+        <rect
+          x="0.75"
+          y="9.25"
+          width="6"
+          height="6"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        />
         <rect x="9.25" y="9.25" width="6" height="6" fill="currentColor" />
       </svg>
       {markOnly ? (

@@ -4,36 +4,40 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/cn";
 
-export const cardVariants = cva(["rounded-lg", "transition-colors duration-base ease-out-quint"], {
-  variants: {
-    /**
-     * Structure comes from hairline borders rather than shadows -- shadows are
-     * reserved for genuine overlays (dialogs, popovers), so a page of cards
-     * reads as a flat grid instead of a pile of floating slabs.
-     */
-    surface: {
-      outlined: "border border-line bg-canvas",
-      subtle: "border border-line-subtle bg-subtle",
-      sunken: "bg-sunken",
-      /** For a dialog or popover, where elevation is meaningful. */
-      raised: "border border-line-subtle bg-raised shadow-md",
+export const cardVariants = cva(
+  ["rounded-lg", "duration-base transition-colors ease-out-quint"],
+  {
+    variants: {
+      /**
+       * Structure comes from hairline borders rather than shadows -- shadows are
+       * reserved for genuine overlays (dialogs, popovers), so a page of cards
+       * reads as a flat grid instead of a pile of floating slabs.
+       */
+      surface: {
+        outlined: "border border-line bg-canvas",
+        subtle: "border border-line-subtle bg-subtle",
+        sunken: "bg-sunken",
+        /** For a dialog or popover, where elevation is meaningful. */
+        raised: "border border-line-subtle bg-raised shadow-md",
+      },
+      padding: {
+        none: "",
+        sm: "p-4",
+        md: "p-5 sm:p-6",
+        lg: "p-6 sm:p-8",
+      },
+      /** Adds hover affordance. Only for cards that are themselves a link/button. */
+      interactive: {
+        true: "cursor-pointer hover:border-line-strong hover:bg-hover",
+      },
     },
-    padding: {
-      none: "",
-      sm: "p-4",
-      md: "p-5 sm:p-6",
-      lg: "p-6 sm:p-8",
-    },
-    /** Adds hover affordance. Only for cards that are themselves a link/button. */
-    interactive: {
-      true: "hover:border-line-strong hover:bg-hover cursor-pointer",
-    },
+    defaultVariants: { surface: "outlined", padding: "md" },
   },
-  defaultVariants: { surface: "outlined", padding: "md" },
-});
+);
 
 export interface CardProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, "className">,
+  extends
+    Omit<HTMLAttributes<HTMLDivElement>, "className">,
     VariantProps<typeof cardVariants> {
   className?: string;
 }
@@ -63,9 +67,7 @@ export function CardTitle({
   as?: "h2" | "h3" | "h4";
   children: ReactNode;
 }) {
-  return (
-    <Tag className={cn("text-display-sm text-primary", className)}>{children}</Tag>
-  );
+  return <Tag className={cn("text-display-sm text-primary", className)}>{children}</Tag>;
 }
 
 export function CardDescription({

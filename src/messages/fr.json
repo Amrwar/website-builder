@@ -18,7 +18,9 @@
     "pricing": "Tarifs",
     "buildWall": "Mur des réalisations",
     "signIn": "Se connecter",
-    "startBuild": "Lancer un projet"
+    "startBuild": "Lancer un projet",
+    "notifications": "Notifications",
+    "dismiss": "Fermer"
   },
   "home": {
     "meta": {
@@ -208,5 +210,8 @@
       "retry": "Réessayer",
       "home": "Retour à l’accueil"
     }
+  },
+  "common": {
+    "loading": "Chargement…"
   }
 }

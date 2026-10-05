@@ -18,7 +18,9 @@
     "pricing": "Pricing",
     "buildWall": "Build wall",
     "signIn": "Sign in",
-    "startBuild": "Start a build"
+    "startBuild": "Start a build",
+    "notifications": "Notifications",
+    "dismiss": "Dismiss"
   },
   "home": {
     "meta": {
@@ -208,5 +210,8 @@
       "retry": "Try again",
       "home": "Back to home"
     }
+  },
+  "common": {
+    "loading": "Loading…"
   }
 }

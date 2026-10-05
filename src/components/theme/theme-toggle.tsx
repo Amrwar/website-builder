@@ -121,7 +121,7 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
             <span
               className={cn(
                 "grid size-7 place-items-center rounded-sm",
-                "transition-colors duration-fast ease-out-quint",
+                "duration-fast transition-colors ease-out-quint",
                 "peer-focus-visible:outline peer-focus-visible:outline-2",
                 "peer-focus-visible:outline-offset-2 peer-focus-visible:outline-focus",
                 checked

@@ -38,7 +38,10 @@ export function money(minorUnits: number, currency: Currency = BASE_CURRENCY): M
   return { minorUnits, currency };
 }
 
-export function fromMajorUnits(amount: number, currency: Currency = BASE_CURRENCY): Money {
+export function fromMajorUnits(
+  amount: number,
+  currency: Currency = BASE_CURRENCY,
+): Money {
   return money(Math.round(amount * MINOR_UNIT_FACTOR[currency]), currency);
 }
 

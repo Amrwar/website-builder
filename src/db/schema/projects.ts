@@ -10,12 +10,7 @@ import {
 } from "drizzle-orm/pg-core";
 
 import { customers } from "./customers";
-import {
-  buildTypeEnum,
-  currencyEnum,
-  projectStatusEnum,
-  scopeTierEnum,
-} from "./enums";
+import { buildTypeEnum, currencyEnum, projectStatusEnum, scopeTierEnum } from "./enums";
 import { projectBriefs } from "./briefs";
 import { scopeAssessments } from "./scope-assessments";
 import { projectEvents } from "./events";

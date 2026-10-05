@@ -35,7 +35,7 @@ export function LocaleSwitcher({ current, className }: LocaleSwitcherProps) {
       className={cn(
         "relative inline-flex items-center rounded-md border border-line",
         "bg-subtle text-secondary",
-        "transition-colors duration-fast ease-out-quint",
+        "duration-fast transition-colors ease-out-quint",
         "focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-focus",
         "hover:text-primary",
         isPending && "opacity-60",
@@ -66,7 +66,10 @@ export function LocaleSwitcher({ current, className }: LocaleSwitcherProps) {
           </option>
         ))}
       </select>
-      <ChevronDown className="pointer-events-none absolute end-2.5 size-3.5" aria-hidden />
+      <ChevronDown
+        className="pointer-events-none absolute end-2.5 size-3.5"
+        aria-hidden
+      />
     </div>
   );
 }

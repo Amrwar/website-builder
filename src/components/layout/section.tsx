@@ -31,7 +31,8 @@ export const sectionVariants = cva("", {
 });
 
 export interface SectionProps
-  extends Omit<HTMLAttributes<HTMLElement>, "className">,
+  extends
+    Omit<HTMLAttributes<HTMLElement>, "className">,
     VariantProps<typeof sectionVariants> {
   className?: string;
 }
@@ -88,7 +89,7 @@ export function SectionHeading({
         )}
       >
         {eyebrow ? (
-          <p className="text-eyebrow uppercase text-tertiary">{eyebrow}</p>
+          <p className="text-eyebrow text-tertiary uppercase">{eyebrow}</p>
         ) : null}
         <Tag className="text-display-lg text-primary">{title}</Tag>
         {description ? (

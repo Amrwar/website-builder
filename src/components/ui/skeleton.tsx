@@ -16,10 +16,7 @@ export interface SkeletonProps {
  */
 export function Skeleton({ className }: SkeletonProps) {
   return (
-    <div
-      aria-hidden
-      className={cn("animate-pulse rounded-sm bg-sunken", className)}
-    />
+    <div aria-hidden className={cn("animate-pulse rounded-sm bg-sunken", className)} />
   );
 }
 

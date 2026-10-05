@@ -2,11 +2,7 @@ import { getTranslations } from "next-intl/server";
 
 import { Container } from "@/components/layout/container";
 import { Section, SectionHeading } from "@/components/layout/section";
-import {
-  GUARANTEE_START_STAGE,
-  JOURNEY_STAGES,
-  stageLabel,
-} from "@/config/journey";
+import { GUARANTEE_START_STAGE, JOURNEY_STAGES, stageLabel } from "@/config/journey";
 import { cn } from "@/lib/cn";
 
 /**
@@ -44,7 +40,7 @@ export async function Journey() {
                 key={stage}
                 className={cn(
                   "flex flex-col gap-2 bg-canvas p-5",
-                  "transition-colors duration-base ease-out-quint hover:bg-hover",
+                  "duration-base transition-colors ease-out-quint hover:bg-hover",
                 )}
               >
                 <div className="flex items-center justify-between gap-2">

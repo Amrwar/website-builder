@@ -71,6 +71,8 @@ describe("firstMatch", () => {
   });
 
   it("returns undefined when nothing matches", () => {
-    expect(firstMatch(normalize("a simple brochure site"), ["inventory"])).toBeUndefined();
+    expect(
+      firstMatch(normalize("a simple brochure site"), ["inventory"]),
+    ).toBeUndefined();
   });
 });

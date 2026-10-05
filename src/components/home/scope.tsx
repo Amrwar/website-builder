@@ -72,7 +72,7 @@ export async function Scope() {
         {/* Worked example: the restaurant brief, assessed out loud. */}
         <Card padding="lg" className="flex flex-col gap-6 lg:flex-row lg:gap-10">
           <div className="flex flex-col gap-3 lg:w-2/5">
-            <p className="text-eyebrow uppercase text-tertiary">{t("example.title")}</p>
+            <p className="text-eyebrow text-tertiary uppercase">{t("example.title")}</p>
             <blockquote
               className={cn(
                 "border-s-2 border-line-strong ps-4",
@@ -85,7 +85,7 @@ export async function Scope() {
 
           <div className="flex flex-1 flex-col gap-4 lg:border-s lg:border-line-subtle lg:ps-10">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="text-eyebrow uppercase text-tertiary">
+              <span className="text-eyebrow text-tertiary uppercase">
                 {t("example.verdictLabel")}
               </span>
               <Badge tone="warning">{t("example.verdict", { days })}</Badge>
@@ -117,7 +117,10 @@ function ScopeColumn({
             {tone === "included" ? (
               <Check className="mt-0.5 size-4 shrink-0 text-success" aria-hidden />
             ) : (
-              <ArrowUpRight className="mt-0.5 size-4 shrink-0 rtl-flip text-warning" aria-hidden />
+              <ArrowUpRight
+                className="rtl-flip mt-0.5 size-4 shrink-0 text-warning"
+                aria-hidden
+              />
             )}
             {item}
           </li>

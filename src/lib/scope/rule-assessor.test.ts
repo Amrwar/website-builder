@@ -58,14 +58,18 @@ describe("the restaurant brief from the product definition", () => {
     "restaurant staff manage orders, drivers manage deliveries, and customers track drivers.";
 
   it("does not qualify for a 5-Day Build", async () => {
-    const result = await assessScope(input({ buildType: "system", ideaText: RESTAURANT }));
+    const result = await assessScope(
+      input({ buildType: "system", ideaText: RESTAURANT }),
+    );
 
     expect(result.tier).not.toBe("essential");
     expect(result.tier).toBe("custom");
   });
 
   it("routes to a custom quotation instead of publishing a price", async () => {
-    const result = await assessScope(input({ buildType: "system", ideaText: RESTAURANT }));
+    const result = await assessScope(
+      input({ buildType: "system", ideaText: RESTAURANT }),
+    );
 
     expect(result.requiresCustomQuote).toBe(true);
     expect(result.price).toBeNull();
@@ -73,7 +77,9 @@ describe("the restaurant brief from the product definition", () => {
   });
 
   it("identifies the capabilities that make it larger", async () => {
-    const result = await assessScope(input({ buildType: "system", ideaText: RESTAURANT }));
+    const result = await assessScope(
+      input({ buildType: "system", ideaText: RESTAURANT }),
+    );
     const keys = keysOf(result);
 
     expect(keys).toContain("multi_role_access");
@@ -84,7 +90,9 @@ describe("the restaurant brief from the product definition", () => {
   });
 
   it("explains itself with evidence the customer can check", async () => {
-    const result = await assessScope(input({ buildType: "system", ideaText: RESTAURANT }));
+    const result = await assessScope(
+      input({ buildType: "system", ideaText: RESTAURANT }),
+    );
 
     expect(result.exceededEntryTierBy.length).toBeGreaterThan(0);
     expect(result.reasons.map((r) => r.code)).toContain("multiple_user_types");
@@ -134,7 +142,9 @@ describe("multi-role inference", () => {
   it("does not fire for customers plus an admin", async () => {
     // The shape of almost every ordinary application; it must stay affordable.
     const result = await assessScope(
-      input({ ideaText: "Customers can book a table and an admin can see the bookings." }),
+      input({
+        ideaText: "Customers can book a table and an admin can see the bookings.",
+      }),
     );
 
     expect(keysOf(result)).not.toContain("multi_role_access");
@@ -144,7 +154,8 @@ describe("multi-role inference", () => {
     const result = await assessScope(
       input({
         buildType: "system",
-        ideaText: "Customers book lessons, teachers manage their schedule, and admins approve payouts.",
+        ideaText:
+          "Customers book lessons, teachers manage their schedule, and admins approve payouts.",
       }),
     );
 
@@ -175,7 +186,10 @@ describe("implications", () => {
 
   it("resolves implications transitively", async () => {
     const result = await assessScope(
-      input({ buildType: "system", selectedCapabilities: ["realtime_location_tracking"] }),
+      input({
+        buildType: "system",
+        selectedCapabilities: ["realtime_location_tracking"],
+      }),
     );
 
     // tracking -> live_updates, and tracking is custom tier on its own.

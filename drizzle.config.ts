@@ -12,8 +12,7 @@ config({ path: ".env.local" });
  * pooler produces intermittent, hard-to-diagnose failures. The pooled URL is
  * only a fallback for environments where the unpooled one is absent.
  */
-const migrationUrl =
-  process.env.DATABASE_URL_UNPOOLED ?? process.env.DATABASE_URL ?? "";
+const migrationUrl = process.env.DATABASE_URL_UNPOOLED ?? process.env.DATABASE_URL ?? "";
 
 export default defineConfig({
   schema: "./src/db/schema/index.ts",

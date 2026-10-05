@@ -2,12 +2,11 @@ import { notFound } from "next/navigation";
 import { locale as localeRootParam } from "next/root-params";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, IBM_Plex_Sans_Arabic } from "next/font/google";
+import Script from "next/script";
 
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
-import { SiteFooter } from "@/components/site/site-footer";
-import { SiteHeader } from "@/components/site/site-header";
 import { BRAND } from "@/config/brand";
 import {
   DEFAULT_LOCALE,
@@ -16,6 +15,7 @@ import {
   isLocale,
   resolveLocale,
 } from "@/config/locales";
+import { ToastProvider } from "@/components/ui/toast";
 import { cn } from "@/lib/cn";
 import { THEME_SCRIPT } from "@/lib/theme";
 import "@/styles/globals.css";
@@ -112,28 +112,27 @@ export default async function LocaleLayout({
       )}
     >
       <head>
-        <script
-          // Sets the theme before first paint so `system` does not flash.
+        {/*
+          Sets the theme before first paint so `system` does not flash.
+          `beforeInteractive` is the supported way to emit a pre-hydration
+          script: it is injected into the initial HTML and runs before any
+          Next.js module. A bare <script> element works too, but React 19
+          warns about script tags rendered inside components.
+        */}
+        <Script
+          id="theme-preference"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }}
         />
       </head>
       <body className="flex min-h-full flex-col antialiased">
-        <a
-          href="#main"
-          className={cn(
-            "sr-only-focusable",
-            "absolute z-50 m-3 rounded-md px-4 py-2",
-            "bg-action text-action-fg text-body-sm font-medium",
-          )}
-        >
-          {t("skipToContent")}
-        </a>
+        {/* Chrome belongs to the route group, so marketing and application
+         * surfaces can differ. Providers live here because they must wrap
+         * every group, including the error and not-found screens. */}
         <NextIntlClientProvider>
-          <SiteHeader locale={locale} />
-          <main id="main" className="flex-1">
+          <ToastProvider label={t("notifications")} dismissLabel={t("dismiss")}>
             {children}
-          </main>
-          <SiteFooter />
+          </ToastProvider>
         </NextIntlClientProvider>
       </body>
     </html>

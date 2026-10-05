@@ -43,14 +43,14 @@ export function SheetContent({
       <Dialog.Overlay
         className={cn(
           "fixed inset-0 z-40 bg-inverse/40",
-          "data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out",
+          "data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in",
         )}
       />
       <Dialog.Content
         className={cn(
           "fixed inset-y-0 end-0 z-50 flex w-full max-w-sm flex-col",
           "border-s border-line bg-canvas shadow-lg",
-          "data-[state=open]:animate-sheet-in data-[state=closed]:animate-sheet-out",
+          "data-[state=closed]:animate-sheet-out data-[state=open]:animate-sheet-in",
           className,
         )}
       >
@@ -68,7 +68,7 @@ export function SheetContent({
           <Dialog.Close
             className={cn(
               "grid size-8 place-items-center rounded-md text-secondary",
-              "transition-colors duration-fast ease-out-quint",
+              "duration-fast transition-colors ease-out-quint",
               "hover:bg-hover hover:text-primary",
             )}
           >

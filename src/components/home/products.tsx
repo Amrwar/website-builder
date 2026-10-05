@@ -58,7 +58,7 @@ export async function Products() {
                     {/* A floor price is labelled as one. The `priceModel` flag
                      * makes it impossible to show a "from" price as fixed. */}
                     {product.priceModel === "from" ? (
-                      <span className="text-caption uppercase tracking-wide text-tertiary">
+                      <span className="text-caption tracking-wide text-tertiary uppercase">
                         {t("fromLabel")}
                       </span>
                     ) : null}
@@ -84,7 +84,7 @@ export async function Products() {
                     )}
                   >
                     {t(`${product.id}.cta`)}
-                    <ArrowRight className="size-4 rtl-flip" aria-hidden />
+                    <ArrowRight className="rtl-flip size-4" aria-hidden />
                   </Link>
                 </Card>
               </li>

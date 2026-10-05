@@ -143,6 +143,23 @@
   --duration-base: 220ms;
   --duration-slow: 360ms;
 
+  /* --- Responsive breakpoints ----------------------------------------
+   * Declared explicitly rather than inherited, so the set is reviewable and
+   * the product has one documented answer to "what is a tablet". Mobile-first:
+   * every utility without a prefix is the small-screen case.
+   *
+   *   sm  640px  large phone, landscape phone
+   *   md  768px  tablet portrait -- the point the primary nav appears
+   *   lg  1024px tablet landscape and small laptop -- multi-column grids
+   *   xl  1280px desktop
+   *   2xl 1536px large desktop; layout stops growing, measure takes over
+   */
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+
   /* --- Layout: Swiss grid measurements ------------------------------- */
   --container-prose: 68ch;
   --container-content: 1120px;

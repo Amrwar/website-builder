@@ -16,18 +16,14 @@ import { cn } from "@/lib/cn";
 export async function Hero() {
   const t = await getTranslations("home.hero");
 
-  const trust = [
-    t("trust.price"),
-    t("trust.scope"),
-    t("trust.deadline"),
-  ];
+  const trust = [t("trust.price"), t("trust.scope"), t("trust.deadline")];
 
   return (
     <section className="border-b border-line-subtle">
       <Container width="wide" className="pt-16 pb-14 sm:pt-24 sm:pb-20 lg:pt-32">
         <div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
           <div className="flex max-w-3xl flex-col gap-6">
-            <p className="text-eyebrow uppercase text-tertiary">{t("eyebrow")}</p>
+            <p className="text-eyebrow text-tertiary uppercase">{t("eyebrow")}</p>
 
             <h1 className="text-display-2xl text-primary">{t("headline")}</h1>
 
@@ -44,7 +40,7 @@ export async function Hero() {
                 className={buttonVariants({ variant: "primary", size: "lg" })}
               >
                 {t("primaryCta")}
-                <ArrowRight className="size-4 rtl-flip" aria-hidden />
+                <ArrowRight className="rtl-flip size-4" aria-hidden />
               </Link>
               <Link
                 href="#whats-included"
@@ -81,7 +77,10 @@ export async function Hero() {
 
         <ul className="mt-12 flex flex-col gap-3 border-t border-line-subtle pt-6 sm:flex-row sm:gap-8">
           {trust.map((item) => (
-            <li key={item} className="flex items-center gap-2 text-body-sm text-secondary">
+            <li
+              key={item}
+              className="flex items-center gap-2 text-body-sm text-secondary"
+            >
               <Check className="size-4 shrink-0 text-success" aria-hidden />
               {item}
             </li>
@@ -92,18 +91,10 @@ export async function Hero() {
   );
 }
 
-function SpecRow({
-  value,
-  unit,
-  label,
-}: {
-  value: string;
-  unit: string;
-  label: string;
-}) {
+function SpecRow({ value, unit, label }: { value: string; unit: string; label: string }) {
   return (
     <div className="flex flex-col gap-1 bg-canvas p-5">
-      <dt className="text-eyebrow uppercase text-tertiary">{label}</dt>
+      <dt className="text-eyebrow text-tertiary uppercase">{label}</dt>
       <dd className="flex items-baseline gap-1.5">
         <span className="text-display-md text-primary" data-numeric>
           {value}

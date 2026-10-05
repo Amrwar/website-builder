@@ -32,7 +32,7 @@ export async function ClosingCta() {
             )}
           >
             {t("primary")}
-            <ArrowRight className="size-4 rtl-flip" aria-hidden />
+            <ArrowRight className="rtl-flip size-4" aria-hidden />
           </Link>
           <Link
             href="#whats-included"

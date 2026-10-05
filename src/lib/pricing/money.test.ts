@@ -37,9 +37,9 @@ describe("addMoney", () => {
   });
 
   it("refuses to add mismatched currencies", () => {
-    expect(() => addMoney(fromMajorUnits(400, "CAD"), fromMajorUnits(400, "USD"))).toThrow(
-      /Cannot add/,
-    );
+    expect(() =>
+      addMoney(fromMajorUnits(400, "CAD"), fromMajorUnits(400, "USD")),
+    ).toThrow(/Cannot add/);
   });
 });
 

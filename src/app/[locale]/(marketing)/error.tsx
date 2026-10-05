@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { Container } from "@/components/layout/container";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
+import { logger } from "@/lib/logger";
 
 /**
  * Page-level error boundary.
@@ -26,10 +27,13 @@ export default function LocaleError({
   const t = useTranslations("errors.unexpected");
 
   useEffect(() => {
-    // Placeholder for the error reporter. Sentry is provisioned but not yet
-    // wired; until then the digest is at least in the browser console so a
-    // report can be correlated with the server log.
-    console.error("[unhandled]", error.digest ?? error.message);
+    // Sentry is provisioned but not yet wired. Until it is, the structured
+    // logger at least gives this the same shape and redaction as every other
+    // error, and the digest is what correlates it with the server-side log.
+    logger.error("client error boundary", {
+      digest: error.digest,
+      message: error.message,
+    });
   }, [error]);
 
   return (

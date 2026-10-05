@@ -28,10 +28,7 @@ const METHOD_PRIORITY: Record<DetectionMethod, number> = {
 
 function upsert(into: Map<string, DetectedCapability>, candidate: DetectedCapability) {
   const existing = into.get(candidate.key);
-  if (
-    !existing ||
-    METHOD_PRIORITY[candidate.method] > METHOD_PRIORITY[existing.method]
-  ) {
+  if (!existing || METHOD_PRIORITY[candidate.method] > METHOD_PRIORITY[existing.method]) {
     into.set(candidate.key, candidate);
   }
 }
@@ -54,7 +51,10 @@ export function detectCapabilities(input: ScopeInput): DetectedCapability[] {
   if (haystack) {
     // --- 2. Actor analysis ----------------------------------------------
     const actors = detectActors(haystack, input.locale);
-    if (actors.groupIds.length >= MULTI_ROLE_THRESHOLD && allowed.has("multi_role_access")) {
+    if (
+      actors.groupIds.length >= MULTI_ROLE_THRESHOLD &&
+      allowed.has("multi_role_access")
+    ) {
       upsert(found, {
         key: "multi_role_access",
         method: "text_match",

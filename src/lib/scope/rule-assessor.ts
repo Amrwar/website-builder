@@ -61,7 +61,10 @@ const CATEGORY_REASON: Record<string, string> = {
   content: "content_scope",
 };
 
-function screenPoints(buildType: BuildType, estimatedScreens: number | undefined): number {
+function screenPoints(
+  buildType: BuildType,
+  estimatedScreens: number | undefined,
+): number {
   if (!estimatedScreens) return 0;
   const excess = estimatedScreens - SCREEN_ALLOWANCE[buildType];
   if (excess <= 0) return 0;
@@ -132,7 +135,8 @@ export class RuleBasedScopeAssessor implements ScopeAssessor {
     });
 
     const pointsDroveTier =
-      tierRank(pointsTier) > tierRank(ENTRY_TIER) && tierRank(pointsTier) >= tierRank(floorTier);
+      tierRank(pointsTier) > tierRank(ENTRY_TIER) &&
+      tierRank(pointsTier) >= tierRank(floorTier);
 
     const offer = offerFor(input.buildType, tier);
 
@@ -144,7 +148,9 @@ export class RuleBasedScopeAssessor implements ScopeAssessor {
       complexityPoints,
       capabilities,
       reasons:
-        tierRank(tier) > tierRank(ENTRY_TIER) ? buildReasons(raisers, pointsDroveTier) : [],
+        tierRank(tier) > tierRank(ENTRY_TIER)
+          ? buildReasons(raisers, pointsDroveTier)
+          : [],
       requiresCustomQuote: requiresCustomQuote(tier),
       price: offer.price,
       guaranteedDays: offer.guaranteedDays,

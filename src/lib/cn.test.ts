@@ -30,9 +30,7 @@ describe("cn", () => {
 
   it("lets a caller override a component default", () => {
     // The core contract every component relies on for its `className` prop.
-    expect(cn("bg-canvas text-primary", "bg-inverse")).toBe(
-      "text-primary bg-inverse",
-    );
+    expect(cn("bg-canvas text-primary", "bg-inverse")).toBe("text-primary bg-inverse");
   });
 
   it("ignores falsy values", () => {

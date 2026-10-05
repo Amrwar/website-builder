@@ -82,7 +82,12 @@ export const CAPABILITIES = [
   },
 
   // --- Realtime ----------------------------------------------------------
-  { key: "push_notifications", categoryId: "realtime", points: 6, minimumTier: "extended" },
+  {
+    key: "push_notifications",
+    categoryId: "realtime",
+    points: 6,
+    minimumTier: "extended",
+  },
   { key: "live_updates", categoryId: "realtime", points: 10, minimumTier: "advanced" },
   { key: "chat_messaging", categoryId: "realtime", points: 10, minimumTier: "advanced" },
   /**
@@ -98,8 +103,18 @@ export const CAPABILITIES = [
   },
 
   // --- Operations --------------------------------------------------------
-  { key: "admin_dashboard", categoryId: "operations", points: 6, minimumTier: "extended" },
-  { key: "order_management", categoryId: "operations", points: 8, minimumTier: "extended" },
+  {
+    key: "admin_dashboard",
+    categoryId: "operations",
+    points: 6,
+    minimumTier: "extended",
+  },
+  {
+    key: "order_management",
+    categoryId: "operations",
+    points: 8,
+    minimumTier: "extended",
+  },
   { key: "inventory", categoryId: "operations", points: 8, minimumTier: "extended" },
   { key: "reporting", categoryId: "operations", points: 6, minimumTier: "extended" },
   /**

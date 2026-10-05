@@ -47,7 +47,7 @@ export function EmptyState({
       ) : null}
       <p
         className={cn(
-          "text-primary font-medium",
+          "font-medium text-primary",
           size === "md" ? "text-display-sm" : "text-body",
         )}
       >
@@ -56,7 +56,9 @@ export function EmptyState({
       {description ? (
         <p className="max-w-sm text-body-sm text-secondary">{description}</p>
       ) : null}
-      {action ? <div className="mt-2 flex flex-wrap justify-center gap-2">{action}</div> : null}
+      {action ? (
+        <div className="mt-2 flex flex-wrap justify-center gap-2">{action}</div>
+      ) : null}
     </div>
   );
 }

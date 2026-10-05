@@ -9,11 +9,11 @@ export const calloutVariants = cva(
   {
     variants: {
       tone: {
-        info: "bg-info-surface border-info-line text-info",
-        success: "bg-success-surface border-success-line text-success",
-        warning: "bg-warning-surface border-warning-line text-warning",
-        danger: "bg-danger-surface border-danger-line text-danger",
-        neutral: "bg-subtle border-line text-secondary",
+        info: "border-info-line bg-info-surface text-info",
+        success: "border-success-line bg-success-surface text-success",
+        warning: "border-warning-line bg-warning-surface text-warning",
+        danger: "border-danger-line bg-danger-surface text-danger",
+        neutral: "border-line bg-subtle text-secondary",
       },
     },
     defaultVariants: { tone: "info" },
@@ -65,9 +65,7 @@ export function Callout({
     <div
       className={cn(calloutVariants({ tone: activeTone }), className)}
       role={live ? "status" : undefined}
-      aria-live={
-        live ? (activeTone === "danger" ? "assertive" : "polite") : undefined
-      }
+      aria-live={live ? (activeTone === "danger" ? "assertive" : "polite") : undefined}
     >
       <span
         aria-hidden

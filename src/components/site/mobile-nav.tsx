@@ -32,7 +32,12 @@ export function MobileNav({ locale }: MobileNavProps) {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="sm" className="px-2 md:hidden" aria-label={t("openMenu")}>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="px-2 md:hidden"
+          aria-label={t("openMenu")}
+        >
           <Menu className="size-5" aria-hidden />
         </Button>
       </SheetTrigger>
@@ -47,7 +52,7 @@ export function MobileNav({ locale }: MobileNavProps) {
                     className={cn(
                       "-mx-2 block rounded-md px-2 py-2.5",
                       "text-display-sm text-primary",
-                      "transition-colors duration-fast ease-out-quint hover:bg-hover",
+                      "duration-fast transition-colors ease-out-quint hover:bg-hover",
                     )}
                   >
                     {t(item.key)}

@@ -45,7 +45,7 @@ export async function SiteHeader({ locale }: SiteHeaderProps) {
                     href={item.href}
                     className={cn(
                       "rounded-md px-3 py-2 text-body-sm text-secondary",
-                      "transition-colors duration-fast ease-out-quint",
+                      "duration-fast transition-colors ease-out-quint",
                       "hover:bg-hover hover:text-primary",
                     )}
                   >
@@ -63,7 +63,10 @@ export async function SiteHeader({ locale }: SiteHeaderProps) {
             </div>
             <Link
               href="/configure"
-              className={cn(buttonVariants({ variant: "primary", size: "sm" }), "hidden sm:inline-flex")}
+              className={cn(
+                buttonVariants({ variant: "primary", size: "sm" }),
+                "hidden sm:inline-flex",
+              )}
             >
               {t("startBuild")}
             </Link>

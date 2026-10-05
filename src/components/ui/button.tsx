@@ -15,7 +15,7 @@ import { Spinner } from "./spinner";
 export const buttonVariants = cva(
   [
     "relative inline-flex items-center justify-center gap-2",
-    "font-medium whitespace-nowrap rounded-md",
+    "rounded-md font-medium whitespace-nowrap",
     "transition-[background-color,border-color,color,transform]",
     "duration-fast ease-out-quint",
     // A press is felt rather than seen: 2% scale, no bounce.
@@ -35,8 +35,8 @@ export const buttonVariants = cva(
         ],
         /** Equal-weight alternative alongside a primary action. */
         secondary: [
-          "bg-canvas text-primary border border-line-strong",
-          "hover:bg-hover hover:border-line-inverse active:bg-active",
+          "border border-line-strong bg-canvas text-primary",
+          "hover:border-line-inverse hover:bg-hover active:bg-active",
         ],
         /** Low-emphasis action in dense surfaces (tables, toolbars). */
         ghost: ["text-secondary", "hover:bg-hover hover:text-primary active:bg-active"],
@@ -47,8 +47,8 @@ export const buttonVariants = cva(
         ],
         /** Destructive, irreversible actions only. */
         danger: [
-          "bg-danger-surface text-danger border border-danger-line",
-          "hover:bg-danger hover:text-fg-inverse hover:border-danger",
+          "border border-danger-line bg-danger-surface text-danger",
+          "hover:border-danger hover:bg-danger hover:text-fg-inverse",
         ],
       },
       size: {
@@ -65,7 +65,8 @@ export const buttonVariants = cva(
 );
 
 export interface ButtonProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className">,
+  extends
+    Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className">,
     VariantProps<typeof buttonVariants> {
   className?: string;
   /**

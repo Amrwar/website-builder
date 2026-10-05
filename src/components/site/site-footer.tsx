@@ -23,7 +23,7 @@ export async function SiteFooter() {
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:gap-16">
             {FOOTER_NAV.map((column) => (
               <div key={column.titleKey} className="flex flex-col gap-3">
-                <h2 className="text-eyebrow uppercase text-tertiary">
+                <h2 className="text-eyebrow text-tertiary uppercase">
                   {t(column.titleKey)}
                 </h2>
                 <ul className="flex flex-col gap-2.5">
@@ -34,7 +34,7 @@ export async function SiteFooter() {
                           href={item.href}
                           className={cn(
                             "rounded-sm text-body-sm text-secondary",
-                            "transition-colors duration-fast ease-out-quint",
+                            "duration-fast transition-colors ease-out-quint",
                             "hover:text-primary",
                           )}
                         >

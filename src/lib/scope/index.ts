@@ -15,7 +15,12 @@ export type {
   TierReason,
 } from "./types";
 
-export { CAPABILITIES, CAPABILITY_CATEGORIES, getCapability, isCapabilityKey } from "./capabilities";
+export {
+  CAPABILITIES,
+  CAPABILITY_CATEGORIES,
+  getCapability,
+  isCapabilityKey,
+} from "./capabilities";
 export type { CapabilityKey } from "./capabilities";
 export { ENTRY_TIER, TIER_OFFERS, TIER_ORDER, offerFor, tierRank } from "./tiers";
 export { RULESET_VERSION, ruleBasedScopeAssessor } from "./rule-assessor";

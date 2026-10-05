@@ -32,8 +32,8 @@ export default function GlobalError({
         <div className="flex max-w-md flex-col items-center gap-5 text-center">
           <h1 className="text-display-md text-primary">Something went wrong</h1>
           <p className="text-body text-secondary">
-            The application failed to load. This has been logged. Reloading
-            usually resolves it.
+            The application failed to load. This has been logged. Reloading usually
+            resolves it.
           </p>
           {error.digest ? (
             <p className="font-mono text-caption text-tertiary">{error.digest}</p>
@@ -41,7 +41,7 @@ export default function GlobalError({
           <button
             type="button"
             onClick={reset}
-            className="h-10 rounded-md bg-action px-4 text-body-sm font-medium text-action-fg transition-colors duration-fast hover:bg-action-hover"
+            className="duration-fast h-10 rounded-md bg-action px-4 text-body-sm font-medium text-action-fg transition-colors hover:bg-action-hover"
           >
             Reload
           </button>

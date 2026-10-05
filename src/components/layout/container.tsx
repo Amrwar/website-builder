@@ -26,7 +26,8 @@ export const containerVariants = cva("mx-auto w-full", {
 });
 
 export interface ContainerProps
-  extends Omit<HTMLAttributes<HTMLElement>, "className">,
+  extends
+    Omit<HTMLAttributes<HTMLElement>, "className">,
     VariantProps<typeof containerVariants> {
   as?: ElementType;
   className?: string;

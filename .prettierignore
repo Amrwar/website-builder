@@ -1,0 +1,11 @@
+# Generated or vendored output that Prettier must not rewrite.
+.next
+node_modules
+drizzle/meta
+package-lock.json
+coverage
+
+# Vendored provider agent skills: upstream files, kept byte-identical so they
+# can be re-synced without producing spurious diffs.
+.agents
+.claude

@@ -13,11 +13,11 @@ export const badgeVariants = cva(
   {
     variants: {
       tone: {
-        neutral: "bg-subtle text-secondary border-line",
-        info: "bg-info-surface text-info border-info-line",
-        success: "bg-success-surface text-success border-success-line",
-        warning: "bg-warning-surface text-warning border-warning-line",
-        danger: "bg-danger-surface text-danger border-danger-line",
+        neutral: "border-line bg-subtle text-secondary",
+        info: "border-info-line bg-info-surface text-info",
+        success: "border-success-line bg-success-surface text-success",
+        warning: "border-warning-line bg-warning-surface text-warning",
+        danger: "border-danger-line bg-danger-surface text-danger",
       },
     },
     defaultVariants: { tone: "neutral" },
@@ -72,10 +72,7 @@ export function Badge({
             />
           ) : null}
           <span
-            className={cn(
-              "relative size-1.5 rounded-full",
-              DOT_TONE[tone ?? "neutral"],
-            )}
+            className={cn("relative size-1.5 rounded-full", DOT_TONE[tone ?? "neutral"])}
           />
         </span>
       ) : null}
