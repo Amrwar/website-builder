@@ -85,3 +85,44 @@
   --animate-dialog-in: dialog-in var(--duration-base) var(--ease-out-quint);
   --animate-dialog-out: dialog-out var(--duration-fast) ease-in;
 }
+
+/* ---------------------------------------------------------------------------
+ * Production line (marketing hero)
+ *
+ * A unit travelling along the line, with each stage brightening as it passes.
+ * Built from staggered delays on one keyframe rather than a timeline in JS, so
+ * it costs nothing at runtime and renders on the server.
+ *
+ * The STATIC state is the finished diagram: every stage already legible. The
+ * animation only adds the travelling emphasis on top. That is what makes the
+ * reduced-motion rule in base.css safe here -- collapsing the duration leaves
+ * a clean, complete diagram rather than a half-drawn one.
+ * ------------------------------------------------------------------------ */
+
+@keyframes stage-pass {
+  0%,
+  12% {
+    opacity: 1;
+    transform: scale(1.35);
+  }
+  28%,
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+@keyframes rail-fill {
+  0% {
+    transform: scaleX(0);
+  }
+  60%,
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@theme inline {
+  --animate-stage-pass: stage-pass 5s var(--ease-in-out-quint) infinite;
+  --animate-rail-fill: rail-fill 5s var(--ease-out-quint) infinite;
+}

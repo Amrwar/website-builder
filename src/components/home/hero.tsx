@@ -1,6 +1,7 @@
 import { ArrowRight, Check } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
+import { ProductionLine } from "@/components/home/production-line";
 import { Container } from "@/components/layout/container";
 import { buttonVariants } from "@/components/ui/button";
 import { DELIVERY_DAYS } from "@/config/brand";
@@ -12,11 +13,22 @@ import { cn } from "@/lib/cn";
  *
  * Leads with the promise and nothing else: no illustration, no gradient, no
  * mock browser frame. The hierarchy is headline, promise, proof, action.
+ *
+ * The production line sits below the fold-line content as a full-width band.
+ * It is the thing that stops this reading as an agency page -- an agency sells
+ * a relationship, and this sells a unit moving down a line.
  */
 export async function Hero() {
   const t = await getTranslations("home.hero");
 
-  const trust = [t("trust.price"), t("trust.scope"), t("trust.deadline")];
+  // Ownership sits in the hero deliberately: "do I actually own this?" is a
+  // question buyers carry into the page, and answering it late loses them.
+  const trust = [
+    t("trust.price"),
+    t("trust.scope"),
+    t("trust.deadline"),
+    t("trust.ownership"),
+  ];
 
   return (
     <section className="border-b border-line-subtle">
@@ -43,7 +55,7 @@ export async function Hero() {
                 <ArrowRight className="rtl-flip size-4" aria-hidden />
               </Link>
               <Link
-                href="#whats-included"
+                href="#how-it-works"
                 className={buttonVariants({ variant: "secondary", size: "lg" })}
               >
                 {t("secondaryCta")}
@@ -75,7 +87,7 @@ export async function Hero() {
           </dl>
         </div>
 
-        <ul className="mt-12 flex flex-col gap-3 border-t border-line-subtle pt-6 sm:flex-row sm:gap-8">
+        <ul className="mt-12 grid gap-3 border-t border-line-subtle pt-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
           {trust.map((item) => (
             <li
               key={item}
@@ -87,6 +99,12 @@ export async function Hero() {
           ))}
         </ul>
       </Container>
+
+      <div className="border-t border-line-subtle bg-subtle">
+        <Container width="wide" className="py-10 sm:py-12">
+          <ProductionLine />
+        </Container>
+      </div>
     </section>
   );
 }

@@ -20,7 +20,8 @@
     "signIn": "Se connecter",
     "startBuild": "Lancer un projet",
     "notifications": "Notifications",
-    "dismiss": "Fermer"
+    "dismiss": "Fermer",
+    "faq": "Questions"
   },
   "home": {
     "meta": {
@@ -37,7 +38,8 @@
       "trust": {
         "price": "Prix fixe, annoncé d'avance",
         "scope": "Portée écrite, convenue avant la production",
-        "deadline": "Délai garanti par remboursement"
+        "deadline": "Délai garanti par remboursement",
+        "ownership": "Vous êtes propriétaire de tout"
       },
       "spec": {
         "daysUnit": "jours",
@@ -177,6 +179,226 @@
       "description": "Décrivez ce que vous voulez et voyez votre portée, votre prix et votre date de livraison avant tout engagement.",
       "primary": "Lancer un projet",
       "secondary": "Voir comment ça marche"
+    },
+    "productionLine": {
+      "idea": {
+        "name": "Idée",
+        "detail": "Décrivez-la dans vos mots"
+      },
+      "configure": {
+        "name": "Configuration",
+        "detail": "Type et fonctionnalités"
+      },
+      "build": {
+        "name": "Production",
+        "detail": "Le compte à rebours tourne"
+      },
+      "preview": {
+        "name": "Aperçu",
+        "detail": "Suivez l'avancement"
+      },
+      "launch": {
+        "name": "Lancement",
+        "detail": "En ligne sur votre domaine"
+      }
+    },
+    "configuratorEntry": {
+      "eyebrow": "Commencez ici",
+      "title": "Quatre étapes vers un prix fixe.",
+      "description": "Rien n'est facturé avant que vous ayez vu la portée, le prix et la date de livraison. La plupart des gens y arrivent en moins de dix minutes.",
+      "stepsLabel": "Étapes vers un prix",
+      "steps": {
+        "describe": {
+          "label": "Décrire",
+          "detail": "Ce que vous voulez, simplement"
+        },
+        "choose": {
+          "label": "Choisir",
+          "detail": "Type, fonctions, orientation visuelle"
+        },
+        "assess": {
+          "label": "Évaluer",
+          "detail": "Nous montrons les règles reconnues"
+        },
+        "price": {
+          "label": "Prix",
+          "detail": "Montant fixe et date de livraison"
+        }
+      },
+      "status": {
+        "complete": "terminée",
+        "current": "étape en cours",
+        "upcoming": "non commencée"
+      },
+      "primaryCta": "Lancer un projet",
+      "reassurance": "Aucun compte requis pour voir votre prix."
+    },
+    "comparison": {
+      "eyebrow": "Lequel me convient ?",
+      "title": "Site web, système ou application.",
+      "description": "La différence n'est pas la taille, mais ce que la chose doit faire. Choisissez la ligne qui décrit votre problème.",
+      "tableLabel": "Comparaison des types de projets",
+      "columns": {
+        "capability": "Capacité"
+      },
+      "rows": {
+        "price": "Prix de départ",
+        "delivery": "Livraison garantie",
+        "review": "Examen des magasins",
+        "pages": "Pages ou écrans",
+        "cms": "Modifier le contenu vous-même",
+        "accounts": "Comptes clients",
+        "payments": "Accepter les paiements",
+        "dashboard": "Tableau de bord du personnel",
+        "offline": "Fonctionne hors ligne",
+        "storeSubmission": "Soumis aux magasins d'applications"
+      },
+      "reviewOutside": "Exclu de la garantie",
+      "reviewNone": "Sans objet",
+      "included": "Inclus",
+      "notIncluded": "Non inclus",
+      "footnote": "Tout ce qui dépasse ces lignes reste réalisable : cela devient simplement un projet plus large, avec son propre prix et son propre délai, que vous verrez avant de payer."
+    },
+    "design": {
+      "eyebrow": "Design",
+      "title": "Pas besoin d'un designer pour commencer.",
+      "description": "La plupart des gens qui commandent un premier site ont tout au plus un logo. Les trois voies ci-dessous coûtent le même prix ; elles changent seulement ce que vous confiez.",
+      "design_for_me": {
+        "title": "Concevez-le pour moi",
+        "body": "Décrivez l'entreprise et l'impression voulue. Nous choisissons la typographie, les couleurs et la mise en page, et vous montrons le résultat dans l'aperçu.",
+        "note": "Le plus courant pour un premier projet."
+      },
+      "supplied_brand": {
+        "title": "J'ai une identité visuelle",
+        "body": "Téléversez votre logo, vos couleurs, vos polices ou votre guide de marque. Nous construisons à partir d'eux plutôt que d'inventer un style parallèle.",
+        "note": "Logo, couleurs, polices, PDF."
+      },
+      "existing_design": {
+        "title": "Refaire ce que j'ai",
+        "body": "Donnez-nous un site existant, un fichier Figma ou des captures d'écran. Nous le reconstruisons correctement, sans tout recommencer la discussion.",
+        "note": "Un lien ou une capture suffit."
+      },
+      "footnote": "Quelle que soit la voie choisie, le résultat vous appartient entièrement : le design, le code et le contenu sont à vous, sans licence à payer indéfiniment."
+    },
+    "maintenance": {
+      "eyebrow": "Après le lancement",
+      "title": "Le maintien en service est une décision distincte.",
+      "description": "Le projet s'achète une fois. L'hébergement, les mises à jour et la surveillance forment un forfait mensuel annulable, car les inclure dans le prix affiché rendrait ce prix faux dès le deuxième mois.",
+      "fromLabel": "à partir de",
+      "perMonth": "par mois",
+      "recommended": "Le plus choisi",
+      "cta": "Ajouter au paiement",
+      "footnote": "Vous pouvez aussi l'héberger vous-même. Nous remettons le code et le déploiement dans tous les cas, et aucun forfait n'est requis pour conserver votre projet.",
+      "plans": {
+        "essential": {
+          "name": "Essentiel",
+          "summary": "En ligne et sauvegardé."
+        },
+        "standard": {
+          "name": "Standard",
+          "summary": "En ligne, surveillé et tenu à jour."
+        },
+        "priority": {
+          "name": "Prioritaire",
+          "summary": "Pour les projets critiques."
+        }
+      },
+      "features": {
+        "hosting": "Hébergement et gestion du domaine",
+        "ssl": "SSL et correctifs de sécurité",
+        "backups": "Sauvegardes quotidiennes",
+        "uptime": "Surveillance de la disponibilité",
+        "everythingEssential": "Tout ce qui est dans Essentiel",
+        "contentEdits": "Modifications de contenu sur demande",
+        "monitoring": "Surveillance des erreurs et alertes",
+        "support": "Soutien en un jour ouvrable",
+        "everythingStandard": "Tout ce qui est dans Standard",
+        "buildCredits": "Crédits mensuels pour de nouvelles fonctions",
+        "priorityQueue": "Place prioritaire dans la file de production",
+        "reporting": "Rapport de performance mensuel"
+      }
+    },
+    "referral": {
+      "eyebrow": "Références",
+      "title": "Recommandez-nous, vous recevez {amount} chacun.",
+      "description": "Aucun palier, aucun pourcentage, aucun tableau de bord à apprendre. Un seul montant, crédité des deux côtés, applicable à votre prochain projet ou à votre forfait.",
+      "steps": {
+        "share": {
+          "title": "Partagez votre lien",
+          "body": "Chaque client en reçoit un dès le début de son projet."
+        },
+        "theyBuild": {
+          "title": "La personne commande un projet",
+          "body": "Le crédit s'applique à tout type de projet et à toute portée."
+        },
+        "bothCredited": {
+          "title": "Vous recevez {amount} chacun",
+          "body": "Crédité dès le début de leur projet, utilisable sur un nouveau projet ou votre forfait mensuel."
+        }
+      },
+      "terms": "Les crédits expirent 12 mois après leur émission et ne sont pas échangeables contre de l'argent. Un crédit par projet recommandé."
+    },
+    "faq": {
+      "eyebrow": "Questions",
+      "title": "Ce qu'il vaut la peine de demander d'abord.",
+      "description": "Si quelque chose ici n'est pas clair, c'est à nous de le corriger, pas à vous de le décoder.",
+      "items": {
+        "included": {
+          "q": "Qu'est-ce que j'obtiens exactement pour ce prix ?",
+          "a": "Un projet terminé et déployé, conforme à la portée convenue, ainsi que le code et les fichiers de design. La portée est écrite avant le paiement et c'est à elle que le prix est rattaché : c'est tout l'intérêt d'un prix fixe."
+        },
+        "ownership": {
+          "q": "Suis-je propriétaire de ce que vous créez ?",
+          "a": "Oui, entièrement. Le code, le design et le contenu vous appartiennent à la livraison, sans licence continue ni rien de retenu. Vous pouvez tout déplacer vers un autre hébergeur ou un autre développeur quand vous voulez, et nous remettons tout ce qu'il faut pour le faire."
+        },
+        "clockStart": {
+          "q": "Quand le compte à rebours démarre-t-il vraiment ?",
+          "a": "Lorsque vos informations et éléments requis sont reçus et que le projet est officiellement lancé, et non au moment du paiement. Nous ne lançons pas un chronomètre que nous ne contrôlons pas, et l'heure exacte apparaît dans votre espace de production."
+        },
+        "missedDeadline": {
+          "q": "Que se passe-t-il si vous manquez le délai ?",
+          "a": "C'est vous qui choisissez, pas nous. Soit annuler et obtenir un remboursement de 100 %, soit poursuivre et récupérer 30 %. Aucune négociation, aucune procédure à franchir."
+        },
+        "biggerIdea": {
+          "q": "Et si mon idée dépasse un projet en 5 jours ?",
+          "a": "Le configurateur vous le dit avant le paiement et montre quelles capacités précises l'ont fait basculer : plusieurs types d'utilisateurs, suivi en direct, versements à plusieurs parties, etc. Il propose ensuite le projet plus large avec son prix et son délai, plutôt que de sous-estimer puis de renégocier."
+        },
+        "changes": {
+          "q": "Combien de modifications puis-je demander ?",
+          "a": "Les modifications prévues à la portée convenue sont normales et n'affectent pas votre date de livraison. Celles qui ajoutent des capacités sont facturées comme des ajouts, et vous verrez le montant avant toute réalisation."
+        },
+        "hosting": {
+          "q": "Dois-je acheter un forfait de maintenance ?",
+          "a": "Non. Vous pouvez l'héberger vous-même et ne plus jamais nous payer. Les forfaits existent parce que la plupart des gens préfèrent ne pas penser aux certificats SSL et aux sauvegardes, pas parce que votre projet cesserait de fonctionner sans."
+        },
+        "appStores": {
+          "q": "Les 14 jours incluent-ils l'approbation de l'App Store ?",
+          "a": "Non, et nous le disons clairement. Nous garantissons notre temps de développement. Apple et Google contrôlent leurs propres files d'examen et nous ne pouvons pas promettre le délai d'un tiers. La soumission et l'examen sont suivis séparément."
+        },
+        "refund": {
+          "q": "Comment fonctionne le remboursement concrètement ?",
+          "a": "Il retourne au mode de paiement d'origine, via Stripe, et nous l'amorçons le jour même de votre choix. Aucun formulaire, aucune discussion de rétention."
+        },
+        "different": {
+          "q": "En quoi est-ce différent d'une agence ?",
+          "a": "Une agence vend une relation facturée à l'heure, où la portée et la date bougent ensemble. Ceci est un produit avec un prix publié, une portée définie et une date qui nous coûte de l'argent si nous la manquons. Si votre projet exige vraiment un mandat ouvert, l'agence est la bonne réponse et nous vous le dirons."
+        }
+      }
+    },
+    "portfolio": {
+      "eyebrow": "Travaux choisis",
+      "title": "Des projets, documentés sérieusement.",
+      "description": "Ce qui a été commandé, le coût, la durée et ce que cela fait aujourd'hui. Aucune étude de cas sans un vrai projet derrière.",
+      "emptyTitle": "Les premières fiches sont en préparation",
+      "emptyBody": "Les études de cas apparaîtront ici une fois les projets livrés et les clients d'accord pour être nommés. Nous préférons ne rien montrer plutôt que de montrer des travaux inventés.",
+      "emptyCta": "Lancer le premier"
+    },
+    "testimonials": {
+      "eyebrow": "Avis",
+      "title": "Ce que disent les clients.",
+      "description": "Recueillis après la livraison, publiés sans retouche, attribués à une personne réelle.",
+      "emptyTitle": "Aucun avis pour l'instant",
+      "emptyBody": "Les avis apparaîtront ici une fois les projets livrés. Nous n'allons pas les écrire nous-mêmes entre-temps : sur une page dont tout l'argument est que les chiffres sont vérifiables, des éloges inventés seraient précisément ce qui la trahirait."
     }
   },
   "footer": {

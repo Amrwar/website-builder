@@ -1,15 +1,13 @@
 import { ArrowRight } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 
+import { PricingCard } from "@/components/product/pricing-card";
 import { Container } from "@/components/layout/container";
 import { Section, SectionHeading } from "@/components/layout/section";
-import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { getLocaleDefinition } from "@/config/locales";
 import { BUILD_PRODUCT_LIST } from "@/config/products";
 import { Link } from "@/i18n/navigation";
-import { formatMoney } from "@/lib/pricing/money";
 import { cn } from "@/lib/cn";
 
 /**
@@ -34,48 +32,18 @@ export async function Products() {
         />
 
         <ul className="grid gap-5 lg:grid-cols-3">
-          {BUILD_PRODUCT_LIST.map((product) => {
-            const price = formatMoney(product.basePrice, intlTag, {
-              trimWholeDecimals: true,
-            });
-
-            return (
-              <li key={product.id} className="flex">
-                <Card
-                  padding="lg"
-                  className="flex flex-1 flex-col gap-6 hover:border-line-strong"
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <h3 className="text-display-sm text-primary">
-                      {t(`${product.id}.name`)}
-                    </h3>
-                    <Badge tone={product.hasExternalReviewStep ? "warning" : "neutral"}>
-                      {t("deliveryLabel", { days: product.guaranteedDays })}
-                    </Badge>
-                  </div>
-
-                  <div className="flex flex-col gap-1">
-                    {/* A floor price is labelled as one. The `priceModel` flag
-                     * makes it impossible to show a "from" price as fixed. */}
-                    {product.priceModel === "from" ? (
-                      <span className="text-caption tracking-wide text-tertiary uppercase">
-                        {t("fromLabel")}
-                      </span>
-                    ) : null}
-                    <p className="flex items-baseline gap-2">
-                      <span className="text-display-lg text-primary" data-numeric>
-                        {price}
-                      </span>
-                      <span className="text-body-sm text-tertiary">
-                        {product.basePrice.currency}
-                      </span>
-                    </p>
-                  </div>
-
-                  <p className="flex-1 text-body-sm text-secondary">
-                    {t(`${product.id}.summary`)}
-                  </p>
-
+          {BUILD_PRODUCT_LIST.map((product) => (
+            <li key={product.id} className="flex">
+              <PricingCard
+                name={t(`${product.id}.name`)}
+                summary={t(`${product.id}.summary`)}
+                price={product.basePrice}
+                intlTag={intlTag}
+                priceModel={product.priceModel}
+                fromLabel={t("fromLabel")}
+                deliveryLabel={t("deliveryLabel", { days: product.guaranteedDays })}
+                deliveryWarning={product.hasExternalReviewStep}
+                action={
                   <Link
                     href="/configure"
                     className={cn(
@@ -86,10 +54,10 @@ export async function Products() {
                     {t(`${product.id}.cta`)}
                     <ArrowRight className="rtl-flip size-4" aria-hidden />
                   </Link>
-                </Card>
-              </li>
-            );
-          })}
+                }
+              />
+            </li>
+          ))}
         </ul>
       </Container>
     </Section>

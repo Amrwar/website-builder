@@ -28,9 +28,9 @@ export interface NavItem {
  * against the translation catalogue.
  */
 export const PRIMARY_NAV = [
+  { key: "pricing", href: "#pricing", status: "live" },
   { key: "howItWorks", href: "#how-it-works", status: "live" },
-  { key: "whatsIncluded", href: "#whats-included", status: "live" },
-  { key: "buildWall", href: "#build-wall", status: "live" },
+  { key: "faq", href: "#faq", status: "live" },
 ] as const satisfies readonly NavItem[];
 
 export interface FooterColumn {
@@ -46,13 +46,13 @@ export const FOOTER_NAV = [
       { key: "howItWorks", href: "#how-it-works", status: "live" },
       { key: "pricing", href: "#pricing", status: "live" },
       { key: "buildWall", href: "#build-wall", status: "live" },
-      { key: "maintenance", href: "/maintenance", status: "planned" },
+      { key: "maintenance", href: "#maintenance", status: "live" },
     ],
   },
   {
     titleKey: "company",
     items: [
-      { key: "partners", href: "/partners", status: "planned" },
+      { key: "partners", href: "#referral", status: "live" },
       { key: "about", href: "/about", status: "planned" },
       { key: "contact", href: "/contact", status: "planned" },
     ],

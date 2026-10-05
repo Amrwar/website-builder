@@ -20,7 +20,8 @@
     "signIn": "Sign in",
     "startBuild": "Start a build",
     "notifications": "Notifications",
-    "dismiss": "Dismiss"
+    "dismiss": "Dismiss",
+    "faq": "FAQ"
   },
   "home": {
     "meta": {
@@ -37,7 +38,8 @@
       "trust": {
         "price": "Fixed price, shown up front",
         "scope": "Written scope, agreed before build",
-        "deadline": "Deadline backed by refund"
+        "deadline": "Deadline backed by refund",
+        "ownership": "You own everything we build"
       },
       "spec": {
         "daysUnit": "days",
@@ -177,6 +179,226 @@
       "description": "Describe what you want and see your scope, price and delivery date before you commit to anything.",
       "primary": "Start a build",
       "secondary": "See how it works"
+    },
+    "productionLine": {
+      "idea": {
+        "name": "Idea",
+        "detail": "Describe it in your words"
+      },
+      "configure": {
+        "name": "Configure",
+        "detail": "Pick type and features"
+      },
+      "build": {
+        "name": "Build",
+        "detail": "The countdown runs"
+      },
+      "preview": {
+        "name": "Preview",
+        "detail": "Watch it come together"
+      },
+      "launch": {
+        "name": "Launch",
+        "detail": "Live on your domain"
+      }
+    },
+    "configuratorEntry": {
+      "eyebrow": "Start here",
+      "title": "Four steps to a fixed price.",
+      "description": "Nothing is charged until you have seen the scope, the price and the delivery date. Most people get through this in under ten minutes.",
+      "stepsLabel": "Steps to a price",
+      "steps": {
+        "describe": {
+          "label": "Describe",
+          "detail": "What you want, in plain words"
+        },
+        "choose": {
+          "label": "Choose",
+          "detail": "Type, features, design direction"
+        },
+        "assess": {
+          "label": "Assess",
+          "detail": "We show which rules matched"
+        },
+        "price": {
+          "label": "Price",
+          "detail": "Fixed figure and delivery date"
+        }
+      },
+      "status": {
+        "complete": "completed",
+        "current": "current step",
+        "upcoming": "not started"
+      },
+      "primaryCta": "Start a build",
+      "reassurance": "No account needed to see your price."
+    },
+    "comparison": {
+      "eyebrow": "Which one is mine?",
+      "title": "Website, system, or app.",
+      "description": "The difference is not size, it is what the thing has to do. Pick the row that describes your problem.",
+      "tableLabel": "Comparison of build types",
+      "columns": {
+        "capability": "Capability"
+      },
+      "rows": {
+        "price": "Starting price",
+        "delivery": "Guaranteed delivery",
+        "review": "Store review",
+        "pages": "Pages or screens",
+        "cms": "Edit content yourself",
+        "accounts": "Customer accounts",
+        "payments": "Take payments",
+        "dashboard": "Staff dashboard",
+        "offline": "Works offline",
+        "storeSubmission": "Submitted to app stores"
+      },
+      "reviewOutside": "Outside the guarantee",
+      "reviewNone": "Not applicable",
+      "included": "Included",
+      "notIncluded": "Not included",
+      "footnote": "Anything beyond these rows is still buildable; it simply resolves to a larger build with its own price and timeline, which you will see before you pay."
+    },
+    "design": {
+      "eyebrow": "Design",
+      "title": "You do not need a designer to start.",
+      "description": "Most people ordering a first website have a logo at best. All three routes below cost the same; they only change how much you hand over.",
+      "design_for_me": {
+        "title": "Design it for me",
+        "body": "Tell us the business and the feeling you want. We choose the typography, colour and layout, and show you the result in the preview.",
+        "note": "Most common for a first build."
+      },
+      "supplied_brand": {
+        "title": "I have brand assets",
+        "body": "Upload your logo, colours, fonts or a brand guide. We build to them rather than inventing a new look alongside your existing one.",
+        "note": "Logo, colours, fonts, PDFs."
+      },
+      "existing_design": {
+        "title": "Rebuild what I have",
+        "body": "Point us at an existing site, a Figma file or screenshots. We rebuild it properly rather than starting the conversation again.",
+        "note": "A link or a screenshot is enough."
+      },
+      "footnote": "Whichever route you choose, you own the result outright: the design, the code and the content are yours, with no licence to keep paying for."
+    },
+    "maintenance": {
+      "eyebrow": "After launch",
+      "title": "Keeping it running is a separate decision.",
+      "description": "The build is bought once. Hosting, updates and monitoring are a monthly plan you can cancel, because folding them into the headline price would make that price untrue from month two.",
+      "fromLabel": "from",
+      "perMonth": "per month",
+      "recommended": "Most chosen",
+      "cta": "Add at checkout",
+      "footnote": "You can also host it yourself. We hand over the code and the deployment either way, and no plan is required to keep your build.",
+      "plans": {
+        "essential": {
+          "name": "Essential",
+          "summary": "Keep it online and backed up."
+        },
+        "standard": {
+          "name": "Standard",
+          "summary": "Online, watched, and kept current."
+        },
+        "priority": {
+          "name": "Priority",
+          "summary": "For builds the business depends on."
+        }
+      },
+      "features": {
+        "hosting": "Hosting and domain management",
+        "ssl": "SSL and security patches",
+        "backups": "Daily backups",
+        "uptime": "Uptime monitoring",
+        "everythingEssential": "Everything in Essential",
+        "contentEdits": "Content edits on request",
+        "monitoring": "Error monitoring and alerts",
+        "support": "Support within one working day",
+        "everythingStandard": "Everything in Standard",
+        "buildCredits": "Monthly build credits for new features",
+        "priorityQueue": "Priority place in the build queue",
+        "reporting": "Monthly performance reporting"
+      }
+    },
+    "referral": {
+      "eyebrow": "Referrals",
+      "title": "Send someone our way, you both get {amount}.",
+      "description": "No tiers, no percentages, no dashboard to learn. One amount, credited to both sides, applied to your next build or your maintenance plan.",
+      "steps": {
+        "share": {
+          "title": "Share your link",
+          "body": "Every customer gets one from their dashboard the moment a build starts."
+        },
+        "theyBuild": {
+          "title": "They order a build",
+          "body": "The credit applies to any build type, at any scope tier."
+        },
+        "bothCredited": {
+          "title": "You both get {amount}",
+          "body": "Credited once their build starts, usable against a new build or your monthly plan."
+        }
+      },
+      "terms": "Credits expire 12 months after they are issued and cannot be exchanged for cash. One credit per referred build."
+    },
+    "faq": {
+      "eyebrow": "Questions",
+      "title": "The things worth asking first.",
+      "description": "If something here is unclear, that is our problem to fix, not yours to decode.",
+      "items": {
+        "included": {
+          "q": "What exactly do I get for the price?",
+          "a": "A finished, deployed build matching the scope you agreed, plus the code and design files. The scope is written down before you pay and is what the price is attached to — that is the whole point of a fixed price."
+        },
+        "ownership": {
+          "q": "Do I own what you build?",
+          "a": "Yes, entirely. The code, the design and the content are yours on delivery, with no ongoing licence and nothing held back. You can move it to another host or another developer whenever you want, and we will hand over everything needed to do that."
+        },
+        "clockStart": {
+          "q": "When does the countdown actually start?",
+          "a": "When your required information and assets are in and the build is officially started — not when you pay. We do not start a clock we cannot control, and you will see the exact start time in your Build Room."
+        },
+        "missedDeadline": {
+          "q": "What happens if you miss the deadline?",
+          "a": "You choose, not us. Either cancel and take a 100% refund, or let the build continue and take 30% back. It does not require a negotiation and there is no process to argue your way through."
+        },
+        "biggerIdea": {
+          "q": "What if my idea is bigger than a 5-Day Build?",
+          "a": "The configurator tells you before you pay, and shows which specific capabilities pushed it over — multiple user types, live tracking, multi-party payouts and so on. It then offers the larger build with its own price and timeline, rather than underquoting and renegotiating later."
+        },
+        "changes": {
+          "q": "How many changes can I ask for?",
+          "a": "Changes within the agreed scope are expected and do not affect your delivery date. Changes that add capability are priced as additions, and you will see the figure before anything is built."
+        },
+        "hosting": {
+          "q": "Do I have to buy a maintenance plan?",
+          "a": "No. You can host it yourself and never pay us again. The plans exist because most people would rather not think about SSL certificates and backups, not because your build stops working without one."
+        },
+        "appStores": {
+          "q": "Does the 14 days include App Store approval?",
+          "a": "No, and we are explicit about that. We guarantee our development time. Apple and Google control their own review queues and we cannot promise someone else's timeline. Submission and review are tracked separately in your Build Room."
+        },
+        "refund": {
+          "q": "How does the refund actually work?",
+          "a": "It returns to the original payment method, through Stripe, and we start it the same day you choose it. There is no form to fill in and no retention conversation."
+        },
+        "different": {
+          "q": "How is this different from hiring an agency?",
+          "a": "An agency sells you a relationship priced by the hour, where the scope and the date move together. This is a product with a published price, a defined scope and a date that costs us money if we miss it. If your project genuinely needs an open-ended engagement, an agency is the right answer and we will say so."
+        }
+      }
+    },
+    "portfolio": {
+      "eyebrow": "Selected work",
+      "title": "Builds, written up properly.",
+      "description": "What was ordered, what it cost, how long it took and what it does now. No case study without a real build behind it.",
+      "emptyTitle": "The first write-ups are being prepared",
+      "emptyBody": "Case studies appear here once builds are delivered and customers agree to be named. We would rather show you nothing than show you invented work.",
+      "emptyCta": "Start the first one"
+    },
+    "testimonials": {
+      "eyebrow": "Reviews",
+      "title": "What customers say.",
+      "description": "Collected after delivery, published unedited, attributed to a real person.",
+      "emptyTitle": "No reviews yet",
+      "emptyBody": "Reviews appear here once builds are delivered. We are not going to write them ourselves in the meantime — on a page whose whole argument is that the numbers are checkable, invented praise would be the one thing that gives it away."
     }
   },
   "footer": {
