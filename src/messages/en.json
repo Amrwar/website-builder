@@ -435,5 +435,437 @@
   },
   "common": {
     "loading": "Loading…"
+  },
+  "configurator": {
+    "meta": {
+      "title": "Configure your build",
+      "description": "Describe your idea and see the scope, price and delivery date before you commit."
+    },
+    "progressLabel": "Configurator progress",
+    "back": "Back",
+    "next": "Next",
+    "status": {
+      "complete": "completed",
+      "current": "current step",
+      "upcoming": "not started"
+    },
+    "save": {
+      "idle": "Saves automatically",
+      "saving": "Saving…",
+      "saved": "Saved"
+    },
+    "resume": {
+      "title": "We kept your progress",
+      "body": "Last saved {when}. It is stored in this browser only.",
+      "continue": "Continue where I left off",
+      "startOver": "Start over"
+    },
+    "issues": {
+      "chooseType": "Choose what you are building.",
+      "describeMore": "Tell us a little more — a sentence or two is enough.",
+      "needBusinessName": "Add the business name.",
+      "chooseDesign": "Choose how you want the design handled.",
+      "needDirection": "Add a link, a colour note or a few words about the look.",
+      "choosePlatform": "Choose at least one platform.",
+      "platformConflict": "Cross-platform already covers both stores; choose that or the native targets, not both.",
+      "platformUnavailable": "That platform is not available for this build type.",
+      "completeEarlierSteps": "Finish the earlier steps first."
+    },
+    "steps": {
+      "type": {
+        "label": "Type",
+        "title": "What are you building?",
+        "lede": "This sets the price, the delivery window and which features are available."
+      },
+      "intake": {
+        "label": "Idea",
+        "title": "Tell us about it",
+        "lede": "Plain words are fine. We read this and show you exactly which rules it matched."
+      },
+      "design": {
+        "label": "Design",
+        "title": "How should it look?",
+        "lede": "You do not need a designer. Pick the route that matches what you already have."
+      },
+      "features": {
+        "label": "Features",
+        "title": "What does it need to do?",
+        "lede": "Pick only what you actually need. Anything missing can be added later."
+      },
+      "platform": {
+        "label": "Platform",
+        "title": "Where does it run?",
+        "lede": "This affects how much there is to build and test."
+      },
+      "scope": {
+        "label": "Scope",
+        "title": "Here is what we found",
+        "lede": "Every conclusion below comes with the evidence for it, so you can argue with any of it."
+      },
+      "review": {
+        "label": "Review",
+        "title": "Your build",
+        "lede": "Check it over. You can change any answer before you commit to anything."
+      },
+      "start": {
+        "label": "Start",
+        "title": "Start your build",
+        "lede": "What happens next, in order."
+      }
+    },
+    "type": {
+      "changeWarning": "Changing the build type clears your feature and platform choices, because they differ by type."
+    },
+    "intake": {
+      "businessName": {
+        "label": "Business name",
+        "help": "What should we call this project?"
+      },
+      "industry": {
+        "label": "Industry",
+        "help": "A couple of words is enough."
+      },
+      "description": {
+        "label": "Describe what you want",
+        "help": "What should it do, and for whom? The more concrete, the better the assessment.",
+        "placeholder": "I want a restaurant system where customers order food, pay online, staff manage orders…",
+        "tooShort": "A little more detail — at least {min} characters.",
+        "remaining": "{remaining} characters remaining"
+      },
+      "targetCustomers": {
+        "label": "Who will use it?",
+        "help": "Everyone who touches it, including your own team.",
+        "placeholder": "Customers, our staff, our drivers"
+      },
+      "desiredOutcome": {
+        "label": "What would success look like?",
+        "help": "The thing that should be true once it is live.",
+        "placeholder": "Customers can order without phoning us"
+      }
+    },
+    "design": {
+      "included": "Included",
+      "design_for_me": {
+        "title": "Design it for me",
+        "body": "We choose the typography, colour and layout for you."
+      },
+      "supplied_brand": {
+        "title": "I have brand assets",
+        "body": "Build to the logo, colours and fonts I already have."
+      },
+      "existing_design": {
+        "title": "Rebuild what I have",
+        "body": "Match an existing site, Figma file or screenshots."
+      },
+      "service": {
+        "title": "Design service, {fee}",
+        "body": "A one-off addition to the build price, not a subscription. It covers choosing and applying a visual direction for a business that does not have one yet. It is shown separately on your summary."
+      },
+      "links": {
+        "label": "Links we should look at",
+        "help": "Figma files, your current site, or anything whose look you like.",
+        "placeholder": "https://",
+        "add": "Add another link",
+        "remove": "Remove link"
+      },
+      "colours": {
+        "label": "Colours",
+        "help": "Names or hex values, whichever you have.",
+        "placeholder": "Navy, warm grey, or #1B2A41"
+      },
+      "notes": {
+        "label": "Anything else about the look",
+        "help": "Fonts, tone, things to avoid."
+      },
+      "filesLater": "Logos, screenshots and PDFs are uploaded after your account is created — that is also when the delivery countdown can start."
+    },
+    "features": {
+      "optional": "All optional. Leaving something out does not rule it out later; it just keeps this build smaller.",
+      "chooseTypeFirst": "Choose a build type first.",
+      "largerBuild": "{feature} — moves this into a larger build",
+      "noticeTitle": "Some of these need a larger build",
+      "noticeBody": "You can keep them. The next step shows exactly what that means for the price and the timeline.",
+      "categories": {
+        "content": "Content",
+        "identity": "Accounts and access",
+        "commerce": "Selling",
+        "realtime": "Live features",
+        "operations": "Running the business",
+        "integration": "Integrations",
+        "platform": "Device"
+      }
+    },
+    "platform": {
+      "chooseTypeFirst": "Choose a build type first.",
+      "singleOption": "This build type runs in one place, so there is nothing to choose here.",
+      "conflict": {
+        "empty": "Choose at least one platform.",
+        "crossNative": "Cross-platform already covers both stores. Choose that, or the native targets, not both."
+      },
+      "options": {
+        "responsive_web": {
+          "title": "Responsive web",
+          "body": "One site that works on phones, tablets and desktops."
+        },
+        "web_app": {
+          "title": "Web application",
+          "body": "Runs in the browser, on any device."
+        },
+        "cross_platform": {
+          "title": "Cross-platform",
+          "body": "One codebase, published to both app stores."
+        },
+        "ios": {
+          "title": "iOS (native)",
+          "body": "Built natively for iPhone and iPad."
+        },
+        "android": {
+          "title": "Android (native)",
+          "body": "Built natively for Android devices."
+        }
+      }
+    },
+    "complexity": {
+      "label": "Complexity",
+      "announced": "Complexity: {band}.",
+      "bands": {
+        "simple": "Simple",
+        "moderate": "Moderate",
+        "advanced": "Advanced"
+      },
+      "explanation": {
+        "simple": "This fits comfortably inside an entry build.",
+        "moderate": "More than an entry build, but still a known quantity.",
+        "advanced": "A substantial piece of work with several moving parts."
+      }
+    },
+    "scope": {
+      "analysing": "Working out your scope…",
+      "customQuote": "Custom quote",
+      "figures": {
+        "price": "Price",
+        "time": "Build time",
+        "guarantee": "Guarantee",
+        "days": "{days} days",
+        "quoted": "Quoted",
+        "eligible": "Covered",
+        "notEligible": "Not covered",
+        "eligibleNote": "Miss it and you choose a refund.",
+        "notEligibleNote": "Quoted builds get their own agreed date.",
+        "includesDesign": "Includes {fee} design service"
+      },
+      "exceeds": {
+        "title": "This is bigger than a published-price build",
+        "body": "We would rather tell you now than underquote and renegotiate later. The next step sends this for a written quotation with its own price and timeline."
+      },
+      "why": {
+        "title": "Why it landed here"
+      },
+      "detected": {
+        "title": "What we detected",
+        "none": "Nothing beyond the basics.",
+        "note": "Text matches are signals, not decisions. If something here is wrong, change your description or your selections and it will be reassessed."
+      },
+      "method": {
+        "selected": "You chose this",
+        "text_match": "From your description",
+        "implied": "Required by another choice",
+        "manual": "Added by us"
+      },
+      "error": {
+        "title": "We could not work out your scope",
+        "body": "Nothing has been charged or saved against this. Trying again usually resolves it.",
+        "retry": "Try again"
+      }
+    },
+    "review": {
+      "untitled": "Untitled project",
+      "edit": "Edit",
+      "commercials": "Price and timing",
+      "noFeatures": "None selected",
+      "customQuote": "Custom quote",
+      "quotedSeparately": "Quoted separately",
+      "daysValue": "{days} days",
+      "deadlineRule": "Counted from the day your assets are in and the build starts",
+      "guaranteeEligible": "Covered — refund if we miss it",
+      "guaranteeNotEligible": "Agreed with your quotation",
+      "rows": {
+        "project": "Project",
+        "type": "Build type",
+        "platform": "Platform",
+        "design": "Design",
+        "features": "Features",
+        "timeline": "Build time",
+        "deadline": "Deadline",
+        "buildPrice": "Build",
+        "designService": "Design service",
+        "total": "Total",
+        "guarantee": "Guarantee"
+      }
+    },
+    "start": {
+      "payTitle": "Start your build",
+      "quoteTitle": "Request your quotation",
+      "createAccount": "Create an account",
+      "requestQuote": "Request a quotation",
+      "countdownNote": "The countdown starts after your assets are in, not when you pay.",
+      "draftKept": "Your configuration is saved.",
+      "sequence": {
+        "account": "Create an account so this build has somewhere to live.",
+        "payment": "Pay the fixed price shown above.",
+        "assets": "Send your logo, content and anything else we need.",
+        "countdown": "The countdown starts and your Build Room opens.",
+        "quote": "We assess the scope and write a quotation.",
+        "review": "You review the price and timeline before anything starts."
+      },
+      "pending": {
+        "title": "Accounts and payment are not connected yet",
+        "body": "Clerk and Stripe are provisioned for this project but the sign-in and checkout routes are not built, so this button is deliberately inactive rather than leading nowhere. Your configuration is saved in this browser and will still be here."
+      }
+    }
+  },
+  "capabilities": {
+    "cms_editing": {
+      "name": "Edit content yourself",
+      "hint": "Change text and images after launch"
+    },
+    "blog": {
+      "name": "Blog or news",
+      "hint": "Publish articles over time"
+    },
+    "multilingual": {
+      "name": "Multiple languages",
+      "hint": "Serve more than one language"
+    },
+    "contact_forms": {
+      "name": "Contact forms",
+      "hint": "Collect enquiries by email"
+    },
+    "user_accounts": {
+      "name": "Customer accounts",
+      "hint": "One kind of logged-in user"
+    },
+    "multi_role_access": {
+      "name": "Several user types",
+      "hint": "Different people, different permissions"
+    },
+    "organisation_accounts": {
+      "name": "Team or company accounts",
+      "hint": "Customers who invite colleagues"
+    },
+    "hosted_checkout": {
+      "name": "Take payments",
+      "hint": "Through a hosted checkout page"
+    },
+    "product_catalog": {
+      "name": "Product catalogue",
+      "hint": "A list of things people can buy"
+    },
+    "subscriptions": {
+      "name": "Subscriptions",
+      "hint": "Recurring billing"
+    },
+    "booking_scheduling": {
+      "name": "Bookings or appointments",
+      "hint": "Customers reserve a time"
+    },
+    "marketplace_payouts": {
+      "name": "Pay several sellers",
+      "hint": "Money split between parties"
+    },
+    "push_notifications": {
+      "name": "Push notifications",
+      "hint": "Alert people on their device"
+    },
+    "live_updates": {
+      "name": "Live updates",
+      "hint": "Data that changes without refreshing"
+    },
+    "chat_messaging": {
+      "name": "Messaging",
+      "hint": "People message each other"
+    },
+    "realtime_location_tracking": {
+      "name": "Live location tracking",
+      "hint": "Follow someone on a map"
+    },
+    "admin_dashboard": {
+      "name": "Staff dashboard",
+      "hint": "An internal view for your team"
+    },
+    "order_management": {
+      "name": "Manage orders",
+      "hint": "Staff process what comes in"
+    },
+    "inventory": {
+      "name": "Inventory",
+      "hint": "Track stock levels"
+    },
+    "reporting": {
+      "name": "Reports",
+      "hint": "Numbers your team can act on"
+    },
+    "dispatch_logistics": {
+      "name": "Dispatch and delivery",
+      "hint": "Assign work to people in the field"
+    },
+    "third_party_integration": {
+      "name": "Connect to another system",
+      "hint": "Sync with software you already run"
+    },
+    "data_migration": {
+      "name": "Move existing data",
+      "hint": "Bring records across from elsewhere"
+    },
+    "public_api": {
+      "name": "An API for others",
+      "hint": "Let partners build on top"
+    },
+    "native_device_features": {
+      "name": "Device features",
+      "hint": "Camera, biometrics, sensors"
+    },
+    "offline_sync": {
+      "name": "Works offline",
+      "hint": "Usable without a connection"
+    }
+  },
+  "scopeReasons": {
+    "multiple_user_types": {
+      "title": "Several kinds of user",
+      "body": "Each additional user type multiplies screens, permissions and testing."
+    },
+    "realtime_features": {
+      "title": "Live, continuously updating data",
+      "body": "Keeping data current across devices is infrastructure work in its own right."
+    },
+    "operational_logic": {
+      "title": "Operational logic",
+      "body": "Rules that have to be designed around how your business runs, not configured."
+    },
+    "commerce_complexity": {
+      "title": "Selling and money handling",
+      "body": "Catalogues, payouts and billing each carry their own rules and edge cases."
+    },
+    "integration_work": {
+      "title": "Connecting to other systems",
+      "body": "Someone else's system sets the pace, and it has to be handled when it fails."
+    },
+    "native_platform": {
+      "title": "Deep device capability",
+      "body": "Native features behave differently across phones and need testing on each."
+    },
+    "content_scope": {
+      "title": "Volume of content",
+      "body": "More pages and screens is more layout, more copy and more review."
+    },
+    "additional_scope": {
+      "title": "Additional scope",
+      "body": "This adds work beyond the entry build."
+    },
+    "accumulated_complexity": {
+      "title": "A lot of ordinary work",
+      "body": "No single item is hard, but together they exceed what five days allows."
+    }
   }
 }

@@ -14,7 +14,11 @@ import type { Capability, CapabilityCategory } from "./types";
  * briefs that are heavy through sheer accumulation of ordinary work.
  */
 
-export const CAPABILITY_CATEGORIES: readonly CapabilityCategory[] = [
+/**
+ * `satisfies` keeps each `labelKey` a literal, so a translation lookup built
+ * from it stays checkable against the catalogue.
+ */
+export const CAPABILITY_CATEGORIES = [
   { id: "content", labelKey: "content" },
   { id: "identity", labelKey: "identity" },
   { id: "commerce", labelKey: "commerce" },
@@ -22,7 +26,7 @@ export const CAPABILITY_CATEGORIES: readonly CapabilityCategory[] = [
   { id: "operations", labelKey: "operations" },
   { id: "integration", labelKey: "integration" },
   { id: "platform", labelKey: "platform" },
-] as const;
+] as const satisfies readonly CapabilityCategory[];
 
 export const CAPABILITIES = [
   // --- Content -----------------------------------------------------------
@@ -178,8 +182,11 @@ export function isCapabilityKey(key: string): key is CapabilityKey {
   return BY_KEY.has(key);
 }
 
+/** One registry entry, with its literal key preserved. */
+export type RegisteredCapability = (typeof CAPABILITIES)[number];
+
 /** Capabilities meaningful for a given build type. */
-export function capabilitiesFor(buildType: string): readonly Capability[] {
+export function capabilitiesFor(buildType: string): readonly RegisteredCapability[] {
   return CAPABILITIES.filter(
     (c) => !("appliesTo" in c) || (c.appliesTo as readonly string[]).includes(buildType),
   );

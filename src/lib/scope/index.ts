@@ -7,6 +7,7 @@
  */
 export type {
   Capability,
+  ComplexityBand,
   DetectedCapability,
   DetectionMethod,
   ScopeAssessment,

@@ -1,7 +1,10 @@
+import type { DesignApproach } from "@/db/schema/enums";
+import type { PlatformId } from "@/config/platforms";
 import type { BuildType } from "@/config/products";
 import type { ScopeTierId } from "@/db/schema/enums";
 import type { Locale } from "@/config/locales";
 import type { Money } from "@/lib/pricing/money";
+import type { CapabilityKey } from "./capabilities";
 
 /**
  * Scope engine contracts.
@@ -53,7 +56,7 @@ export interface Capability {
 
 /** A capability found in a brief, with the evidence for it. */
 export interface DetectedCapability {
-  key: string;
+  key: CapabilityKey;
   method: DetectionMethod;
   /**
    * The phrase that matched, for `text_match`. Surfaced to the customer so the
@@ -61,7 +64,7 @@ export interface DetectedCapability {
    */
   evidence?: string;
   /** For `implied`, the capability that required this one. */
-  impliedBy?: string;
+  impliedBy?: CapabilityKey;
 }
 
 export interface ScopeInput {
@@ -74,14 +77,55 @@ export interface ScopeInput {
   selectedCapabilities: readonly string[];
   /** Declared page or screen count, when given. */
   estimatedScreens?: number;
+  /** Delivery platforms. Native targets add build effort. */
+  platforms?: readonly PlatformId[];
+  /** Chosen design route; "design_for_me" carries a separate fee. */
+  designApproach?: DesignApproach;
+  /**
+   * Supporting context from the intake step.
+   *
+   * Scanned for capability signals alongside the main description: an
+   * industry of "restaurant delivery" or a target customer of "our drivers"
+   * carries as much meaning as the free-text paragraph, and ignoring it
+   * under-scopes the project.
+   */
+  context?: {
+    businessName?: string;
+    industry?: string;
+    targetCustomers?: string;
+    desiredOutcome?: string;
+  };
 }
+
+/**
+ * Headline complexity band, for the configurator's indicator.
+ *
+ * Derived from accumulated points rather than from the tier, so it stays
+ * meaningful when a single hard capability forces a tier jump that the raw
+ * amount of work does not justify.
+ */
+export type ComplexityBand = "simple" | "moderate" | "advanced";
+
+/**
+ * Reason codes, matching the keys under `scopeReasons.*` in the catalogues.
+ * A union rather than a string so a new reason cannot ship without its copy.
+ */
+export type ScopeReasonCode =
+  | "multiple_user_types"
+  | "realtime_features"
+  | "operational_logic"
+  | "commerce_complexity"
+  | "integration_work"
+  | "native_platform"
+  | "content_scope"
+  | "additional_scope"
+  | "accumulated_complexity";
 
 /** A plain-language reason the project landed above the entry tier. */
 export interface TierReason {
-  /** Translation key suffix under `scope.reasons`. */
-  code: string;
+  code: ScopeReasonCode;
   /** Capability keys that triggered this reason. */
-  capabilityKeys: readonly string[];
+  capabilityKeys: readonly CapabilityKey[];
 }
 
 export interface ScopeAssessment {
@@ -102,10 +146,16 @@ export interface ScopeAssessment {
    * `guaranteedDays` are then null and a human quotation is owed.
    */
   requiresCustomQuote: boolean;
+  /** Build price before the optional design service. */
   price: Money | null;
+  /** Design service fee when "design it for me" is chosen, else null. */
+  designFee: Money | null;
+  /** price + designFee. Null whenever a custom quotation is required. */
+  totalPrice: Money | null;
+  complexity: ComplexityBand;
   guaranteedDays: number | null;
   /** When the entry tier was exceeded, the capabilities responsible. */
-  exceededEntryTierBy: readonly string[];
+  exceededEntryTierBy: readonly CapabilityKey[];
 }
 
 /**

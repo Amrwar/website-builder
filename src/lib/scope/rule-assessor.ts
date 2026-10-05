@@ -1,7 +1,10 @@
+import { DESIGN_SERVICE } from "@/config/design";
+import { platformPoints } from "@/config/platforms";
 import type { BuildType } from "@/config/products";
 import type { ScopeTierId } from "@/db/schema/enums";
 
-import { getCapability } from "./capabilities";
+import { addMoney } from "@/lib/pricing/money";
+import { getCapability, type CapabilityKey } from "./capabilities";
 import { detectCapabilities } from "./detection";
 import {
   ENTRY_TIER,
@@ -12,7 +15,9 @@ import {
   tierRank,
 } from "./tiers";
 import type {
+  ComplexityBand,
   DetectedCapability,
+  ScopeReasonCode,
   ScopeAssessment,
   ScopeAssessor,
   ScopeInput,
@@ -35,7 +40,7 @@ import type {
  * Bump this whenever capability points, tier thresholds or patterns change,
  * so past decisions remain attributable to the rules that produced them.
  */
-export const RULESET_VERSION = "2026.10.1";
+export const RULESET_VERSION = "2026.10.2";
 
 /** Screens included before volume starts adding complexity. */
 const SCREEN_ALLOWANCE: Record<BuildType, number> = {
@@ -50,8 +55,28 @@ const POINTS_PER_EXTRA_SCREEN = 1;
 /** Ceiling on screen-derived points, so page count alone cannot force a quote. */
 const MAX_SCREEN_POINTS = 12;
 
+/**
+ * Complexity bands for the configurator's indicator.
+ *
+ * Deliberately derived from accumulated points, not from the resolved tier.
+ * A single hard capability can force a tier jump while the overall amount of
+ * work stays modest, and labelling that project "advanced" would overstate
+ * what the customer is actually buying.
+ */
+const BAND_THRESHOLDS: Record<ComplexityBand, number> = {
+  simple: 0,
+  moderate: 10,
+  advanced: 25,
+};
+
+function complexityBand(points: number): ComplexityBand {
+  if (points >= BAND_THRESHOLDS.advanced) return "advanced";
+  if (points >= BAND_THRESHOLDS.moderate) return "moderate";
+  return "simple";
+}
+
 /** Category to plain-language reason code, resolved in the translations. */
-const CATEGORY_REASON: Record<string, string> = {
+const CATEGORY_REASON: Record<string, ScopeReasonCode> = {
   identity: "multiple_user_types",
   realtime: "realtime_features",
   operations: "operational_logic",
@@ -76,7 +101,7 @@ function buildReasons(
   raisers: readonly DetectedCapability[],
   pointsDroveTier: boolean,
 ): TierReason[] {
-  const byReason = new Map<string, string[]>();
+  const byReason = new Map<ScopeReasonCode, CapabilityKey[]>();
 
   for (const detected of raisers) {
     const capability = getCapability(detected.key);
@@ -115,7 +140,9 @@ export class RuleBasedScopeAssessor implements ScopeAssessor {
       0,
     );
     const complexityPoints =
-      capabilityPoints + screenPoints(input.buildType, input.estimatedScreens);
+      capabilityPoints +
+      screenPoints(input.buildType, input.estimatedScreens) +
+      platformPoints(input.buildType, input.platforms ?? []);
 
     // Two independent routes up the ladder: accumulated points, and any single
     // capability's floor. The higher of the two wins.
@@ -140,6 +167,17 @@ export class RuleBasedScopeAssessor implements ScopeAssessor {
 
     const offer = offerFor(input.buildType, tier);
 
+    // The design service is priced separately and is never folded into the
+    // build price, so the published figure stays the published figure.
+    const designFee =
+      input.designApproach === "design_for_me" ? DESIGN_SERVICE.fee : null;
+
+    const totalPrice = offer.price
+      ? designFee
+        ? addMoney(offer.price, designFee)
+        : offer.price
+      : null;
+
     return {
       assessorId: this.id,
       assessorVersion: this.version,
@@ -153,6 +191,9 @@ export class RuleBasedScopeAssessor implements ScopeAssessor {
           : [],
       requiresCustomQuote: requiresCustomQuote(tier),
       price: offer.price,
+      designFee,
+      totalPrice,
+      complexity: complexityBand(complexityPoints),
       guaranteedDays: offer.guaranteedDays,
       exceededEntryTierBy: raisers.map((detected) => detected.key),
     };

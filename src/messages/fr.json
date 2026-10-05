@@ -435,5 +435,437 @@
   },
   "common": {
     "loading": "Chargement…"
+  },
+  "configurator": {
+    "meta": {
+      "title": "Configurez votre projet",
+      "description": "Décrivez votre idée et voyez la portée, le prix et la date de livraison avant de vous engager."
+    },
+    "progressLabel": "Progression du configurateur",
+    "back": "Retour",
+    "next": "Suivant",
+    "status": {
+      "complete": "terminée",
+      "current": "étape en cours",
+      "upcoming": "non commencée"
+    },
+    "save": {
+      "idle": "Enregistrement automatique",
+      "saving": "Enregistrement…",
+      "saved": "Enregistré"
+    },
+    "resume": {
+      "title": "Nous avons gardé votre progression",
+      "body": "Dernier enregistrement : {when}. Conservé dans ce navigateur uniquement.",
+      "continue": "Reprendre où j'en étais",
+      "startOver": "Recommencer"
+    },
+    "issues": {
+      "chooseType": "Choisissez ce que vous construisez.",
+      "describeMore": "Dites-nous en un peu plus — une ou deux phrases suffisent.",
+      "needBusinessName": "Ajoutez le nom de l'entreprise.",
+      "chooseDesign": "Choisissez comment gérer le design.",
+      "needDirection": "Ajoutez un lien, une couleur ou quelques mots sur le style.",
+      "choosePlatform": "Choisissez au moins une plateforme.",
+      "platformConflict": "Le multiplateforme couvre déjà les deux magasins ; choisissez l'un ou l'autre.",
+      "platformUnavailable": "Cette plateforme n'est pas offerte pour ce type.",
+      "completeEarlierSteps": "Terminez d'abord les étapes précédentes."
+    },
+    "steps": {
+      "type": {
+        "label": "Type",
+        "title": "Que construisez-vous ?",
+        "lede": "Cela détermine le prix, le délai et les fonctions disponibles."
+      },
+      "intake": {
+        "label": "Idée",
+        "title": "Parlez-nous-en",
+        "lede": "Des mots simples suffisent. Nous le lisons et montrons les règles reconnues."
+      },
+      "design": {
+        "label": "Design",
+        "title": "À quoi cela doit-il ressembler ?",
+        "lede": "Pas besoin de designer. Choisissez la voie qui correspond à ce que vous avez."
+      },
+      "features": {
+        "label": "Fonctions",
+        "title": "Que doit-il faire ?",
+        "lede": "Ne choisissez que le nécessaire. Le reste pourra s'ajouter plus tard."
+      },
+      "platform": {
+        "label": "Plateforme",
+        "title": "Où cela fonctionne-t-il ?",
+        "lede": "Cela change la quantité de travail et de tests."
+      },
+      "scope": {
+        "label": "Portée",
+        "title": "Voici ce que nous avons trouvé",
+        "lede": "Chaque conclusion vient avec sa preuve, pour que vous puissiez la contester."
+      },
+      "review": {
+        "label": "Récapitulatif",
+        "title": "Votre projet",
+        "lede": "Vérifiez. Vous pouvez modifier chaque réponse avant tout engagement."
+      },
+      "start": {
+        "label": "Démarrer",
+        "title": "Lancez votre projet",
+        "lede": "Ce qui se passe ensuite, dans l'ordre."
+      }
+    },
+    "type": {
+      "changeWarning": "Changer de type efface vos choix de fonctions et de plateforme, car ils diffèrent selon le type."
+    },
+    "intake": {
+      "businessName": {
+        "label": "Nom de l'entreprise",
+        "help": "Comment nommer ce projet ?"
+      },
+      "industry": {
+        "label": "Secteur",
+        "help": "Quelques mots suffisent."
+      },
+      "description": {
+        "label": "Décrivez ce que vous voulez",
+        "help": "Que doit-il faire, et pour qui ? Plus c'est concret, meilleure est l'évaluation.",
+        "placeholder": "Je veux un système de restaurant où les clients commandent, paient en ligne…",
+        "tooShort": "Un peu plus de détail — au moins {min} caractères.",
+        "remaining": "{remaining} caractères restants"
+      },
+      "targetCustomers": {
+        "label": "Qui l'utilisera ?",
+        "help": "Tous ceux qui y touchent, votre équipe comprise.",
+        "placeholder": "Clients, personnel, livreurs"
+      },
+      "desiredOutcome": {
+        "label": "À quoi ressemblerait la réussite ?",
+        "help": "Ce qui devrait être vrai une fois en ligne.",
+        "placeholder": "Les clients commandent sans nous téléphoner"
+      }
+    },
+    "design": {
+      "included": "Inclus",
+      "design_for_me": {
+        "title": "Concevez-le pour moi",
+        "body": "Nous choisissons la typographie, les couleurs et la mise en page."
+      },
+      "supplied_brand": {
+        "title": "J'ai une identité visuelle",
+        "body": "Construire à partir de mon logo, mes couleurs et mes polices."
+      },
+      "existing_design": {
+        "title": "Refaire ce que j'ai",
+        "body": "Reproduire un site, un fichier Figma ou des captures."
+      },
+      "service": {
+        "title": "Service de design, {fee}",
+        "body": "Un ajout unique au prix du projet, pas un abonnement. Il couvre le choix et l'application d'une direction visuelle pour une entreprise qui n'en a pas encore. Il apparaît séparément dans votre récapitulatif."
+      },
+      "links": {
+        "label": "Liens à regarder",
+        "help": "Fichiers Figma, votre site actuel, ou tout style qui vous plaît.",
+        "placeholder": "https://",
+        "add": "Ajouter un lien",
+        "remove": "Retirer le lien"
+      },
+      "colours": {
+        "label": "Couleurs",
+        "help": "Noms ou valeurs hexadécimales.",
+        "placeholder": "Marine, gris chaud, ou #1B2A41"
+      },
+      "notes": {
+        "label": "Autre chose sur le style",
+        "help": "Polices, ton, choses à éviter."
+      },
+      "filesLater": "Logos, captures et PDF se téléversent après la création du compte — c'est aussi à ce moment que le compte à rebours peut démarrer."
+    },
+    "features": {
+      "optional": "Tout est optionnel. Ne rien cocher n'exclut rien plus tard ; cela garde simplement ce projet plus petit.",
+      "chooseTypeFirst": "Choisissez d'abord un type.",
+      "largerBuild": "{feature} — fait basculer vers un projet plus large",
+      "noticeTitle": "Certains éléments exigent un projet plus large",
+      "noticeBody": "Vous pouvez les garder. L'étape suivante montre ce que cela change au prix et au délai.",
+      "categories": {
+        "content": "Contenu",
+        "identity": "Comptes et accès",
+        "commerce": "Vente",
+        "realtime": "Fonctions en direct",
+        "operations": "Gestion de l'entreprise",
+        "integration": "Intégrations",
+        "platform": "Appareil"
+      }
+    },
+    "platform": {
+      "chooseTypeFirst": "Choisissez d'abord un type.",
+      "singleOption": "Ce type fonctionne à un seul endroit ; il n'y a rien à choisir ici.",
+      "conflict": {
+        "empty": "Choisissez au moins une plateforme.",
+        "crossNative": "Le multiplateforme couvre déjà les deux magasins. Choisissez l'un ou l'autre."
+      },
+      "options": {
+        "responsive_web": {
+          "title": "Web adaptatif",
+          "body": "Un site qui fonctionne sur mobile, tablette et ordinateur."
+        },
+        "web_app": {
+          "title": "Application web",
+          "body": "Fonctionne dans le navigateur, sur tout appareil."
+        },
+        "cross_platform": {
+          "title": "Multiplateforme",
+          "body": "Un seul code, publié sur les deux magasins."
+        },
+        "ios": {
+          "title": "iOS (natif)",
+          "body": "Développé nativement pour iPhone et iPad."
+        },
+        "android": {
+          "title": "Android (natif)",
+          "body": "Développé nativement pour Android."
+        }
+      }
+    },
+    "complexity": {
+      "label": "Complexité",
+      "announced": "Complexité : {band}.",
+      "bands": {
+        "simple": "Simple",
+        "moderate": "Modérée",
+        "advanced": "Avancée"
+      },
+      "explanation": {
+        "simple": "Cela tient confortablement dans un projet d'entrée.",
+        "moderate": "Plus qu'un projet d'entrée, mais encore bien cadré.",
+        "advanced": "Un travail substantiel avec plusieurs parties mobiles."
+      }
+    },
+    "scope": {
+      "analysing": "Calcul de votre portée…",
+      "customQuote": "Devis sur mesure",
+      "figures": {
+        "price": "Prix",
+        "time": "Durée",
+        "guarantee": "Garantie",
+        "days": "{days} jours",
+        "quoted": "Sur devis",
+        "eligible": "Couvert",
+        "notEligible": "Non couvert",
+        "eligibleNote": "Si nous la manquons, vous choisissez un remboursement.",
+        "notEligibleNote": "Les projets sur devis ont leur propre date convenue.",
+        "includesDesign": "Inclut {fee} de service de design"
+      },
+      "exceeds": {
+        "title": "C'est plus grand qu'un projet à prix publié",
+        "body": "Nous préférons vous le dire maintenant plutôt que sous-estimer puis renégocier. L'étape suivante envoie cela en devis écrit, avec son prix et son délai."
+      },
+      "why": {
+        "title": "Pourquoi ce résultat"
+      },
+      "detected": {
+        "title": "Ce que nous avons détecté",
+        "none": "Rien au-delà des bases.",
+        "note": "Les correspondances de texte sont des signaux, pas des décisions. Si quelque chose est faux, modifiez votre description et ce sera réévalué."
+      },
+      "method": {
+        "selected": "Vous l'avez choisi",
+        "text_match": "D'après votre description",
+        "implied": "Requis par un autre choix",
+        "manual": "Ajouté par nous"
+      },
+      "error": {
+        "title": "Impossible de calculer votre portée",
+        "body": "Rien n'a été facturé ni enregistré. Réessayer suffit généralement.",
+        "retry": "Réessayer"
+      }
+    },
+    "review": {
+      "untitled": "Projet sans nom",
+      "edit": "Modifier",
+      "commercials": "Prix et délais",
+      "noFeatures": "Aucune sélection",
+      "customQuote": "Devis sur mesure",
+      "quotedSeparately": "Sur devis",
+      "daysValue": "{days} jours",
+      "deadlineRule": "Compté à partir du jour où vos éléments sont reçus et le projet lancé",
+      "guaranteeEligible": "Couvert — remboursement si nous la manquons",
+      "guaranteeNotEligible": "Convenu avec votre devis",
+      "rows": {
+        "project": "Projet",
+        "type": "Type",
+        "platform": "Plateforme",
+        "design": "Design",
+        "features": "Fonctions",
+        "timeline": "Durée",
+        "deadline": "Échéance",
+        "buildPrice": "Projet",
+        "designService": "Service de design",
+        "total": "Total",
+        "guarantee": "Garantie"
+      }
+    },
+    "start": {
+      "payTitle": "Lancez votre projet",
+      "quoteTitle": "Demandez votre devis",
+      "createAccount": "Créer un compte",
+      "requestQuote": "Demander un devis",
+      "countdownNote": "Le compte à rebours démarre après réception de vos éléments, pas au paiement.",
+      "draftKept": "Votre configuration est enregistrée.",
+      "sequence": {
+        "account": "Créez un compte pour héberger ce projet.",
+        "payment": "Payez le prix fixe indiqué ci-dessus.",
+        "assets": "Envoyez votre logo, vos contenus et le reste.",
+        "countdown": "Le compte à rebours démarre et votre espace s'ouvre.",
+        "quote": "Nous évaluons la portée et rédigeons un devis.",
+        "review": "Vous validez le prix et le délai avant tout début."
+      },
+      "pending": {
+        "title": "Les comptes et le paiement ne sont pas encore connectés",
+        "body": "Clerk et Stripe sont provisionnés pour ce projet, mais les routes de connexion et de paiement ne sont pas construites. Ce bouton est donc volontairement inactif plutôt que de ne mener nulle part. Votre configuration reste enregistrée dans ce navigateur."
+      }
+    }
+  },
+  "capabilities": {
+    "cms_editing": {
+      "name": "Modifier le contenu",
+      "hint": "Changer textes et images après le lancement"
+    },
+    "blog": {
+      "name": "Blogue ou actualités",
+      "hint": "Publier des articles au fil du temps"
+    },
+    "multilingual": {
+      "name": "Plusieurs langues",
+      "hint": "Servir plus d'une langue"
+    },
+    "contact_forms": {
+      "name": "Formulaires de contact",
+      "hint": "Recevoir des demandes par courriel"
+    },
+    "user_accounts": {
+      "name": "Comptes clients",
+      "hint": "Un seul type d'utilisateur connecté"
+    },
+    "multi_role_access": {
+      "name": "Plusieurs types d'utilisateurs",
+      "hint": "Des personnes et des permissions différentes"
+    },
+    "organisation_accounts": {
+      "name": "Comptes d'équipe",
+      "hint": "Des clients qui invitent des collègues"
+    },
+    "hosted_checkout": {
+      "name": "Accepter les paiements",
+      "hint": "Via une page de paiement hébergée"
+    },
+    "product_catalog": {
+      "name": "Catalogue de produits",
+      "hint": "Une liste d'articles à vendre"
+    },
+    "subscriptions": {
+      "name": "Abonnements",
+      "hint": "Facturation récurrente"
+    },
+    "booking_scheduling": {
+      "name": "Réservations ou rendez-vous",
+      "hint": "Les clients réservent un créneau"
+    },
+    "marketplace_payouts": {
+      "name": "Payer plusieurs vendeurs",
+      "hint": "Argent réparti entre les parties"
+    },
+    "push_notifications": {
+      "name": "Notifications push",
+      "hint": "Alerter sur l'appareil"
+    },
+    "live_updates": {
+      "name": "Mises à jour en direct",
+      "hint": "Données qui changent sans rafraîchir"
+    },
+    "chat_messaging": {
+      "name": "Messagerie",
+      "hint": "Les gens s'écrivent"
+    },
+    "realtime_location_tracking": {
+      "name": "Suivi de localisation en direct",
+      "hint": "Suivre quelqu'un sur une carte"
+    },
+    "admin_dashboard": {
+      "name": "Tableau de bord du personnel",
+      "hint": "Une vue interne pour votre équipe"
+    },
+    "order_management": {
+      "name": "Gérer les commandes",
+      "hint": "Le personnel traite les entrées"
+    },
+    "inventory": {
+      "name": "Inventaire",
+      "hint": "Suivre les niveaux de stock"
+    },
+    "reporting": {
+      "name": "Rapports",
+      "hint": "Des chiffres exploitables"
+    },
+    "dispatch_logistics": {
+      "name": "Répartition et livraison",
+      "hint": "Affecter le travail sur le terrain"
+    },
+    "third_party_integration": {
+      "name": "Connexion à un autre système",
+      "hint": "Synchroniser avec vos logiciels"
+    },
+    "data_migration": {
+      "name": "Migrer des données",
+      "hint": "Transférer des enregistrements"
+    },
+    "public_api": {
+      "name": "Une API pour des tiers",
+      "hint": "Permettre à des partenaires de bâtir dessus"
+    },
+    "native_device_features": {
+      "name": "Fonctions de l'appareil",
+      "hint": "Caméra, biométrie, capteurs"
+    },
+    "offline_sync": {
+      "name": "Fonctionne hors ligne",
+      "hint": "Utilisable sans connexion"
+    }
+  },
+  "scopeReasons": {
+    "multiple_user_types": {
+      "title": "Plusieurs types d'utilisateurs",
+      "body": "Chaque type supplémentaire multiplie écrans, permissions et tests."
+    },
+    "realtime_features": {
+      "title": "Données en direct",
+      "body": "Maintenir les données à jour entre appareils est un travail d'infrastructure."
+    },
+    "operational_logic": {
+      "title": "Logique opérationnelle",
+      "body": "Des règles à concevoir selon votre fonctionnement, pas à configurer."
+    },
+    "commerce_complexity": {
+      "title": "Vente et gestion de l'argent",
+      "body": "Catalogues, versements et facturation ont leurs propres règles."
+    },
+    "integration_work": {
+      "title": "Connexion à d'autres systèmes",
+      "body": "Le système d'un tiers impose le rythme et ses pannes."
+    },
+    "native_platform": {
+      "title": "Capacités natives de l'appareil",
+      "body": "Les fonctions natives diffèrent selon les téléphones."
+    },
+    "content_scope": {
+      "title": "Volume de contenu",
+      "body": "Plus de pages, c'est plus de mise en page et de relecture."
+    },
+    "additional_scope": {
+      "title": "Portée supplémentaire",
+      "body": "Cela ajoute du travail au-delà du projet d'entrée."
+    },
+    "accumulated_complexity": {
+      "title": "Beaucoup de travail ordinaire",
+      "body": "Rien n'est difficile seul, mais l'ensemble dépasse cinq jours."
+    }
   }
 }

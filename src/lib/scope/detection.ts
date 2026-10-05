@@ -2,6 +2,7 @@ import { detectActors, MULTI_ROLE_THRESHOLD } from "./actors";
 import { capabilitiesFor, getCapability, isCapabilityKey } from "./capabilities";
 import { firstMatch, normalize } from "./normalize";
 import { fallbackPatterns, patternsFor } from "./patterns";
+import type { CapabilityKey } from "./capabilities";
 import type { DetectedCapability, DetectionMethod, ScopeInput } from "./types";
 
 /**
@@ -38,7 +39,8 @@ export function detectCapabilities(input: ScopeInput): DetectedCapability[] {
 
   // Only capabilities meaningful for this build type are considered, so a
   // website brief cannot acquire mobile-only capabilities.
-  const allowed = new Set(capabilitiesFor(input.buildType).map((c) => c.key));
+  // Widened deliberately: membership is tested against untyped input.
+  const allowed = new Set<string>(capabilitiesFor(input.buildType).map((c) => c.key));
 
   // --- 1. Explicit selections -------------------------------------------
   for (const key of input.selectedCapabilities) {
@@ -46,7 +48,20 @@ export function detectCapabilities(input: ScopeInput): DetectedCapability[] {
     upsert(found, { key, method: "selected" });
   }
 
-  const haystack = normalize(input.ideaText);
+  // The intake fields carry capability signals just as the paragraph does:
+  // an industry of "food delivery" or a target customer of "our drivers" is
+  // evidence. Joined with a separator so a phrase cannot match across the
+  // boundary between two unrelated answers.
+  const haystack = normalize(
+    [
+      input.ideaText,
+      input.context?.industry,
+      input.context?.targetCustomers,
+      input.context?.desiredOutcome,
+    ]
+      .filter(Boolean)
+      .join(" . "),
+  );
 
   if (haystack) {
     // --- 2. Actor analysis ----------------------------------------------
@@ -67,7 +82,11 @@ export function detectCapabilities(input: ScopeInput): DetectedCapability[] {
     // English technical vocabulary into another language.
     const sets = [patternsFor(input.locale), fallbackPatterns()];
     for (const set of sets) {
-      for (const [key, phrases] of Object.entries(set)) {
+      // `PatternSet` is keyed by CapabilityKey; `Object.entries` erases that.
+      for (const [key, phrases] of Object.entries(set) as [
+        CapabilityKey,
+        readonly string[] | undefined,
+      ][]) {
         if (!phrases || !allowed.has(key) || found.has(key)) continue;
         const evidence = firstMatch(haystack, phrases);
         if (evidence) upsert(found, { key, method: "text_match", evidence });
@@ -98,7 +117,7 @@ function resolveImplications(
       const capability = getCapability(detected.key);
       if (!capability?.implies) continue;
 
-      for (const impliedKey of capability.implies) {
+      for (const impliedKey of capability.implies as readonly CapabilityKey[]) {
         if (found.has(impliedKey) || !allowed.has(impliedKey)) continue;
         found.set(impliedKey, {
           key: impliedKey,

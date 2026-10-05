@@ -45,14 +45,21 @@ const en: PatternSet = {
     "membership",
     "monthly plan",
   ],
+  // Intent phrases only. A bare "appointment" appears in briefs that just
+  // want a contact form -- matching it moved a brochure site into a larger
+  // tier and more than doubled the price, which is the exact overcharging
+  // this product exists to avoid. Under-detecting is the safer error: the
+  // customer can always tick the feature themselves.
   booking_scheduling: [
-    "booking",
-    "bookings",
-    "appointment",
-    "appointments",
-    "reservation",
+    "online booking",
+    "booking system",
+    "take bookings",
+    "manage bookings",
+    "book an appointment",
+    "appointment booking",
+    "schedule an appointment",
     "reservations",
-    "scheduling",
+    "reservation system",
   ],
   marketplace_payouts: [
     "marketplace",
@@ -321,7 +328,13 @@ const ar: PatternSet = {
     "قائمه المنتجات",
   ],
   subscriptions: ["اشتراك", "اشتراكات", "دفع متكرر", "عضويه"],
-  booking_scheduling: ["حجز", "حجوزات", "مواعيد", "جدوله"],
+  booking_scheduling: [
+    "نظام حجز",
+    "الحجز عبر الانترنت",
+    "اداره الحجوزات",
+    "حجز موعد",
+    "حجز المواعيد",
+  ],
   marketplace_payouts: [
     "سوق الكتروني",
     "تحويل الارباح",
