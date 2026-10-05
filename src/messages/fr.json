@@ -1,0 +1,212 @@
+{
+  "theme": {
+    "label": "Thème de couleur",
+    "light": "Clair",
+    "dark": "Sombre",
+    "system": "Selon le système"
+  },
+  "localeSwitcher": {
+    "label": "Changer de langue"
+  },
+  "nav": {
+    "primary": "Principal",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "skipToContent": "Aller au contenu",
+    "howItWorks": "Comment ça marche",
+    "whatsIncluded": "Ce qui est inclus",
+    "pricing": "Tarifs",
+    "buildWall": "Mur des réalisations",
+    "signIn": "Se connecter",
+    "startBuild": "Lancer un projet"
+  },
+  "home": {
+    "meta": {
+      "title": "Votre idée. Réalisée cette semaine.",
+      "description": "Des sites web en 5 jours. Des applications en 14. Un prix fixe. Une garantie claire. Configurez votre projet, voyez le prix exact et suivez-le jusqu'au lancement."
+    },
+    "hero": {
+      "eyebrow": "Développement numérique standardisé",
+      "headline": "Votre idée. Réalisée cette semaine.",
+      "promise": "Des sites web en 5 jours. Des applications en 14. Un prix fixe. Une garantie claire.",
+      "support": "Configurez le projet, voyez le prix exact avant de payer, puis suivez-le jusqu'au lancement dans votre espace de production. Aucune proposition, aucune facturation horaire, aucun délai ouvert.",
+      "primaryCta": "Lancer un projet",
+      "secondaryCta": "Voir ce qui est inclus",
+      "trust": {
+        "price": "Prix fixe, annoncé d'avance",
+        "scope": "Portée écrite, convenue avant la production",
+        "deadline": "Délai garanti par remboursement"
+      },
+      "spec": {
+        "daysUnit": "jours",
+        "websites": "Sites et systèmes",
+        "apps": "Applications mobiles"
+      }
+    },
+    "products": {
+      "eyebrow": "Ce que vous pouvez commander",
+      "title": "Trois produits. Portée définie. Prix publié.",
+      "description": "Chaque projet est un produit avec un prix fixe et un délai de livraison annoncé, et non un mandat à durée indéterminée.",
+      "deliveryLabel": "{days, plural, one {# jour} other {# jours}} de livraison",
+      "fromLabel": "à partir de",
+      "website": {
+        "name": "Site web",
+        "summary": "Sites vitrines, pages d'atterrissage et portfolios, conçus adaptatifs et prêts pour le référencement.",
+        "cta": "Configurer un site web"
+      },
+      "system": {
+        "name": "Système d'affaires",
+        "summary": "Tableaux de bord, réservation, inventaire, CRM et outils internes. Le prix découle de la portée que vous définissez.",
+        "cta": "Configurer un système"
+      },
+      "mobileApp": {
+        "name": "Application mobile",
+        "summary": "Un MVP encadré pour iOS et Android. Le temps d'examen des magasins d'applications est exclu de la garantie.",
+        "cta": "Configurer une application"
+      }
+    },
+    "journey": {
+      "eyebrow": "Comment ça marche",
+      "title": "De l'idée au lancement, sur une chaîne de production.",
+      "description": "Chaque projet suit les mêmes dix étapes. Vous voyez à tout moment où en est le vôtre.",
+      "stages": {
+        "idea": {
+          "name": "Idée",
+          "detail": "Décrivez ce que vous voulez dans vos mots. Téléversez ce que vous avez déjà."
+        },
+        "configure": {
+          "name": "Configuration",
+          "detail": "Choisissez le type, les fonctionnalités et l'orientation visuelle, ou confiez-nous le design."
+        },
+        "price": {
+          "name": "Prix",
+          "detail": "Votre portée se traduit en un prix fixe et un délai, avant tout engagement."
+        },
+        "pay": {
+          "name": "Paiement",
+          "detail": "Payez dans votre devise. La portée convenue est rattachée à la commande."
+        },
+        "build": {
+          "name": "Production",
+          "detail": "Le compte à rebours démarre dès que vos éléments sont reçus et le projet officiellement lancé."
+        },
+        "preview": {
+          "name": "Aperçu",
+          "detail": "Suivez l'avancement sur une adresse d'aperçu mise à jour en continu."
+        },
+        "approve": {
+          "name": "Approbation",
+          "detail": "Demandez des ajustements prévus à la portée, puis approuvez."
+        },
+        "launch": {
+          "name": "Lancement",
+          "detail": "Nous déployons sur votre domaine ou soumettons aux magasins d'applications pour vous."
+        },
+        "maintain": {
+          "name": "Maintenance",
+          "detail": "Hébergement, mises à jour et surveillance, sur un forfait annulable."
+        },
+        "expand": {
+          "name": "Expansion",
+          "detail": "Ajoutez des fonctionnalités plus tard avec des crédits, aux mêmes tarifs publiés."
+        }
+      },
+      "clockNote": "Le compte à rebours garanti démarre à cette étape, une fois vos éléments reçus."
+    },
+    "guarantee": {
+      "eyebrow": "La garantie",
+      "title": "Le délai, c'est notre responsabilité.",
+      "clock": {
+        "title": "Le compte à rebours démarre quand le travail peut démarrer",
+        "body": "Il commence lorsque vos informations et éléments requis sont soumis et que le projet est officiellement lancé, et non au moment du paiement. Nous ne lançons pas un chronomètre que nous ne contrôlons pas."
+      },
+      "missed": {
+        "title": "Si nous le manquons, vous choisissez",
+        "cancel": "Annuler et obtenir un remboursement de {percent} %.",
+        "continue": "Poursuivre le projet et récupérer {percent} %.",
+        "body": "Dans les deux cas, le choix vous appartient et ne demande aucune négociation."
+      },
+      "stores": {
+        "title": "Ce que la garantie ne couvre pas",
+        "body": "Les délais d'examen de l'App Store et de Google Play sont exclus de la garantie de développement. Nous nous engageons sur notre temps de production, pas sur le leur. La soumission et l'examen sont suivis séparément dans votre espace de production."
+      }
+    },
+    "scope": {
+      "eyebrow": "La portée, franchement",
+      "title": "Un prix fixe exige une portée honnête.",
+      "description": "Un projet en {days} jours couvre un ensemble défini de capacités. Lorsqu'une idée dépasse ce cadre, nous le disons avant le paiement et vous montrons le projet plus large, plutôt que de sous-estimer puis de renégocier.",
+      "includedTitle": "Compris dans un projet en {days} jours",
+      "includedItems": {
+        "pages": "Un nombre défini de pages ou d'écrans",
+        "responsive": "Mises en page adaptatives et comportement mobile",
+        "forms": "Formulaires, pages de contenu et édition CMS standard",
+        "singleRole": "Un seul type d'utilisateur, ou aucun",
+        "hostedPayments": "Paiements par page de paiement hébergée",
+        "seo": "Bases du référencement et de la performance"
+      },
+      "largerTitle": "Devient un projet plus large",
+      "largerItems": {
+        "multiRole": "Plusieurs types d'utilisateurs avec des permissions distinctes",
+        "realtime": "Suivi en direct, répartition ou géolocalisation",
+        "marketplace": "Versements à plusieurs parties ou modèle de place de marché",
+        "native": "Capacités natives avancées de l'appareil",
+        "integrations": "Intégrations sur mesure avec vos systèmes existants",
+        "logic": "Logique opérationnelle à concevoir, et non à configurer"
+      },
+      "example": {
+        "title": "Un exemple concret",
+        "quote": "Je veux un système de restaurant où les clients commandent, paient en ligne, le personnel gère les commandes, les livreurs gèrent les livraisons et les clients suivent les livreurs.",
+        "verdictLabel": "Évaluation",
+        "verdict": "Cela dépasse un projet en {days} jours.",
+        "reason": "On y trouve quatre types d'utilisateurs distincts, le suivi en direct des livreurs, la répartition des livraisons et le traitement des paiements. Chacun représente du vrai travail : le projet devient donc plus large, avec son propre prix et son propre délai, que vous verrez avant de payer.",
+        "note": "Rien n'est approximatif : le configurateur applique les mêmes règles publiées à votre description et vous montre lesquelles ont été reconnues."
+      }
+    },
+    "buildWall": {
+      "eyebrow": "Mur des réalisations",
+      "title": "Récemment livrés",
+      "description": "Chaque projet mis en ligne, avec la portée commandée et le nombre de jours réels.",
+      "emptyTitle": "Les premiers projets sont en production",
+      "emptyBody": "Les projets terminés apparaîtront ici avec leur portée et leur délai dès leur lancement. Rien n'est simulé ni illustratif : le mur reste vide jusqu'à ce qu'il y ait du réel à montrer.",
+      "emptyCta": "Soyez parmi les premiers"
+    },
+    "cta": {
+      "title": "Commencez par l'idée. Nous la chiffrons en quelques minutes.",
+      "description": "Décrivez ce que vous voulez et voyez votre portée, votre prix et votre date de livraison avant tout engagement.",
+      "primary": "Lancer un projet",
+      "secondary": "Voir comment ça marche"
+    }
+  },
+  "footer": {
+    "tagline": "Des sites web en 5 jours. Des applications en 14. Un prix fixe. Une garantie claire.",
+    "product": "Produit",
+    "company": "Entreprise",
+    "legal": "Mentions légales",
+    "links": {
+      "howItWorks": "Comment ça marche",
+      "pricing": "Tarifs",
+      "buildWall": "Mur des réalisations",
+      "maintenance": "Forfaits de maintenance",
+      "partners": "Partenaires",
+      "about": "À propos",
+      "contact": "Contact",
+      "terms": "Conditions",
+      "privacy": "Confidentialité",
+      "guarantee": "Conditions de la garantie"
+    },
+    "rights": "© {year} {brand}. Tous droits réservés."
+  },
+  "errors": {
+    "notFound": {
+      "title": "Cette page n’existe pas",
+      "body": "Le lien est peut-être périmé, ou la page n’a pas encore été créée.",
+      "home": "Retour à l’accueil"
+    },
+    "unexpected": {
+      "title": "Une erreur est survenue",
+      "body": "La page n’a pas pu être chargée. L’incident a été enregistré et réessayer suffit souvent.",
+      "retry": "Réessayer",
+      "home": "Retour à l’accueil"
+    }
+  }
+}

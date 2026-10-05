@@ -1,0 +1,212 @@
+{
+  "theme": {
+    "label": "Colour theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "Match system"
+  },
+  "localeSwitcher": {
+    "label": "Change language"
+  },
+  "nav": {
+    "primary": "Primary",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "skipToContent": "Skip to content",
+    "howItWorks": "How it works",
+    "whatsIncluded": "What's included",
+    "pricing": "Pricing",
+    "buildWall": "Build wall",
+    "signIn": "Sign in",
+    "startBuild": "Start a build"
+  },
+  "home": {
+    "meta": {
+      "title": "Your idea. Built this week.",
+      "description": "Websites in 5 days. Apps in 14. One fixed price. One clear guarantee. Configure your build, see the exact price, and track it to launch."
+    },
+    "hero": {
+      "eyebrow": "Productized digital builds",
+      "headline": "Your idea. Built this week.",
+      "promise": "Websites in 5 days. Apps in 14. One fixed price. One clear guarantee.",
+      "support": "Configure the build, see the exact price before you pay, and follow it to launch in your Build Room. No proposals, no hourly billing, no open-ended timelines.",
+      "primaryCta": "Start a build",
+      "secondaryCta": "See what's included",
+      "trust": {
+        "price": "Fixed price, shown up front",
+        "scope": "Written scope, agreed before build",
+        "deadline": "Deadline backed by refund"
+      },
+      "spec": {
+        "daysUnit": "days",
+        "websites": "Websites & systems",
+        "apps": "Mobile apps"
+      }
+    },
+    "products": {
+      "eyebrow": "What you can order",
+      "title": "Three products. Defined scope. Published price.",
+      "description": "Each build is a product with a fixed price and a stated delivery window, not an open-ended engagement.",
+      "deliveryLabel": "{days, plural, one {# day} other {# days}} to deliver",
+      "fromLabel": "from",
+      "website": {
+        "name": "Website",
+        "summary": "Marketing sites, landing pages, portfolios and brochure sites, built responsive and search-ready.",
+        "cta": "Configure a website"
+      },
+      "system": {
+        "name": "Business system",
+        "summary": "Dashboards, booking, inventory, CRM and internal tools. Priced from the scope you define, so the number matches the work.",
+        "cta": "Configure a system"
+      },
+      "mobileApp": {
+        "name": "Mobile application",
+        "summary": "A constrained MVP for iOS and Android. Store review time sits outside the development guarantee.",
+        "cta": "Configure an app"
+      }
+    },
+    "journey": {
+      "eyebrow": "How it works",
+      "title": "From idea to launch, on a production line.",
+      "description": "Every build moves through the same ten stages. You can see exactly which one yours is on at any moment.",
+      "stages": {
+        "idea": {
+          "name": "Idea",
+          "detail": "Describe what you want in your own words. Upload anything you already have."
+        },
+        "configure": {
+          "name": "Configure",
+          "detail": "Pick the build type, features and design direction, or ask us to design it for you."
+        },
+        "price": {
+          "name": "Price",
+          "detail": "Your scope resolves to a fixed price and a delivery window before you commit."
+        },
+        "pay": {
+          "name": "Pay",
+          "detail": "Checkout in your own currency. The scope you agreed is attached to the order."
+        },
+        "build": {
+          "name": "Build",
+          "detail": "The countdown starts once your assets are in and the build is officially started."
+        },
+        "preview": {
+          "name": "Preview",
+          "detail": "Watch it come together on a live preview URL, updated as we go."
+        },
+        "approve": {
+          "name": "Approve",
+          "detail": "Request changes within scope, then sign off when it's right."
+        },
+        "launch": {
+          "name": "Launch",
+          "detail": "We deploy to your domain, or submit to the app stores on your behalf."
+        },
+        "maintain": {
+          "name": "Maintain",
+          "detail": "Hosting, updates and monitoring on a plan you can cancel."
+        },
+        "expand": {
+          "name": "Expand",
+          "detail": "Add features later with build credits, at the same published rates."
+        }
+      },
+      "clockNote": "The guaranteed countdown starts at this stage, once your assets are in."
+    },
+    "guarantee": {
+      "eyebrow": "The guarantee",
+      "title": "The deadline is ours to keep.",
+      "clock": {
+        "title": "Your clock starts when the work can start",
+        "body": "The countdown begins when your required information and assets are submitted and the build is officially started, not the moment you pay. We don't start a clock we can't control."
+      },
+      "missed": {
+        "title": "If we miss it, you choose",
+        "cancel": "Cancel and take a {percent}% refund.",
+        "continue": "Continue the build and take {percent}% back.",
+        "body": "Either way the choice is yours, not ours, and it doesn't require a negotiation."
+      },
+      "stores": {
+        "title": "What the guarantee doesn't cover",
+        "body": "App Store and Google Play review times sit outside the development guarantee. We commit to our build time; we can't commit to theirs. You'll see submission and review tracked separately in your Build Room."
+      }
+    },
+    "scope": {
+      "eyebrow": "Scope, honestly",
+      "title": "A fixed price needs an honest scope.",
+      "description": "A {days}-Day Build covers a defined set of capabilities. When an idea needs more than that, we say so before you pay and show you the larger build, rather than underquoting and renegotiating later.",
+      "includedTitle": "Inside a {days}-Day Build",
+      "includedItems": {
+        "pages": "A defined page or screen count",
+        "responsive": "Responsive layouts and mobile behaviour",
+        "forms": "Forms, content pages and standard CMS editing",
+        "singleRole": "A single user type, or none at all",
+        "hostedPayments": "Payments through hosted checkout",
+        "seo": "Search and performance fundamentals"
+      },
+      "largerTitle": "Becomes a larger build",
+      "largerItems": {
+        "multiRole": "Several user types with different permissions",
+        "realtime": "Live tracking, dispatch or location features",
+        "marketplace": "Multi-party payouts or a marketplace model",
+        "native": "Deep native device capabilities",
+        "integrations": "Custom integrations with systems you already run",
+        "logic": "Operational logic that has to be designed, not configured"
+      },
+      "example": {
+        "title": "A worked example",
+        "quote": "I want a restaurant system where customers order food, pay online, restaurant staff manage orders, drivers manage deliveries, and customers track drivers.",
+        "verdictLabel": "Assessment",
+        "verdict": "This exceeds a {days}-Day Build.",
+        "reason": "It carries four distinct user types, live driver tracking, delivery dispatch and payment handling. Each of those is real work, so it resolves to a larger build with its own price and timeline, which you'll see before you pay.",
+        "note": "Nothing here is guesswork: the configurator applies the same published rules to your description and shows you which ones it matched."
+      }
+    },
+    "buildWall": {
+      "eyebrow": "Build wall",
+      "title": "Recently shipped",
+      "description": "Every build that goes live, with the scope it was ordered under and the days it took.",
+      "emptyTitle": "The first builds are in production",
+      "emptyBody": "Completed builds appear here with their scope and delivery time once they launch. Nothing is staged or illustrative, so the wall stays empty until there is something real to show.",
+      "emptyCta": "Be one of the first"
+    },
+    "cta": {
+      "title": "Start with the idea. We'll price it in minutes.",
+      "description": "Describe what you want and see your scope, price and delivery date before you commit to anything.",
+      "primary": "Start a build",
+      "secondary": "See how it works"
+    }
+  },
+  "footer": {
+    "tagline": "Websites in 5 days. Apps in 14. One fixed price. One clear guarantee.",
+    "product": "Product",
+    "company": "Company",
+    "legal": "Legal",
+    "links": {
+      "howItWorks": "How it works",
+      "pricing": "Pricing",
+      "buildWall": "Build wall",
+      "maintenance": "Maintenance plans",
+      "partners": "Partners",
+      "about": "About",
+      "contact": "Contact",
+      "terms": "Terms",
+      "privacy": "Privacy",
+      "guarantee": "Guarantee terms"
+    },
+    "rights": "© {year} {brand}. All rights reserved."
+  },
+  "errors": {
+    "notFound": {
+      "title": "This page does not exist",
+      "body": "The link may be out of date, or the page may not have been built yet.",
+      "home": "Back to home"
+    },
+    "unexpected": {
+      "title": "Something went wrong",
+      "body": "The page failed to load. This has been logged, and trying again often resolves it.",
+      "retry": "Try again",
+      "home": "Back to home"
+    }
+  }
+}

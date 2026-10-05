@@ -1,0 +1,87 @@
+/* ============================================================================
+ * Animations
+ * ----------------------------------------------------------------------------
+ * Keyframe animations rather than transitions, because overlay primitives
+ * wait for `animationend` before unmounting -- a transition would be cut off
+ * and the exit would never play.
+ *
+ * All motion is collapsed by the reduced-motion rule in base.css.
+ * ========================================================================= */
+
+/* The slide-in origin follows the writing direction, so a single keyframe
+ * serves both LTR and RTL instead of needing a mirrored pair. */
+[dir="ltr"] {
+  --motion-inline-from: 100%;
+}
+
+[dir="rtl"] {
+  --motion-inline-from: -100%;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateX(var(--motion-inline-from, 100%));
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes sheet-out {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(var(--motion-inline-from, 100%));
+  }
+}
+
+/* Dialogs settle in place rather than sliding: a small rise and scale. */
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes dialog-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(0.25rem) scale(0.99);
+  }
+}
+
+@theme inline {
+  --animate-fade-in: fade-in var(--duration-base) var(--ease-out-quint);
+  --animate-fade-out: fade-out var(--duration-fast) ease-in;
+  --animate-sheet-in: sheet-in var(--duration-base) var(--ease-out-quint);
+  --animate-sheet-out: sheet-out var(--duration-fast) ease-in;
+  --animate-dialog-in: dialog-in var(--duration-base) var(--ease-out-quint);
+  --animate-dialog-out: dialog-out var(--duration-fast) ease-in;
+}

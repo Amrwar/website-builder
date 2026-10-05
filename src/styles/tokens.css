@@ -1,0 +1,200 @@
+/* ============================================================================
+ * Design tokens
+ * ----------------------------------------------------------------------------
+ * Layer 1  palette   raw, theme-agnostic ramps. Never referenced by components.
+ * Layer 2  semantic  role-based tokens that flip per theme.
+ * Layer 3  theme     semantic tokens exposed to Tailwind (see theme.css).
+ *
+ * Components consume layer 3 only. Adding a theme means redefining layer 2
+ * and nothing else.
+ * ========================================================================= */
+
+:root {
+  /* --- Layer 1: neutral ink ramp (cool-leaning, perceptually even) -------- */
+  --palette-ink-0: oklch(1 0 0);
+  --palette-ink-25: oklch(0.988 0.0012 265);
+  --palette-ink-50: oklch(0.974 0.0022 265);
+  --palette-ink-100: oklch(0.955 0.003 265);
+  --palette-ink-150: oklch(0.928 0.0038 265);
+  --palette-ink-200: oklch(0.9 0.0045 265);
+  --palette-ink-300: oklch(0.835 0.0058 265);
+  --palette-ink-400: oklch(0.715 0.008 265);
+  --palette-ink-500: oklch(0.605 0.0098 265);
+  --palette-ink-600: oklch(0.505 0.011 265);
+  --palette-ink-700: oklch(0.41 0.011 265);
+  --palette-ink-800: oklch(0.3 0.0098 265);
+  --palette-ink-850: oklch(0.242 0.009 265);
+  --palette-ink-900: oklch(0.195 0.008 265);
+  --palette-ink-950: oklch(0.145 0.0062 265);
+  --palette-ink-1000: oklch(0.09 0.004 265);
+
+  /* --- Layer 1: brand cobalt --------------------------------------------- */
+  /* Accent only: links, focus rings, selected state, active-build status.
+   * Deliberately NOT the primary button colour, which is ink. */
+  --palette-brand-50: oklch(0.971 0.016 265);
+  --palette-brand-100: oklch(0.936 0.036 265);
+  --palette-brand-200: oklch(0.875 0.068 265);
+  --palette-brand-300: oklch(0.775 0.115 265);
+  --palette-brand-400: oklch(0.665 0.165 265);
+  --palette-brand-500: oklch(0.575 0.2 265);
+  --palette-brand-600: oklch(0.505 0.205 265);
+  --palette-brand-700: oklch(0.432 0.178 265);
+  --palette-brand-800: oklch(0.355 0.14 265);
+  --palette-brand-900: oklch(0.282 0.1 265);
+
+  /* --- Layer 1: status ramps --------------------------------------------- */
+  --palette-success-100: oklch(0.945 0.055 155);
+  --palette-success-300: oklch(0.82 0.13 155);
+  --palette-success-500: oklch(0.63 0.145 155);
+  --palette-success-700: oklch(0.47 0.115 155);
+  --palette-success-900: oklch(0.31 0.075 155);
+
+  --palette-warning-100: oklch(0.96 0.055 85);
+  --palette-warning-300: oklch(0.875 0.13 80);
+  --palette-warning-500: oklch(0.755 0.16 70);
+  --palette-warning-700: oklch(0.575 0.13 55);
+  --palette-warning-900: oklch(0.375 0.085 55);
+
+  --palette-danger-100: oklch(0.955 0.03 25);
+  --palette-danger-300: oklch(0.82 0.11 25);
+  --palette-danger-500: oklch(0.63 0.21 25);
+  --palette-danger-700: oklch(0.505 0.19 25);
+  --palette-danger-900: oklch(0.33 0.115 25);
+}
+
+/* ===========================================================================
+ * Layer 2: semantic tokens -- light theme (default)
+ * ======================================================================== */
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* Surfaces, shallow to deep */
+  --surface-canvas: var(--palette-ink-0);
+  --surface-subtle: var(--palette-ink-50);
+  --surface-sunken: var(--palette-ink-100);
+  --surface-raised: var(--palette-ink-0);
+  --surface-overlay: var(--palette-ink-0);
+  --surface-inverse: var(--palette-ink-950);
+  --surface-hover: var(--palette-ink-50);
+  --surface-active: var(--palette-ink-100);
+  --surface-selected: var(--palette-brand-50);
+  --surface-disabled: var(--palette-ink-100);
+
+  /* Hairline borders carry structure; shadows are reserved for overlays */
+  --border-subtle: var(--palette-ink-150);
+  --border-default: var(--palette-ink-200);
+  --border-strong: var(--palette-ink-300);
+  --border-inverse: var(--palette-ink-800);
+  --border-focus: var(--palette-brand-500);
+
+  /* Text */
+  --text-primary: var(--palette-ink-950);
+  --text-secondary: var(--palette-ink-600);
+  --text-tertiary: var(--palette-ink-500);
+  --text-disabled: var(--palette-ink-400);
+  --text-inverse: var(--palette-ink-0);
+  --text-accent: var(--palette-brand-600);
+
+  /* Primary action = ink. Quiet and premium, not a saturated SaaS blue. */
+  --action-primary-bg: var(--palette-ink-950);
+  --action-primary-bg-hover: var(--palette-ink-800);
+  --action-primary-bg-active: var(--palette-ink-900);
+  --action-primary-fg: var(--palette-ink-0);
+
+  --action-accent-bg: var(--palette-brand-600);
+  --action-accent-bg-hover: var(--palette-brand-700);
+  --action-accent-fg: var(--palette-ink-0);
+
+  /* Status: foreground / surface / border triplets */
+  --status-success-fg: var(--palette-success-700);
+  --status-success-surface: var(--palette-success-100);
+  --status-success-border: var(--palette-success-300);
+
+  --status-warning-fg: var(--palette-warning-700);
+  --status-warning-surface: var(--palette-warning-100);
+  --status-warning-border: var(--palette-warning-300);
+
+  --status-danger-fg: var(--palette-danger-700);
+  --status-danger-surface: var(--palette-danger-100);
+  --status-danger-border: var(--palette-danger-300);
+
+  --status-info-fg: var(--palette-brand-600);
+  --status-info-surface: var(--palette-brand-50);
+  --status-info-border: var(--palette-brand-200);
+
+  /* Shadows: overlays only, low spread so they read as light not haze */
+  --elevation-sm: 0 1px 2px -1px oklch(0.145 0.0062 265 / 0.1);
+  --elevation-md:
+    0 4px 8px -2px oklch(0.145 0.0062 265 / 0.08),
+    0 2px 4px -2px oklch(0.145 0.0062 265 / 0.06);
+  --elevation-lg:
+    0 16px 32px -8px oklch(0.145 0.0062 265 / 0.12),
+    0 4px 8px -4px oklch(0.145 0.0062 265 / 0.08);
+}
+
+/* ===========================================================================
+ * Layer 2: semantic tokens -- dark theme
+ * Not a mechanical inversion: the ramp is re-picked so dark mode keeps real
+ * depth ordering and text contrast stays within AA.
+ * ======================================================================== */
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --surface-canvas: var(--palette-ink-1000);
+  --surface-subtle: var(--palette-ink-950);
+  --surface-sunken: var(--palette-ink-1000);
+  --surface-raised: var(--palette-ink-900);
+  --surface-overlay: var(--palette-ink-850);
+  --surface-inverse: var(--palette-ink-50);
+  --surface-hover: var(--palette-ink-850);
+  --surface-active: var(--palette-ink-800);
+  --surface-selected: var(--palette-brand-900);
+  --surface-disabled: var(--palette-ink-900);
+
+  --border-subtle: var(--palette-ink-900);
+  --border-default: var(--palette-ink-850);
+  --border-strong: var(--palette-ink-700);
+  --border-inverse: var(--palette-ink-300);
+  --border-focus: var(--palette-brand-400);
+
+  --text-primary: var(--palette-ink-50);
+  --text-secondary: var(--palette-ink-400);
+  --text-tertiary: var(--palette-ink-500);
+  --text-disabled: var(--palette-ink-700);
+  --text-inverse: var(--palette-ink-950);
+  --text-accent: var(--palette-brand-300);
+
+  --action-primary-bg: var(--palette-ink-50);
+  --action-primary-bg-hover: var(--palette-ink-0);
+  --action-primary-bg-active: var(--palette-ink-200);
+  --action-primary-fg: var(--palette-ink-950);
+
+  --action-accent-bg: var(--palette-brand-500);
+  --action-accent-bg-hover: var(--palette-brand-400);
+  --action-accent-fg: var(--palette-ink-0);
+
+  --status-success-fg: var(--palette-success-300);
+  --status-success-surface: oklch(0.31 0.075 155 / 0.32);
+  --status-success-border: var(--palette-success-700);
+
+  --status-warning-fg: var(--palette-warning-300);
+  --status-warning-surface: oklch(0.375 0.085 55 / 0.32);
+  --status-warning-border: var(--palette-warning-700);
+
+  --status-danger-fg: var(--palette-danger-300);
+  --status-danger-surface: oklch(0.33 0.115 25 / 0.32);
+  --status-danger-border: var(--palette-danger-700);
+
+  --status-info-fg: var(--palette-brand-300);
+  --status-info-surface: oklch(0.282 0.1 265 / 0.38);
+  --status-info-border: var(--palette-brand-700);
+
+  --elevation-sm: 0 1px 2px -1px oklch(0 0 0 / 0.5);
+  --elevation-md:
+    0 4px 8px -2px oklch(0 0 0 / 0.45), 0 2px 4px -2px oklch(0 0 0 / 0.4);
+  --elevation-lg:
+    0 16px 32px -8px oklch(0 0 0 / 0.55), 0 4px 8px -4px oklch(0 0 0 / 0.45);
+}

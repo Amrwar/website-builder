@@ -1,0 +1,159 @@
+/* ============================================================================
+ * Layer 3: Tailwind theme
+ * ----------------------------------------------------------------------------
+ * Exposes the semantic tokens from tokens.css as Tailwind utilities, and
+ * defines the scales (type, space, radius, motion) the product is built on.
+ *
+ * `inline` is used so the generated utilities reference var(--token) rather
+ * than resolving at build time -- that is what lets a single `data-theme`
+ * attribute swap the whole palette with no duplicated utility classes.
+ * ========================================================================= */
+
+@theme inline {
+  /* --- Colour: surfaces ---------------------------------------------- */
+  --color-canvas: var(--surface-canvas);
+  --color-subtle: var(--surface-subtle);
+  --color-sunken: var(--surface-sunken);
+  --color-raised: var(--surface-raised);
+  --color-overlay: var(--surface-overlay);
+  --color-inverse: var(--surface-inverse);
+  --color-hover: var(--surface-hover);
+  --color-active: var(--surface-active);
+  --color-selected: var(--surface-selected);
+  --color-disabled: var(--surface-disabled);
+
+  /* --- Colour: borders ----------------------------------------------- */
+  --color-line-subtle: var(--border-subtle);
+  --color-line: var(--border-default);
+  --color-line-strong: var(--border-strong);
+  --color-line-inverse: var(--border-inverse);
+  --color-focus: var(--border-focus);
+
+  /* --- Colour: text -------------------------------------------------- */
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-tertiary: var(--text-tertiary);
+  --color-fg-disabled: var(--text-disabled);
+  --color-fg-inverse: var(--text-inverse);
+  --color-accent: var(--text-accent);
+
+  /* --- Colour: actions ----------------------------------------------- */
+  --color-action: var(--action-primary-bg);
+  --color-action-hover: var(--action-primary-bg-hover);
+  --color-action-active: var(--action-primary-bg-active);
+  --color-action-fg: var(--action-primary-fg);
+  --color-action-accent: var(--action-accent-bg);
+  --color-action-accent-hover: var(--action-accent-bg-hover);
+  --color-action-accent-fg: var(--action-accent-fg);
+
+  /* --- Colour: status ------------------------------------------------ */
+  --color-success: var(--status-success-fg);
+  --color-success-surface: var(--status-success-surface);
+  --color-success-line: var(--status-success-border);
+  --color-warning: var(--status-warning-fg);
+  --color-warning-surface: var(--status-warning-surface);
+  --color-warning-line: var(--status-warning-border);
+  --color-danger: var(--status-danger-fg);
+  --color-danger-surface: var(--status-danger-surface);
+  --color-danger-line: var(--status-danger-border);
+  --color-info: var(--status-info-fg);
+  --color-info-surface: var(--status-info-surface);
+  --color-info-line: var(--status-info-border);
+
+  /* --- Typeface ------------------------------------------------------ */
+  /* --font-arabic is applied by the locale layout; it carries its own
+   * Arabic-native face rather than letting a Latin grotesk fall back. */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+  --font-arabic: var(--font-plex-arabic), var(--font-geist-sans), sans-serif;
+
+  /* --- Type scale ----------------------------------------------------
+   * Display sizes carry negative tracking and tight leading: the single
+   * biggest lever on whether large type reads as premium or as a template.
+   * Fluid clamps keep the editorial ratio intact on small screens. */
+  --text-display-2xl: clamp(2.75rem, 1.6rem + 5.75vw, 6rem);
+  --text-display-2xl--line-height: 0.95;
+  --text-display-2xl--letter-spacing: -0.035em;
+  --text-display-2xl--font-weight: 600;
+
+  --text-display-xl: clamp(2.25rem, 1.5rem + 3.75vw, 4.5rem);
+  --text-display-xl--line-height: 0.98;
+  --text-display-xl--letter-spacing: -0.03em;
+  --text-display-xl--font-weight: 600;
+
+  --text-display-lg: clamp(1.875rem, 1.35rem + 2.6vw, 3.25rem);
+  --text-display-lg--line-height: 1.04;
+  --text-display-lg--letter-spacing: -0.025em;
+  --text-display-lg--font-weight: 600;
+
+  --text-display-md: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
+  --text-display-md--line-height: 1.12;
+  --text-display-md--letter-spacing: -0.02em;
+  --text-display-md--font-weight: 600;
+
+  --text-display-sm: clamp(1.25rem, 1.1rem + 0.75vw, 1.625rem);
+  --text-display-sm--line-height: 1.2;
+  --text-display-sm--letter-spacing: -0.015em;
+  --text-display-sm--font-weight: 600;
+
+  --text-body-lg: 1.125rem;
+  --text-body-lg--line-height: 1.6;
+  --text-body-lg--letter-spacing: -0.009em;
+
+  --text-body: 1rem;
+  --text-body--line-height: 1.6;
+  --text-body--letter-spacing: -0.006em;
+
+  --text-body-sm: 0.875rem;
+  --text-body-sm--line-height: 1.55;
+  --text-body-sm--letter-spacing: -0.003em;
+
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: 1.45;
+
+  /* Eyebrow/overline: uppercase micro-label used to mark sections */
+  --text-eyebrow: 0.75rem;
+  --text-eyebrow--line-height: 1.2;
+  --text-eyebrow--letter-spacing: 0.08em;
+  --text-eyebrow--font-weight: 500;
+
+  /* Tabular numerics for prices, countdowns, invoice tables */
+  --text-numeric: 0.9375rem;
+  --text-numeric--line-height: 1.4;
+
+  /* --- Radius: restrained. No pills, no oversized cards. ------------- */
+  --radius-xs: 0.125rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+
+  /* --- Elevation ----------------------------------------------------- */
+  --shadow-sm: var(--elevation-sm);
+  --shadow-md: var(--elevation-md);
+  --shadow-lg: var(--elevation-lg);
+
+  /* --- Motion: short, purposeful, custom easing ---------------------- */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
+  --ease-spring: cubic-bezier(0.34, 1.26, 0.64, 1);
+
+  --duration-instant: 80ms;
+  --duration-fast: 140ms;
+  --duration-base: 220ms;
+  --duration-slow: 360ms;
+
+  /* --- Layout: Swiss grid measurements ------------------------------- */
+  --container-prose: 68ch;
+  --container-content: 1120px;
+  --container-wide: 1360px;
+}
+
+/* ===========================================================================
+ * Dark-mode variant
+ * Driven by the `data-theme` attribute rather than `prefers-color-scheme`
+ * alone, so the server can render the correct theme on first paint and the
+ * user's explicit choice always wins over the OS setting.
+ * ======================================================================== */
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));

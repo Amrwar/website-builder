@@ -1,0 +1,143 @@
+/* ============================================================================
+ * Base layer
+ * ----------------------------------------------------------------------------
+ * Document-level defaults only. Anything component-specific belongs with the
+ * component, not here.
+ * ========================================================================= */
+
+@layer base {
+  html {
+    /* Scroll padding keeps anchor targets clear of the sticky header */
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--surface-canvas);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.6;
+    /* Opt into the grotesk's optical sizing and contextual alternates */
+    font-optical-sizing: auto;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Arabic locale swaps the stack to an Arabic-native face and relaxes
+   * leading, since Arabic glyphs need more vertical room than Latin. */
+  :root:lang(ar) body,
+  [dir="rtl"] body {
+    font-family: var(--font-arabic);
+    line-height: 1.75;
+  }
+
+  /* Headings inherit the display treatment from the type scale; they do not
+   * get browser-default sizes. Explicit utilities set size per use. */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* --- Focus -------------------------------------------------------------
+   * One visible focus treatment for the entire product. Uses :focus-visible
+   * so pointer users never see a ring, keyboard users always do. The offset
+   * ring reads clearly against every surface in both themes. */
+  /* `outline` follows the element's own border-radius, so the ring must not
+   * set a radius itself -- doing so would reshape the element on focus. */
+  :focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 2px;
+  }
+
+  /* Elements that manage their own focus treatment opt out explicitly */
+  [data-focus-managed]:focus-visible {
+    outline: none;
+  }
+
+  ::selection {
+    background-color: var(--palette-brand-200);
+    color: var(--palette-ink-950);
+  }
+
+  [data-theme="dark"] ::selection {
+    background-color: var(--palette-brand-800);
+    color: var(--palette-ink-0);
+  }
+
+  /* --- Form elements inherit type rather than reverting to system UI ----- */
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+  }
+
+  /* Numeric contexts (prices, countdowns, invoice tables) use tabular figures
+   * so digits do not shift width as values change. */
+  [data-numeric] {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+
+  /* --- Media ------------------------------------------------------------- */
+  img,
+  video,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* --- Reduced motion ----------------------------------------------------
+   * Collapses transitions and animations rather than removing them outright,
+   * so state changes still register but nothing moves. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+}
+
+@layer utilities {
+  /* Screen-reader-only text that becomes visible when focused, for skip links */
+  .sr-only-focusable:not(:focus):not(:focus-within) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* Mirrors an icon that encodes direction (arrows, chevrons) under RTL.
+   * Applied deliberately per icon -- never globally, since logos, media and
+   * numerals must not flip. */
+  .rtl-flip:where([dir="rtl"] *) {
+    transform: scaleX(-1);
+  }
+}

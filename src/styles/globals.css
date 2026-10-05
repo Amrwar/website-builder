@@ -1,0 +1,7 @@
+/* Stylesheet entry point. Import order is significant:
+ * Tailwind first, then the token layers it reads from, then base defaults. */
+@import "tailwindcss";
+@import "./tokens.css";
+@import "./theme.css";
+@import "./animations.css";
+@import "./base.css";
