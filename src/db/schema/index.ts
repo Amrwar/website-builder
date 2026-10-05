@@ -1,0 +1,12 @@
+/**
+ * Schema barrel.
+ *
+ * Drizzle needs every table and relation in one object to resolve relational
+ * queries, so this re-export is the single place the schema is assembled.
+ */
+export * from "./enums";
+export * from "./customers";
+export * from "./projects";
+export * from "./briefs";
+export * from "./scope-assessments";
+export * from "./events";
