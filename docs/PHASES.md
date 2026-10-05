@@ -44,9 +44,12 @@ Clerk integration. Six roles, ten permissions, server-side enforcement. Account
 management across profile, business and preferences. Clerk webhook with
 signature verification. Unauthorized access tested, live and in unit tests.
 
-## Next
+## Roadmap
 
-### Phase 6 — Checkout and payments
+Phases 6–32 as set by the product owner. Titles are authoritative; the notes
+under each are what the title maps onto in the system as it stands today.
+
+### Phase 6 — Commerce + Checkout
 
 Stripe. Order creation from a configured draft, payment, invoice, and the
 transition to `awaiting_assets`. Webhook-driven status changes. Refund
@@ -55,46 +58,123 @@ primitives for the two guarantee outcomes.
 **Gate:** a test payment moves a project to `awaiting_assets` and does **not**
 start the countdown.
 
-### Phase 7 — Asset submission and the guarantee clock
+### Phase 7 — Customer Workspace / Build Room
 
-Upload to the private Vercel Blob store. The submission gate that sets
+The signed-in project view: timeline, countdown, live preview, files, messages,
+change requests, approvals. Includes asset submission — the gate that sets
 `assets_submitted_at`, then `build_started_at` and the stored `deadline_at`.
-Countdown UI.
+The core of the product after purchase.
 
 **Gate:** the clock starts on entry to `in_build` and never earlier; the stored
 deadline survives a later change to tier rules.
 
-### Phase 8 — Build Room
+### Phase 8 — Project Production Engine
 
-The signed-in project view: timeline, countdown, live preview, files, messages,
-change requests, approvals. The core of the product after purchase and the
-largest remaining body of work.
+The internal pipeline that moves a project through `project_status`, records
+every transition in `project_events`, and makes build execution trackable
+rather than tacit.
 
-### Phase 9 — Admin dashboard
+### Phase 9 — Admin Production Factory
 
-Project queue sorted by deadline risk, deadline-risk detection, scope override
-as an append-only assessment, customer management, payment and refund
-management, role assignment.
+Project queue sorted by deadline risk, deadline-risk detection,
+scope override as an append-only assessment, customer management, payment and
+refund management, role assignment.
 
-### Phase 10 — Post-launch commerce
+### Phase 10 — Scope + Pricing Engine
 
-Maintenance subscriptions, build credits, referral and partner programmes.
-Requires the provisional figures to be signed off first.
+A rule-based engine already ships (26 capabilities, points plus tier floors,
+actor-group detection across three languages). This phase is where it is
+formalized and extended, and where an LLM assessor would connect through the
+existing `ScopeAssessor` seam. See `docs/PRICING_AND_SCOPE.md`.
 
-### Phase 11 — Public proof
+### Phase 11 — Launch + Hosting + Maintenance
 
-Build wall and portfolio reading real projects; reviews collected from
-delivered builds. Only once there are real builds — the empty states stay until
-then.
+Deployment, domain management, and maintenance subscriptions. The plans are
+configured with provisional prices and are not purchasable.
 
-### Phase 12 — Operations
+### Phase 12 — Growth + Referral + Partner System
 
-CI, monitoring and alerting, analytics, deployment tracking, content
-management, performance budgets.
+Referral credits and the partner/affiliate programme. The credit amount is
+configured and provisional.
+
+### Phase 13 — Internationalization
+
+en/fr/ar with RTL, a typed catalogue and a parity test already ship from Phase
+
+1. This phase is the expansion beyond that — additional locales, and the
+   decision on Clerk widget localisation currently sitting in the backlog.
+
+### Phase 14 — Platform Core / Extensibility Layer
+
+Scope to be defined.
+
+### Phase 15 — Production Hardening + Security
+
+Where the known security gaps land: nonce-based CSP, rate limiting on our own
+endpoints, dependency scanning in CI, audit-log integrity. All four are written
+up in `docs/SECURITY.md`.
+
+### Phases 16–30 — Platform expansion
+
+These titles arrived without specifications. The one-line readings below are
+the obvious reading of each title and are **not** commitments — each needs
+defining before it is implemented, in the way Phases 1–5 were.
+
+| Phase | Title                         | Reads as                                                       |
+| ----- | ----------------------------- | -------------------------------------------------------------- |
+| 16    | Business-in-a-Box             | A bundled starting package rather than a single build          |
+| 17    | Business Idea Validator       | Assessing an idea before it is configured and ordered          |
+| 18    | Spreadsheet → Software        | Turning a customer's existing spreadsheet into an application  |
+| 19    | Process Rescue                | Replacing a broken or manual business process                  |
+| 20    | Software Renovation           | Rebuilding or extending software a customer already owns       |
+| 21    | Automation Engine             | Automating work across a customer's systems                    |
+| 22    | Business Brain                | Scope to be defined                                            |
+| 23    | Business Health               | Scope to be defined                                            |
+| 24    | Digital Employees             | Scope to be defined                                            |
+| 25    | Business Marketplace          | Scope to be defined                                            |
+| 26    | Template / Module Marketplace | Reusable modules customers or partners can buy                 |
+| 27    | Partner / Developer Ecosystem | Third parties building on the platform                         |
+| 28    | Globalization + Localization  | Beyond Phase 13: markets, currencies, tax, regional operations |
+| 29    | Advanced Intelligence         | Scope to be defined                                            |
+| 30    | Final Platform Transformation | Scope to be defined                                            |
+
+### Phase 31 — Full Production Audit
+
+End-to-end review before launch: security, performance, accessibility, data,
+commercial terms.
+
+### Phase 32 — Launch
+
+Go live.
+
+## What the previous roadmap's items became
+
+The earlier seven-phase plan is superseded. Nothing in it was dropped silently;
+this is where each item now sits.
+
+| Previous item                                     | Now                              |
+| ------------------------------------------------- | -------------------------------- |
+| Checkout and payments                             | Phase 6                          |
+| Asset submission + guarantee clock                | Phase 7                          |
+| Build Room                                        | Phase 7                          |
+| Admin dashboard                                   | Phase 9                          |
+| Post-launch commerce                              | Phases 11 and 12                 |
+| Operations (CI, monitoring, analytics)            | Phase 15 and the backlog below   |
+| **Public proof** (build wall, portfolio, reviews) | **Not named in the new roadmap** |
+
+### One gap to close
+
+The new roadmap has no phase for **public proof**. Three marketing sections —
+the build wall, the portfolio and testimonials — currently render empty states
+on the live home page and stay empty until something populates them from real
+delivered projects. They need a home, most plausibly inside Phase 11 or 12, or
+a phase of their own.
 
 ## Cross-cutting backlog
 
 Not phases; they should be absorbed into whichever phase touches them first.
+CI is the one that should not wait for Phase 15 — nothing currently stops a
+broken commit.
 
 | Item                                | Where it is written up                  |
 | ----------------------------------- | --------------------------------------- |
@@ -112,7 +192,7 @@ Not phases; they should be absorbed into whichever phase touches them first.
 | Decision                                                                                 | Blocks                                     |
 | ---------------------------------------------------------------------------------------- | ------------------------------------------ |
 | `extended` / `advanced` tier prices and days                                             | Showing the configurator to real customers |
-| Maintenance plan prices                                                                  | Phase 10                                   |
-| Referral credit amount                                                                   | Phase 10                                   |
-| Company name and domain                                                                  | Launch                                     |
-| Clerk application name (currently the Vercel resource name, visible on the sign-in card) | Launch — one dashboard edit                |
+| Maintenance plan prices                                                                  | Phase 11                                   |
+| Referral credit amount                                                                   | Phase 12                                   |
+| Company name and domain                                                                  | Phase 32                                   |
+| Clerk application name (currently the Vercel resource name, visible on the sign-in card) | Phase 32 — one dashboard edit              |
