@@ -928,7 +928,10 @@
       "project_manager": "مدير المشروع",
       "developer": "مطوِّر",
       "designer": "مصمِّم",
-      "support": "الدعم"
+      "support": "الدعم",
+      "owner": "المالك",
+      "finance": "المالية",
+      "qa": "الجودة"
     }
   },
   "checkout": {

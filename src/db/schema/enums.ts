@@ -320,3 +320,66 @@ export const deliverableStatusEnum = pgEnum("deliverable_status", DELIVERABLE_ST
 /** Schedule risk, mirroring `RISK_LEVELS` in `lib/production/risk`. */
 export const RISK_LEVEL_VALUES = ["green", "yellow", "red"] as const;
 export const riskLevelEnum = pgEnum("risk_level", RISK_LEVEL_VALUES);
+
+/* -------------------------------------------------------------------------
+ * Audit
+ * ---------------------------------------------------------------------- */
+
+/**
+ * Audit categories.
+ *
+ * Coarse on purpose: the category is what the log is filtered by, and a
+ * taxonomy with thirty entries is one nobody uses. The precise act lives in
+ * `action`.
+ */
+export const AUDIT_CATEGORIES = [
+  /** Roles, access, account state. */
+  "security",
+  /** Money: refunds, invoice corrections, payment state. */
+  "finance",
+  /** Scope, deadlines, assignment, deployment. */
+  "delivery",
+  /** Platform configuration. */
+  "configuration",
+  /** Reading something sensitive, where the read itself is notable. */
+  "access",
+] as const;
+export type AuditCategory = (typeof AUDIT_CATEGORIES)[number];
+export const auditCategoryEnum = pgEnum("audit_category", AUDIT_CATEGORIES);
+
+/**
+ * Refund lifecycle.
+ *
+ * `requested` and `approved` are distinct states because requesting and
+ * releasing a refund are two acts by two different roles -- finance prepares,
+ * owner or admin executes. Collapsing them would remove the control.
+ */
+export const REFUND_STATUSES = [
+  "requested",
+  "approved",
+  "rejected",
+  "processing",
+  "completed",
+  "failed",
+] as const;
+export type RefundStatus = (typeof REFUND_STATUSES)[number];
+export const refundStatusEnum = pgEnum("refund_status", REFUND_STATUSES);
+
+/** Why a refund is owed. The guarantee outcomes are first-class. */
+export const REFUND_REASONS = [
+  /** Deadline missed, customer cancelled: 100%. */
+  "guarantee_cancel",
+  /** Deadline missed, customer continued: 30%. */
+  "guarantee_continue",
+  "duplicate_payment",
+  "customer_request",
+  "goodwill",
+  "other",
+] as const;
+export type RefundReason = (typeof REFUND_REASONS)[number];
+export const refundReasonEnum = pgEnum("refund_reason", REFUND_REASONS);
+
+/** Message audience. Internal notes never reach a customer-scoped query. */
+export const MESSAGE_VISIBILITIES = ["customer", "internal"] as const;
+export type MessageVisibility = (typeof MESSAGE_VISIBILITIES)[number];
+export const messageVisibilityEnum = pgEnum("message_visibility", MESSAGE_VISIBILITIES);

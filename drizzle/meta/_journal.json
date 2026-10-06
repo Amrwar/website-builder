@@ -29,6 +29,13 @@
       "when": 1791251184372,
       "tag": "0003_production_engine",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1791256604528,
+      "tag": "0004_admin_factory",
+      "breakpoints": true
     }
   ]
 }

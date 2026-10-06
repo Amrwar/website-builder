@@ -20,6 +20,7 @@ import {
   deploymentStateEnum,
   fileKindEnum,
   fileVisibilityEnum,
+  messageVisibilityEnum,
   userRoleEnum,
 } from "./enums";
 import { orders } from "./orders";
@@ -158,6 +159,19 @@ export const projectMessages = pgTable(
     }),
     /** Kept even when the author row is gone, so a thread still reads correctly. */
     authorType: actorTypeEnum("author_type").notNull(),
+
+    /**
+     * Who may read it. `internal` is a note between staff on the customer's
+     * own project, and it never reaches a customer-scoped query.
+     *
+     * Defaults to `customer` because the overwhelming majority of messages are
+     * replies to the customer, and a default of `internal` would mean a
+     * forgotten flag silently hides an answer they are waiting for. The
+     * opposite mistake -- a note meant for staff going out -- is guarded by
+     * the composer defaulting internal notes explicitly, and by the admin UI
+     * marking them unmistakably.
+     */
+    visibility: messageVisibilityEnum("visibility").notNull().default("customer"),
     authorName: text("author_name").notNull(),
 
     body: text("body").notNull(),
@@ -177,6 +191,8 @@ export const projectMessages = pgTable(
   },
   (table) => [
     index("project_messages_project_idx").on(table.projectId, table.createdAt.desc()),
+    /** "What can this customer see" has to be an indexed question. */
+    index("project_messages_visibility_idx").on(table.projectId, table.visibility),
   ],
 );
 

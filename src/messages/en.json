@@ -928,7 +928,10 @@
       "project_manager": "Project manager",
       "developer": "Developer",
       "designer": "Designer",
-      "support": "Support"
+      "support": "Support",
+      "owner": "Owner",
+      "finance": "Finance",
+      "qa": "QA"
     }
   },
   "checkout": {
