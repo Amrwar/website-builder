@@ -25,6 +25,15 @@ import { users } from "./users";
  * Everything is therefore snapshotted. The customer's name and business
  * details are copied in at issue time rather than joined on read: an invoice
  * must still show who was billed even after they rename their company.
+ *
+ * Enforced in the database, not merely intended here. Once `issuedAt` is set,
+ * `invoices_frozen_after_issue` refuses any change outside the refund, void
+ * and payment columns, and `invoices_no_delete_after_issue` refuses deletion
+ * -- the number is part of a gapless sequence, so removing a row breaks the
+ * sequence itself. Both work from an allowlist of mutable columns, so a
+ * column added later is frozen until somebody decides otherwise. An unissued
+ * draft is still freely editable, because it is not yet a record of anything.
+ * `drizzle/0010_financial_immutability.sql`.
  */
 export const invoices = pgTable(
   "invoices",

@@ -67,6 +67,11 @@ export const orders = pgTable(
      * rounding step applied, the rate table's review date, the scope assessor
      * and its ruleset version. This is what makes a charged figure defensible
      * years later.
+     *
+     * Frozen by `orders_frozen_after_payment` from the moment `paidAt` is set,
+     * along with the amounts and the currency. Not from creation: an unpaid
+     * order is still a quote and may legitimately be re-priced.
+     * `drizzle/0010_financial_immutability.sql`.
      */
     pricingSnapshot: jsonb("pricing_snapshot").notNull(),
 
