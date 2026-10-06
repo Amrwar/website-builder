@@ -1681,7 +1681,12 @@
         "body": "Les prix des forfaits de maintenance et la liste de mise en ligne proviennent encore de la configuration versionnée. Importez-les pour pouvoir les modifier ici. L’import ne change rien — il recopie les mêmes valeurs dans la base.",
         "action": "Importer forfaits et liste"
       },
-      "quoteHint": "Laissez vide pour un devis sur mesure. Les jours doivent l’être aussi."
+      "quoteHint": "Laissez vide pour un devis sur mesure. Les jours doivent l’être aussi.",
+      "intervalLabel": {
+        "monthly": "mensuel",
+        "yearly": "annuel"
+      },
+      "minutesUnit": "{count} min"
     },
     "analytics": {
       "title": "Analyses",
@@ -1703,7 +1708,12 @@
       "estimate": "Estimation",
       "actual": "Réel",
       "unassigned": "Non assigné",
-      "minutes": "{count} min"
+      "minutes": "{count} min",
+      "actorType": {
+        "customer": "Client",
+        "staff": "Équipe",
+        "system": "Système"
+      }
     },
     "scopeView": {
       "title": "Périmètre",
@@ -1867,7 +1877,9 @@
       "reverse": "Annuler",
       "rate": "Taux de commission (points de base)",
       "note": "Motif",
-      "holdNote": "Les commissions sont retenues {days} jours après conversion, pour qu’un remboursement ne laisse pas une commission déjà payée."
+      "holdNote": "Les commissions sont retenues {days} jours après conversion, pour qu’un remboursement ne laisse pas une commission déjà payée.",
+      "commissionRate": "{rate} % de commission",
+      "commissionOf": "{rate} % de {gross}"
     },
     "reviewsPage": {
       "title": "Avis",

@@ -8,9 +8,9 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
-import { getLocaleDefinition, resolveLocale } from "@/config/locales";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
+import { viewerDates } from "@/server/i18n";
 import { getAuthContext } from "@/server/auth";
 import { listProjectsForCaller } from "@/server/workspace/queries";
 
@@ -31,7 +31,7 @@ export default async function ProjectsPage({ params }: PageProps<"/[locale]/proj
 
   const { locale } = await params;
   const t = await getTranslations("workspace");
-  const { intlTag } = getLocaleDefinition(resolveLocale(locale));
+  const dates = await viewerDates(locale);
 
   const projects = await listProjectsForCaller(context);
 
@@ -70,9 +70,7 @@ export default async function ProjectsPage({ params }: PageProps<"/[locale]/proj
                       {project.reference}
                     </span>
                     <span className="text-caption text-tertiary" data-numeric>
-                      {new Intl.DateTimeFormat(intlTag, { dateStyle: "medium" }).format(
-                        project.createdAt,
-                      )}
+                      {dates.date(project.createdAt)}
                     </span>
                   </div>
 
@@ -80,9 +78,7 @@ export default async function ProjectsPage({ params }: PageProps<"/[locale]/proj
                     {project.deadlineAt ? (
                       <span className="text-caption text-secondary" data-numeric>
                         {t("deadline.due", {
-                          date: new Intl.DateTimeFormat(intlTag, {
-                            dateStyle: "medium",
-                          }).format(project.deadlineAt),
+                          date: dates.date(project.deadlineAt),
                         })}
                       </span>
                     ) : null}

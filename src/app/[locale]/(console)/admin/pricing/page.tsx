@@ -13,6 +13,7 @@ import {
   PlanEditor,
   TierEditor,
 } from "@/components/admin/pricing/catalog-editors";
+import { Numeric } from "@/components/ui/numeric";
 import { Badge } from "@/components/ui/badge";
 import { Callout } from "@/components/ui/callout";
 import { Card } from "@/components/ui/card";
@@ -156,11 +157,14 @@ export default async function AdminPricingPage({
                             </span>
                           </div>
 
-                          <span className="text-caption text-tertiary" data-numeric>
-                            {rule.guaranteedDays
-                              ? `${rule.guaranteedDays} ${t("days").toLowerCase()} · `
-                              : ""}
-                            {t("threshold")} {rule.pointThreshold}
+                          <span className="text-caption text-tertiary">
+                            {rule.guaranteedDays ? (
+                              <>
+                                <Numeric>{rule.guaranteedDays}</Numeric>{" "}
+                                {t("days").toLowerCase()} ·{" "}
+                              </>
+                            ) : null}
+                            {t("threshold")} <Numeric>{rule.pointThreshold}</Numeric>
                           </span>
 
                           <div className="flex flex-wrap items-center gap-2">
@@ -218,12 +222,15 @@ export default async function AdminPricingPage({
                         ) : null}
                       </span>
 
-                      <span className="text-caption text-secondary" data-numeric>
-                        {feature.points} {t("points").toLowerCase()} · {t("minimumTier")}{" "}
-                        {feature.minimumTier}
-                        {feature.surchargeMinorUnits
-                          ? ` · ${base(feature.surchargeMinorUnits)}`
-                          : ""}
+                      <span className="text-caption text-secondary">
+                        <Numeric>{feature.points}</Numeric> {t("points").toLowerCase()} ·{" "}
+                        {t("minimumTier")} {feature.minimumTier}
+                        {feature.surchargeMinorUnits ? (
+                          <>
+                            {" · "}
+                            <Numeric>{base(feature.surchargeMinorUnits)}</Numeric>
+                          </>
+                        ) : null}
                       </span>
                     </div>
 
@@ -265,9 +272,10 @@ export default async function AdminPricingPage({
                         ) : null}
                       </span>
 
-                      <span className="text-caption text-secondary" data-numeric>
-                        {t("rate")} {rule.rate} · {t("rounding")} {rule.roundToMinorUnits}{" "}
-                        · {t("reviewedOn")} {rule.reviewedOn}
+                      <span className="text-caption text-secondary">
+                        {t("rate")} <Numeric>{rule.rate}</Numeric> · {t("rounding")}{" "}
+                        <Numeric>{rule.roundToMinorUnits}</Numeric> · {t("reviewedOn")}{" "}
+                        <Numeric>{rule.reviewedOn}</Numeric>
                       </span>
                     </div>
 
@@ -322,11 +330,12 @@ export default async function AdminPricingPage({
                             ? ` · ${t("minOrder")} ${base(discount.minOrderMinorUnits)}`
                             : ""}
                         </span>
-                        <span className="text-caption text-tertiary" data-numeric>
-                          {discount.timesUsed}
-                          {discount.maxRedemptions === null
-                            ? ` / ${t("unlimited").toLowerCase()}`
-                            : ` / ${discount.maxRedemptions}`}{" "}
+                        <span className="text-caption text-tertiary">
+                          <Numeric>
+                            {discount.maxRedemptions === null
+                              ? `${discount.timesUsed} / ${t("unlimited").toLowerCase()}`
+                              : `${discount.timesUsed} / ${discount.maxRedemptions}`}
+                          </Numeric>{" "}
                           · {t("appliesTo")}{" "}
                           {discount.appliesToBuildTypes.length === 0
                             ? t("allBuilds").toLowerCase()
@@ -379,12 +388,26 @@ export default async function AdminPricingPage({
                           ) : null}
                         </span>
 
-                        <span className="text-caption text-secondary" data-numeric>
-                          {base(plan.priceMinorUnits)} · {plan.interval}
-                          {plan.includedCreditMinutes > 0
-                            ? ` · ${plan.includedCreditMinutes} min`
-                            : ""}
-                          {plan.trialDays > 0 ? ` · ${plan.trialDays}d` : ""}
+                        <span className="text-caption text-secondary">
+                          <Numeric>{base(plan.priceMinorUnits)}</Numeric> ·{" "}
+                          {t(`intervalLabel.${plan.interval}`)}
+                          {plan.includedCreditMinutes > 0 ? (
+                            <>
+                              {" · "}
+                              {t("includedCredit")}{" "}
+                              <Numeric>
+                                {t("minutesUnit", {
+                                  count: plan.includedCreditMinutes,
+                                })}
+                              </Numeric>
+                            </>
+                          ) : null}
+                          {plan.trialDays > 0 ? (
+                            <>
+                              {" · "}
+                              {t("trialDays")} <Numeric>{plan.trialDays}</Numeric>
+                            </>
+                          ) : null}
                         </span>
                       </div>
 

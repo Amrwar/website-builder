@@ -3,11 +3,12 @@ import { getTranslations } from "next-intl/server";
 
 import { AdminPageHeader, AdminShell } from "@/components/admin/admin-shell";
 import { ShowcaseActions } from "@/components/admin/growth/growth-controls";
+import { Numeric } from "@/components/ui/numeric";
 import { Badge } from "@/components/ui/badge";
 import { Callout } from "@/components/ui/callout";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
-import { getLocaleDefinition, resolveLocale } from "@/config/locales";
+import { viewerDates } from "@/server/i18n";
 import { requireAdminSection } from "@/server/admin/guard";
 import { listShowcaseRows } from "@/server/admin/growth-queries";
 
@@ -33,12 +34,11 @@ export default async function AdminShowcasePage({
   const { locale } = await params;
 
   const t = await getTranslations("adminConsole.showcasePage");
-  const { intlTag } = getLocaleDefinition(resolveLocale(locale));
+  const dates = await viewerDates(locale);
 
   const rows = await listShowcaseRows(context);
 
-  const date = (value: Date | null) =>
-    value ? new Intl.DateTimeFormat(intlTag, { dateStyle: "medium" }).format(value) : "—";
+  const date = (value: Date | null) => dates.date(value);
 
   return (
     <AdminShell role={context.user.role} active="showcase">
@@ -60,8 +60,9 @@ export default async function AdminShowcasePage({
                     <span className="text-body font-medium text-primary">
                       {entry.title}
                     </span>
-                    <span className="text-caption text-tertiary" data-numeric>
-                      {projectReference} · {entry.slug}
+                    <span className="text-caption text-tertiary">
+                      <Numeric>{projectReference}</Numeric> ·{" "}
+                      <Numeric>{entry.slug}</Numeric>
                     </span>
                   </div>
 

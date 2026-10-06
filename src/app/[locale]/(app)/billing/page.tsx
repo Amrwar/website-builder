@@ -5,12 +5,14 @@ import { getTranslations } from "next-intl/server";
 import { MaintenancePanel } from "@/components/account/maintenance";
 import { ReferralPanel } from "@/components/growth/referral-panel";
 import { Container } from "@/components/layout/container";
+import { Numeric } from "@/components/ui/numeric";
 import { Badge } from "@/components/ui/badge";
 import { Callout } from "@/components/ui/callout";
 import { Card } from "@/components/ui/card";
 import { getLocaleDefinition, resolveLocale } from "@/config/locales";
 import { formatMinutes } from "@/lib/credits";
 import { formatMoney, money, type Currency } from "@/lib/pricing/money";
+import { viewerDates, viewerPresentation } from "@/server/i18n";
 import { getAuthContext } from "@/server/auth";
 import { statementFor } from "@/server/credits";
 import { loadPlans, subscriptionsFor } from "@/server/subscriptions";
@@ -44,6 +46,8 @@ export default async function BillingPage({ params }: PageProps<"/[locale]/billi
   const tMaintenance = await getTranslations("maintenance");
   const tCredit = await getTranslations("maintenance.credits");
   const { intlTag } = getLocaleDefinition(resolveLocale(locale));
+  const { timeZone } = await viewerPresentation(locale);
+  const dates = await viewerDates(locale);
 
   const [plans, subscriptions, credit, referral] = await Promise.all([
     loadPlans(),
@@ -54,8 +58,7 @@ export default async function BillingPage({ params }: PageProps<"/[locale]/billi
 
   const referralEarned = formatMinutes(referral.earnedMinutes);
 
-  const date = (value: Date) =>
-    new Intl.DateTimeFormat(intlTag, { dateStyle: "medium" }).format(value);
+  const date = (value: Date | null) => dates.date(value);
 
   const price = (minorUnits: number, currency: string) =>
     formatMoney(money(minorUnits, currency as Currency), intlTag, {
@@ -103,6 +106,7 @@ export default async function BillingPage({ params }: PageProps<"/[locale]/billi
                 }
               : null
           }
+          timeZone={timeZone}
           projectId={current?.projectId ?? null}
           locale={intlTag}
         />
@@ -156,11 +160,16 @@ export default async function BillingPage({ params }: PageProps<"/[locale]/billi
                         <span className="text-body-sm text-primary">
                           {entry.description ?? tCredit(`kind.${entry.kind}`)}
                         </span>
-                        <span className="text-caption text-tertiary" data-numeric>
-                          {date(entry.occurredAt)}
-                          {entry.expiresAt
-                            ? ` · ${tCredit("expires", { date: date(entry.expiresAt) })}`
-                            : ""}
+                        <span className="text-caption text-tertiary">
+                          <Numeric>{date(entry.occurredAt)}</Numeric>
+                          {entry.expiresAt ? (
+                            <>
+                              {" · "}
+                              {tCredit("expires", {
+                                date: date(entry.expiresAt),
+                              })}
+                            </>
+                          ) : null}
                         </span>
                       </span>
 

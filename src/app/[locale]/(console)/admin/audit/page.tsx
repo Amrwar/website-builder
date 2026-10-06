@@ -7,7 +7,7 @@ import { AdminTableToolbar } from "@/components/admin/table-toolbar";
 import { Badge } from "@/components/ui/badge";
 import { Callout } from "@/components/ui/callout";
 import { AUDIT_CATEGORIES, type AuditCategory } from "@/db/schema/enums";
-import { getLocaleDefinition, resolveLocale } from "@/config/locales";
+import { viewerDates } from "@/server/i18n";
 import { readAuditLog } from "@/server/admin/audit";
 import { requireAdminSection } from "@/server/admin/guard";
 import type { AuditEvent } from "@/db/schema";
@@ -37,7 +37,7 @@ export default async function AdminAuditPage({
   const query = await searchParams;
 
   const t = await getTranslations("adminConsole");
-  const { intlTag } = getLocaleDefinition(resolveLocale(locale));
+  const dates = await viewerDates(locale);
 
   const rawCategory = typeof query.category === "string" ? query.category : undefined;
   const category = AUDIT_CATEGORIES.includes(rawCategory as AuditCategory)
@@ -49,11 +49,7 @@ export default async function AdminAuditPage({
 
   const result = await readAuditLog({ category, search, page }, context);
 
-  const when = (value: Date) =>
-    new Intl.DateTimeFormat(intlTag, {
-      dateStyle: "short",
-      timeStyle: "short",
-    }).format(value);
+  const when = (value: Date | null) => dates.dateTime(value);
 
   const columns: Column<Row>[] = [
     {

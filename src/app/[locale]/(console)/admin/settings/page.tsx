@@ -2,15 +2,16 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
 import { AdminPageHeader, AdminShell } from "@/components/admin/admin-shell";
+import { Numeric } from "@/components/ui/numeric";
 import { Badge } from "@/components/ui/badge";
 import { Callout } from "@/components/ui/callout";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { MISSED_DEADLINE_REFUND } from "@/config/brand";
 import { TAX } from "@/config/commerce";
-import { getLocaleDefinition, resolveLocale } from "@/config/locales";
 import { Link } from "@/i18n/navigation";
 import { RISK_THRESHOLDS, RISK_RULESET_VERSION } from "@/lib/production/risk";
+import { viewerDates } from "@/server/i18n";
 import { requireAdminSection } from "@/server/admin/guard";
 import { loadCatalog } from "@/server/engine";
 
@@ -42,10 +43,9 @@ export default async function AdminSettingsPage({
   const { locale } = await params;
 
   const t = await getTranslations("adminConsole");
-  const { intlTag } = getLocaleDefinition(resolveLocale(locale));
 
   const catalog = await loadCatalog();
-  const format = new Intl.DateTimeFormat(intlTag, { dateStyle: "medium" });
+  const dates = await viewerDates(locale);
 
   return (
     <AdminShell role={context.user.role} active="settings">
@@ -84,15 +84,16 @@ export default async function AdminSettingsPage({
                   ) : null}
                 </dt>
                 <dd className="flex flex-col items-end">
-                  <span className="text-body-sm text-primary" data-numeric>
-                    × {rule.rate} · {rule.roundToMinorUnits}
+                  <span className="text-body-sm text-primary">
+                    × <Numeric>{rule.rate}</Numeric> ·{" "}
+                    <Numeric>{rule.roundToMinorUnits}</Numeric>
                   </span>
                   {/* A rate with no review date beside it is one nobody can
                       hold to account, so the date travels with the figure. */}
                   <span className="text-caption text-tertiary" data-numeric>
                     {rule.reviewedOn
                       ? t("settings.reviewedOn", {
-                          date: format.format(new Date(rule.reviewedOn)),
+                          date: dates.date(new Date(rule.reviewedOn)),
                         })
                       : "—"}
                   </span>

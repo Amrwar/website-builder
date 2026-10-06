@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { LOCALES } from "@/config/locales";
+import { isTimeZone } from "@/config/time";
 import { SUPPORTED_CURRENCIES } from "@/lib/pricing/money";
 
 /**
@@ -63,21 +64,8 @@ export const businessSchema = z.object({
 export const preferencesSchema = z.object({
   preferredLocale: z.enum(LOCALES),
   preferredCurrency: z.enum(SUPPORTED_CURRENCIES),
-  /**
-   * Validated against the runtime's own timezone database rather than a
-   * hardcoded list, so it cannot drift as zones are added or renamed.
-   */
-  timezone: z.string().refine(
-    (value) => {
-      try {
-        new Intl.DateTimeFormat("en", { timeZone: value });
-        return true;
-      } catch {
-        return false;
-      }
-    },
-    { message: "Choose a valid time zone." },
-  ),
+  /** Validated against the runtime's own zone database. See `isTimeZone`. */
+  timezone: z.string().refine(isTimeZone, { message: "Choose a valid time zone." }),
   notifyBuildUpdates: z.boolean(),
   notifyMessages: z.boolean(),
   notifyDeadlineAlerts: z.boolean(),

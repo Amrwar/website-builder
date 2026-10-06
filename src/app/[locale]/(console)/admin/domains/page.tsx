@@ -5,8 +5,8 @@ import { AdminPageHeader, AdminShell } from "@/components/admin/admin-shell";
 import { DataTable } from "@/components/admin/data-table";
 import { Badge } from "@/components/ui/badge";
 import { Callout } from "@/components/ui/callout";
-import { getLocaleDefinition, resolveLocale } from "@/config/locales";
 import { SSL_EXPIRY_WARNING_DAYS } from "@/config/launch";
+import { viewerDates } from "@/server/i18n";
 import { requireAdminSection } from "@/server/admin/guard";
 import { listDomains, type DomainRow } from "@/server/admin/launch-queries";
 
@@ -33,7 +33,7 @@ export default async function AdminDomainsPage({
 
   const t = await getTranslations("adminConsole.domainsPage");
   const tState = await getTranslations("workspace.launch.domainState");
-  const { intlTag } = getLocaleDefinition(resolveLocale(locale));
+  const dates = await viewerDates(locale);
 
   const rows = await listDomains(context);
 
@@ -43,8 +43,7 @@ export default async function AdminDomainsPage({
       row.certificateDaysRemaining <= SSL_EXPIRY_WARNING_DAYS,
   );
 
-  const date = (value: Date | null) =>
-    value ? new Intl.DateTimeFormat(intlTag, { dateStyle: "medium" }).format(value) : "—";
+  const date = (value: Date | null) => dates.date(value);
 
   return (
     <AdminShell role={context.user.role} active="domains">

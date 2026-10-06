@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Callout } from "@/components/ui/callout";
 import { getLocaleDefinition, resolveLocale } from "@/config/locales";
 import { formatMoney, money, type Currency } from "@/lib/pricing/money";
+import { viewerDates } from "@/server/i18n";
 import { requireAdminSection } from "@/server/admin/guard";
 import { refundList } from "@/server/admin/lists";
 
@@ -37,6 +38,7 @@ export default async function AdminRefundsPage({
 
   const t = await getTranslations("adminConsole");
   const { intlTag } = getLocaleDefinition(resolveLocale(locale));
+  const dates = await viewerDates(locale);
 
   const status = typeof query.status === "string" ? query.status : undefined;
   const page =
@@ -45,8 +47,7 @@ export default async function AdminRefundsPage({
 
   const canExecute = context.can("refund:execute");
 
-  const when = (value: Date) =>
-    new Intl.DateTimeFormat(intlTag, { dateStyle: "short" }).format(value);
+  const when = (value: Date | null) => dates.date(value, "short");
 
   type Row = (typeof result.rows)[number];
   const columns: Column<Row>[] = [

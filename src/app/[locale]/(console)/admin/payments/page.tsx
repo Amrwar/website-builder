@@ -6,6 +6,7 @@ import { DataTable, TablePagination, type Column } from "@/components/admin/data
 import { AdminTableToolbar } from "@/components/admin/table-toolbar";
 import { Badge } from "@/components/ui/badge";
 import { getLocaleDefinition, resolveLocale } from "@/config/locales";
+import { viewerDates } from "@/server/i18n";
 import { orderList } from "@/server/admin/lists";
 import { requireAdminSection } from "@/server/admin/guard";
 
@@ -28,6 +29,7 @@ export default async function AdminPaymentsPage({
 
   const t = await getTranslations("adminConsole");
   const { intlTag } = getLocaleDefinition(resolveLocale(locale));
+  const dates = await viewerDates(locale);
 
   const search = typeof query.q === "string" && query.q !== "" ? query.q : undefined;
   const status = typeof query.status === "string" ? query.status : undefined;
@@ -35,8 +37,7 @@ export default async function AdminPaymentsPage({
     Number.parseInt(typeof query.page === "string" ? query.page : "1", 10) || 1;
   const result = await orderList({ search, status, page }, context);
 
-  const when = (value: Date | null) =>
-    value ? new Intl.DateTimeFormat(intlTag, { dateStyle: "short" }).format(value) : "—";
+  const when = (value: Date | null) => dates.date(value, "short");
 
   type Row = (typeof result.rows)[number];
   const columns: Column<Row>[] = [

@@ -6,8 +6,8 @@ import { DataTable, TablePagination, type Column } from "@/components/admin/data
 import { RiskBadge } from "@/components/admin/risk-badge";
 import { AdminTableToolbar } from "@/components/admin/table-toolbar";
 import { Badge } from "@/components/ui/badge";
-import { getLocaleDefinition, resolveLocale } from "@/config/locales";
 import type { RiskLevel } from "@/lib/production/risk";
+import { viewerDates } from "@/server/i18n";
 import { productionQueue, type QueueRow } from "@/server/admin/queries";
 import { requireAdminSection } from "@/server/admin/guard";
 import { workingDaysBetween } from "@/lib/schedule/deadline";
@@ -40,7 +40,7 @@ export default async function ProductionQueuePage({
   const query = await searchParams;
 
   const t = await getTranslations("adminConsole");
-  const { intlTag } = getLocaleDefinition(resolveLocale(locale));
+  const dates = await viewerDates(locale);
 
   const read = (key: string): string | undefined => {
     const value = query[key];
@@ -63,8 +63,7 @@ export default async function ProductionQueuePage({
     context,
   );
 
-  const date = (value: Date | null) =>
-    value ? new Intl.DateTimeFormat(intlTag, { dateStyle: "short" }).format(value) : "—";
+  const date = (value: Date | null) => dates.date(value, "short");
 
   const remaining = (deadlineAt: Date | null) => {
     if (!deadlineAt) return t("queue.noDeadline");

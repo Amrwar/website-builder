@@ -2,6 +2,7 @@ import { getRequestConfig } from "next-intl/server";
 import { locale as localeRootParam } from "next/root-params";
 
 import { getLocaleDefinition, resolveLocale, type Locale } from "@/config/locales";
+import { PLATFORM_TIME_ZONE } from "@/config/time";
 
 /**
  * Per-request i18n configuration.
@@ -47,7 +48,16 @@ export default getRequestConfig(async ({ locale }) => {
         integer: { maximumFractionDigits: 0 },
       },
     },
-    timeZone: "America/Toronto",
+    /**
+     * The *fallback* zone, not an assumption about the reader.
+     *
+     * This config is built for every request including anonymous marketing
+     * pages, so resolving the signed-in viewer's zone here would add a session
+     * lookup and a query to pages that render no timestamps at all. Anything
+     * that shows a real timestamp goes through `viewerDates` / `viewerPresentation`
+     * instead, which read the zone from the account.
+     */
+    timeZone: PLATFORM_TIME_ZONE,
     /**
      * A missing translation is a bug, not a runtime failure: surface it in
      * development and during tests, stay quiet in production, and always fall

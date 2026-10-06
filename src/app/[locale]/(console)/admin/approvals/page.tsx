@@ -5,7 +5,7 @@ import { AdminPageHeader, AdminShell } from "@/components/admin/admin-shell";
 import { DataTable, TablePagination, type Column } from "@/components/admin/data-table";
 import { AdminTableToolbar } from "@/components/admin/table-toolbar";
 import { Badge } from "@/components/ui/badge";
-import { getLocaleDefinition, resolveLocale } from "@/config/locales";
+import { viewerDates } from "@/server/i18n";
 import { approvalList } from "@/server/admin/lists";
 import { requireAdminSection } from "@/server/admin/guard";
 
@@ -26,15 +26,14 @@ export default async function AdminApprovalsPage({
   const query = await searchParams;
 
   const t = await getTranslations("adminConsole");
-  const { intlTag } = getLocaleDefinition(resolveLocale(locale));
+  const dates = await viewerDates(locale);
 
   const status = typeof query.status === "string" ? query.status : undefined;
   const page =
     Number.parseInt(typeof query.page === "string" ? query.page : "1", 10) || 1;
   const result = await approvalList({ status, page }, context);
 
-  const when = (value: Date | null) =>
-    value ? new Intl.DateTimeFormat(intlTag, { dateStyle: "short" }).format(value) : "—";
+  const when = (value: Date | null) => dates.date(value, "short");
 
   type Row = (typeof result.rows)[number];
   const columns: Column<Row>[] = [

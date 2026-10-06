@@ -6,6 +6,7 @@ import {
   CommissionActions,
   PartnerActions,
 } from "@/components/admin/growth/growth-controls";
+import { Numeric } from "@/components/ui/numeric";
 import { Badge } from "@/components/ui/badge";
 import { Callout } from "@/components/ui/callout";
 import { Card } from "@/components/ui/card";
@@ -14,6 +15,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { COMMISSION_BASIS_POINTS, COMMISSION_HOLD_DAYS } from "@/config/growth";
 import { getLocaleDefinition, resolveLocale } from "@/config/locales";
 import { formatMoney, money, type Currency } from "@/lib/pricing/money";
+import { viewerDates } from "@/server/i18n";
 import { requireAdminSection } from "@/server/admin/guard";
 import { listCommissionRows } from "@/server/admin/growth-queries";
 import { listAffiliates, listPartners } from "@/server/growth/partners";
@@ -40,6 +42,7 @@ export default async function AdminPartnersPage({
 
   const t = await getTranslations("adminConsole.partnersPage");
   const { intlTag } = getLocaleDefinition(resolveLocale(locale));
+  const dates = await viewerDates(locale);
 
   const canSeeMoney = context.can("finance:read");
 
@@ -49,8 +52,7 @@ export default async function AdminPartnersPage({
     canSeeMoney ? listCommissionRows(context) : Promise.resolve([]),
   ]);
 
-  const date = (value: Date | null) =>
-    value ? new Intl.DateTimeFormat(intlTag, { dateStyle: "medium" }).format(value) : "—";
+  const date = (value: Date | null) => dates.date(value);
 
   const amount = (minorUnits: number, currency: string) =>
     formatMoney(money(minorUnits, currency as Currency), intlTag, {
@@ -105,9 +107,13 @@ export default async function AdminPartnersPage({
                         >
                           {t(`status.${partner.status}`)}
                         </Badge>
-                        <span className="text-caption text-tertiary" data-numeric>
-                          {(partner.commissionBasisPoints / 100).toFixed(1)}% ·{" "}
-                          {date(partner.createdAt)}
+                        <span className="text-caption text-tertiary">
+                          <Numeric>
+                            {t("commissionRate", {
+                              rate: (partner.commissionBasisPoints / 100).toFixed(1),
+                            })}
+                          </Numeric>{" "}
+                          · <Numeric>{date(partner.createdAt)}</Numeric>
                         </span>
                       </span>
 
@@ -196,9 +202,15 @@ export default async function AdminPartnersPage({
                     >
                       <div className="flex flex-col gap-1">
                         <span className="text-body-sm text-primary">{earnerName}</span>
-                        <span className="text-caption text-tertiary" data-numeric>
-                          {orderNumber} · {(commission.rateBasisPoints / 100).toFixed(1)}%
-                          of {amount(commission.grossMinorUnits, commission.currency)}
+                        <span className="text-caption text-tertiary">
+                          <Numeric>{orderNumber}</Numeric> ·{" "}
+                          {t("commissionOf", {
+                            rate: (commission.rateBasisPoints / 100).toFixed(1),
+                            gross: amount(
+                              commission.grossMinorUnits,
+                              commission.currency,
+                            ),
+                          })}
                         </span>
                         {commission.reversalReason ? (
                           <span className="text-caption text-warning">

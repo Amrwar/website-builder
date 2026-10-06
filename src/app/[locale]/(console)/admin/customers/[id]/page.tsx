@@ -14,6 +14,7 @@ import { orders, projects, users } from "@/db/schema";
 import { getLocaleDefinition, resolveLocale } from "@/config/locales";
 import { Link } from "@/i18n/navigation";
 import { formatMoney, money, type Currency } from "@/lib/pricing/money";
+import { viewerDates } from "@/server/i18n";
 import { requireAdminSection } from "@/server/admin/guard";
 
 export const metadata: Metadata = {
@@ -39,6 +40,7 @@ export default async function AdminCustomerPage({
 
   const t = await getTranslations("adminConsole");
   const { intlTag } = getLocaleDefinition(resolveLocale(locale));
+  const dates = await viewerDates(locale);
 
   const customer = await db.query.users.findFirst({ where: eq(users.id, id) });
   if (!customer) notFound();
@@ -76,10 +78,7 @@ export default async function AdminCustomerPage({
       : Promise.resolve([]),
   ]);
 
-  const when = (value: Date | null) =>
-    value
-      ? new Intl.DateTimeFormat(intlTag, { dateStyle: "medium" }).format(value)
-      : t("common.none");
+  const when = (value: Date | null) => (value ? dates.date(value) : t("common.none"));
 
   return (
     <AdminShell role={context.user.role} active="customers">

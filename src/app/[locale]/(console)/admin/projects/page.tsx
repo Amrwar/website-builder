@@ -5,7 +5,7 @@ import { AdminPageHeader, AdminShell } from "@/components/admin/admin-shell";
 import { DataTable, TablePagination, type Column } from "@/components/admin/data-table";
 import { AdminTableToolbar } from "@/components/admin/table-toolbar";
 import { Badge } from "@/components/ui/badge";
-import { getLocaleDefinition, resolveLocale } from "@/config/locales";
+import { viewerDates } from "@/server/i18n";
 import { projectList } from "@/server/admin/lists";
 import { requireAdminSection } from "@/server/admin/guard";
 
@@ -31,7 +31,7 @@ export default async function AdminProjectsPage({
   const query = await searchParams;
 
   const t = await getTranslations("adminConsole");
-  const { intlTag } = getLocaleDefinition(resolveLocale(locale));
+  const dates = await viewerDates(locale);
 
   const search = typeof query.q === "string" && query.q !== "" ? query.q : undefined;
   const status = typeof query.status === "string" ? query.status : undefined;
@@ -39,8 +39,7 @@ export default async function AdminProjectsPage({
     Number.parseInt(typeof query.page === "string" ? query.page : "1", 10) || 1;
 
   const result = await projectList({ search, status, page }, context);
-  const date = (value: Date | null) =>
-    value ? new Intl.DateTimeFormat(intlTag, { dateStyle: "short" }).format(value) : "—";
+  const date = (value: Date | null) => dates.date(value, "short");
 
   type Row = (typeof result.rows)[number];
   const columns: Column<Row>[] = [

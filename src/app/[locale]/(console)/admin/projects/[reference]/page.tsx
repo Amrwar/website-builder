@@ -6,6 +6,7 @@ import { getTranslations } from "next-intl/server";
 
 import { AdminPageHeader, AdminShell } from "@/components/admin/admin-shell";
 import { RiskBadge } from "@/components/admin/risk-badge";
+import { Numeric } from "@/components/ui/numeric";
 import { Badge } from "@/components/ui/badge";
 import { Callout } from "@/components/ui/callout";
 import { Card } from "@/components/ui/card";
@@ -24,6 +25,7 @@ import { getLocaleDefinition, resolveLocale } from "@/config/locales";
 import { Link } from "@/i18n/navigation";
 import { formatMoney, money, type Currency } from "@/lib/pricing/money";
 import type { RiskLevel } from "@/lib/production/risk";
+import { viewerDates } from "@/server/i18n";
 import { auditTrailFor } from "@/server/admin/audit";
 import { requireAdminSection } from "@/server/admin/guard";
 
@@ -55,6 +57,7 @@ export default async function AdminProjectPage({
 
   const t = await getTranslations("adminConsole");
   const { intlTag } = getLocaleDefinition(resolveLocale(locale));
+  const dates = await viewerDates(locale);
 
   const project = await db.query.projects.findFirst({
     where: eq(projects.reference, reference),
@@ -93,13 +96,7 @@ export default async function AdminProjectPage({
     auditTrailFor("project", project.id, context),
   ]);
 
-  const when = (value: Date | null) =>
-    value
-      ? new Intl.DateTimeFormat(intlTag, {
-          dateStyle: "short",
-          timeStyle: "short",
-        }).format(value)
-      : t("common.none");
+  const when = (value: Date | null) => (value ? dates.dateTime(value) : t("common.none"));
 
   // Commercial detail follows the same rule as the customer list: a designer
   // sees who the project belongs to, not what they are worth.
@@ -330,8 +327,9 @@ export default async function AdminProjectPage({
                 className="flex flex-wrap items-baseline justify-between gap-3"
               >
                 <span className="font-mono text-caption text-primary">{event.type}</span>
-                <span className="text-caption text-tertiary" data-numeric>
-                  {event.actorType} · {when(event.occurredAt)}
+                <span className="text-caption text-tertiary">
+                  {t(`projectDetail.actorType.${event.actorType}`)} ·{" "}
+                  <Numeric>{when(event.occurredAt)}</Numeric>
                 </span>
               </li>
             ))}
@@ -351,8 +349,9 @@ export default async function AdminProjectPage({
                   <span className="font-mono text-caption text-primary">
                     {entry.action}
                   </span>
-                  <span className="text-caption text-tertiary" data-numeric>
-                    {entry.actorEmail} · {when(entry.occurredAt)}
+                  <span className="text-caption text-tertiary">
+                    <Numeric>{entry.actorEmail}</Numeric> ·{" "}
+                    <Numeric>{when(entry.occurredAt)}</Numeric>
                   </span>
                 </li>
               ))}

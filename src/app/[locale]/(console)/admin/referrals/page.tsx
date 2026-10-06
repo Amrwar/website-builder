@@ -6,9 +6,9 @@ import { DataTable } from "@/components/admin/data-table";
 import { ReferralActions } from "@/components/admin/growth/growth-controls";
 import { Badge } from "@/components/ui/badge";
 import { Callout } from "@/components/ui/callout";
-import { getLocaleDefinition, resolveLocale } from "@/config/locales";
 import type { FraudRule } from "@/lib/growth/fraud";
 import { formatMinutes } from "@/lib/credits";
+import { viewerDates } from "@/server/i18n";
 import { requireAdminSection } from "@/server/admin/guard";
 import { listReferrals, type ReferralRow } from "@/server/admin/growth-queries";
 
@@ -33,14 +33,13 @@ export default async function AdminReferralsPage({
   const { locale } = await params;
 
   const t = await getTranslations("adminConsole.referralsPage");
-  const { intlTag } = getLocaleDefinition(resolveLocale(locale));
+  const dates = await viewerDates(locale);
 
   const rows = await listReferrals(context);
   const held = rows.filter((row) => row.referral.fraudState === "flagged").length;
   const canReverse = context.can("billing:manage");
 
-  const date = (value: Date | null) =>
-    value ? new Intl.DateTimeFormat(intlTag, { dateStyle: "medium" }).format(value) : "—";
+  const date = (value: Date | null) => dates.date(value);
 
   return (
     <AdminShell role={context.user.role} active="referrals">

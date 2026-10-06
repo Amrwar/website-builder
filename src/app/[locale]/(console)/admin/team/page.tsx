@@ -7,7 +7,7 @@ import { RoleSelector } from "@/components/admin/role-selector";
 import { Badge } from "@/components/ui/badge";
 import { Callout } from "@/components/ui/callout";
 import { assignableRoles, canManageUser, type UserRole } from "@/config/roles";
-import { getLocaleDefinition, resolveLocale } from "@/config/locales";
+import { viewerDates } from "@/server/i18n";
 import { requireAdminSection } from "@/server/admin/guard";
 import { staffList } from "@/server/admin/queries";
 
@@ -33,7 +33,7 @@ export default async function AdminTeamPage({
   const { locale } = await params;
 
   const t = await getTranslations("adminConsole");
-  const { intlTag } = getLocaleDefinition(resolveLocale(locale));
+  const dates = await viewerDates(locale);
 
   const members = await staffList(context);
   const actorRole = context.user.role;
@@ -43,8 +43,7 @@ export default async function AdminTeamPage({
     label: t(`roleNames.${role}`),
   }));
 
-  const when = (value: Date) =>
-    new Intl.DateTimeFormat(intlTag, { dateStyle: "medium" }).format(value);
+  const when = (value: Date | null) => dates.date(value);
 
   type Row = (typeof members)[number];
   const columns: Column<Row>[] = [

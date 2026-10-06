@@ -5,7 +5,7 @@ import { AdminPageHeader, AdminShell } from "@/components/admin/admin-shell";
 import { DataTable, TablePagination, type Column } from "@/components/admin/data-table";
 import { AdminTableToolbar } from "@/components/admin/table-toolbar";
 import { Callout } from "@/components/ui/callout";
-import { getLocaleDefinition, resolveLocale } from "@/config/locales";
+import { viewerDates } from "@/server/i18n";
 import { customerList, type CustomerRow } from "@/server/admin/queries";
 import { requireAdminSection } from "@/server/admin/guard";
 
@@ -33,7 +33,7 @@ export default async function AdminCustomersPage({
   const query = await searchParams;
 
   const t = await getTranslations("adminConsole");
-  const { intlTag } = getLocaleDefinition(resolveLocale(locale));
+  const dates = await viewerDates(locale);
 
   const search = typeof query.q === "string" && query.q !== "" ? query.q : undefined;
   const sort = query.sort === "name" ? "name" : "joined";
@@ -43,8 +43,7 @@ export default async function AdminCustomersPage({
   const seesSensitive = context.can("customer:read:sensitive");
   const result = await customerList({ search, sort, page }, context);
 
-  const date = (value: Date) =>
-    new Intl.DateTimeFormat(intlTag, { dateStyle: "medium" }).format(value);
+  const date = (value: Date | null) => dates.date(value);
 
   const columns: Column<CustomerRow>[] = [
     {

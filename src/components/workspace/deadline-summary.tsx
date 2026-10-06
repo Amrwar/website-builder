@@ -17,17 +17,20 @@ export async function DeadlineSummary({
   deadline,
   guaranteedDays,
   intlTag,
+  timeZone,
   className,
 }: {
   deadline: WorkspaceDeadline | null;
   guaranteedDays: number | null;
   intlTag: string;
+  /** The viewer's zone. A deadline shown a day out is a broken promise. */
+  timeZone: string;
   className?: string;
 }) {
   const t = await getTranslations("workspace");
 
   const formatDate = (date: Date) =>
-    new Intl.DateTimeFormat(intlTag, { dateStyle: "medium" }).format(date);
+    new Intl.DateTimeFormat(intlTag, { dateStyle: "medium", timeZone }).format(date);
 
   if (!deadline) {
     return (

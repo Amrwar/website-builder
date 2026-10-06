@@ -4,7 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { AdminPageHeader, AdminShell } from "@/components/admin/admin-shell";
 import { DataTable } from "@/components/admin/data-table";
 import { Badge } from "@/components/ui/badge";
-import { getLocaleDefinition, resolveLocale } from "@/config/locales";
+import { viewerDates } from "@/server/i18n";
 import { requireAdminSection } from "@/server/admin/guard";
 import { listHosting, type HostingRow } from "@/server/admin/launch-queries";
 
@@ -31,12 +31,11 @@ export default async function AdminHostingPage({
 
   const t = await getTranslations("adminConsole.hostingPage");
   const tStatus = await getTranslations("workspace.launch.hosting.status");
-  const { intlTag } = getLocaleDefinition(resolveLocale(locale));
+  const dates = await viewerDates(locale);
 
   const rows = await listHosting(context);
 
-  const date = (value: Date | null) =>
-    value ? new Intl.DateTimeFormat(intlTag, { dateStyle: "medium" }).format(value) : "—";
+  const date = (value: Date | null) => dates.date(value);
 
   return (
     <AdminShell role={context.user.role} active="hosting">

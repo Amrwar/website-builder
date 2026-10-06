@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
+import { Numeric } from "@/components/ui/numeric";
 import { Badge } from "@/components/ui/badge";
 import { Callout } from "@/components/ui/callout";
 import { Card } from "@/components/ui/card";
@@ -55,6 +56,12 @@ import { cn } from "@/lib/cn";
 interface PanelProps {
   workspace: Workspace;
   intlTag: string;
+  /**
+   * The viewer's own zone. Separate from `intlTag` because the two come from
+   * different places -- the tag from the URL locale, the zone from the
+   * account -- and a timestamp rendered without it silently uses the server's.
+   */
+  timeZone: string;
 }
 
 /**
@@ -89,10 +96,11 @@ interface LaunchPanelProps extends PanelProps {
   launch: LaunchPanelData | null;
 }
 
-function formatDate(date: Date, intlTag: string): string {
+function formatDate(date: Date, intlTag: string, timeZone: string): string {
   return new Intl.DateTimeFormat(intlTag, {
     dateStyle: "medium",
     timeStyle: "short",
+    timeZone,
   }).format(date);
 }
 
@@ -100,7 +108,7 @@ function formatDate(date: Date, intlTag: string): string {
  * Overview
  * ---------------------------------------------------------------------- */
 
-export async function OverviewPanel({ workspace, intlTag }: PanelProps) {
+export async function OverviewPanel({ workspace, intlTag, timeZone }: PanelProps) {
   const t = await getTranslations("workspace");
   const { project, stages, nextAction, deadline, team, order } = workspace;
 
@@ -124,6 +132,7 @@ export async function OverviewPanel({ workspace, intlTag }: PanelProps) {
             deadline={deadline}
             guaranteedDays={project.guaranteedDays}
             intlTag={intlTag}
+            timeZone={timeZone}
           />
         </Card>
 
@@ -213,7 +222,7 @@ const KNOWN_EVENTS = new Set([
   "deployment.completed",
 ]);
 
-export async function TimelinePanel({ workspace, intlTag }: PanelProps) {
+export async function TimelinePanel({ workspace, intlTag, timeZone }: PanelProps) {
   const t = await getTranslations("workspace");
   const { stages, activity } = workspace;
 
@@ -253,7 +262,7 @@ export async function TimelinePanel({ workspace, intlTag }: PanelProps) {
                     dateTime={event.occurredAt.toISOString()}
                     data-numeric
                   >
-                    {formatDate(event.occurredAt, intlTag)}
+                    {formatDate(event.occurredAt, intlTag, timeZone)}
                   </time>
                 </div>
               </li>
@@ -269,7 +278,7 @@ export async function TimelinePanel({ workspace, intlTag }: PanelProps) {
  * Preview
  * ---------------------------------------------------------------------- */
 
-export async function PreviewPanel({ workspace, intlTag }: PanelProps) {
+export async function PreviewPanel({ workspace, intlTag, timeZone }: PanelProps) {
   const t = await getTranslations("workspace");
   const { definition, deployments, latestPreview } = workspace;
 
@@ -306,7 +315,7 @@ export async function PreviewPanel({ workspace, intlTag }: PanelProps) {
               {latestPreview.readyAt ? (
                 <p className="text-caption text-tertiary" data-numeric>
                   {t("preview.deployed", {
-                    date: formatDate(latestPreview.readyAt, intlTag),
+                    date: formatDate(latestPreview.readyAt, intlTag, timeZone),
                   })}
                 </p>
               ) : null}
@@ -357,7 +366,7 @@ export async function PreviewPanel({ workspace, intlTag }: PanelProps) {
  * Files
  * ---------------------------------------------------------------------- */
 
-export async function FilesPanel({ workspace, intlTag }: PanelProps) {
+export async function FilesPanel({ workspace, intlTag, timeZone }: PanelProps) {
   const t = await getTranslations("workspace");
   const { project, files, viewer } = workspace;
 
@@ -407,7 +416,9 @@ export async function FilesPanel({ workspace, intlTag }: PanelProps) {
                   <span data-numeric>
                     {t("files.version", { version: file.version })}
                   </span>
-                  <span data-numeric>{formatDate(file.createdAt, intlTag)}</span>
+                  <span data-numeric>
+                    {formatDate(file.createdAt, intlTag, timeZone)}
+                  </span>
                   {file.visibility === "internal" ? (
                     <span className="inline-flex items-center gap-1">
                       <Lock className="size-3" aria-hidden />
@@ -438,7 +449,7 @@ export async function FilesPanel({ workspace, intlTag }: PanelProps) {
  * Messages
  * ---------------------------------------------------------------------- */
 
-export async function MessagesPanel({ workspace, intlTag }: PanelProps) {
+export async function MessagesPanel({ workspace, intlTag, timeZone }: PanelProps) {
   const t = await getTranslations("workspace");
   const { project, messages, viewer } = workspace;
 
@@ -471,7 +482,7 @@ export async function MessagesPanel({ workspace, intlTag }: PanelProps) {
                     dateTime={message.createdAt.toISOString()}
                     data-numeric
                   >
-                    {formatDate(message.createdAt, intlTag)}
+                    {formatDate(message.createdAt, intlTag, timeZone)}
                   </time>
                 </div>
 
@@ -498,7 +509,7 @@ export async function MessagesPanel({ workspace, intlTag }: PanelProps) {
  * Change requests
  * ---------------------------------------------------------------------- */
 
-export async function ChangesPanel({ workspace, intlTag }: PanelProps) {
+export async function ChangesPanel({ workspace, intlTag, timeZone }: PanelProps) {
   const t = await getTranslations("workspace");
   const { project, changeRequests, viewer } = workspace;
 
@@ -522,8 +533,9 @@ export async function ChangesPanel({ workspace, intlTag }: PanelProps) {
                     <span className="text-body font-medium text-primary">
                       {change.title}
                     </span>
-                    <span className="text-caption text-tertiary" data-numeric>
-                      {change.reference} · {formatDate(change.createdAt, intlTag)}
+                    <span className="text-caption text-tertiary">
+                      <Numeric>{change.reference}</Numeric> ·{" "}
+                      <Numeric>{formatDate(change.createdAt, intlTag, timeZone)}</Numeric>
                     </span>
                   </div>
                   <Badge
@@ -602,7 +614,7 @@ export async function ChangesPanel({ workspace, intlTag }: PanelProps) {
  * Approvals
  * ---------------------------------------------------------------------- */
 
-export async function ApprovalsPanel({ workspace, intlTag }: PanelProps) {
+export async function ApprovalsPanel({ workspace, intlTag, timeZone }: PanelProps) {
   const t = await getTranslations("workspace");
   const { project, approvals, viewer } = workspace;
 
@@ -627,11 +639,16 @@ export async function ApprovalsPanel({ workspace, intlTag }: PanelProps) {
                 <span className="text-body font-medium text-primary">
                   {t(`approvals.kind.${approval.kind}`)}
                 </span>
-                <span className="text-caption text-tertiary" data-numeric>
+                <span className="text-caption text-tertiary">
                   {t("approvals.round", { round: approval.round })}
-                  {approval.decidedAt
-                    ? ` · ${t("approvals.decidedOn", { date: formatDate(approval.decidedAt, intlTag) })}`
-                    : ""}
+                  {approval.decidedAt ? (
+                    <>
+                      {" · "}
+                      {t("approvals.decidedOn", {
+                        date: formatDate(approval.decidedAt, intlTag, timeZone),
+                      })}
+                    </>
+                  ) : null}
                 </span>
               </div>
               <Badge
@@ -671,7 +688,7 @@ export async function ApprovalsPanel({ workspace, intlTag }: PanelProps) {
  * Payments
  * ---------------------------------------------------------------------- */
 
-export async function PaymentsPanel({ workspace, intlTag }: PanelProps) {
+export async function PaymentsPanel({ workspace, intlTag, timeZone }: PanelProps) {
   const t = await getTranslations("workspace");
   const { order, invoices } = workspace;
 
@@ -705,7 +722,7 @@ export async function PaymentsPanel({ workspace, intlTag }: PanelProps) {
 
         {order.paidAt ? (
           <p className="text-caption text-tertiary" data-numeric>
-            {t("payments.paidOn", { date: formatDate(order.paidAt, intlTag) })}
+            {t("payments.paidOn", { date: formatDate(order.paidAt, intlTag, timeZone) })}
           </p>
         ) : null}
 
@@ -768,7 +785,12 @@ export async function PaymentsPanel({ workspace, intlTag }: PanelProps) {
  * recorded observations, and the Go live button only submits -- the refusal
  * lives in `launchProject`, which re-derives everything before writing.
  */
-export async function LaunchPanel({ workspace, intlTag, launch }: LaunchPanelProps) {
+export async function LaunchPanel({
+  workspace,
+  intlTag,
+  timeZone,
+  launch,
+}: LaunchPanelProps) {
   const t = await getTranslations("workspace.launch");
   const { project, viewer } = workspace;
 
@@ -790,7 +812,9 @@ export async function LaunchPanel({ workspace, intlTag, launch }: LaunchPanelPro
       {project.launchedAt ? (
         <Callout
           tone="success"
-          title={t("launched", { date: formatDate(project.launchedAt, intlTag) })}
+          title={t("launched", {
+            date: formatDate(project.launchedAt, intlTag, timeZone),
+          })}
         />
       ) : null}
 
@@ -847,8 +871,11 @@ export async function LaunchPanel({ workspace, intlTag, launch }: LaunchPanelPro
             <ArrowUpRight className="rtl-flip size-4" aria-hidden />
           </a>
           {production.providerConfirmedAt ? (
-            <p className="text-caption text-tertiary" data-numeric>
-              {t("deployment")} · {formatDate(production.providerConfirmedAt, intlTag)}
+            <p className="text-caption text-tertiary">
+              {t("deployment")} ·{" "}
+              <Numeric>
+                {formatDate(production.providerConfirmedAt, intlTag, timeZone)}
+              </Numeric>
             </p>
           ) : null}
         </Card>
@@ -895,13 +922,13 @@ export async function LaunchPanel({ workspace, intlTag, launch }: LaunchPanelPro
             {/* An uptime figure is only shown with the moment it was measured.
                 A percentage with no "as of" is a number nobody should act on. */}
             {hosting.uptimeBasisPoints !== null && hosting.uptimeCheckedAt ? (
-              <p className="text-caption text-secondary" data-numeric>
+              <p className="text-caption text-secondary">
                 {t("hosting.uptime", {
                   value: (hosting.uptimeBasisPoints / 100).toFixed(2),
                 })}{" "}
                 ·{" "}
                 {t("hosting.uptimeAsOf", {
-                  date: formatDate(hosting.uptimeCheckedAt, intlTag),
+                  date: formatDate(hosting.uptimeCheckedAt, intlTag, timeZone),
                 })}
               </p>
             ) : null}
@@ -941,7 +968,7 @@ export async function LaunchPanel({ workspace, intlTag, launch }: LaunchPanelPro
                   </Badge>
                   <span className="text-caption text-tertiary" data-numeric>
                     {deployment.providerConfirmedAt
-                      ? formatDate(deployment.providerConfirmedAt, intlTag)
+                      ? formatDate(deployment.providerConfirmedAt, intlTag, timeZone)
                       : t("awaitingProvider")}
                   </span>
                 </span>

@@ -5,7 +5,7 @@ import { AdminPageHeader, AdminShell } from "@/components/admin/admin-shell";
 import { DataTable, TablePagination, type Column } from "@/components/admin/data-table";
 import { AdminTableToolbar } from "@/components/admin/table-toolbar";
 import { Badge } from "@/components/ui/badge";
-import { getLocaleDefinition, resolveLocale } from "@/config/locales";
+import { viewerDates } from "@/server/i18n";
 import { fileList } from "@/server/admin/lists";
 import { requireAdminSection } from "@/server/admin/guard";
 
@@ -32,15 +32,14 @@ export default async function AdminFilesPage({
   const query = await searchParams;
 
   const t = await getTranslations("adminConsole");
-  const { intlTag } = getLocaleDefinition(resolveLocale(locale));
+  const dates = await viewerDates(locale);
 
   const kind = typeof query.kind === "string" ? query.kind : undefined;
   const page =
     Number.parseInt(typeof query.page === "string" ? query.page : "1", 10) || 1;
   const result = await fileList({ kind, page }, context);
 
-  const when = (value: Date) =>
-    new Intl.DateTimeFormat(intlTag, { dateStyle: "short" }).format(value);
+  const when = (value: Date | null) => dates.date(value, "short");
   const size = (bytes: number) => `${Math.max(1, Math.round(bytes / 1024))} KB`;
 
   type Row = (typeof result.rows)[number];

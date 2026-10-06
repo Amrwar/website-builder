@@ -15,7 +15,7 @@ import { assessDraft } from "@/server/configurator-actions";
 import { Button } from "@/components/ui/button";
 import { Callout } from "@/components/ui/callout";
 import { Stepper } from "@/components/ui/stepper";
-import { resolveLocale } from "@/config/locales";
+import { getLocaleDefinition, resolveLocale } from "@/config/locales";
 import {
   STEP_IDS,
   firstUnsatisfiedStep,
@@ -68,6 +68,7 @@ export function Configurator() {
   const t = useTranslations("configurator");
   // From the provider, so the page that renders this need not be async.
   const locale = resolveLocale(useLocale());
+  const { intlTag } = getLocaleDefinition(locale);
 
   // Prepared during render so the first committed snapshot is already correct.
   ensureInitialised(locale);
@@ -193,7 +194,11 @@ export function Configurator() {
           }
         >
           {t("resume.body", {
-            when: new Intl.DateTimeFormat(locale, {
+            // Deliberately no `timeZone`: the draft is saved in this
+            // browser by this person, so the browser's own zone is theirs.
+            // `intlTag`, not `locale`: the bare routing code "en" formats as
+            // US (3/12/2026) rather than Canadian.
+            when: new Intl.DateTimeFormat(intlTag, {
               dateStyle: "medium",
               timeStyle: "short",
             }).format(resumedFrom),

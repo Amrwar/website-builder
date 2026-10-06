@@ -1681,7 +1681,12 @@
         "body": "Maintenance plan prices and the launch checklist are still coming from version-controlled configuration. Import them to make them editable here. Importing changes nothing — it copies the same values into the database.",
         "action": "Import plans and checklist"
       },
-      "quoteHint": "Leave empty for a custom quote. Days must be empty too."
+      "quoteHint": "Leave empty for a custom quote. Days must be empty too.",
+      "intervalLabel": {
+        "monthly": "monthly",
+        "yearly": "yearly"
+      },
+      "minutesUnit": "{count} min"
     },
     "analytics": {
       "title": "Analytics",
@@ -1703,7 +1708,12 @@
       "estimate": "Estimate",
       "actual": "Actual",
       "unassigned": "Unassigned",
-      "minutes": "{count}m"
+      "minutes": "{count}m",
+      "actorType": {
+        "customer": "Customer",
+        "staff": "Staff",
+        "system": "System"
+      }
     },
     "scopeView": {
       "title": "Scope",
@@ -1867,7 +1877,9 @@
       "reverse": "Reverse",
       "rate": "Commission rate (basis points)",
       "note": "Why",
-      "holdNote": "Commissions are held for {days} days after conversion, so a refund cannot leave a paid commission behind."
+      "holdNote": "Commissions are held for {days} days after conversion, so a refund cannot leave a paid commission behind.",
+      "commissionRate": "{rate}% commission",
+      "commissionOf": "{rate}% of {gross}"
     },
     "reviewsPage": {
       "title": "Reviews",

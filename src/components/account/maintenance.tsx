@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 
 import { useTranslations } from "next-intl";
 
+import { Numeric } from "@/components/ui/numeric";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Callout } from "@/components/ui/callout";
@@ -52,12 +53,19 @@ export function MaintenancePanel({
   current,
   projectId,
   locale,
+  timeZone,
 }: {
   plans: readonly PlanOption[];
   current: CurrentSubscription | null;
   projectId: string | null;
   /** BCP-47 tag, for formatting the previewed amount and date. */
   locale: string;
+  /**
+   * The viewer's zone, resolved on the server from their account. Passed in
+   * rather than read from the browser so the date previewed here matches the
+   * period end the server rendered above it.
+   */
+  timeZone: string;
 }) {
   const t = useTranslations("maintenance");
 
@@ -131,8 +139,9 @@ export function MaintenancePanel({
               <p className="text-body font-medium text-primary">
                 {planName(current.planKey)}
               </p>
-              <p className="text-caption text-secondary" data-numeric>
-                {current.priceLabel} · {current.reference}
+              <p className="text-caption text-secondary">
+                <Numeric>{current.priceLabel}</Numeric> ·{" "}
+                <Numeric>{current.reference}</Numeric>
               </p>
             </div>
 
@@ -301,6 +310,7 @@ export function MaintenancePanel({
                         amount: formatAmount(preview.dueNowMinorUnits, preview.currency),
                         effectiveAt: new Intl.DateTimeFormat(locale, {
                           dateStyle: "medium",
+                          timeZone,
                         }).format(new Date(preview.effectiveAt)),
                       });
                       return preview;

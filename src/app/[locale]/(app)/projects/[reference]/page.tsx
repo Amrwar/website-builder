@@ -17,8 +17,8 @@ import {
   PreviewPanel,
   TimelinePanel,
 } from "@/components/workspace/panels";
-import { getLocaleDefinition, resolveLocale } from "@/config/locales";
 import { Link } from "@/i18n/navigation";
+import { viewerPresentation } from "@/server/i18n";
 import { getAuthContext } from "@/server/auth";
 import { loadLaunchCentre } from "@/server/launch";
 import { expansionOptionsFor, spendableCredit } from "@/server/expand";
@@ -53,7 +53,7 @@ export default async function BuildRoomPage({
   const workspace = await getWorkspace(reference, context);
 
   const t = await getTranslations("workspace");
-  const { intlTag } = getLocaleDefinition(resolveLocale(locale));
+  const { intlTag, timeZone } = await viewerPresentation(locale);
   const { project, definition } = workspace;
 
   /**
@@ -99,15 +99,32 @@ export default async function BuildRoomPage({
     : null;
 
   const panelContent = {
-    overview: <OverviewPanel workspace={workspace} intlTag={intlTag} />,
-    timeline: <TimelinePanel workspace={workspace} intlTag={intlTag} />,
-    preview: <PreviewPanel workspace={workspace} intlTag={intlTag} />,
-    files: <FilesPanel workspace={workspace} intlTag={intlTag} />,
-    messages: <MessagesPanel workspace={workspace} intlTag={intlTag} />,
-    changes: <ChangesPanel workspace={workspace} intlTag={intlTag} />,
-    approvals: <ApprovalsPanel workspace={workspace} intlTag={intlTag} />,
-    payments: <PaymentsPanel workspace={workspace} intlTag={intlTag} />,
-    launch: <LaunchPanel workspace={workspace} intlTag={intlTag} launch={launch} />,
+    overview: (
+      <OverviewPanel workspace={workspace} intlTag={intlTag} timeZone={timeZone} />
+    ),
+    timeline: (
+      <TimelinePanel workspace={workspace} intlTag={intlTag} timeZone={timeZone} />
+    ),
+    preview: <PreviewPanel workspace={workspace} intlTag={intlTag} timeZone={timeZone} />,
+    files: <FilesPanel workspace={workspace} intlTag={intlTag} timeZone={timeZone} />,
+    messages: (
+      <MessagesPanel workspace={workspace} intlTag={intlTag} timeZone={timeZone} />
+    ),
+    changes: <ChangesPanel workspace={workspace} intlTag={intlTag} timeZone={timeZone} />,
+    approvals: (
+      <ApprovalsPanel workspace={workspace} intlTag={intlTag} timeZone={timeZone} />
+    ),
+    payments: (
+      <PaymentsPanel workspace={workspace} intlTag={intlTag} timeZone={timeZone} />
+    ),
+    launch: (
+      <LaunchPanel
+        workspace={workspace}
+        intlTag={intlTag}
+        timeZone={timeZone}
+        launch={launch}
+      />
+    ),
   };
 
   // Only the panels this product actually uses are handed to the shell.

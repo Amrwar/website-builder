@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Callout } from "@/components/ui/callout";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
-import { getLocaleDefinition, resolveLocale } from "@/config/locales";
+import { viewerDates } from "@/server/i18n";
 import { requireAdminSection } from "@/server/admin/guard";
 import { reviewQueue } from "@/server/growth/reviews";
 
@@ -32,12 +32,11 @@ export default async function AdminReviewsPage({
   const { locale } = await params;
 
   const t = await getTranslations("adminConsole.reviewsPage");
-  const { intlTag } = getLocaleDefinition(resolveLocale(locale));
+  const dates = await viewerDates(locale);
 
   const rows = await reviewQueue(context);
 
-  const date = (value: Date | null) =>
-    value ? new Intl.DateTimeFormat(intlTag, { dateStyle: "medium" }).format(value) : "—";
+  const date = (value: Date | null) => dates.date(value);
 
   return (
     <AdminShell role={context.user.role} active="reviews">
