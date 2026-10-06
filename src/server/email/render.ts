@@ -26,12 +26,14 @@ export interface NotificationEmailInput {
   recipient: { email: string; name: string | null };
   /** Absolute URL the message points at, where there is somewhere to go. */
   actionUrl?: string | null;
+  /** Stable id for this message, handed to the provider so a retry is safe. */
+  idempotencyKey?: string;
 }
 
 export async function renderNotificationEmail(
   input: NotificationEmailInput,
 ): Promise<EmailMessage> {
-  const { kind, locale, params, recipient, actionUrl } = input;
+  const { kind, locale, params, recipient, actionUrl, idempotencyKey } = input;
 
   const t = await getTranslations({ locale, namespace: "notifications" });
   const tEmail = await getTranslations({ locale, namespace: "email" });
@@ -39,6 +41,7 @@ export async function renderNotificationEmail(
   return composeEmail({
     locale,
     recipient,
+    ...(idempotencyKey ? { idempotencyKey } : {}),
     title: t(`${kind}.title`, params),
     body: t(`${kind}.body`, params),
     action: actionUrl ? t(`${kind}.action`) : null,
@@ -55,6 +58,7 @@ export async function renderNotificationEmail(
 export interface ComposeEmailInput {
   locale: Locale;
   recipient: { email: string; name: string | null };
+  idempotencyKey?: string;
   title: string;
   body: string;
   action: string | null;
@@ -90,6 +94,7 @@ export function composeEmail(input: ComposeEmailInput): EmailMessage {
   return {
     to: recipient.email,
     ...(recipient.name ? { toName: recipient.name } : {}),
+    ...(input.idempotencyKey ? { idempotencyKey: input.idempotencyKey } : {}),
     subject: title,
     text,
     html: html({

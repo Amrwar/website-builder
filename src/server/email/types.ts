@@ -27,6 +27,14 @@ export interface EmailMessage {
    * declare its direction renders left-to-right in most clients.
    */
   locale: Locale;
+  /**
+   * Stable id for this exact message, so a retry cannot send it twice.
+   *
+   * Passed to the provider as an idempotency key. The notification row's id is
+   * the natural value: it is unique, it already exists before the send, and it
+   * survives a redelivered webhook.
+   */
+  idempotencyKey?: string;
 }
 
 export type EmailResult =

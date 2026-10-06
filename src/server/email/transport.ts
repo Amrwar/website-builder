@@ -1,10 +1,11 @@
 import "server-only";
 
 import { logger } from "@/lib/logger";
+import { resendFromEnv } from "./resend-transport";
 import type { EmailMessage, EmailResult, EmailTransport } from "./types";
 
 /**
- * The transport used until a provider is wired.
+ * The fallback when no provider credential is present.
  *
  * It records that a message *would* have been sent and reports that it cannot
  * deliver. It does not return `ok: true`, because a success from something
@@ -36,9 +37,10 @@ export const noopTransport: EmailTransport = {
  * without reaching into module state.
  */
 export function emailTransport(): EmailTransport {
-  // When a provider is added, this is where it is selected -- on the presence
-  // of its credential in `serverEnv()`, never on NODE_ENV. A deploy that is
-  // missing the key must fall back to not sending rather than to sending from
-  // somewhere unexpected.
-  return noopTransport;
+  // Selected on the presence of the credential, never on NODE_ENV. A deploy
+  // missing the key falls back to not sending, rather than to sending from
+  // somewhere unexpected -- and a developer who happens to have a key in
+  // `.env.local` sends for real, which is the honest behaviour: the way to
+  // not send from a laptop is to not hold a key on it.
+  return resendFromEnv() ?? noopTransport;
 }

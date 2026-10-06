@@ -42,6 +42,22 @@ const serverSchema = z.object({
    */
   GROWTH_FINGERPRINT_SECRET: z.string().min(16).optional(),
 
+  /**
+   * Resend API key. Optional, and the degradation is visible rather than
+   * silent: without it `emailTransport()` returns a transport that reports it
+   * cannot deliver, notifications are still recorded and readable in the app,
+   * and nothing is marked as a failed send.
+   */
+  RESEND_API_KEY: z.string().min(1).optional(),
+
+  /**
+   * The `From` address, which must be on a domain verified in Resend --
+   * "Buildline <noreply@send.buildline.dev>". Separate from the key because
+   * the key is a secret and this is not, and because the verified domain
+   * differs per environment.
+   */
+  EMAIL_FROM: z.string().min(3).optional(),
+
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
 });
 

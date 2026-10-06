@@ -158,6 +158,9 @@ async function deliverEmail(input: {
       params: input.params,
       recipient: input.recipient,
       actionUrl: input.actionUrl,
+      // The row's id, so a resend of the same notification cannot reach the
+      // customer twice even if it slips past the database's own dedupe.
+      idempotencyKey: input.notificationId,
     });
 
     const result = await transport.send(message);
