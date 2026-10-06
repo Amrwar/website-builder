@@ -929,5 +929,93 @@
       "designer": "Designer",
       "support": "Support"
     }
+  },
+  "checkout": {
+    "title": "Vérifiez votre commande",
+    "subtitle": "Tout ce que ce projet comprend, tout ce qu’il ne comprend pas, et exactement ce que vous payez.",
+    "orderNumber": "Commande {number}",
+    "items": "Ce que vous achetez",
+    "products": {
+      "website": "Création de site web",
+      "system": "Création de système de gestion",
+      "mobileApp": "Création d’application mobile",
+      "design": "Service de design"
+    },
+    "scope": {
+      "title": "Périmètre",
+      "tierValue": {
+        "essential": "Essentiel",
+        "extended": "Étendu",
+        "advanced": "Avancé",
+        "custom": "Devis sur mesure"
+      }
+    },
+    "included": {
+      "title": "Inclus",
+      "none": "Un projet standard, sans fonctionnalité supplémentaire."
+    },
+    "excluded": {
+      "title": "Non inclus",
+      "note": "Présenté en entier pour qu’il n’y ait aucune surprise plus tard. Chacun de ces éléments peut être ajouté par une demande de modification, facturée séparément."
+    },
+    "delivery": {
+      "title": "Livraison et garantie",
+      "days": "{days} jours ouvrés de développement, garantis",
+      "storeReviewTitle": "La validation par les stores n’entre pas dans la garantie",
+      "storeReview": "Nous soumettons votre application pour vous. Apple et Google décident de la durée de leur validation, et ce délai reste hors de notre garantie car il ne dépend pas de nous."
+    },
+    "guarantee": {
+      "body": "Si nous dépassons le délai de développement garanti, vous choisissez la suite :",
+      "refundCancel": "Annuler et recevoir un remboursement de {percent} %.",
+      "refundContinue": "Poursuivre le projet et recevoir un remboursement de {percent} %.",
+      "clockTitle": "Le paiement ne déclenche pas le compte à rebours",
+      "clockNote": "Le compte à rebours ne démarre qu’une fois vos informations et vos fichiers reçus et le projet officiellement lancé. Nous vous les demanderons ensuite, et vous pouvez y consacrer le temps qu’il faut."
+    },
+    "totals": {
+      "subtotal": "Sous-total",
+      "discount": "Remise",
+      "tax": "Taxes",
+      "total": "Total",
+      "taxNote": {
+        "noRegistration": "non facturées"
+      }
+    },
+    "conversionNote": "Les prix sont fixés en dollars canadiens et publiés en {currency} à un taux que nous révisons manuellement. Le montant affiché est celui que vous payez.",
+    "pay": "Payer et démarrer",
+    "paying": "Ouverture du paiement sécurisé",
+    "payError": "Impossible d’ouvrir le paiement. Veuillez réessayer.",
+    "cancelledNotice": "Le paiement a été annulé. Rien n’a été débité et votre commande est toujours là.",
+    "alreadyPaid": "Cette commande a été payée.",
+    "status": {
+      "draft": "Brouillon",
+      "pending_payment": "En attente de paiement",
+      "paid": "Payée",
+      "failed": "Paiement échoué",
+      "cancelled": "Annulée",
+      "refunded": "Remboursée",
+      "partially_refunded": "Partiellement remboursée",
+      "completed": "Terminée"
+    },
+    "confirmation": {
+      "title": "Paiement reçu",
+      "body": "Votre projet est dans la file. Voici la suite.",
+      "projectRef": "Projet {reference}",
+      "pendingTitle": "Le paiement est en cours de confirmation",
+      "pendingBody": "Votre moyen de paiement met un peu plus de temps à se confirmer. Nous vous écrirons dès qu’il sera validé, et votre projet sera créé à ce moment-là.",
+      "nextTitle": "Les prochaines étapes",
+      "next": {
+        "assets": "Envoyez-nous vos informations et vos fichiers. Rien n’est encore chronométré.",
+        "build": "Le projet démarre officiellement et le compte à rebours garanti commence.",
+        "preview": "Vous suivez l’avancement sur une URL de prévisualisation en direct.",
+        "launch": "Vous validez, et nous mettons en ligne."
+      },
+      "clockNote": "Le compte à rebours garanti n’a pas démarré. Il commence une fois vos fichiers reçus et le projet officiellement lancé.",
+      "viewOrder": "Voir la commande",
+      "labels": {
+        "project": "Projet",
+        "total": "Payé",
+        "invoice": "Facture"
+      }
+    }
   }
 }

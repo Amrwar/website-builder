@@ -211,7 +211,7 @@ export function Configurator() {
         {step === "review" ? (
           <StepReview draft={draft} assessment={assessment} onEdit={goTo} />
         ) : null}
-        {step === "start" ? <StepStart assessment={assessment} /> : null}
+        {step === "start" ? <StepStart assessment={assessment} draft={draft} /> : null}
       </div>
 
       {attempted && issue ? (

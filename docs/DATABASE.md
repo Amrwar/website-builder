@@ -144,8 +144,25 @@ npm run db:check      # consistency
 `drizzle-kit generate` needs a TTY to disambiguate a rename from a new table.
 Run it in a real terminal — piping it will hang or guess.
 
+## Commerce tables (Phase 6)
+
+| Table               | Purpose                                                                                                                                       |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `products`          | The sellable catalogue. `type` and `pricing_model` are what let a build, a design service, a maintenance plan and a block of credits coexist. |
+| `orders`            | What was agreed. Totals, currency and `pricing_snapshot` are frozen at placement. Unique `idempotency_key` is the duplicate-order guard.      |
+| `order_items`       | One line per thing bought, with its configuration, scope assessment and conversion arithmetic snapshotted.                                    |
+| `payments`          | One row per attempt, not per order. Unique on (provider, provider_reference).                                                                 |
+| `payment_events`    | Provider event log. **Unique on (provider, provider_event_id) — this is the webhook replay guard.**                                           |
+| `invoices`          | Financial documents. Billed-to details are copied, never joined. One per order.                                                               |
+| `document_counters` | Year-scoped gapless series for order, invoice and project numbers.                                                                            |
+
+`scope_assessments.project_id` became **nullable** in this phase: an assessment
+is produced when a quote is priced, which is before payment and therefore
+before a project exists. The order side of the link is
+`order_items.scope_assessment_id`; the project id is filled in at fulfilment.
+
 ## Not yet modelled
 
-Payments and invoices, files and uploads, messages and change requests,
-approvals, maintenance subscriptions, build credits, referrals, hosting and
-domains, deployments. These arrive with their phases.
+Files and uploads, messages and change requests, approvals, maintenance
+subscriptions, build credits, referrals, hosting and domains, deployments.
+These arrive with their phases.

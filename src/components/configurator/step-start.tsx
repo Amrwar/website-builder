@@ -1,28 +1,56 @@
 "use client";
 
-import { Check, Lock } from "lucide-react";
+import { useId, useRef, useState, useTransition } from "react";
+
+import { ClerkLoaded, ClerkLoading, Show } from "@clerk/nextjs";
+import { ArrowRight, Lock } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Callout } from "@/components/ui/callout";
 import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getLocaleDefinition, resolveLocale } from "@/config/locales";
+import { Link, useRouter } from "@/i18n/navigation";
+import type { ConfiguratorDraft } from "@/lib/configurator/draft";
 import { formatMoney } from "@/lib/pricing/money";
 import type { ScopeAssessment } from "@/lib/scope";
+import { placeOrder } from "@/server/checkout-actions";
 
 /**
  * Step 8 — start the build.
  *
- * The handoff to authentication and payment. Both are provisioned (Clerk and
- * Stripe) but not yet wired, so this screen states exactly what happens next
- * rather than presenting a button that would not work.
+ * The handoff into commerce. A project needing a quotation takes a different
+ * route entirely: there is no price to charge, so sending it to a payment form
+ * would be nonsense.
  *
- * A project that needs a quotation takes a different route entirely: there is
- * no price to charge, so sending it to a payment form would be nonsense.
+ * Signed-out customers are sent to sign-in with a return path, because an
+ * order has to belong to someone. The draft survives that round trip in local
+ * storage, which is what makes leaving and coming back safe.
  */
-export function StepStart({ assessment }: { assessment: ScopeAssessment | null }) {
+export function StepStart({
+  assessment,
+  draft,
+}: {
+  assessment: ScopeAssessment | null;
+  draft: ConfiguratorDraft;
+}) {
   const t = useTranslations("configurator.start");
-  const { intlTag } = getLocaleDefinition(resolveLocale(useLocale()));
+  const tc = useTranslations("checkout");
+  const router = useRouter();
+  const locale = useLocale();
+  const { intlTag } = getLocaleDefinition(resolveLocale(locale));
+
+  const [pending, start] = useTransition();
+  const [error, setError] = useState<string | null>(null);
+
+  /**
+   * Stable for the lifetime of this screen, so a double click or a retried
+   * request converges on one order instead of two. A genuine second purchase
+   * is a fresh visit and therefore a fresh id.
+   */
+  const requestId = useId();
+  const submitted = useRef(false);
 
   if (!assessment) return null;
 
@@ -32,6 +60,22 @@ export function StepStart({ assessment }: { assessment: ScopeAssessment | null }
     ? (["account", "quote", "review"] as const)
     : (["account", "payment", "assets", "countdown"] as const);
 
+  function checkout() {
+    if (submitted.current) return;
+    submitted.current = true;
+    setError(null);
+
+    start(async () => {
+      const result = await placeOrder(draft, requestId);
+      if (!result.ok) {
+        submitted.current = false;
+        setError(result.message);
+        return;
+      }
+      router.push(`/orders/${result.orderNumber}`);
+    });
+  }
+
   return (
     <div className="flex flex-col gap-8">
       <Card padding="lg" className="flex flex-col gap-5">
@@ -39,9 +83,9 @@ export function StepStart({ assessment }: { assessment: ScopeAssessment | null }
           <h2 className="text-display-sm text-primary">
             {quote ? t("quoteTitle") : t("payTitle")}
           </h2>
-          {!quote ? (
+          {!quote && assessment.totalPrice ? (
             <p className="text-display-md text-primary" data-numeric>
-              {formatMoney(assessment.totalPrice!, intlTag, { trimWholeDecimals: true })}
+              {formatMoney(assessment.totalPrice, intlTag, { trimWholeDecimals: true })}
             </p>
           ) : null}
         </div>
@@ -68,21 +112,55 @@ export function StepStart({ assessment }: { assessment: ScopeAssessment | null }
         ) : null}
       </Card>
 
-      {/*
-       * Honest about state. Clerk and Stripe are provisioned against this
-       * project but no sign-in or checkout route exists yet, so this says so
-       * instead of offering a button that leads nowhere.
-       */}
-      <Callout tone="info" title={t("pending.title")}>
-        {t("pending.body")}
-      </Callout>
+      {error ? <Callout tone="danger" live title={error} /> : null}
 
-      <div className="flex flex-col gap-3 sm:flex-row">
-        <Button disabled startIcon={<Check className="size-4" />}>
-          {quote ? t("requestQuote") : t("createAccount")}
-        </Button>
-        <p className="self-center text-caption text-tertiary">{t("draftKept")}</p>
-      </div>
+      {quote ? (
+        /*
+         * Still honest about state: there is no quotation workflow yet, so
+         * this says so rather than offering a button that leads nowhere.
+         */
+        <>
+          <Callout tone="info" title={t("pending.title")}>
+            {t("pending.body")}
+          </Callout>
+          <Button disabled>{t("requestQuote")}</Button>
+        </>
+      ) : (
+        <>
+          <ClerkLoading>
+            <Skeleton className="h-11 w-48" />
+          </ClerkLoading>
+
+          <ClerkLoaded>
+            <Show
+              when="signed-in"
+              fallback={
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                  <Link
+                    href="/sign-in"
+                    className={buttonVariants({ variant: "primary", size: "lg" })}
+                  >
+                    {t("createAccount")}
+                    <ArrowRight className="rtl-flip size-4" aria-hidden />
+                  </Link>
+                  <p className="text-caption text-tertiary">{t("draftKept")}</p>
+                </div>
+              }
+            >
+              <Button
+                size="lg"
+                onClick={checkout}
+                loading={pending}
+                loadingLabel={tc("paying")}
+                className="self-start"
+              >
+                {t("payTitle")}
+                <ArrowRight className="rtl-flip size-4" aria-hidden />
+              </Button>
+            </Show>
+          </ClerkLoaded>
+        </>
+      )}
     </div>
   );
 }

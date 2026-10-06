@@ -929,5 +929,93 @@
       "designer": "Designer",
       "support": "Support"
     }
+  },
+  "checkout": {
+    "title": "Review your order",
+    "subtitle": "Everything this build includes, everything it does not, and exactly what you pay.",
+    "orderNumber": "Order {number}",
+    "items": "What you are buying",
+    "products": {
+      "website": "Website build",
+      "system": "Business system build",
+      "mobileApp": "Mobile app build",
+      "design": "Design service"
+    },
+    "scope": {
+      "title": "Scope",
+      "tierValue": {
+        "essential": "Essential",
+        "extended": "Extended",
+        "advanced": "Advanced",
+        "custom": "Custom quote"
+      }
+    },
+    "included": {
+      "title": "Included",
+      "none": "A standard build with no additional capabilities."
+    },
+    "excluded": {
+      "title": "Not included",
+      "note": "Listed in full so nothing comes as a surprise later. Any of these can be added as a change request, priced separately."
+    },
+    "delivery": {
+      "title": "Delivery and guarantee",
+      "days": "{days} working days of development, guaranteed",
+      "storeReviewTitle": "App store review is not included in the guarantee",
+      "storeReview": "We submit your app on your behalf. Apple and Google decide how long their review takes, and that time sits outside our deadline because it is not ours to control."
+    },
+    "guarantee": {
+      "body": "If we miss the guaranteed development deadline, you choose what happens next:",
+      "refundCancel": "Cancel and receive a {percent}% refund.",
+      "refundContinue": "Continue the build and receive a {percent}% refund.",
+      "clockTitle": "Paying does not start the clock",
+      "clockNote": "The countdown begins only once your information and assets are in and the build officially starts. You will be asked for those next, and you can take as long as you need over them."
+    },
+    "totals": {
+      "subtotal": "Subtotal",
+      "discount": "Discount",
+      "tax": "Tax",
+      "total": "Total",
+      "taxNote": {
+        "noRegistration": "not charged"
+      }
+    },
+    "conversionNote": "Prices are set in Canadian dollars and published in {currency} at a rate we review manually. The amount shown is the amount you pay.",
+    "pay": "Pay and start",
+    "paying": "Opening secure checkout",
+    "payError": "We could not open checkout. Please try again.",
+    "cancelledNotice": "Payment was cancelled. Nothing has been charged and your order is still here.",
+    "alreadyPaid": "This order has been paid.",
+    "status": {
+      "draft": "Draft",
+      "pending_payment": "Awaiting payment",
+      "paid": "Paid",
+      "failed": "Payment failed",
+      "cancelled": "Cancelled",
+      "refunded": "Refunded",
+      "partially_refunded": "Partially refunded",
+      "completed": "Completed"
+    },
+    "confirmation": {
+      "title": "Payment received",
+      "body": "Your build is in the queue. Here is what happens next.",
+      "projectRef": "Project {reference}",
+      "pendingTitle": "Payment is still settling",
+      "pendingBody": "Your payment method takes a little longer to confirm. We will email you the moment it clears, and your project will be created then.",
+      "nextTitle": "What happens next",
+      "next": {
+        "assets": "Send us your information and assets. Nothing is on a clock yet.",
+        "build": "The build officially starts and the guaranteed countdown begins.",
+        "preview": "You follow progress on a live preview URL as it comes together.",
+        "launch": "You approve, and we launch."
+      },
+      "clockNote": "The guaranteed countdown has not started. It begins when your assets are in and the build officially starts.",
+      "viewOrder": "View order",
+      "labels": {
+        "project": "Project",
+        "total": "Paid",
+        "invoice": "Invoice"
+      }
+    }
   }
 }

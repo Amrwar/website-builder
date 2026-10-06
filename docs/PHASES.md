@@ -44,19 +44,20 @@ Clerk integration. Six roles, ten permissions, server-side enforcement. Account
 management across profile, business and preferences. Clerk webhook with
 signature verification. Unauthorized access tested, live and in unit tests.
 
-## Roadmap
-
-Phases 6–32 as set by the product owner. Titles are authoritative; the notes
-under each are what the title maps onto in the system as it stands today.
-
 ### Phase 6 — Commerce + Checkout
 
-Stripe. Order creation from a configured draft, payment, invoice, and the
-transition to `awaiting_assets`. Webhook-driven status changes. Refund
-primitives for the two guarantee outcomes.
+Product catalogue, orders with immutable pricing snapshots, order items,
+payment attempts, provider-agnostic payment abstraction with a Stripe adapter,
+invoices with gapless numbering, and a checkout that states the full scope
+including what is **not** included. Payment creates a project in
+`awaiting_assets` and does not start the guarantee clock. EGP added; local
+prices come from a reviewed table, never a live rate. Replay protection and
+signature verification tested against a running server.
 
-**Gate:** a test payment moves a project to `awaiting_assets` and does **not**
-start the countdown.
+## Roadmap
+
+Phases 7–32 as set by the product owner. Titles are authoritative; the notes
+under each are what the title maps onto in the system as it stands today.
 
 ### Phase 7 — Customer Workspace / Build Room
 

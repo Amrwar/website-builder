@@ -36,9 +36,19 @@ export const scopeAssessments = pgTable(
   {
     id: uuid("id").primaryKey().defaultRandom(),
 
-    projectId: uuid("project_id")
-      .notNull()
-      .references(() => projects.id, { onDelete: "cascade" }),
+    /**
+     * The project this assessment belongs to.
+     *
+     * Nullable since Phase 6. An assessment is produced when a quote is
+     * priced, which happens *before* payment and therefore before a project
+     * exists -- requiring a project here would have meant either inventing one
+     * at checkout or not storing the reasoning behind a quoted price at all.
+     * The order side of the link is `order_items.scope_assessment_id`; this
+     * column is set when the order is fulfilled and the project is created.
+     */
+    projectId: uuid("project_id").references(() => projects.id, {
+      onDelete: "cascade",
+    }),
 
     source: assessmentSourceEnum("source").notNull(),
     /** e.g. "rule-engine". */

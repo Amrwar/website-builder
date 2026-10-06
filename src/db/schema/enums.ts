@@ -92,3 +92,91 @@ export const designApproachEnum = pgEnum("design_approach", DESIGN_APPROACHES);
 export const ACTOR_TYPES = ["customer", "staff", "system"] as const;
 export type ActorType = (typeof ACTOR_TYPES)[number];
 export const actorTypeEnum = pgEnum("actor_type", ACTOR_TYPES);
+
+/* -------------------------------------------------------------------------
+ * Commerce
+ * ---------------------------------------------------------------------- */
+
+/**
+ * What kind of thing is being sold.
+ *
+ * The platform is not a single-product shop. A build, a design service, a
+ * maintenance subscription and a block of build credits are all orderable, and
+ * they price and fulfil differently -- so the type is modelled rather than
+ * inferred from a name.
+ */
+export const PRODUCT_TYPES = [
+  /** A website, business system or mobile app. Priced by the scope engine. */
+  "build",
+  /** "Design it for me", sold alongside a build. */
+  "design_service",
+  /** Recurring hosting, updates and monitoring. */
+  "maintenance_plan",
+  /** Pre-purchased capacity for later features. */
+  "build_credit",
+  /** Automation work. */
+  "automation",
+  /** Anything else packaged and sold at a published price. */
+  "business_product",
+] as const;
+export type ProductType = (typeof PRODUCT_TYPES)[number];
+export const productTypeEnum = pgEnum("product_type", PRODUCT_TYPES);
+
+/**
+ * How a product's price is arrived at.
+ *
+ * `scope_assessed` products have no sellable price until a brief has been
+ * assessed; their `base_price_minor_units` is the published "from" figure for
+ * marketing only. Keeping this explicit stops the catalogue and the scope
+ * engine becoming two competing sources of truth for the same number.
+ */
+export const PRICING_MODELS = ["scope_assessed", "fixed", "recurring"] as const;
+export type PricingModel = (typeof PRICING_MODELS)[number];
+export const pricingModelEnum = pgEnum("pricing_model", PRICING_MODELS);
+
+/**
+ * Order lifecycle.
+ *
+ * `paid` means the money arrived. `completed` means the thing bought was
+ * delivered. They are separate because the gap between them is the entire
+ * product, and conflating them would make "paid but not yet built" unsayable.
+ */
+export const ORDER_STATUSES = [
+  "draft",
+  "pending_payment",
+  "paid",
+  "failed",
+  "cancelled",
+  "refunded",
+  "partially_refunded",
+  "completed",
+] as const;
+export type OrderStatus = (typeof ORDER_STATUSES)[number];
+export const orderStatusEnum = pgEnum("order_status", ORDER_STATUSES);
+
+/** Payment attempt lifecycle, as reported by the provider and normalised. */
+export const PAYMENT_STATUSES = [
+  "initiated",
+  "pending",
+  "succeeded",
+  "failed",
+  "cancelled",
+  "refunded",
+] as const;
+export type PaymentStatus = (typeof PAYMENT_STATUSES)[number];
+export const paymentStatusEnum = pgEnum("payment_status", PAYMENT_STATUSES);
+
+/**
+ * Who processed the money.
+ *
+ * Stored per payment rather than assumed globally, so moving providers, or
+ * running two at once in different markets, is a data change and not a
+ * rewrite. `manual` covers a bank transfer reconciled by hand.
+ */
+export const PAYMENT_PROVIDERS = ["stripe", "manual"] as const;
+export type PaymentProviderId = (typeof PAYMENT_PROVIDERS)[number];
+export const paymentProviderEnum = pgEnum("payment_provider", PAYMENT_PROVIDERS);
+
+export const INVOICE_STATUSES = ["draft", "issued", "paid", "void", "refunded"] as const;
+export type InvoiceStatus = (typeof INVOICE_STATUSES)[number];
+export const invoiceStatusEnum = pgEnum("invoice_status", INVOICE_STATUSES);

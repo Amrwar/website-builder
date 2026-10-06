@@ -61,6 +61,8 @@ describe("private routes are gated", () => {
     "/fr/account",
     "/fr/admin",
     "/ar/account/billing",
+    "/orders/ORD-2026-0001",
+    "/fr/orders/ORD-2026-0001/confirmation",
   ];
 
   it.each(privatePaths)("%s calls auth.protect()", async (path) => {
@@ -114,6 +116,7 @@ describe("public routes are not gated", () => {
     // Near misses: a prefix match on "/account" would catch these wrongly.
     "/accounts-payable",
     "/administrators",
+    "/ordering-guide",
   ];
 
   it.each(publicPaths)("%s does not call auth.protect()", async (path) => {

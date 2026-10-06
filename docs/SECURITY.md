@@ -150,6 +150,51 @@ Run against a production build. All rejected; see `docs/TESTING.md`.
 | Role in a profile payload                         | Dropped               |
 | Another user's id in a payload                    | Dropped               |
 
+## Commerce (Phase 6)
+
+**The server decides the price.** The client submits a configuration, never an
+amount. It is re-parsed, re-assessed and re-priced server-side, so a tampered
+payload can at most describe a different project -- which is then priced
+correctly for what it describes. `buildQuote` takes no price argument at all.
+
+**Duplicate orders** are prevented by a unique index on `orders.idempotency_key`,
+scoped to the user. A double submit, a retry or a lost race all converge on one
+order.
+
+**Duplicate payments** are prevented by passing an idempotency key to the
+provider, so a retried create returns the original session rather than a second
+chance to charge.
+
+**Replayed webhooks** are stopped by a unique index on
+`(provider, provider_event_id)`. The insert _is_ the claim: a redelivery loses
+it and is acknowledged with 200 without re-running fulfilment. Stripe's own
+guidance is to key on event ids, not timestamps. Signature verification keeps
+its default five-minute tolerance, which rejects a replayed capture of a
+genuine request.
+
+**Fulfilment is authoritative and idempotent.** The payment state is read back
+from the provider, never taken from the browser; the amount collected is
+checked against the order total; and the claim to fulfil is a single
+conditional UPDATE, so concurrent callers produce one project.
+
+**Unauthorized order and invoice access** is blocked by scoping every lookup to
+the owner inside the SQL, and answering `not_found` rather than `forbidden`.
+
+**Tax** is deliberately not enabled; see `config/commerce.ts` for why turning on
+`automatic_tax` without a registration is worse than leaving it off.
+
+### Verified live (Phase 6)
+
+| Attempt                                   | Result                               |
+| ----------------------------------------- | ------------------------------------ |
+| `/orders/…` and `/fr/orders/…` signed out | 307 to locale sign-in                |
+| Webhook with no signature                 | 401                                  |
+| Webhook with a forged signature           | 401                                  |
+| Webhook payload tampered after signing    | 401                                  |
+| Correctly signed event, replayed          | 200 `duplicate: true`, one event row |
+| Correctly signed capture, 1 hour stale    | 401                                  |
+| Orders created by any of the above        | **0**                                |
+
 ## Gaps
 
 - **No rate limiting** on our own endpoints. Clerk rate-limits authentication;

@@ -6,7 +6,22 @@
  * issues invoices and partial refunds cannot afford rounding drift.
  */
 
-export const SUPPORTED_CURRENCIES = ["CAD", "USD", "EUR", "GBP", "AED", "SAR"] as const;
+/**
+ * Currencies the platform can quote, charge and invoice in.
+ *
+ * Adding one changes the `currency` Postgres enum, so it is a migration and a
+ * deliberate act -- which is the point. Every entry needs a minor-unit factor
+ * below and a presentation rule in `@/config/currency`.
+ */
+export const SUPPORTED_CURRENCIES = [
+  "CAD",
+  "USD",
+  "EUR",
+  "GBP",
+  "AED",
+  "SAR",
+  "EGP",
+] as const;
 export type Currency = (typeof SUPPORTED_CURRENCIES)[number];
 
 /** The currency all internal pricing is defined in. */
@@ -26,6 +41,7 @@ const MINOR_UNIT_FACTOR: Record<Currency, number> = {
   GBP: 100,
   AED: 100,
   SAR: 100,
+  EGP: 100,
 };
 
 export function money(minorUnits: number, currency: Currency = BASE_CURRENCY): Money {
@@ -86,6 +102,21 @@ export function formatMoney(
     minimumFractionDigits: trim ? 0 : undefined,
     maximumFractionDigits: trim ? 0 : undefined,
   }).format(toMajorUnits(value));
+}
+
+/** Subtracts b from a. Mixing currencies is a programming error, not a conversion. */
+export function subtractMoney(a: Money, b: Money): Money {
+  if (a.currency !== b.currency) {
+    throw new TypeError(
+      `Cannot subtract ${b.currency} from ${a.currency}. Convert to a common currency first.`,
+    );
+  }
+  return money(a.minorUnits - b.minorUnits, a.currency);
+}
+
+/** Sums a list. An empty list is zero in the given currency, not an error. */
+export function sumMoney(values: readonly Money[], currency: Currency): Money {
+  return values.reduce((total, value) => addMoney(total, value), money(0, currency));
 }
 
 /** Adds two amounts. Mixing currencies is a programming error, not a conversion. */

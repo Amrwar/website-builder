@@ -42,8 +42,15 @@ const eslintConfig = defineConfig([
   },
 
   {
-    // Tests and tooling legitimately log and use loose typing.
-    files: ["**/*.test.ts", "**/*.test.tsx", "*.config.{ts,mts,mjs}", "vitest.setup.ts"],
+    // Tests and tooling legitimately log and use loose typing. `scripts/` are
+    // one-off operator commands whose whole output is console.
+    files: [
+      "**/*.test.ts",
+      "**/*.test.tsx",
+      "*.config.{ts,mts,mjs}",
+      "vitest.setup.ts",
+      "scripts/**",
+    ],
     rules: { "no-console": "off" },
   },
 
