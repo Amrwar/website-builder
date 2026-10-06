@@ -16,6 +16,7 @@ import {
 import { clawBackReward } from "@/server/growth/referrals";
 import {
   approveReview,
+  inviteReview,
   rejectReview,
   submitReview,
   unpublishReview,
@@ -155,6 +156,38 @@ export async function sendReview(
     return { ok: true };
   } catch (error) {
     return failure(error, "That review could not be saved.");
+  }
+}
+
+/**
+ * Asks the customer of a delivered project for a review.
+ *
+ * Staff-only, and idempotent: a second invitation returns the first rather
+ * than erroring, because a retried click is not a failure. The customer can
+ * also write one unprompted from their own Build Room — the invitation exists
+ * so the asking is deliberate and visible, not so it is the only route.
+ */
+export async function requestReview(projectId: string): Promise<GrowthResult> {
+  try {
+    const context = await requireUser();
+    const result = await inviteReview(String(projectId), context);
+
+    if (!result.ok) {
+      return {
+        ok: false,
+        reason: result.reason,
+        message:
+          result.reason === "not_delivered"
+            ? "A review can be requested once the build is live."
+            : "That invitation could not be sent.",
+      };
+    }
+
+    revalidatePath("/projects");
+    revalidatePath("/admin/reviews");
+    return { ok: true };
+  } catch (error) {
+    return failure(error, "That invitation could not be sent.");
   }
 }
 

@@ -2001,7 +2001,13 @@
       },
       "published": "Published",
       "withdraw": "Withdraw it",
-      "notYet": "You can review this build once it is live."
+      "notYet": "You can review this build once it is live.",
+      "staffTitle": "Customer review",
+      "staffBody": "Invite the customer to review this build. They can also write one themselves from their Build Room.",
+      "staffAsk": "Request a review",
+      "staffResend": "Request again",
+      "staffSent": "The customer has been invited.",
+      "staffAlready": "The customer has already answered."
     },
     "showcase": {
       "title": "Show this build publicly",
@@ -2052,11 +2058,19 @@
         "pitch": "Who do you work with?",
         "pitchPlaceholder": "The kind of clients you have, and the work you would send our way.",
         "submit": "Send application",
-        "sent": "Thank you. We will come back to you by email."
+        "sent": "Thank you. We will come back to you by email.",
+        "track": "Which describes you?",
+        "tracks": {
+          "clients": "I have clients I would refer",
+          "audience": "I have an audience"
+        },
+        "audienceName": "Your name or channel",
+        "audiencePitch": "Tell us about your audience",
+        "audiencePlaceholder": "Where you publish, roughly how many people you reach, and why this would suit them."
       },
       "affiliate": {
         "title": "Affiliates",
-        "body": "If you have an audience rather than clients, there is a separate affiliate track with its own rate. Apply with the same form and tell us about your audience."
+        "body": "If you have an audience rather than clients, choose the audience track above. It is a separate relationship with its own rate, approved on different grounds."
       },
       "honest": "Commission rates are set per partner when we approve an application. We publish the range rather than a single number because the work an agency does before a referral is not the work an affiliate does."
     },

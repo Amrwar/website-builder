@@ -2001,7 +2001,13 @@
       },
       "published": "Publié",
       "withdraw": "Le retirer",
-      "notYet": "Vous pourrez donner un avis une fois la réalisation en ligne."
+      "notYet": "Vous pourrez donner un avis une fois la réalisation en ligne.",
+      "staffTitle": "Avis du client",
+      "staffBody": "Invitez le client à donner son avis sur cette réalisation. Il peut aussi en rédiger un lui-même depuis son espace.",
+      "staffAsk": "Demander un avis",
+      "staffResend": "Redemander",
+      "staffSent": "Le client a été invité.",
+      "staffAlready": "Le client a déjà répondu."
     },
     "showcase": {
       "title": "Montrer cette réalisation publiquement",
@@ -2052,11 +2058,19 @@
         "pitch": "Avec qui travaillez-vous ?",
         "pitchPlaceholder": "Le type de clients que vous avez et le travail que vous nous adresseriez.",
         "submit": "Envoyer la candidature",
-        "sent": "Merci. Nous reviendrons vers vous par e-mail."
+        "sent": "Merci. Nous reviendrons vers vous par e-mail.",
+        "track": "Qu’est-ce qui vous décrit ?",
+        "tracks": {
+          "clients": "J’ai des clients à vous adresser",
+          "audience": "J’ai une audience"
+        },
+        "audienceName": "Votre nom ou votre chaîne",
+        "audiencePitch": "Parlez-nous de votre audience",
+        "audiencePlaceholder": "Où vous publiez, combien de personnes vous touchez environ, et pourquoi cela leur conviendrait."
       },
       "affiliate": {
         "title": "Affiliés",
-        "body": "Si vous avez une audience plutôt que des clients, il existe une filière affiliée distincte avec son propre taux. Candidatez avec le même formulaire en nous parlant de votre audience."
+        "body": "Si vous avez une audience plutôt que des clients, choisissez la filière audience ci-dessus. C’est une relation distincte, avec son propre taux et ses propres critères d’approbation."
       },
       "honest": "Les taux de commission sont fixés partenaire par partenaire à l’approbation. Nous publions la fourchette plutôt qu’un chiffre unique, car le travail d’une agence avant une recommandation n’est pas celui d’un affilié."
     },

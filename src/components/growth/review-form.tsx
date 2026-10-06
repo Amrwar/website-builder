@@ -283,3 +283,79 @@ export function ShowcaseConsent({
     </Card>
   );
 }
+
+/**
+ * Asking for a review.
+ *
+ * The staff half of the same panel. A customer can write one unprompted from
+ * their own Build Room, so this is not the only route — it exists so the
+ * asking is a deliberate, visible act rather than something that happens by
+ * someone remembering to send an email.
+ *
+ * Shows what state the review is already in, because "request a review" on a
+ * project that already has one is a button nobody should be offered.
+ */
+export function RequestReview({
+  projectId,
+  launched,
+  existingStatus,
+}: {
+  projectId: string;
+  launched: boolean;
+  existingStatus: string | null;
+}) {
+  const t = useTranslations("growth.reviews");
+  const { toast } = useToast();
+  const [error, setError] = useState<string | null>(null);
+  const [pending, start] = useTransition();
+
+  if (!launched) {
+    return (
+      <Card padding="lg">
+        <p className="text-body-sm text-secondary">{t("notYet")}</p>
+      </Card>
+    );
+  }
+
+  return (
+    <Card padding="lg" className="flex flex-col gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h3 className="text-body font-medium text-primary">{t("staffTitle")}</h3>
+        {existingStatus ? (
+          <Badge tone={existingStatus === "approved" ? "success" : "neutral"}>
+            {t(`statusLabel.${existingStatus as "submitted"}`)}
+          </Badge>
+        ) : null}
+      </div>
+
+      {error ? <Callout tone="danger" live title={error} /> : null}
+
+      {existingStatus && existingStatus !== "invited" ? (
+        <p className="text-body-sm text-secondary">{t("staffAlready")}</p>
+      ) : (
+        <>
+          <p className="text-body-sm text-secondary">{t("staffBody")}</p>
+          <Button
+            variant="secondary"
+            className="self-start"
+            disabled={pending}
+            onClick={() => {
+              setError(null);
+              start(async () => {
+                const { requestReview } = await import("@/server/growth-actions");
+                const result = await requestReview(projectId);
+                if (!result.ok) {
+                  setError(result.message);
+                  return;
+                }
+                toast({ title: t("staffSent"), tone: "success" });
+              });
+            }}
+          >
+            {existingStatus === "invited" ? t("staffResend") : t("staffAsk")}
+          </Button>
+        </>
+      )}
+    </Card>
+  );
+}

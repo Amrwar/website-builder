@@ -28,7 +28,11 @@ import {
   MessageComposer,
 } from "@/components/workspace/workspace-forms";
 import { BuildMore, LaunchChecklist } from "@/components/workspace/launch-centre";
-import { ReviewForm, ShowcaseConsent } from "@/components/growth/review-form";
+import {
+  RequestReview,
+  ReviewForm,
+  ShowcaseConsent,
+} from "@/components/growth/review-form";
 import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { formatMoney, money, type Currency } from "@/lib/pricing/money";
@@ -950,17 +954,29 @@ export async function LaunchPanel({ workspace, intlTag, launch }: LaunchPanelPro
       {/* --- After it is live --------------------------------------------- */}
       {launch.growth ? (
         <div className="flex flex-col gap-4 border-t border-line-subtle pt-6">
-          <ReviewForm
-            projectId={project.id}
-            existing={launch.growth.review}
-            canReview={project.launchedAt !== null && viewer.isOwner}
-          />
-          <ShowcaseConsent
-            projectId={project.id}
-            consented={launch.growth.showcaseConsented}
-            published={launch.growth.showcasePublished}
-            canConsent={project.launchedAt !== null && viewer.isOwner}
-          />
+          {/* The customer writes a review; staff ask for one. Two halves of
+              the same thing, shown to whichever party can act. */}
+          {viewer.isOwner ? (
+            <ReviewForm
+              projectId={project.id}
+              existing={launch.growth.review}
+              canReview={project.launchedAt !== null}
+            />
+          ) : viewer.canExecuteBuild ? (
+            <RequestReview
+              projectId={project.id}
+              launched={project.launchedAt !== null}
+              existingStatus={launch.growth.review?.status ?? null}
+            />
+          ) : null}
+          {viewer.isOwner ? (
+            <ShowcaseConsent
+              projectId={project.id}
+              consented={launch.growth.showcaseConsented}
+              published={launch.growth.showcasePublished}
+              canConsent={project.launchedAt !== null}
+            />
+          ) : null}
         </div>
       ) : null}
 
