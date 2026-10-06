@@ -1127,18 +1127,34 @@
     },
     "event": {
       "fallback": "Activity",
-      "order.fulfilled": "Payment received and project created",
-      "assets.submitted": "You sent your assets",
-      "build.started": "Build officially started — countdown running",
-      "preview.published": "Preview published",
-      "message.posted": "New message",
-      "change.requested": "Change requested",
-      "change.approved": "Change approved",
-      "change.rejected": "Change rejected",
-      "change.withdrawn": "Change withdrawn",
-      "file.uploaded": "File uploaded",
-      "deployment.started": "Deployment started",
-      "deployment.completed": "Deployment completed"
+      "order": {
+        "fulfilled": "Payment received and project created"
+      },
+      "assets": {
+        "submitted": "You sent your assets"
+      },
+      "build": {
+        "started": "Build officially started — countdown running"
+      },
+      "preview": {
+        "published": "Preview published"
+      },
+      "message": {
+        "posted": "New message"
+      },
+      "change": {
+        "requested": "Change requested",
+        "approved": "Change approved",
+        "rejected": "Change rejected",
+        "withdrawn": "Change withdrawn"
+      },
+      "file": {
+        "uploaded": "File uploaded"
+      },
+      "deployment": {
+        "started": "Deployment started",
+        "completed": "Deployment completed"
+      }
     },
     "preview": {
       "title": "Preview",

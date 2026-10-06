@@ -1127,18 +1127,34 @@
     },
     "event": {
       "fallback": "Activité",
-      "order.fulfilled": "Paiement reçu et projet créé",
-      "assets.submitted": "Vous avez envoyé vos fichiers",
-      "build.started": "Production démarrée officiellement — compte à rebours en cours",
-      "preview.published": "Prévisualisation publiée",
-      "message.posted": "Nouveau message",
-      "change.requested": "Modification demandée",
-      "change.approved": "Modification acceptée",
-      "change.rejected": "Modification refusée",
-      "change.withdrawn": "Modification retirée",
-      "file.uploaded": "Fichier ajouté",
-      "deployment.started": "Déploiement démarré",
-      "deployment.completed": "Déploiement terminé"
+      "order": {
+        "fulfilled": "Paiement reçu et projet créé"
+      },
+      "assets": {
+        "submitted": "Vous avez envoyé vos fichiers"
+      },
+      "build": {
+        "started": "Production démarrée officiellement — compte à rebours en cours"
+      },
+      "preview": {
+        "published": "Prévisualisation publiée"
+      },
+      "message": {
+        "posted": "Nouveau message"
+      },
+      "change": {
+        "requested": "Modification demandée",
+        "approved": "Modification acceptée",
+        "rejected": "Modification refusée",
+        "withdrawn": "Modification retirée"
+      },
+      "file": {
+        "uploaded": "Fichier ajouté"
+      },
+      "deployment": {
+        "started": "Déploiement démarré",
+        "completed": "Déploiement terminé"
+      }
     },
     "preview": {
       "title": "Prévisualisation",

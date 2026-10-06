@@ -1127,18 +1127,34 @@
     },
     "event": {
       "fallback": "نشاط",
-      "order.fulfilled": "تم استلام الدفعة وإنشاء المشروع",
-      "assets.submitted": "أرسلت ملفاتك",
-      "build.started": "انطلق التنفيذ رسميًا — العدّ التنازلي يعمل",
-      "preview.published": "تم نشر المعاينة",
-      "message.posted": "رسالة جديدة",
-      "change.requested": "طلب تعديل",
-      "change.approved": "تمت الموافقة على التعديل",
-      "change.rejected": "تم رفض التعديل",
-      "change.withdrawn": "تم سحب التعديل",
-      "file.uploaded": "تم رفع ملف",
-      "deployment.started": "بدأ النشر",
-      "deployment.completed": "اكتمل النشر"
+      "order": {
+        "fulfilled": "تم استلام الدفعة وإنشاء المشروع"
+      },
+      "assets": {
+        "submitted": "أرسلت ملفاتك"
+      },
+      "build": {
+        "started": "انطلق التنفيذ رسميًا — العدّ التنازلي يعمل"
+      },
+      "preview": {
+        "published": "تم نشر المعاينة"
+      },
+      "message": {
+        "posted": "رسالة جديدة"
+      },
+      "change": {
+        "requested": "طلب تعديل",
+        "approved": "تمت الموافقة على التعديل",
+        "rejected": "تم رفض التعديل",
+        "withdrawn": "تم سحب التعديل"
+      },
+      "file": {
+        "uploaded": "تم رفع ملف"
+      },
+      "deployment": {
+        "started": "بدأ النشر",
+        "completed": "اكتمل النشر"
+      }
     },
     "preview": {
       "title": "المعاينة",

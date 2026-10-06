@@ -54,9 +54,19 @@ const clerk = clerkOrigin();
  * frontend API, so `'self'` alone silently blocks sign-in altogether. The
  * origins below are the narrowest set that works -- the instance host from
  * the publishable key, Clerk's image CDN, and Cloudflare Turnstile, which is
- * what Clerk's bot protection renders in an iframe.
+ * what Clerk's bot protection uses.
+ *
+ * Turnstile needs **three** directives, not one. It loads a script, opens an
+ * iframe, and calls home. Allowing only `frame-src` lets the iframe exist
+ * while the script that would create it is blocked, and the visible result is
+ * "The CAPTCHA failed to load" with nothing at all in the server logs -- the
+ * failure is entirely client-side. That was a real bug here, which is why the
+ * origin is a shared constant rather than three hand-maintained lists.
  * ──────────────────────────────────────────────────────────────────────────
  */
+
+/** Cloudflare Turnstile, which Clerk uses for bot protection. */
+const TURNSTILE = "https://challenges.cloudflare.com";
 const contentSecurityPolicy = [
   "default-src 'self'",
   "base-uri 'self'",
@@ -68,6 +78,7 @@ const contentSecurityPolicy = [
   [
     "script-src 'self' 'unsafe-inline'",
     clerk,
+    TURNSTILE,
     process.env.NODE_ENV === "development" ? "'unsafe-eval'" : null,
   ]
     .filter(Boolean)
@@ -75,11 +86,10 @@ const contentSecurityPolicy = [
   // next/font self-hosts Google fonts at build time, so no remote font origin.
   "font-src 'self' data:",
   ["img-src 'self' data: blob: https://img.clerk.com", clerk].filter(Boolean).join(" "),
-  ["connect-src 'self'", clerk].filter(Boolean).join(" "),
+  ["connect-src 'self'", clerk, TURNSTILE].filter(Boolean).join(" "),
   // ClerkJS runs its session handling in a worker created from a blob.
   "worker-src 'self' blob:",
-  // Clerk's bot protection renders Cloudflare Turnstile in an iframe.
-  ["frame-src 'self' https://challenges.cloudflare.com", clerk].filter(Boolean).join(" "),
+  [`frame-src 'self' ${TURNSTILE}`, clerk].filter(Boolean).join(" "),
   "manifest-src 'self'",
   "upgrade-insecure-requests",
 ].join("; ");
