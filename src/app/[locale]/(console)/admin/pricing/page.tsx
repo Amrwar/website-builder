@@ -55,6 +55,10 @@ export default async function AdminPricingPage({
   const { locale } = await params;
 
   const t = await getTranslations("adminConsole.pricing");
+  // The catalogue's own vocabulary, shared with order lines and the invoice so
+  // one tier reads as the same word everywhere it is named.
+  const tTier = await getTranslations("orderLines.tier");
+  const tProduct = await getTranslations("home.products");
   const { intlTag } = getLocaleDefinition(resolveLocale(locale));
 
   const [live, stored, lifecycle] = await Promise.all([
@@ -130,7 +134,17 @@ export default async function AdminPricingPage({
           <div className="grid gap-4 lg:grid-cols-3">
             {BUILD_TYPES.map((buildType) => (
               <Card key={buildType} padding="lg" className="flex flex-col gap-4">
-                <h2 className="text-body font-medium text-primary">{buildType}</h2>
+                {/* The name for reading, the key for grepping: this card is
+                  the catalogue row being edited, and staff match it back to
+                  the database by key. */}
+                <h2 className="flex items-baseline gap-2">
+                  <span className="text-body font-medium text-primary">
+                    {tProduct(`${buildType}.name`)}
+                  </span>
+                  <span className="font-mono text-caption text-tertiary">
+                    {buildType}
+                  </span>
+                </h2>
 
                 <ul className="flex flex-col gap-4">
                   {live.tiers
@@ -148,7 +162,7 @@ export default async function AdminPricingPage({
                         >
                           <div className="flex items-baseline justify-between gap-3">
                             <span className="text-body-sm text-secondary">
-                              {rule.tier}
+                              {tTier(rule.tier)}
                             </span>
                             <span className="text-body-sm text-primary">
                               {rule.priceMinorUnits === null ? (

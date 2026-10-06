@@ -26,6 +26,9 @@ import { publishedShowcase } from "@/server/growth/showcase";
 export async function BuildWall() {
   const t = await getTranslations("home.buildWall");
   const tWall = await getTranslations("growth.buildWallPage");
+  // Reusing the marketing product names rather than a fourth copy of
+  // "Website" / "Business system" / "Mobile application" in the catalogues.
+  const tProduct = await getTranslations("home.products");
 
   const entries = await publishedShowcase();
 
@@ -58,7 +61,7 @@ export async function BuildWall() {
               <li key={entry.id} className="flex">
                 <Card padding="lg" className="flex flex-1 flex-col gap-3">
                   <div className="flex flex-wrap items-center gap-2">
-                    <Badge tone="neutral">{entry.buildType}</Badge>
+                    <Badge tone="neutral">{tProduct(`${entry.buildType}.name`)}</Badge>
                     {entry.deliveredInDays ? (
                       <span className="text-caption text-tertiary">
                         {tWall("deliveredIn", { days: entry.deliveredInDays })}

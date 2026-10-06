@@ -56,6 +56,7 @@ export default async function AdminProjectPage({
   const { locale, reference } = await params;
 
   const t = await getTranslations("adminConsole");
+  const tTier = await getTranslations("orderLines.tier");
   const { intlTag } = getLocaleDefinition(resolveLocale(locale));
   const dates = await viewerDates(locale);
 
@@ -168,7 +169,9 @@ export default async function AdminProjectPage({
           <dl className="flex flex-col gap-1.5 text-body-sm">
             <div className="flex justify-between gap-3">
               <dt className="text-secondary">{t("scopeView.tier")}</dt>
-              <dd className="text-primary">{project.scopeTier ?? t("common.none")}</dd>
+              <dd className="text-primary">
+                {project.scopeTier ? tTier(project.scopeTier) : t("common.none")}
+              </dd>
             </div>
             <div className="flex justify-between gap-3">
               <dt className="text-secondary">{t("pricing.days")}</dt>

@@ -33,6 +33,7 @@ export default async function AdminScopePage({
   const query = await searchParams;
 
   const t = await getTranslations("adminConsole");
+  const tTier = await getTranslations("orderLines.tier");
   getLocaleDefinition(resolveLocale(locale));
 
   const tier = typeof query.tier === "string" ? query.tier : undefined;
@@ -52,7 +53,9 @@ export default async function AdminScopePage({
       id: "tier",
       header: t("scopeView.tier"),
       mobile: "meta",
-      cell: (row) => <Badge tone="info">{row.scopeTier ?? "—"}</Badge>,
+      cell: (row) => (
+        <Badge tone="info">{row.scopeTier ? tTier(row.scopeTier) : "—"}</Badge>
+      ),
     },
     {
       id: "product",

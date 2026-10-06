@@ -110,6 +110,9 @@ function formatDate(date: Date, intlTag: string, timeZone: string): string {
 
 export async function OverviewPanel({ workspace, intlTag, timeZone }: PanelProps) {
   const t = await getTranslations("workspace");
+  // The catalogue's own vocabulary, shared with order lines and the invoice so
+  // a customer reads the same word for a tier wherever it appears.
+  const tTier = await getTranslations("orderLines.tier");
   const { project, stages, nextAction, deadline, team, order } = workspace;
 
   const currentIndex = stages.findIndex((entry) => entry.state === "current");
@@ -156,7 +159,9 @@ export async function OverviewPanel({ workspace, intlTag, timeZone }: PanelProps
               <dt className="text-eyebrow text-tertiary uppercase">
                 {t("overview.scope")}
               </dt>
-              <dd className="text-body-sm text-secondary">{project.scopeTier ?? "—"}</dd>
+              <dd className="text-body-sm text-secondary">
+                {project.scopeTier ? tTier(project.scopeTier) : "—"}
+              </dd>
             </div>
             {order ? (
               <div className="flex flex-col gap-1">
