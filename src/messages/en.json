@@ -888,7 +888,9 @@
     "account": "Account",
     "staff": "Staff",
     "builds": "Builds",
-    "billing": "Billing"
+    "billing": "Billing",
+    "notifications": "Notifications",
+    "unreadBadge": "{count} unread"
   },
   "account": {
     "title": "Account",
@@ -2158,5 +2160,80 @@
     "notFoundBody": "This invoice does not exist, or it is not yours. Check the number on your confirmation email.",
     "view": "View invoice",
     "print": "Print"
+  },
+  "email": {
+    "greeting": "Hello,",
+    "greetingNamed": "Hello {name},",
+    "signoff": "— The {brand} team",
+    "why": "You are receiving this because you have an account with us. You can change which updates you get in your account settings."
+  },
+  "notifications": {
+    "order_paid": {
+      "title": "Your order is confirmed",
+      "body": "We have your payment for {reference}. Next we need your content and brand files — the delivery countdown starts once they are in.",
+      "action": "Open your project"
+    },
+    "invoice_issued": {
+      "title": "Invoice {number}",
+      "body": "Your invoice is ready to view and download.",
+      "action": "View invoice"
+    },
+    "refund_issued": {
+      "title": "A refund of {amount} is on its way",
+      "body": "We have issued {amount} back to your original payment method. Banks usually take a few business days to show it.",
+      "action": "View billing"
+    },
+    "deadline_missed": {
+      "title": "We missed your deadline on {reference}",
+      "body": "That is on us, and you choose what happens next: a full refund and we cancel, or we carry on and refund 30%.",
+      "action": "Choose what happens next"
+    },
+    "build_started": {
+      "title": "Your build has started",
+      "body": "Work on {reference} is underway. You have a guaranteed {days} days from today.",
+      "action": "Follow the build"
+    },
+    "preview_ready": {
+      "title": "Your preview is ready",
+      "body": "There is something to look at for {reference}. Have a look and tell us what to change.",
+      "action": "Open the preview"
+    },
+    "project_launched": {
+      "title": "{reference} is live",
+      "body": "Your build is deployed and serving. Everything you need to run it is in your project.",
+      "action": "Open your project"
+    },
+    "approval_requested": {
+      "title": "We need your approval",
+      "body": "{reference} is waiting on you. Nothing moves until you have looked at it.",
+      "action": "Review and approve"
+    },
+    "message_received": {
+      "title": "New message from {sender}",
+      "body": "You have a new message about your build.",
+      "action": "Read the message"
+    },
+    "deadline_approaching": {
+      "title": "{days} days left on {reference}",
+      "body": "A reminder of where your guarantee stands. Nothing is required from you unless we have asked for something.",
+      "action": "Open your project"
+    },
+    "product_news": {
+      "title": "{headline}",
+      "body": "{body}",
+      "action": "Read more"
+    },
+    "page": {
+      "title": "Notifications",
+      "subtitle": "Everything we have told you, newest first.",
+      "empty": "Nothing yet",
+      "emptyBody": "When something happens on one of your projects, it will show up here.",
+      "markAllRead": "Mark all as read",
+      "marked": "All caught up.",
+      "unread": "Unread",
+      "unreadCount": "{count, plural, =0 {No unread} one {# unread} other {# unread}}",
+      "preferences": "Choose which updates you get",
+      "languageNote": "Sent in {language}, the language your account was set to at the time."
+    }
   }
 }

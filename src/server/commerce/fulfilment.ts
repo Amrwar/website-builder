@@ -17,6 +17,8 @@ import {
 } from "@/db/schema";
 import type { ConfiguratorDraft } from "@/lib/configurator/draft";
 import { logger } from "@/lib/logger";
+import { outboundOrigin } from "@/lib/site-origin";
+import { notify } from "@/server/notifications";
 import { paymentProvider } from "@/server/payments";
 import { nextDocumentNumber } from "./numbering";
 
@@ -235,7 +237,12 @@ export async function fulfilCheckout(
       },
     });
 
-    return { order: claimed, projectId: project.id };
+    return {
+      order: claimed,
+      projectId: project.id,
+      projectReference: project.reference,
+      invoiceNumber,
+    };
   });
 
   if (!result) {
@@ -264,6 +271,47 @@ export async function fulfilCheckout(
     orderNumber: result.order.number,
     projectId: result.projectId,
   });
+
+  /**
+   * Notified after the transaction commits, never inside it.
+   *
+   * A notification is an outbound fact. Sending one from inside the
+   * transaction that creates the project means a rollback leaves the customer
+   * holding an email about work that does not exist, and an email cannot be
+   * rolled back. The dedupe keys make this safe to reach twice, which it will:
+   * the Stripe webhook and the confirmation page both call this.
+   */
+  const origin = outboundOrigin();
+  const projectPath = `/projects/${result.projectReference}`;
+
+  try {
+    await notify({
+      recipientId: result.order.ownerId,
+      kind: "order_paid",
+      params: { reference: result.projectReference },
+      projectId: result.projectId,
+      dedupeKey: `order_paid:${result.order.id}`,
+      path: projectPath,
+      origin,
+    });
+
+    await notify({
+      recipientId: result.order.ownerId,
+      kind: "invoice_issued",
+      params: { number: result.invoiceNumber },
+      projectId: result.projectId,
+      dedupeKey: `invoice_issued:${result.invoiceNumber}`,
+      path: `/invoices/${result.invoiceNumber}`,
+      origin,
+    });
+  } catch (error) {
+    // The money arrived and the project exists. Reporting this as a failed
+    // fulfilment would make the webhook retry work that is already done.
+    logger.error("notifications failed after fulfilment", {
+      orderId: result.order.id,
+      error,
+    });
+  }
 
   return {
     ok: true,

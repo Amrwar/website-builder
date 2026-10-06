@@ -10,6 +10,7 @@ export * from "./projects";
 export * from "./briefs";
 export * from "./scope-assessments";
 export * from "./events";
+export * from "./notifications";
 
 /* --- Commerce ---------------------------------------------------------- */
 export * from "./products";

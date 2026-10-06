@@ -6,6 +6,9 @@ import { db } from "@/db/client";
 import { projectFiles, projects, type Project } from "@/db/schema";
 import { ApiError } from "@/lib/api/response";
 import { logger } from "@/lib/logger";
+import { outboundOrigin } from "@/lib/site-origin";
+import type { NotificationKind } from "@/config/notifications";
+import { notify } from "@/server/notifications";
 import { deadlineFrom } from "@/lib/schedule/deadline";
 import type { AuthContext } from "@/server/auth";
 import { emit } from "@/server/events/bus";
@@ -210,6 +213,14 @@ export async function startBuild(
     deadlineAt: deadlineAt?.toISOString(),
   });
 
+  // This is the notification that matters most of the whole set: it is the
+  // moment the guarantee the customer paid for actually starts running, and
+  // they need the date in writing.
+  await notifyOwner(updated, "build_started", {
+    reference: updated.reference,
+    days: String(project.guaranteedDays),
+  });
+
   return { ok: true, value: updated };
 }
 
@@ -236,5 +247,39 @@ export async function publishPreview(
     actorId: context.user.clerkUserId,
     payload: {},
   });
+  await notifyOwner(updated, "preview_ready", { reference: updated.reference });
+
   return { ok: true, value: updated };
+}
+
+/**
+ * Tells the project's owner, in their language.
+ *
+ * Wrapped so a failure here cannot undo the transition that triggered it. A
+ * build whose clock has started and whose customer was not emailed is a
+ * recoverable problem; a transition rolled back because an email template
+ * threw is not.
+ */
+async function notifyOwner(
+  project: Project,
+  kind: NotificationKind,
+  params: Record<string, string>,
+): Promise<void> {
+  try {
+    await notify({
+      recipientId: project.ownerId,
+      kind,
+      params,
+      projectId: project.id,
+      dedupeKey: `${kind}:${project.id}`,
+      path: `/projects/${project.reference}`,
+      origin: outboundOrigin(),
+    });
+  } catch (error) {
+    logger.error("notification failed after a lifecycle transition", {
+      projectId: project.id,
+      kind,
+      error,
+    });
+  }
 }

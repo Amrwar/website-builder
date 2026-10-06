@@ -2,6 +2,7 @@ import "server-only";
 
 import { and, eq, sql } from "drizzle-orm";
 
+import type { NotificationKind } from "@/config/notifications";
 import { APPROVAL_KINDS, type ApprovalKind } from "@/config/workspace";
 import { db } from "@/db/client";
 import {
@@ -12,12 +13,15 @@ import {
   projectMessages,
   projects,
   type ChangeRequest,
+  type Project,
   type ProjectApproval,
   type ProjectMessage,
 } from "@/db/schema";
 import { ApiError } from "@/lib/api/response";
 import { logger } from "@/lib/logger";
+import { outboundOrigin } from "@/lib/site-origin";
 import type { AuthContext } from "@/server/auth";
+import { notify } from "@/server/notifications";
 
 /**
  * Collaboration inside a Build Room: messages, change requests, approvals.
@@ -84,7 +88,7 @@ export async function sendMessage(
   context: AuthContext,
   attachmentFileIds: string[] = [],
 ): Promise<ProjectMessage> {
-  const { isStaff } = await assertParticipant(projectId, context);
+  const { project, isStaff } = await assertParticipant(projectId, context);
 
   const trimmed = body.trim();
   if (trimmed === "") throw new ApiError("bad_request", "A message cannot be empty.");
@@ -111,6 +115,23 @@ export async function sendMessage(
     messageId: message.id,
     attachments: attachmentFileIds.length,
   });
+
+  /**
+   * Only the customer is notified, and only when staff wrote the message.
+   *
+   * The reverse direction has no single recipient -- staff is a team, not a
+   * person -- and would need a queue surface rather than a notification. A
+   * customer's message already appears in the build queue, which is where
+   * staff work from.
+   *
+   * No dedupe key: every message is a distinct event, and two messages a
+   * minute apart are two things the customer needs to know about.
+   */
+  if (isStaff) {
+    await notifyParticipant(project, "message_received", {
+      sender: message.authorName,
+    });
+  }
 
   // The author has, by definition, read their own message.
   await db
@@ -268,7 +289,7 @@ export async function requestApproval(
   context: AuthContext,
   options: { subjectRef?: string; summary?: string } = {},
 ): Promise<ProjectApproval> {
-  const { isStaff } = await assertParticipant(projectId, context);
+  const { project, isStaff } = await assertParticipant(projectId, context);
   if (!isStaff) throw new ApiError("not_found", "Not found.");
 
   const [{ rounds } = { rounds: 0 }] = await db
@@ -296,6 +317,15 @@ export async function requestApproval(
     approvalId: created.id,
     round: created.round,
   });
+
+  // Keyed on the approval, not the project: a second round is a new thing to
+  // approve and must notify again.
+  await notifyParticipant(
+    project,
+    "approval_requested",
+    { reference: project.reference },
+    `approval_requested:${created.id}`,
+  );
 
   return created;
 }
@@ -355,4 +385,36 @@ export async function decideApproval(
 
   logger.info("approval decided", { approvalId, kind: existing.kind, decision });
   return updated;
+}
+
+/**
+ * Notifies a project's owner in their own language.
+ *
+ * Failures are swallowed: a message that was posted and stored must not be
+ * reported as failed because the recipient could not be told about it. The
+ * message is on the thread either way.
+ */
+async function notifyParticipant(
+  project: Project,
+  kind: NotificationKind,
+  params: Record<string, string>,
+  dedupeKey: string | null = null,
+): Promise<void> {
+  try {
+    await notify({
+      recipientId: project.ownerId,
+      kind,
+      params,
+      projectId: project.id,
+      dedupeKey,
+      path: `/projects/${project.reference}`,
+      origin: outboundOrigin(),
+    });
+  } catch (error) {
+    logger.error("notification failed after a collaboration write", {
+      projectId: project.id,
+      kind,
+      error,
+    });
+  }
 }

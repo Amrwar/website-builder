@@ -1,5 +1,6 @@
 import { pgEnum } from "drizzle-orm/pg-core";
 
+import { NOTIFICATION_KIND_IDS } from "@/config/notifications";
 import { BUILD_TYPES } from "@/config/products";
 import { USER_ROLES } from "@/config/roles";
 import { SUPPORTED_CURRENCIES } from "@/lib/pricing/money";
@@ -92,6 +93,16 @@ export const designApproachEnum = pgEnum("design_approach", DESIGN_APPROACHES);
 export const ACTOR_TYPES = ["customer", "staff", "system"] as const;
 export type ActorType = (typeof ACTOR_TYPES)[number];
 export const actorTypeEnum = pgEnum("actor_type", ACTOR_TYPES);
+
+/**
+ * What a person can be notified about.
+ *
+ * The list, and which of them a recipient may switch off, lives in
+ * `src/config/notifications.ts` so the preferences screen can read it without
+ * importing the schema. This enum exists only to keep the column honest.
+ */
+export const NOTIFICATION_KIND_VALUES = NOTIFICATION_KIND_IDS;
+export const notificationKindEnum = pgEnum("notification_kind", NOTIFICATION_KIND_VALUES);
 
 /* -------------------------------------------------------------------------
  * Commerce

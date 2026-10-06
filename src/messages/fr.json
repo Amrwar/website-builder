@@ -888,7 +888,9 @@
     "account": "Compte",
     "staff": "Équipe",
     "builds": "Projets",
-    "billing": "Facturation"
+    "billing": "Facturation",
+    "notifications": "Notifications",
+    "unreadBadge": "{count} non lus"
   },
   "account": {
     "title": "Compte",
@@ -2158,5 +2160,80 @@
     "notFoundBody": "Cette facture n’existe pas, ou elle ne vous appartient pas. Vérifiez le numéro sur votre courriel de confirmation.",
     "view": "Voir la facture",
     "print": "Imprimer"
+  },
+  "email": {
+    "greeting": "Bonjour,",
+    "greetingNamed": "Bonjour {name},",
+    "signoff": "— L’équipe {brand}",
+    "why": "Vous recevez ce message parce que vous avez un compte chez nous. Vous pouvez choisir les notifications que vous recevez dans les paramètres de votre compte."
+  },
+  "notifications": {
+    "order_paid": {
+      "title": "Votre commande est confirmée",
+      "body": "Nous avons reçu votre paiement pour {reference}. Il nous faut maintenant vos contenus et vos fichiers de marque — le délai commence dès leur réception.",
+      "action": "Ouvrir votre projet"
+    },
+    "invoice_issued": {
+      "title": "Facture {number}",
+      "body": "Votre facture est prête à consulter et à télécharger.",
+      "action": "Voir la facture"
+    },
+    "refund_issued": {
+      "title": "Un remboursement de {amount} est en route",
+      "body": "Nous avons remboursé {amount} sur votre moyen de paiement d’origine. Les banques prennent généralement quelques jours ouvrables pour l’afficher.",
+      "action": "Voir la facturation"
+    },
+    "deadline_missed": {
+      "title": "Nous avons manqué votre échéance sur {reference}",
+      "body": "C’est notre faute, et c’est vous qui décidez : un remboursement intégral et nous annulons, ou nous continuons et vous remboursons 30 %.",
+      "action": "Choisir la suite"
+    },
+    "build_started": {
+      "title": "Votre développement a commencé",
+      "body": "Le travail sur {reference} est lancé. Vous avez une garantie de {days} jours à compter d’aujourd’hui.",
+      "action": "Suivre le développement"
+    },
+    "preview_ready": {
+      "title": "Votre aperçu est prêt",
+      "body": "Il y a quelque chose à voir pour {reference}. Regardez et dites-nous quoi changer.",
+      "action": "Ouvrir l’aperçu"
+    },
+    "project_launched": {
+      "title": "{reference} est en ligne",
+      "body": "Votre projet est déployé et en service. Tout ce qu’il vous faut pour l’exploiter se trouve dans votre projet.",
+      "action": "Ouvrir votre projet"
+    },
+    "approval_requested": {
+      "title": "Nous avons besoin de votre validation",
+      "body": "{reference} vous attend. Rien n’avance avant que vous l’ayez regardé.",
+      "action": "Examiner et valider"
+    },
+    "message_received": {
+      "title": "Nouveau message de {sender}",
+      "body": "Vous avez un nouveau message au sujet de votre projet.",
+      "action": "Lire le message"
+    },
+    "deadline_approaching": {
+      "title": "{days} jours restants sur {reference}",
+      "body": "Un rappel de l’état de votre garantie. Rien n’est attendu de vous, sauf si nous vous avons demandé quelque chose.",
+      "action": "Ouvrir votre projet"
+    },
+    "product_news": {
+      "title": "{headline}",
+      "body": "{body}",
+      "action": "En savoir plus"
+    },
+    "page": {
+      "title": "Notifications",
+      "subtitle": "Tout ce que nous vous avons signalé, du plus récent au plus ancien.",
+      "empty": "Rien pour l’instant",
+      "emptyBody": "Dès qu’il se passe quelque chose sur l’un de vos projets, cela apparaîtra ici.",
+      "markAllRead": "Tout marquer comme lu",
+      "marked": "Vous êtes à jour.",
+      "unread": "Non lu",
+      "unreadCount": "{count, plural, =0 {Aucun non lu} one {# non lu} other {# non lus}}",
+      "preferences": "Choisir les notifications que vous recevez",
+      "languageNote": "Envoyé en {language}, la langue de votre compte à ce moment-là."
+    }
   }
 }

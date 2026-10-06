@@ -64,6 +64,13 @@
       "when": 1791313376576,
       "tag": "0008_invoice_line_locale",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1791314394080,
+      "tag": "0009_notifications",
+      "breakpoints": true
     }
   ]
 }

@@ -13,6 +13,8 @@ import {
   type LaunchReadiness,
 } from "@/lib/launch/readiness";
 import { logger } from "@/lib/logger";
+import { outboundOrigin } from "@/lib/site-origin";
+import { notify } from "@/server/notifications";
 import type { AuthContext } from "@/server/auth";
 import { emit } from "@/server/events/bus";
 import { checklistForProject } from "./checklist";
@@ -187,6 +189,22 @@ export async function launchProject(
     reference: launched.reference,
     url: centre.production?.url,
   });
+
+  try {
+    await notify({
+      recipientId: launched.ownerId,
+      kind: "project_launched",
+      params: { reference: launched.reference },
+      projectId: launched.id,
+      dedupeKey: `project_launched:${launched.id}`,
+      path: `/projects/${launched.reference}`,
+      origin: outboundOrigin(),
+    });
+  } catch (error) {
+    // A launch that happened must never be reported as failed because the
+    // customer could not be told. The site is live either way.
+    logger.error("notification failed after launch", { projectId, error });
+  }
 
   return { ok: true, project: launched };
 }

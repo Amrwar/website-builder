@@ -10,6 +10,7 @@ import { Logo } from "@/components/site/logo";
 import { clerkAppearance } from "@/lib/clerk-appearance";
 import { Link } from "@/i18n/navigation";
 import { getAuthContext } from "@/server/auth";
+import { unreadCountFor } from "@/server/notifications";
 import { isStaffRole } from "@/config/roles";
 import { cn } from "@/lib/cn";
 
@@ -27,6 +28,9 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
   const t = await getTranslations("app");
   const context = await getAuthContext();
   const showStaffLink = context ? isStaffRole(context.user.role) : false;
+
+  // One count, in the shell, so it is visible from every signed-in page.
+  const unread = context ? await unreadCountFor(context) : 0;
 
   // Rendered only when a referral cookie is actually present, so the ordinary
   // signed-in page load does no extra work at all.
@@ -60,6 +64,27 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
                 )}
               >
                 {t("billing")}
+              </Link>
+              <Link
+                href="/notifications"
+                className={cn(
+                  "relative rounded-md px-3 py-2 text-body-sm whitespace-nowrap text-secondary",
+                  "duration-fast transition-colors ease-out-quint hover:bg-hover hover:text-primary",
+                )}
+              >
+                {t("notifications")}
+                {/* A count, not a dot: "3 unread" is actionable and a dot is
+                    not. Announced to screen readers through the label rather
+                    than left as a bare number next to a word. */}
+                {unread > 0 ? (
+                  <span
+                    className="min-inline-size-5 text-on-accent ms-1.5 inline-flex items-center justify-center rounded-full bg-accent px-1.5 text-caption"
+                    aria-label={t("unreadBadge", { count: unread })}
+                    data-numeric
+                  >
+                    {unread}
+                  </span>
+                ) : null}
               </Link>
               <Link
                 href="/account"

@@ -6,6 +6,9 @@ import type { z } from "zod";
 
 import { db } from "@/db/client";
 import { users } from "@/db/schema";
+import { cookies } from "next/headers";
+
+import { LOCALE_COOKIE } from "@/i18n/routing";
 import { businessSchema, preferencesSchema, profileSchema } from "@/lib/account/schema";
 import { ApiError } from "@/lib/api/response";
 import { logger } from "@/lib/logger";
@@ -79,5 +82,33 @@ export async function updateBusiness(raw: unknown): Promise<ActionResult> {
 }
 
 export async function updatePreferences(raw: unknown): Promise<ActionResult> {
-  return updateOwnRow(preferencesSchema, raw, "preferences");
+  const result = await updateOwnRow(preferencesSchema, raw, "preferences");
+  if (!result.ok) return result;
+
+  /**
+   * The stored preference is the durable record; the cookie is what the router
+   * can actually act on.
+   *
+   * The UI language comes from the URL, because the locale is a route segment
+   * and a shared French link has to render French for whoever opens it. That
+   * means saving "French" in the database changed nothing on its own: the
+   * customer saved a preference and the site stayed in English, which reads as
+   * a broken setting. Writing the detection cookie here is what makes an
+   * unprefixed URL resolve to their language on the next request.
+   *
+   * Deliberately not read in the proxy instead: that would put a database
+   * query on the edge of every single request, including every anonymous
+   * marketing page, to answer a question a cookie already answers.
+   */
+  const parsed = preferencesSchema.safeParse(raw);
+  if (parsed.success) {
+    const { name, ...attributes } = LOCALE_COOKIE;
+    // Not httpOnly: next-intl's own locale switcher reads it client-side, and
+    // it holds a language, not a secret.
+    (await cookies()).set(name, parsed.data.preferredLocale, attributes);
+    // Every page is rendered in a locale, so the whole tree is now stale.
+    revalidatePath("/", "layout");
+  }
+
+  return result;
 }
