@@ -90,6 +90,10 @@ The middleware file is `src/proxy.ts` — Next 16 renamed it.
 - Use `<SignedIn>` / `<SignedOut>` — exported but they throw in Clerk Core 3.
   Use `<Show when="signed-in">` or `useAuth()`.
 - Read cookies in a layout for theming. It makes every page dynamic.
+- Run `next build` while `npm run dev` is running. They share `.next`, so the
+  build overwrites what the dev server is serving from and every prerendered
+  page starts throwing `SyntaxError` with no useful message. Recovery is
+  `rm -rf .next` and restart. Build in a stopped tree, or in CI.
 - Commit a `.env` value, or echo a secret into logs or a response body.
 - Fabricate content to fill a UI. Ship the empty state.
 
