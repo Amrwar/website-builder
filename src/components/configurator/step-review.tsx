@@ -4,12 +4,21 @@ import { Pencil } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
+import { Callout } from "@/components/ui/callout";
 import { Card } from "@/components/ui/card";
+import { Field } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { getLocaleDefinition, resolveLocale } from "@/config/locales";
 import type { StepId, ConfiguratorDraft } from "@/lib/configurator/draft";
 import { formatMoney } from "@/lib/pricing/money";
-import type { ScopeAssessment } from "@/lib/scope";
+import {
+  buildPrice,
+  designFee,
+  guaranteedDays,
+  totalPrice,
+  type ProjectAssessment,
+} from "@/lib/engine";
 
 /**
  * Step 7 — review.
@@ -27,10 +36,18 @@ export function StepReview({
   draft,
   assessment,
   onEdit,
+  discountCode,
+  onDiscountCodeChange,
+  onApplyDiscount,
+  applying,
 }: {
   draft: ConfiguratorDraft;
-  assessment: ScopeAssessment | null;
+  assessment: ProjectAssessment | null;
   onEdit: (step: StepId) => void;
+  discountCode: string;
+  onDiscountCodeChange: (next: string) => void;
+  onApplyDiscount: () => void;
+  applying: boolean;
 }) {
   const t = useTranslations("configurator.review");
   const tProducts = useTranslations("home.products");
@@ -42,6 +59,13 @@ export function StepReview({
   if (!assessment || !draft.buildType) return null;
 
   const quote = assessment.requiresCustomQuote;
+  const total = totalPrice(assessment);
+  const build = buildPrice(assessment);
+  const design = designFee(assessment);
+  const days = guaranteedDays(assessment);
+  const applied = assessment.price?.appliedDiscount ?? null;
+  // A code was typed, the server was asked, and nothing came back applied.
+  const refused = discountCode.trim() !== "" && !applied;
 
   const rows: { key: string; step: StepId; label: string; value: React.ReactNode }[] = [
     {
@@ -113,9 +137,7 @@ export function StepReview({
 
         <dl className="flex flex-col gap-4">
           <Line label={t("rows.timeline")}>
-            {quote
-              ? t("quotedSeparately")
-              : t("daysValue", { days: assessment.guaranteedDays! })}
+            {quote || days === null ? t("quotedSeparately") : t("daysValue", { days })}
           </Line>
 
           <Line label={t("rows.deadline")}>
@@ -124,14 +146,53 @@ export function StepReview({
 
           <Separator />
 
-          {assessment.designFee && !quote ? (
+          {design && build && !quote ? (
             <>
               <Line label={t("rows.buildPrice")}>
-                {formatMoney(assessment.price!, intlTag, { trimWholeDecimals: true })}
+                {formatMoney(build, intlTag, { trimWholeDecimals: true })}
               </Line>
               <Line label={t("rows.designService")}>
-                {formatMoney(assessment.designFee, intlTag, { trimWholeDecimals: true })}
+                {formatMoney(design, intlTag, { trimWholeDecimals: true })}
               </Line>
+              <Separator />
+            </>
+          ) : null}
+
+          {!quote ? (
+            <>
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-wrap items-end gap-2">
+                  <Field label={t("rows.discountCode")} className="min-w-48 flex-1">
+                    <Input
+                      value={discountCode}
+                      maxLength={32}
+                      autoComplete="off"
+                      spellCheck={false}
+                      onChange={(event) =>
+                        onDiscountCodeChange(event.target.value.toUpperCase())
+                      }
+                    />
+                  </Field>
+                  <Button
+                    variant="secondary"
+                    disabled={applying || discountCode.trim() === ""}
+                    onClick={onApplyDiscount}
+                  >
+                    {t("applyDiscount")}
+                  </Button>
+                </div>
+
+                {applied ? (
+                  <Line label={applied.description ?? applied.code}>
+                    −{formatMoney(applied.amount, intlTag, { trimWholeDecimals: true })}
+                  </Line>
+                ) : null}
+
+                {refused && !applying ? (
+                  <Callout tone="warning" live title={t("discountRefused")} />
+                ) : null}
+              </div>
+
               <Separator />
             </>
           ) : null}
@@ -139,11 +200,9 @@ export function StepReview({
           <div className="flex flex-wrap items-baseline justify-between gap-4">
             <dt className="text-body font-semibold text-primary">{t("rows.total")}</dt>
             <dd className="text-display-md text-primary" data-numeric>
-              {quote
+              {quote || !total
                 ? t("customQuote")
-                : formatMoney(assessment.totalPrice!, intlTag, {
-                    trimWholeDecimals: true,
-                  })}
+                : formatMoney(total, intlTag, { trimWholeDecimals: true })}
             </dd>
           </div>
 

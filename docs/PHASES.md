@@ -108,12 +108,28 @@ Project queue sorted by deadline risk, deadline-risk detection,
 scope override as an append-only assessment, customer management, payment and
 refund management, role assignment.
 
-### Phase 10 — Scope + Pricing Engine
+### Phase 10 — Scope + Pricing Engine ✅
 
-A rule-based engine already ships (26 capabilities, points plus tier floors,
-actor-group detection across three languages). This phase is where it is
-formalized and extended, and where an LLM assessor would connect through the
-existing `ScopeAssessor` seam. See `docs/PRICING_AND_SCOPE.md`.
+Delivered. `lib/engine` is now the single authoritative answer to what a
+project is, how long it takes and what it costs, and `server/engine` is the
+only thing that loads the catalogue. The configurator and the order service
+previously assembled scope and price independently; they now share one call.
+
+The commercial rules moved into four audited tables, editable by the owner
+alone, with the shipped `config/` constants kept as both seed and fallback.
+Invariants are enforced twice — in Zod and in database CHECK constraints —
+and verified against real Postgres. Coupons, localized prices, feature
+surcharges and immutable pricing snapshots all ship. See
+`docs/PRICING_AND_SCOPE.md`.
+
+An LLM assessor still connects through the unchanged `ScopeAssessor` seam; the
+engine now records both the assessor and the engine version on every
+assessment, so a future swap stays interpretable.
+
+#### Original plan
+
+Formalize and extend the rule-based engine (26 capabilities, points plus tier
+floors, actor-group detection across three languages).
 
 ### Phase 11 — Launch + Hosting + Maintenance
 

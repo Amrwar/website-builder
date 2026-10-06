@@ -26,3 +26,4 @@ export * from "./production";
 /* --- Admin ------------------------------------------------------------- */
 export * from "./audit";
 export * from "./refunds";
+export * from "./catalog";

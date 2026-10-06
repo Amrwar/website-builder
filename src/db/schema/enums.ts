@@ -383,3 +383,18 @@ export const refundReasonEnum = pgEnum("refund_reason", REFUND_REASONS);
 export const MESSAGE_VISIBILITIES = ["customer", "internal"] as const;
 export type MessageVisibility = (typeof MESSAGE_VISIBILITIES)[number];
 export const messageVisibilityEnum = pgEnum("message_visibility", MESSAGE_VISIBILITIES);
+
+/* -------------------------------------------------------------------------
+ * Catalogue
+ * ---------------------------------------------------------------------- */
+
+/**
+ * How a discount reduces a price.
+ *
+ * Two kinds only. "Buy one get one", tiered thresholds and the rest are
+ * campaign mechanics; adding them before a campaign needs one is inventing
+ * requirements, and each would need its own interaction rules with the others.
+ */
+export const DISCOUNT_KINDS = ["percentage", "fixed"] as const;
+export type DiscountKind = (typeof DISCOUNT_KINDS)[number];
+export const discountKindEnum = pgEnum("discount_kind", DISCOUNT_KINDS);

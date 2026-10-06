@@ -8,6 +8,14 @@ import { requireUser } from "@/server/auth";
 import { adminSearch } from "@/server/admin/queries";
 import { executeRefund, rejectRefund, requestRefund } from "@/server/admin/refunds";
 import { changeUserRole } from "@/server/admin/team";
+import {
+  createDiscount,
+  importShippedDefaults,
+  setDiscountActive,
+  updateCurrency,
+  updateFeature,
+  updateTier,
+} from "@/server/admin/catalog";
 import type { RefundReason } from "@/db/schema/enums";
 
 /**
@@ -108,5 +116,84 @@ export async function declineRefund(
     return { ok: true };
   } catch (error) {
     return failure(error, "That refund could not be declined.");
+  }
+}
+
+/* -------------------------------------------------------------------------
+ * The commercial catalogue
+ * ---------------------------------------------------------------------- */
+
+/**
+ * Pricing edits.
+ *
+ * Each one hands a raw payload to a service that re-establishes the caller's
+ * permission, validates the figures and writes an audit entry. Nothing is
+ * trusted here -- not the id, not the numbers, and emphatically not the
+ * caller's claim to be allowed to make the change.
+ */
+
+export async function saveTier(id: string, patch: unknown, reason?: string) {
+  try {
+    const context = await requireUser();
+    await updateTier(String(id), patch, context, reason);
+    revalidatePath("/admin/pricing");
+    return { ok: true } as const;
+  } catch (error) {
+    return failure(error, "That tier could not be saved.");
+  }
+}
+
+export async function saveFeature(id: string, patch: unknown, reason?: string) {
+  try {
+    const context = await requireUser();
+    await updateFeature(String(id), patch, context, reason);
+    revalidatePath("/admin/pricing");
+    return { ok: true } as const;
+  } catch (error) {
+    return failure(error, "That feature could not be saved.");
+  }
+}
+
+export async function saveCurrency(id: string, patch: unknown, reason?: string) {
+  try {
+    const context = await requireUser();
+    await updateCurrency(String(id), patch, context, reason);
+    revalidatePath("/admin/pricing");
+    return { ok: true } as const;
+  } catch (error) {
+    return failure(error, "That currency could not be saved.");
+  }
+}
+
+export async function addDiscount(input: unknown) {
+  try {
+    const context = await requireUser();
+    await createDiscount(input, context);
+    revalidatePath("/admin/pricing");
+    return { ok: true } as const;
+  } catch (error) {
+    return failure(error, "That discount could not be created.");
+  }
+}
+
+export async function toggleDiscount(id: string, isActive: boolean, reason?: string) {
+  try {
+    const context = await requireUser();
+    await setDiscountActive(String(id), Boolean(isActive), context, reason);
+    revalidatePath("/admin/pricing");
+    return { ok: true } as const;
+  } catch (error) {
+    return failure(error, "That discount could not be changed.");
+  }
+}
+
+export async function importCatalogDefaults() {
+  try {
+    const context = await requireUser();
+    const written = await importShippedDefaults(context);
+    revalidatePath("/admin/pricing");
+    return { ok: true, written } as const;
+  } catch (error) {
+    return failure(error, "The catalogue could not be imported.");
   }
 }

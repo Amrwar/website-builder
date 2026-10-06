@@ -8,11 +8,13 @@ import { platformConflict } from "@/config/platforms";
 import { draftSchema, type ConfiguratorDraft } from "@/lib/configurator/draft";
 import type { BuildType } from "@/config/products";
 import { buildQuote, type Quote } from "@/lib/commerce/quote";
+import type { ProjectAssessment } from "@/lib/engine";
+import type { Currency } from "@/lib/pricing/money";
 import { quoteCurrencyFor } from "@/lib/pricing/localize";
 import { ApiError } from "@/lib/api/response";
 import { logger } from "@/lib/logger";
-import { assessScope, type ScopeAssessment } from "@/lib/scope";
 import { requireUser, type AuthContext } from "@/server/auth";
+import { assessAndPrice, recordDiscountRedemption } from "@/server/engine";
 import { nextDocumentNumber } from "./numbering";
 
 /**
@@ -37,12 +39,17 @@ export interface CreateOrderInput {
    * a genuine second purchase carries a new one.
    */
   clientRequestId: string;
+  /**
+   * A coupon the customer typed. A code, never an amount -- the engine decides
+   * what it is worth, against the rule stored in the database.
+   */
+  discountCode?: string | null;
 }
 
 export interface CreatedOrder {
   order: Order;
   quote: Quote;
-  assessment: ScopeAssessment;
+  assessment: ProjectAssessment;
   /** True when an existing order was returned instead of a new one. */
   deduplicated: boolean;
 }
@@ -52,7 +59,11 @@ export type CreateOrderResult =
   | {
       ok: false;
       reason:
-        "invalid_draft" | "invalid_platforms" | "requires_custom_quote" | "not_priceable";
+        | "invalid_draft"
+        | "invalid_platforms"
+        | "requires_custom_quote"
+        | "not_priceable"
+        | "failed";
     };
 
 /** A uuid from the client, or a server-generated one when absent. */
@@ -71,44 +82,34 @@ async function loadByIdempotencyKey(key: string): Promise<Order | undefined> {
 /**
  * Re-assesses a draft and prices it.
  *
- * Shared by order creation and by the checkout preview, so the figure a
- * customer reviews and the figure they are charged come from one code path
- * rather than two that can drift.
+ * A thin adapter over `server/engine`, kept so the checkout preview and order
+ * creation share one call. The engine is the only thing that decides a price;
+ * this adds nothing to it except the order lines a database row needs.
  */
 /** A draft that has passed validation, so its build type is settled. */
 export type ConfiguredDraft = ConfiguratorDraft & { buildType: BuildType };
 
 export async function priceDraft(
   draft: ConfiguredDraft,
-  currency: ReturnType<typeof quoteCurrencyFor>,
+  currency: Currency,
+  discountCode?: string | null,
 ): Promise<
-  | { ok: true; assessment: ScopeAssessment; quote: Quote }
-  | { ok: false; reason: "requires_custom_quote" | "not_priceable" }
+  | { ok: true; assessment: ProjectAssessment; quote: Quote }
+  | {
+      ok: false;
+      reason: "invalid_platforms" | "requires_custom_quote" | "not_priceable" | "failed";
+    }
 > {
-  const assessment = await assessScope({
-    buildType: draft.buildType,
-    ideaText: draft.intake.description,
-    locale: draft.locale,
-    selectedCapabilities: draft.selectedCapabilities,
-    estimatedScreens: draft.estimatedScreens ?? undefined,
-    platforms: draft.platforms,
-    designApproach: draft.design.approach ?? undefined,
-    context: {
-      businessName: draft.intake.businessName,
-      industry: draft.intake.industry,
-      targetCustomers: draft.intake.targetCustomers,
-      desiredOutcome: draft.intake.desiredOutcome,
-    },
-  });
+  const assessed = await assessAndPrice(draft, { currency, discountCode });
+  if (!assessed.ok) return { ok: false, reason: assessed.reason };
 
   const quoted = buildQuote({
-    assessment,
-    currency,
+    assessment: assessed.assessment,
     selectedCapabilities: draft.selectedCapabilities,
   });
 
   if (!quoted.ok) return { ok: false, reason: quoted.reason };
-  return { ok: true, assessment, quote: quoted.quote };
+  return { ok: true, assessment: assessed.assessment, quote: quoted.quote };
 }
 
 export async function createOrderFromDraft(
@@ -135,7 +136,7 @@ export async function createOrderFromDraft(
 
   const existing = await loadByIdempotencyKey(key);
   if (existing) {
-    const priced = await priceDraft(draft, existing.currency);
+    const priced = await priceDraft(draft, existing.currency, input.discountCode);
     if (!priced.ok) return { ok: false, reason: priced.reason };
     return {
       ok: true,
@@ -149,7 +150,7 @@ export async function createOrderFromDraft(
   }
 
   const currency = quoteCurrencyFor(user.preferredCurrency);
-  const priced = await priceDraft(draft, currency);
+  const priced = await priceDraft(draft, currency, input.discountCode);
   if (!priced.ok) {
     logger.info("order not created: no published price", {
       userId: user.id,
@@ -199,11 +200,11 @@ export async function createOrderFromDraft(
           // Copied into mutable arrays: the assessment exposes them readonly,
           // which the column's declared jsonb type does not accept.
           capabilities: [...assessment.capabilities],
-          reasons: [...assessment.reasons],
+          reasons: [...assessment.explanation.reasons],
           requiresCustomQuote: assessment.requiresCustomQuote,
-          priceMinorUnits: assessment.totalPrice?.minorUnits ?? null,
-          currency: assessment.totalPrice?.currency ?? "CAD",
-          guaranteedDays: assessment.guaranteedDays,
+          priceMinorUnits: assessment.price?.total.minorUnits ?? null,
+          currency: assessment.price?.currency ?? "CAD",
+          guaranteedDays: assessment.delivery.guaranteedDays,
           inputSnapshot: draft,
         })
         .returning({ id: scopeAssessments.id });
@@ -247,6 +248,12 @@ export async function createOrderFromDraft(
 
       return order;
     });
+
+    // Counted only once the order exists. Counting it at validation time
+    // would let a browser exhaust a campaign by typing a code repeatedly.
+    if (quote.pricingSnapshot.discount) {
+      await recordDiscountRedemption(quote.pricingSnapshot.discount.code);
+    }
 
     logger.info("order created", {
       orderId: created.id,

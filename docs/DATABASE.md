@@ -198,8 +198,41 @@ owed, so the database protects them regardless of which code path asks. A
 deliberate correction sets `app.allow_guarantee_edit` inside a transaction,
 which is auditable precisely because it is unusual.
 
+## Catalogue tables (Phase 10)
+
+The commercial rules, as data. The shipped `config/` constants remain both the
+seed and the fallback: **an empty table means "use what shipped"**, so pricing
+works before anyone has opened the admin screens and a half-populated table
+cannot produce a catalogue with holes in it.
+
+| Table                | Purpose                                                                                                                                                                 |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `catalog_features`   | Sellable capabilities. `points` and `minimum_tier` are both editable because both are commercial judgements about how much work something is, not facts about the code. |
+| `catalog_tiers`      | Price, guaranteed duration and the point threshold that selects each tier of each build type. A null price is a quotation, and the duration must be null with it.       |
+| `catalog_currencies` | Published local prices. `rate` is stored as text so the reviewed figure is kept exactly as a person wrote it, and `reviewed_on` records when a human last looked at it. |
+| `discounts`          | Coupons. Every constraint that limits one — window, usage cap, minimum order, eligible build types, a cap on the reduction — lives here rather than in the checkout.    |
+
+Editing any of these can never change what somebody was charged: orders freeze
+a complete pricing snapshot when they are placed. That is what makes the tables
+safe to edit at all.
+
+### Catalogue CHECK constraints
+
+Written by hand in `0005_pricing_catalog.sql` rather than generated, and
+verified against real Postgres (22 cases, all in a rolled-back transaction).
+The admin screens validate the same rules first with messages an administrator
+can act on; these hold whatever path a write arrives by.
+
+| Constraint                          | Refuses                                                                       |
+| ----------------------------------- | ----------------------------------------------------------------------------- |
+| `catalog_tiers_price_days_coherent` | A price with no deadline, or a deadline with no price.                        |
+| `catalog_tiers_amounts_sane`        | A zero or negative price, a duration outside 1–365, a negative threshold.     |
+| `catalog_features_amounts_sane`     | Negative points, a zero surcharge, a blank key.                               |
+| `catalog_currencies_rate_positive`  | A rate that is not a positive number, or a rounding step below one.           |
+| `discounts_value_matches_kind`      | A percentage outside 1–100, or a fixed amount of zero.                        |
+| `discounts_limits_sane`             | A lower-case code, a window that ends before it starts, a negative use count. |
+
 ## Not yet modelled
 
-Files and uploads, messages and change requests, approvals, maintenance
-subscriptions, build credits, referrals, hosting and domains, deployments.
+Maintenance subscriptions, build credits, referrals, hosting and domains.
 These arrive with their phases.

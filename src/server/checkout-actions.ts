@@ -26,12 +26,19 @@ export type PlaceOrderResult =
 export async function placeOrder(
   rawDraft: unknown,
   clientRequestId: string,
+  discountCode?: string | null,
 ): Promise<PlaceOrderResult> {
   try {
     const context = await requireUser();
 
     const result = await createOrderFromDraft(
-      { rawDraft, clientRequestId: String(clientRequestId ?? "") },
+      {
+        rawDraft,
+        clientRequestId: String(clientRequestId ?? ""),
+        // A code, not a value. What it is worth is decided server-side
+        // against the rule in the database.
+        discountCode: typeof discountCode === "string" ? discountCode : null,
+      },
       context,
     );
 

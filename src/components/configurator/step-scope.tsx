@@ -11,7 +11,13 @@ import { ErrorState } from "@/components/ui/error-state";
 import { Skeleton, SkeletonText } from "@/components/ui/skeleton";
 import { getLocaleDefinition, resolveLocale } from "@/config/locales";
 import { formatMoney } from "@/lib/pricing/money";
-import type { ScopeAssessment } from "@/lib/scope";
+import {
+  complexityBand,
+  designFee,
+  guaranteedDays,
+  totalPrice,
+  type ProjectAssessment,
+} from "@/lib/engine";
 import { ComplexityMeter } from "./complexity-meter";
 
 /**
@@ -32,7 +38,7 @@ export function StepScopeResult({
   failed,
   onRetry,
 }: {
-  assessment: ScopeAssessment | null;
+  assessment: ProjectAssessment | null;
   pending: boolean;
   failed: boolean;
   onRetry: () => void;
@@ -75,28 +81,27 @@ export function StepScopeResult({
   }
 
   const quote = assessment.requiresCustomQuote;
+  const total = totalPrice(assessment);
+  const design = designFee(assessment);
+  const days = guaranteedDays(assessment);
 
   return (
     <div className="flex flex-col gap-8">
       <Card padding="lg" className="flex flex-col gap-6">
-        <ComplexityMeter band={assessment.complexity} />
+        <ComplexityMeter band={complexityBand(assessment)} />
 
         <dl className="grid gap-5 border-t border-line-subtle pt-6 sm:grid-cols-3">
           <Figure
             label={t("figures.price")}
             value={
-              quote
+              quote || !total
                 ? t("customQuote")
-                : formatMoney(assessment.totalPrice!, intlTag, {
-                    trimWholeDecimals: true,
-                  })
+                : formatMoney(total, intlTag, { trimWholeDecimals: true })
             }
             note={
-              !quote && assessment.designFee
+              !quote && design
                 ? t("figures.includesDesign", {
-                    fee: formatMoney(assessment.designFee, intlTag, {
-                      trimWholeDecimals: true,
-                    }),
+                    fee: formatMoney(design, intlTag, { trimWholeDecimals: true }),
                   })
                 : undefined
             }
@@ -104,9 +109,7 @@ export function StepScopeResult({
           <Figure
             label={t("figures.time")}
             value={
-              quote
-                ? t("figures.quoted")
-                : t("figures.days", { days: assessment.guaranteedDays! })
+              quote || days === null ? t("figures.quoted") : t("figures.days", { days })
             }
           />
           <Figure
@@ -123,11 +126,11 @@ export function StepScopeResult({
         </Callout>
       ) : null}
 
-      {assessment.reasons.length > 0 ? (
+      {assessment.explanation.reasons.length > 0 ? (
         <section className="flex flex-col gap-3">
           <h2 className="text-display-sm text-primary">{t("why.title")}</h2>
           <ul className="flex flex-col gap-2">
-            {assessment.reasons.map((reason) => (
+            {assessment.explanation.reasons.map((reason) => (
               <li key={reason.code} className="flex flex-col gap-1">
                 <span className="text-body-sm text-primary">
                   {tReason(`${reason.code}.title`)}

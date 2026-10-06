@@ -701,8 +701,11 @@
         "buildPrice": "Projet",
         "designService": "Service de design",
         "total": "Total",
-        "guarantee": "Garantie"
-      }
+        "guarantee": "Garantie",
+        "discountCode": "Code de remise"
+      },
+      "applyDiscount": "Appliquer",
+      "discountRefused": "Ce code n'est pas valable pour cette commande."
     },
     "start": {
       "payTitle": "Lancez votre projet",
@@ -1516,15 +1519,66 @@
       "provisional": "Provisoire — validation commerciale requise",
       "reviewedOn": "Taux révisés le {date}",
       "taxDisabled": "Non activé. Aucun numéro de TVA n’est configuré.",
-      "readOnlyNote": "Ces valeurs vivent dans une configuration versionnée, pour qu’un changement de prix soit relisible et réversible. Les modifier ici effacerait cet historique."
+      "readOnlyNote": "Les seuils de risque, la garantie et la politique fiscale résident dans la configuration versionnée : toute modification est donc relisible et réversible. Les prix se modifient dans Tarifs, où chaque changement est consigné à la place."
     },
     "pricing": {
       "title": "Tarifs",
-      "subtitle": "Ce que coûte chaque projet et sa durée garantie.",
+      "subtitle": "Le prix de chaque réalisation, sa durée garantie et ce qui fait monter un projet d'un palier.",
+      "tabs": {
+        "tiers": "Paliers",
+        "features": "Fonctionnalités",
+        "currencies": "Devises",
+        "discounts": "Remises"
+      },
       "tier": "Palier",
       "price": "Prix",
       "days": "Jours garantis",
-      "quote": "Devis sur mesure"
+      "quote": "Devis sur mesure",
+      "points": "Points de complexité",
+      "threshold": "À partir de",
+      "minimumTier": "Impose au moins",
+      "surcharge": "Supplément",
+      "noSurcharge": "Compris dans le palier",
+      "active": "En vente",
+      "inactive": "Retiré",
+      "rate": "Taux",
+      "rounding": "Arrondi à",
+      "reviewedOn": "Taux révisé le",
+      "code": "Code",
+      "kind": "Type",
+      "value": "Valeur",
+      "percentage": "Pourcentage",
+      "fixed": "Montant fixe",
+      "redemptions": "Utilisations",
+      "unlimited": "Illimité",
+      "window": "Validité",
+      "appliesTo": "S'applique à",
+      "allBuilds": "Toutes les réalisations",
+      "minOrder": "Commande minimale",
+      "maxDiscount": "Plafonné à",
+      "description": "Description",
+      "save": "Enregistrer",
+      "saved": "Enregistré",
+      "cancel": "Annuler",
+      "edit": "Modifier",
+      "reason": "Motif (consigné au journal d'audit)",
+      "withdraw": "Retirer",
+      "reinstate": "Rétablir",
+      "newDiscount": "Nouvelle remise",
+      "create": "Créer la remise",
+      "readOnly": "Vous pouvez consulter les tarifs. Les modifier relève du propriétaire.",
+      "usingDefaults": {
+        "title": "Les tarifs livrés sont actifs",
+        "body": "Rien n'a encore été importé : la plateforme applique les montants définis dans la configuration versionnée. Importez-les pour pouvoir les modifier ici. L'import ne change aucun prix — il recopie les mêmes montants dans la base.",
+        "action": "Importer les valeurs livrées",
+        "done": "{features} fonctionnalités, {tiers} paliers et {currencies} devises importés."
+      },
+      "historyNote": "Modifier un prix ne change jamais une commande déjà passée : chaque commande figent le montant exact auquel elle a été tarifée.",
+      "provisional": "Provisoire",
+      "baseCurrency": "Devise de référence. Jamais convertie.",
+      "empty": "Rien pour l'instant.",
+      "auditedNote": "Chaque modification consigne son auteur, l'état précédent et le motif.",
+      "provisionalNote": "Seul le palier d'entrée de chaque réalisation provient de l'offre convenue. Les montants étendu et avancé sont des valeurs provisoires cohérentes entre elles et doivent être validés commercialement avant d'être montrés aux clients."
     },
     "analytics": {
       "title": "Analyses",

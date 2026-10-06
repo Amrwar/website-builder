@@ -1,13 +1,14 @@
 "use server";
 
-import { platformConflict } from "@/config/platforms";
 import { draftSchema } from "@/lib/configurator/draft";
 import { logger } from "@/lib/logger";
-import { assessScope } from "@/lib/scope";
-import type { ScopeAssessment } from "@/lib/scope";
+import type { ProjectAssessment } from "@/lib/engine";
+import { quoteCurrencyFor } from "@/lib/pricing/localize";
+import { assessAndPrice, type ConfiguredDraft } from "@/server/engine";
+import { getAuthContext } from "@/server/auth";
 
 /**
- * Scope assessment.
+ * Scope assessment and pricing, for the configurator.
  *
  * Deliberately outside the app directory. Importing a server action into a
  * client component through an alias whose path contains a route group and a
@@ -21,15 +22,23 @@ import type { ScopeAssessment } from "@/lib/scope";
  * the seam an AI-backed assessor plugs into later, which will need a server
  * runtime and a provider key.
  *
+ * It delegates entirely to `server/engine`. Before Phase 10 this action
+ * assessed scope while the order service assessed *and* priced, so the figure
+ * a customer configured against and the figure they were charged came from two
+ * code paths. There is now one.
+ *
  * The draft arrives from the client and is therefore untrusted. It is
  * re-parsed against the same schema the form uses rather than believed.
  */
 
-export type AssessResult =
-  | { ok: true; assessment: ScopeAssessment }
+export type AssessDraftResult =
+  | { ok: true; assessment: ProjectAssessment }
   | { ok: false; reason: "invalid_draft" | "invalid_platforms" | "failed" };
 
-export async function assessDraft(rawDraft: unknown): Promise<AssessResult> {
+export async function assessDraft(
+  rawDraft: unknown,
+  discountCode?: string | null,
+): Promise<AssessDraftResult> {
   const parsed = draftSchema.safeParse(rawDraft);
 
   if (!parsed.success) {
@@ -40,37 +49,16 @@ export async function assessDraft(rawDraft: unknown): Promise<AssessResult> {
   }
 
   const draft = parsed.data;
-
   if (!draft.buildType) return { ok: false, reason: "invalid_draft" };
 
-  // Re-checked server-side: the client disables Next on a conflict, but a
-  // disabled button is a convenience, not a control.
-  if (platformConflict(draft.buildType, draft.platforms) !== "none") {
-    return { ok: false, reason: "invalid_platforms" };
-  }
+  // The currency comes from the signed-in customer's saved preference, never
+  // from the draft. A browser that could name its own currency could pick the
+  // one with the softest rate.
+  const auth = await getAuthContext();
+  const currency = quoteCurrencyFor(auth?.user.preferredCurrency);
 
-  try {
-    const assessment = await assessScope({
-      buildType: draft.buildType,
-      ideaText: draft.intake.description,
-      locale: draft.locale,
-      selectedCapabilities: draft.selectedCapabilities,
-      estimatedScreens: draft.estimatedScreens ?? undefined,
-      platforms: draft.platforms,
-      designApproach: draft.design.approach ?? undefined,
-      context: {
-        businessName: draft.intake.businessName,
-        industry: draft.intake.industry,
-        targetCustomers: draft.intake.targetCustomers,
-        desiredOutcome: draft.intake.desiredOutcome,
-      },
-    });
-
-    return { ok: true, assessment };
-  } catch (error) {
-    // A pricing failure must never surface as a broken page on the one screen
-    // the customer is trying to buy from.
-    logger.error("scope assessment failed", { error });
-    return { ok: false, reason: "failed" };
-  }
+  return assessAndPrice(draft as ConfiguredDraft, {
+    currency,
+    discountCode: discountCode ?? null,
+  });
 }

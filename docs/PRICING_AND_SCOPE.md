@@ -11,8 +11,67 @@ Integer minor units only. `money()` throws on a non-integer, so a float can
 never enter the system. `percentOf` computes the 30% and 100% refunds.
 `formatMoney(value, intlTag, { trimWholeDecimals })` renders per locale.
 
-Base currency is CAD. USD, EUR, GBP, AED and SAR are supported for display with
-local rounding.
+Base currency is CAD. USD, EUR, GBP, AED, SAR and EGP are supported, with a
+reviewed rate and a rounding step per currency. Rates are **configured, never
+fetched**: a published price must not move because a market did.
+
+## The engine
+
+`src/lib/engine` is the single authoritative answer to "what is this project,
+how long will it take, and what does it cost". One function, `evaluateProject`,
+returns a `ProjectAssessment`, and every surface reads it — the configurator,
+checkout, the Build Room, the admin console and whatever product types arrive
+later.
+
+It is **pure**: the catalogue and the clock are arguments, so the same brief,
+catalogue and instant always produce the same figure. That is what makes a
+stored snapshot defensible months later.
+
+`src/server/engine` is the only thing that loads the catalogue, and
+`assessAndPrice` is the only entry point callers use. Before Phase 10 the
+configurator and the order service each assembled scope and price separately,
+which was two implementations of one number.
+
+### The server decides the price
+
+There is no parameter anywhere on this path through which a caller can propose
+an amount. Not on `assessAndPrice`, not on `evaluateProject`, not on
+`buildQuote`. A tampered payload can at most describe a _different project_,
+which is then priced correctly for what it describes. Tests assert the absence
+of such a field, not just the behaviour.
+
+A coupon is the one exception to "the client sends no number", and it is a
+_code_, not a value: the reduction is computed from the rule stored in the
+database.
+
+## The catalogue
+
+The commercial rules live in four tables — `catalog_features`,
+`catalog_tiers`, `catalog_currencies`, `discounts` — and the shipped
+`config/` constants remain both the seed and the fallback. **An empty table
+means "use what shipped"**, so the platform prices correctly before anyone has
+opened the admin screens, and a half-populated table cannot produce a catalogue
+with holes in it.
+
+Phase 9 argued these screens should be read-only, because version-controlled
+configuration is reviewable and revertable. Phase 10 requires them editable, so
+those properties are preserved another way:
+
+- **Reviewable** — every change writes an `audit_events` row with the changed
+  fields, their previous values, the actor and an optional reason.
+- **Revertable** — that entry carries enough to put the value back.
+- **Historically inert** — orders freeze a complete pricing snapshot, so
+  editing a row here can never alter what anybody was charged.
+
+Only the **owner** (`settings:manage`) may write. `finance:read` can see the
+price list without being able to move it: an administrator who can release a
+refund still cannot quietly change a price.
+
+Every figure is validated twice — in a Zod schema that returns a message an
+administrator can act on, and in a database CHECK constraint that holds
+whatever path the write arrived by. A tier must have a price _and_ a duration
+or neither; a percentage discount cannot exceed 100; a currency rate must parse
+and be positive. Verified against real Postgres.
 
 ## The ladder
 
@@ -58,6 +117,15 @@ total selects a tier by threshold:
 | extended  | 10          |
 | advanced  | 25          |
 | custom    | 45          |
+
+Thresholds are catalogue data, so moving one is a commercial decision rather
+than a deployment.
+
+A **withdrawn tier resolves upward, never down.** Filtering inactive rows out
+before walking the ladder looks equivalent and is not: it would make a
+twelve-point brief whose band has been withdrawn fall through to the entry
+price, selling moderate work for the cost of a simple site. If every tier at or
+above the band is withdrawn, the brief is quoted.
 
 ### 2. Capabilities carry a floor
 
@@ -136,6 +204,36 @@ capabilities and the actor count, named explicitly — and offered the
 appropriate larger build rather than a refusal.
 
 This is the behaviour the rule exists for, and it is covered by tests.
+
+## Delivery plans
+
+Four, derived from the guaranteed duration and the build type rather than
+stored, so a tier whose days are edited moves between plans automatically
+instead of keeping a label that no longer matches its promise.
+
+| Plan           | When                                  | Guarantee |
+| -------------- | ------------------------------------- | --------- |
+| `five_day`     | Website or system within 5 days       | Yes       |
+| `fourteen_day` | Mobile app within 14 days             | Yes       |
+| `extended`     | A longer build with a published price | Yes       |
+| `quote`        | No published price                    | **No**    |
+
+A guarantee on an unscoped amount of work is a promise nobody can keep, so
+`quote` carries none.
+
+## Discounts
+
+Every constraint that limits a coupon — validity window, usage cap, minimum
+order, which build types it applies to, a cap on the reduction — lives in the
+`discounts` table and is checked server-side against the stored rule. The
+reduction is clamped to the order value: a coupon that exceeds the total is a
+refund, which is not what a coupon is.
+
+Only the one code the customer named is ever loaded. A list of valid codes
+returned to a browser is a list of valid codes, whatever the UI does with it.
+`times_used` is incremented when the order is actually created, not when the
+code is validated, so a browser cannot exhaust a campaign by typing a code
+repeatedly.
 
 ## Guarantee arithmetic
 

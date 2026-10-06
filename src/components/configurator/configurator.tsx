@@ -35,7 +35,7 @@ import {
   updateDraft,
 } from "@/lib/configurator/store";
 import { cn } from "@/lib/cn";
-import type { ScopeAssessment } from "@/lib/scope";
+import type { ProjectAssessment } from "@/lib/engine";
 import { StepDesign } from "./step-design";
 import { StepFeatures } from "./step-features";
 import { StepIntake } from "./step-intake";
@@ -84,18 +84,24 @@ export function Configurator() {
 
   const [step, setStep] = useState<StepId>("type");
   const [attempted, setAttempted] = useState(false);
-  const [assessment, setAssessment] = useState<ScopeAssessment | null>(null);
+  const [assessment, setAssessment] = useState<ProjectAssessment | null>(null);
   const [assessFailed, setAssessFailed] = useState(false);
+  /**
+   * A coupon the customer typed. Held outside the draft on purpose: it is a
+   * commercial instrument, not part of what is being built, and the engine
+   * decides what it is worth server-side whatever this string says.
+   */
+  const [discountCode, setDiscountCode] = useState("");
   const [assessing, startAssessing] = useTransition();
 
   const issue = validateStep(step, draft);
   const index = stepIndex(step);
   const isLast = index === STEP_IDS.length - 1;
 
-  const runAssessment = useCallback((source: ConfiguratorDraft) => {
+  const runAssessment = useCallback((source: ConfiguratorDraft, code = "") => {
     setAssessFailed(false);
     startAssessing(async () => {
-      const result = await assessDraft(source);
+      const result = await assessDraft(source, code.trim() || null);
       if (result.ok) setAssessment(result.assessment);
       else {
         setAssessment(null);
@@ -111,10 +117,10 @@ export function Configurator() {
       // Re-price on every entry into the derived steps: the customer may have
       // gone back and changed an answer, and a stale figure here would be the
       // worst possible thing to get wrong.
-      if (DERIVED_STEPS.includes(next)) runAssessment(draft);
+      if (DERIVED_STEPS.includes(next)) runAssessment(draft, discountCode);
       window.scrollTo({ top: 0, behavior: "smooth" });
     },
-    [draft, runAssessment],
+    [draft, discountCode, runAssessment],
   );
 
   const goNext = useCallback(() => {
@@ -205,13 +211,23 @@ export function Configurator() {
             assessment={assessment}
             pending={assessing}
             failed={assessFailed}
-            onRetry={() => runAssessment(draft)}
+            onRetry={() => runAssessment(draft, discountCode)}
           />
         ) : null}
         {step === "review" ? (
-          <StepReview draft={draft} assessment={assessment} onEdit={goTo} />
+          <StepReview
+            draft={draft}
+            assessment={assessment}
+            onEdit={goTo}
+            discountCode={discountCode}
+            onDiscountCodeChange={setDiscountCode}
+            onApplyDiscount={() => runAssessment(draft, discountCode)}
+            applying={assessing}
+          />
         ) : null}
-        {step === "start" ? <StepStart assessment={assessment} draft={draft} /> : null}
+        {step === "start" ? (
+          <StepStart assessment={assessment} draft={draft} discountCode={discountCode} />
+        ) : null}
       </div>
 
       {attempted && issue ? (

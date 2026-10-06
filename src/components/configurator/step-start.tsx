@@ -14,7 +14,7 @@ import { getLocaleDefinition, resolveLocale } from "@/config/locales";
 import { Link, useRouter } from "@/i18n/navigation";
 import type { ConfiguratorDraft } from "@/lib/configurator/draft";
 import { formatMoney } from "@/lib/pricing/money";
-import type { ScopeAssessment } from "@/lib/scope";
+import { totalPrice, type ProjectAssessment } from "@/lib/engine";
 import { placeOrder } from "@/server/checkout-actions";
 
 /**
@@ -31,9 +31,12 @@ import { placeOrder } from "@/server/checkout-actions";
 export function StepStart({
   assessment,
   draft,
+  discountCode,
 }: {
-  assessment: ScopeAssessment | null;
+  assessment: ProjectAssessment | null;
   draft: ConfiguratorDraft;
+  /** Passed through as a code. The server re-prices it from the database. */
+  discountCode: string;
 }) {
   const t = useTranslations("configurator.start");
   const tc = useTranslations("checkout");
@@ -55,6 +58,7 @@ export function StepStart({
   if (!assessment) return null;
 
   const quote = assessment.requiresCustomQuote;
+  const total = totalPrice(assessment);
 
   const sequence = quote
     ? (["account", "quote", "review"] as const)
@@ -66,7 +70,7 @@ export function StepStart({
     setError(null);
 
     start(async () => {
-      const result = await placeOrder(draft, requestId);
+      const result = await placeOrder(draft, requestId, discountCode.trim() || null);
       if (!result.ok) {
         submitted.current = false;
         setError(result.message);
@@ -83,9 +87,9 @@ export function StepStart({
           <h2 className="text-display-sm text-primary">
             {quote ? t("quoteTitle") : t("payTitle")}
           </h2>
-          {!quote && assessment.totalPrice ? (
+          {!quote && total ? (
             <p className="text-display-md text-primary" data-numeric>
-              {formatMoney(assessment.totalPrice, intlTag, { trimWholeDecimals: true })}
+              {formatMoney(total, intlTag, { trimWholeDecimals: true })}
             </p>
           ) : null}
         </div>

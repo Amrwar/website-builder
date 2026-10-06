@@ -97,8 +97,7 @@ The real reason goes to the log.
 
 ## Role assignment
 
-There is deliberately **no interface** for changing a role, and no code path
-that accepts one from a request:
+No code path accepts a role from a request:
 
 - The account forms have no `role` field, and Zod drops unknown keys, so a
   crafted payload cannot smuggle one.
@@ -107,34 +106,50 @@ that accepts one from a request:
   be set from outside the application.
 - Clerk metadata is ignored entirely for authorization.
 
-Roles are currently changed by a direct database update. A proper admin
-interface for it belongs with the admin dashboard phase, and it is the single
-most security-sensitive screen in the product.
+The one interface that does change a role is `/admin/team`, which goes through
+`changeUserRole` and enforces five checks: the actor holds `user:manage`, the
+target role exists, the target ranks strictly below the actor, the subject is
+not the actor, and the change is audited. Self-change is refused absolutely —
+without that, anyone holding `user:manage` could promote themselves and every
+other separation here would be decorative.
 
-## The staff console today
+The first owner is promoted by `scripts/promote-user.mjs`, which writes its own
+audit entry. Bootstrapping cannot be done through the interface, because the
+interface requires an existing owner.
 
-`/admin` is a shell. It is gated on `admin:access` and renders what the
-signed-in role may do — the permission table resolved for the current user.
-That is deliberately the whole page: the console's actual tools belong to later
-phases, and the one thing worth proving now is that authorization resolves
-correctly.
+## Pricing administration (Phase 10)
 
-## Not yet built
+`/admin/pricing` reads the catalogue through the same `loadCatalog()` the
+configurator and checkout call, so the screen cannot drift from what customers
+are actually quoted. Four tabs: tiers, features, currencies, discounts.
 
-**Project queue** — every active build, sorted by deadline risk.
+Two permissions, deliberately split:
 
-**Deadline-risk detection** — `projects.deadline_at` is indexed for exactly this
-scan. The rule is a function of time remaining against stage, and it must fire
-early enough that the 30% refund is avoidable.
+- **`finance:read`** sees the figures. No controls render.
+- **`settings:manage`** — the owner alone — may change them.
 
-**Scope management** — staff override of an assessment. `assessment_source`
-already has `manual_override` reserved; an override is a new append-only row,
-never an edit to the engine's own assessment.
+An administrator who can release a refund still cannot move a price. Hiding the
+controls is presentation; every server action re-checks `settings:manage` and
+refuses with `not_found` before running a query.
 
-**Payment and refund management** — including the two guarantee outcomes, which
-must be executable without a developer.
+Every write records an `audit_events` row with the fields that changed, their
+previous values, the actor and an optional reason the form asks for. That is
+what makes an edit reviewable and revertable now that the figures no longer
+live in version control. No edit is retroactive: orders freeze a complete
+pricing snapshot when placed.
 
-**Customer management, deployment tracking, analytics, content management.**
+Until an owner presses **Import shipped defaults**, the tables are empty and
+the engine prices from the `config/` constants. The import copies those exact
+figures into the database — it changes no price, it makes them editable — and
+refuses if rows already exist, because overwriting an administrator's edits
+with the shipped figures is a destructive act disguised as a convenience.
+
+## Still to build
+
+**Organizations, referrals, partners, reviews, domains, hosting, content and
+notifications** are declared in the navigation as `planned` with the phase that
+delivers them, and render an honest "not built" page rather than an empty
+table.
 
 ## Audit
 

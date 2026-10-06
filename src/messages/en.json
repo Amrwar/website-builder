@@ -701,8 +701,11 @@
         "buildPrice": "Build",
         "designService": "Design service",
         "total": "Total",
-        "guarantee": "Guarantee"
-      }
+        "guarantee": "Guarantee",
+        "discountCode": "Discount code"
+      },
+      "applyDiscount": "Apply",
+      "discountRefused": "That code is not valid for this order."
     },
     "start": {
       "payTitle": "Start your build",
@@ -1516,15 +1519,66 @@
       "provisional": "Provisional — needs commercial sign-off",
       "reviewedOn": "Rates reviewed {date}",
       "taxDisabled": "Not enabled. No tax registration is configured.",
-      "readOnlyNote": "These values live in version-controlled configuration so a pricing change is reviewable and revertable. Editing them here would make that history disappear."
+      "readOnlyNote": "Risk thresholds, the guarantee and tax policy live in version-controlled configuration, so changing one is reviewable and revertable. Prices are editable under Pricing, where every change is audited instead."
     },
     "pricing": {
       "title": "Pricing",
-      "subtitle": "What each build costs and how long it is guaranteed for.",
+      "subtitle": "What each build costs, how long it is guaranteed for, and what moves a project up a tier.",
+      "tabs": {
+        "tiers": "Tiers",
+        "features": "Features",
+        "currencies": "Currencies",
+        "discounts": "Discounts"
+      },
       "tier": "Tier",
       "price": "Price",
       "days": "Guaranteed days",
-      "quote": "Custom quote"
+      "quote": "Custom quote",
+      "points": "Complexity points",
+      "threshold": "Points from",
+      "minimumTier": "Lifts to at least",
+      "surcharge": "Surcharge",
+      "noSurcharge": "Included in the tier",
+      "active": "Sold",
+      "inactive": "Withdrawn",
+      "rate": "Rate",
+      "rounding": "Rounds up to",
+      "reviewedOn": "Rate reviewed",
+      "code": "Code",
+      "kind": "Kind",
+      "value": "Value",
+      "percentage": "Percentage",
+      "fixed": "Fixed amount",
+      "redemptions": "Redemptions",
+      "unlimited": "Unlimited",
+      "window": "Valid",
+      "appliesTo": "Applies to",
+      "allBuilds": "Every build",
+      "minOrder": "Minimum order",
+      "maxDiscount": "Capped at",
+      "description": "Description",
+      "save": "Save",
+      "saved": "Saved",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "reason": "Why (recorded in the audit log)",
+      "withdraw": "Withdraw",
+      "reinstate": "Reinstate",
+      "newDiscount": "New discount",
+      "create": "Create discount",
+      "readOnly": "You can read the price list. Changing it is the owner's decision.",
+      "usingDefaults": {
+        "title": "The shipped price list is live",
+        "body": "Nothing has been imported yet, so the platform is pricing from the figures in version-controlled configuration. Import them to make them editable here. Importing changes no price — it copies the same numbers into the database.",
+        "action": "Import shipped defaults",
+        "done": "Imported {features} features, {tiers} tiers and {currencies} currencies."
+      },
+      "historyNote": "Editing a price never changes an order already placed. Every order freezes the complete figure it was priced at.",
+      "provisional": "Provisional",
+      "baseCurrency": "Base currency. Never converted.",
+      "empty": "Nothing here yet.",
+      "auditedNote": "Every change records who made it, what it was before, and why.",
+      "provisionalNote": "Only the entry tier of each build comes from the agreed offer. The extended and advanced figures are internally consistent placeholders and need commercial sign-off before customers see them."
     },
     "analytics": {
       "title": "Analytics",

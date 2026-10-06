@@ -52,7 +52,22 @@ export function roundUpTo(minorUnits: number, step: number): number {
  * is defined in one currency, and silently converting from an already-converted
  * figure would compound two roundings.
  */
-export function localizePrice(base: Money, target: Currency): LocalizedPrice {
+/**
+ * A rate and rounding step from the editable catalogue, overriding the shipped
+ * defaults. Passed rather than looked up, so this module stays pure and the
+ * engine's arithmetic is reproducible from its arguments alone.
+ */
+export interface CurrencyOverride {
+  rate: number;
+  roundToMinorUnits: number;
+  reviewedOn: string;
+}
+
+export function localizePrice(
+  base: Money,
+  target: Currency,
+  override?: CurrencyOverride,
+): LocalizedPrice {
   if (base.currency !== BASE_CURRENCY) {
     throw new TypeError(
       `localizePrice expects a ${BASE_CURRENCY} amount, received ${base.currency}. ` +
@@ -60,7 +75,9 @@ export function localizePrice(base: Money, target: Currency): LocalizedPrice {
     );
   }
 
-  const { rate, roundToMinorUnits } = presentationFor(target);
+  const shipped = presentationFor(target);
+  const rate = override?.rate ?? shipped.rate;
+  const roundToMinorUnits = override?.roundToMinorUnits ?? shipped.roundToMinorUnits;
 
   const conversion: ConversionRecord = {
     baseCurrency: base.currency,
@@ -68,7 +85,7 @@ export function localizePrice(base: Money, target: Currency): LocalizedPrice {
     targetCurrency: target,
     rate: target === BASE_CURRENCY ? 1 : rate,
     roundToMinorUnits: target === BASE_CURRENCY ? 1 : roundToMinorUnits,
-    ratesReviewedOn: RATES_REVIEWED_ON,
+    ratesReviewedOn: override?.reviewedOn ?? RATES_REVIEWED_ON,
   };
 
   // The base currency passes through untouched: its number is the price, not

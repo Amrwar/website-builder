@@ -11,7 +11,7 @@ import { getLocaleDefinition, resolveLocale, type Locale } from "@/config/locale
 import type { Order, OrderItem } from "@/db/schema";
 import { formatMoney, money, type Currency } from "@/lib/pricing/money";
 import { CAPABILITIES } from "@/lib/scope";
-import type { ScopeAssessment } from "@/lib/scope";
+import { readSnapshot } from "@/lib/engine";
 import { cn } from "@/lib/cn";
 
 /**
@@ -93,13 +93,13 @@ export async function CheckoutSummary({ order, locale }: CheckoutSummaryProps) {
   const fmt = (minorUnits: number) => formatMoney(money(minorUnits, currency), intlTag);
 
   const buildLine = order.items.find((item) => item.productType === "build");
-  const assessment = buildLine?.scopeSnapshot as ScopeAssessment | null | undefined;
+  const assessment = readSnapshot(buildLine?.scopeSnapshot);
 
   const includedKeys = new Set(
     (buildLine?.selectedCapabilities as string[] | undefined) ?? [],
   );
   // Everything the engine found, selected or inferred, is "in scope".
-  for (const detected of assessment?.capabilities ?? []) includedKeys.add(detected.key);
+  for (const key of assessment?.capabilityKeys ?? []) includedKeys.add(key);
 
   const included = CAPABILITIES.filter((capability) => includedKeys.has(capability.key));
   const excluded = CAPABILITIES.filter((capability) => !includedKeys.has(capability.key));
@@ -113,7 +113,7 @@ export async function CheckoutSummary({ order, locale }: CheckoutSummaryProps) {
       <Card padding="lg" className="flex flex-col gap-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-display-sm text-primary">{t("items")}</h2>
-          {assessment ? (
+          {assessment?.tier ? (
             <Badge tone="info">{t(`scope.tierValue.${assessment.tier}`)}</Badge>
           ) : null}
         </div>

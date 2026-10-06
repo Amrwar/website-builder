@@ -36,6 +36,13 @@
       "when": 1791256604528,
       "tag": "0004_admin_factory",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791260776316,
+      "tag": "0005_pricing_catalog",
+      "breakpoints": true
     }
   ]
 }
