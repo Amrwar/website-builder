@@ -1,6 +1,8 @@
 "use client";
 
 import * as RadixMenu from "@radix-ui/react-dropdown-menu";
+
+import { useDirection } from "@/components/ui/use-direction";
 import { Check } from "lucide-react";
 
 import { cn } from "@/lib/cn";
@@ -15,7 +17,18 @@ import { OVERLAY_ITEM, OVERLAY_LABEL, OVERLAY_PANEL } from "./overlay-styles";
  * focus return.
  */
 
-export const DropdownMenu = RadixMenu.Root;
+/**
+ * Wrapped rather than re-exported so the page's direction reaches Radix. See
+ * `useDirection` for why Radix does not pick it up on its own. An explicit
+ * `dir` still wins, for the rare component that must not mirror.
+ */
+export function DropdownMenu({
+  dir,
+  ...props
+}: React.ComponentProps<typeof RadixMenu.Root>) {
+  const direction = useDirection();
+  return <RadixMenu.Root dir={dir ?? direction} {...props} />;
+}
 export const DropdownMenuTrigger = RadixMenu.Trigger;
 export const DropdownMenuGroup = RadixMenu.Group;
 

@@ -2111,9 +2111,9 @@
   },
   "orderLines": {
     "build": {
-      "website": "Website build — {tier}",
-      "system": "Business system build — {tier}",
-      "mobileApp": "Mobile app build — {tier}"
+      "website": "Website build",
+      "system": "Business system build",
+      "mobileApp": "Mobile app build"
     },
     "service": {
       "design": "Design service"
@@ -2123,6 +2123,11 @@
       "extended": "Extended",
       "advanced": "Advanced",
       "custom": "Custom"
+    },
+    "buildWithTier": {
+      "website": "Website build — {tier}",
+      "system": "Business system build — {tier}",
+      "mobileApp": "Mobile app build — {tier}"
     }
   },
   "invoice": {
@@ -2235,5 +2240,10 @@
       "preferences": "Choose which updates you get",
       "languageNote": "Sent in {language}, the language your account was set to at the time."
     }
+  },
+  "languages": {
+    "en": "English",
+    "fr": "French",
+    "ar": "Arabic"
   }
 }

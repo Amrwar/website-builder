@@ -60,7 +60,7 @@ export async function BuildWall() {
                   <div className="flex flex-wrap items-center gap-2">
                     <Badge tone="neutral">{entry.buildType}</Badge>
                     {entry.deliveredInDays ? (
-                      <span className="text-caption text-tertiary" data-numeric>
+                      <span className="text-caption text-tertiary">
                         {tWall("deliveredIn", { days: entry.deliveredInDays })}
                       </span>
                     ) : null}

@@ -90,7 +90,7 @@ export function ReviewForm({
                 ? t("published")
                 : t(`statusLabel.${existing.status as "submitted"}`)}
             </Badge>
-            <span className="text-body-sm text-primary" data-numeric>
+            <span className="text-body-sm text-primary">
               {t("ratingValue", { rating: existing.rating ?? 0 })}
             </span>
           </span>

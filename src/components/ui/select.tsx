@@ -1,6 +1,8 @@
 "use client";
 
 import * as RadixSelect from "@radix-ui/react-select";
+
+import { useDirection } from "@/components/ui/use-direction";
 import { Check, ChevronDown, ChevronUp } from "lucide-react";
 
 import { cn } from "@/lib/cn";
@@ -20,7 +22,15 @@ import { OVERLAY_ITEM, OVERLAY_LABEL, OVERLAY_PANEL } from "./overlay-styles";
  * since it opens the platform picker on mobile.
  */
 
-export const Select = RadixSelect.Root;
+/**
+ * Wrapped rather than re-exported so the page's direction reaches Radix. See
+ * `useDirection` for why Radix does not pick it up on its own. An explicit
+ * `dir` still wins, for the rare component that must not mirror.
+ */
+export function Select({ dir, ...props }: React.ComponentProps<typeof RadixSelect.Root>) {
+  const direction = useDirection();
+  return <RadixSelect.Root dir={dir ?? direction} {...props} />;
+}
 export const SelectGroup = RadixSelect.Group;
 export const SelectValue = RadixSelect.Value;
 

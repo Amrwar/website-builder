@@ -150,10 +150,12 @@ export default async function AdminPricingPage({
                             <span className="text-body-sm text-secondary">
                               {rule.tier}
                             </span>
-                            <span className="text-body-sm text-primary" data-numeric>
-                              {rule.priceMinorUnits === null
-                                ? t("quote")
-                                : base(rule.priceMinorUnits)}
+                            <span className="text-body-sm text-primary">
+                              {rule.priceMinorUnits === null ? (
+                                t("quote")
+                              ) : (
+                                <Numeric>{base(rule.priceMinorUnits)}</Numeric>
+                              )}
                             </span>
                           </div>
 

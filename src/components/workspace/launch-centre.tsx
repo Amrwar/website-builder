@@ -133,7 +133,7 @@ export function LaunchChecklist({
             <Badge tone={readiness.ready ? "success" : "neutral"}>
               {readiness.ready ? t("ready") : t("notReady")}
             </Badge>
-            <span className="text-caption text-secondary" data-numeric>
+            <span className="text-caption text-secondary">
               {t("readiness", {
                 completed: readiness.completed,
                 required: readiness.required,
@@ -326,7 +326,7 @@ export function BuildMore({
       <h3 className="text-body font-medium text-primary">{t("title")}</h3>
       <p className="text-body-sm text-secondary">{t("body")}</p>
 
-      <p className="text-caption text-tertiary" data-numeric>
+      <p className="text-caption text-tertiary">
         {creditHours + creditMinutes > 0
           ? t("credit", { hours: creditHours, minutes: creditMinutes })
           : t("noCredit")}

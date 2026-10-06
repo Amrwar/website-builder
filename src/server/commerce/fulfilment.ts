@@ -211,6 +211,10 @@ export async function fulfilCheckout(
         productKey: item.productKey,
         productName: item.productName,
         translationKey: item.translationKey,
+        // Part of what was sold: the same build at the entry price and at the
+        // advanced price are different line items, and an invoice that hides
+        // the difference cannot be reconciled against the order.
+        scopeTier: item.scopeTier,
         quantity: item.quantity,
         unitAmountMinorUnits: item.unitAmountMinorUnits,
         taxMinorUnits: item.taxMinorUnits,

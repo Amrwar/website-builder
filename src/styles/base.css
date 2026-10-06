@@ -84,27 +84,38 @@
     letter-spacing: inherit;
   }
 
-  /* Numeric contexts (prices, countdowns, invoice tables) use tabular figures
-   * so digits do not shift width as values change.
+  /* Numeric contexts (prices, countdowns, references, invoice tables) use
+   * tabular figures so digits do not shift width as values change.
    *
-   * `unicode-bidi` is the load-bearing part under RTL. A price, a
-   * reference like SUB-2026-0001 or a date is a left-to-right run; dropped
-   * into an Arabic paragraph, the bidi algorithm absorbs the neutral
-   * characters around it -- separators, hyphens, currency symbols -- and
-   * reorders the whole line. "199 CA$ · SUB-2026-0001" rendered as
-   * "CA$ - SUB-2026-0001 199" before this rule existed.
+   * `unicode-bidi: isolate` is the load-bearing part under RTL. A price, a
+   * reference like SUB-2026-0001 or a date is its own run; dropped into an
+   * Arabic paragraph the bidi algorithm absorbs the neutral characters around
+   * it -- separators, hyphens, currency symbols -- and reorders the whole
+   * line. "199 CA$ - SUB-2026-0001" rendered as "CA$ - SUB-2026-0001 199".
+   * Isolation makes what is inside unable to reorder what is outside, while
+   * the element itself is still placed by the parent's direction, which is
+   * what keeps a price on the correct side of an Arabic sentence.
    *
-   * `isolate`, not `plaintext`. `plaintext` takes the element's direction
-   * from its first strong character, and `Intl.NumberFormat` prefixes Arabic
-   * currency output with a right-to-left mark -- so a line reading
-   * "199 CA$ · SUB-2026-0001" would be laid out right-to-left as a whole and
-   * come out as "CA$ - SUB-2026-0001 199".
+   * Deliberately *not* `direction: ltr` as well, which was tried and reverted
+   * after looking at it: `Intl` composes Arabic output with embedded
+   * right-to-left marks because it expects an RTL context, so an Arabic date
+   * ("06<RLM>/10<RLM>/2026") forced to left-to-right came out as
+   * "062026/10/". The content has to be laid out in the direction it was
+   * composed for, which is the page's. Where that produced a bad result for
+   * currency -- a trailing "CA$" rendering as "$CA", because the symbol is a
+   * bidi-neutral character the algorithm pushes to the far end -- the fix
+   * belongs in the formatter, which switches to the ISO code for RTL locales.
+   * See `formatMoney`.
    *
-   * Isolation instead makes each element an independent run, positioned by
-   * its parent's direction with its internal order decided by its own
-   * content. That is only correct when an element holds exactly one value,
-   * so composite lines are split into one element per value rather than
-   * wrapping several in one. */
+   * Not `plaintext` either: that takes the direction from the first strong
+   * character, which for Arabic currency is Intl's own right-to-left mark, so
+   * a whole line of values would be laid out right-to-left.
+   *
+   * Isolation is per element, so the attribute means "this element holds
+   * exactly one value". It must never wrap a translated sentence: the
+   * sentence's own numbers are weak runs the algorithm already places
+   * correctly, and the isolation would only break the words around them.
+   * Composite lines are split into one `<Numeric>` per value. */
   [data-numeric] {
     font-variant-numeric: tabular-nums;
     font-feature-settings: "tnum" 1;

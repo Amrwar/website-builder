@@ -76,7 +76,7 @@ export default async function ProjectsPage({ params }: PageProps<"/[locale]/proj
 
                   <div className="flex items-center gap-3">
                     {project.deadlineAt ? (
-                      <span className="text-caption text-secondary" data-numeric>
+                      <span className="text-caption text-secondary">
                         {t("deadline.due", {
                           date: dates.date(project.deadlineAt),
                         })}

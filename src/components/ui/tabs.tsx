@@ -2,6 +2,8 @@
 
 import * as RadixTabs from "@radix-ui/react-tabs";
 
+import { useDirection } from "@/components/ui/use-direction";
+
 import { cn } from "@/lib/cn";
 
 /**
@@ -11,14 +13,22 @@ import { cn } from "@/lib/cn";
  * between tabs and Home/End jump to the ends. Hand-rolled tab strips normally
  * make every tab a tab stop, which turns a ten-tab interface into ten presses.
  *
- * Direction-aware: the arrow keys reverse under RTL because Radix reads the
- * document direction.
+ * Direction-aware: the arrow keys reverse under RTL -- but only because the
+ * direction is passed in below. Radix does *not* read it from the document.
  *
  * Selection is marked by an underline rather than a filled pill, so a tab
  * strip sits quietly under a heading instead of competing with it.
  */
 
-export const Tabs = RadixTabs.Root;
+/**
+ * Wrapped rather than re-exported so the page's direction reaches Radix. See
+ * `useDirection` for why Radix does not pick it up on its own. An explicit
+ * `dir` still wins, for the rare component that must not mirror.
+ */
+export function Tabs({ dir, ...props }: React.ComponentProps<typeof RadixTabs.Root>) {
+  const direction = useDirection();
+  return <RadixTabs.Root dir={dir ?? direction} {...props} />;
+}
 
 export function TabsList({
   className,

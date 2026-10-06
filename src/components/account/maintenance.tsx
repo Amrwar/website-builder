@@ -164,7 +164,7 @@ export function MaintenancePanel({
             <Callout tone="warning" title={t("pastDueNote")} />
           ) : null}
 
-          <p className="text-caption text-tertiary" data-numeric>
+          <p className="text-caption text-tertiary">
             {current.trialEndsLabel
               ? t("trialUntil", { date: current.trialEndsLabel })
               : current.cancelAtPeriodEnd

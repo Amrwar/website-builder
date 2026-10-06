@@ -2,6 +2,7 @@
 
 import { useLocale, useTranslations } from "next-intl";
 
+import { Numeric } from "@/components/ui/numeric";
 import { ChoiceCard } from "@/components/ui/choice-card";
 import { getLocaleDefinition, resolveLocale } from "@/config/locales";
 import { BUILD_PRODUCT_LIST } from "@/config/products";
@@ -42,9 +43,13 @@ export function StepType({
             title={tProducts(`${product.id}.name`)}
             description={tProducts(`${product.id}.summary`)}
             meta={
-              <span className="text-body-sm whitespace-nowrap text-primary" data-numeric>
+              <span className="text-body-sm whitespace-nowrap text-primary">
                 {product.priceModel === "from" ? `${tProducts("fromLabel")} ` : ""}
-                {formatMoney(product.basePrice, intlTag, { trimWholeDecimals: true })}
+                <Numeric>
+                  {formatMoney(product.basePrice, intlTag, {
+                    trimWholeDecimals: true,
+                  })}
+                </Numeric>
               </span>
             }
           />

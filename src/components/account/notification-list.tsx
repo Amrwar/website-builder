@@ -44,6 +44,8 @@ export function NotificationList({
 }) {
   const t = useTranslations("notifications.page");
   const tKind = useTranslations("notifications");
+  // Named in the reader's language: "Arabic", not "العربية", to a French reader.
+  const tLanguages = useTranslations("languages");
   const { toast } = useToast();
   const [pending, start] = useTransition();
 
@@ -114,7 +116,7 @@ export function NotificationList({
                   ) : null}
                   {locale !== viewerLocale ? (
                     <p className="text-caption text-tertiary">
-                      {t("languageNote", { language: definition.nativeName })}
+                      {t("languageNote", { language: tLanguages(locale) })}
                     </p>
                   ) : null}
                 </div>

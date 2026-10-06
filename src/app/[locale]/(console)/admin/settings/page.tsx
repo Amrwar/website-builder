@@ -75,8 +75,8 @@ export default async function AdminSettingsPage({
           <dl className="flex flex-col gap-1.5">
             {catalog.currencies.map((rule) => (
               <div key={rule.code} className="flex items-baseline justify-between gap-4">
-                <dt className="text-body-sm text-secondary" data-numeric>
-                  {rule.code}
+                <dt className="text-body-sm text-secondary">
+                  <Numeric>{rule.code}</Numeric>
                   {!rule.isActive ? (
                     <Badge tone="neutral" className="ms-2">
                       {t("pricing.inactive")}
@@ -90,7 +90,7 @@ export default async function AdminSettingsPage({
                   </span>
                   {/* A rate with no review date beside it is one nobody can
                       hold to account, so the date travels with the figure. */}
-                  <span className="text-caption text-tertiary" data-numeric>
+                  <span className="text-caption text-tertiary">
                     {rule.reviewedOn
                       ? t("settings.reviewedOn", {
                           date: dates.date(new Date(rule.reviewedOn)),

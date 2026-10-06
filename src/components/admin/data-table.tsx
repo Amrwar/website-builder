@@ -227,9 +227,7 @@ export async function TablePagination({
       className="flex flex-wrap items-center justify-between gap-3 border-t border-line-subtle pt-4"
       aria-label={t("page", { page, pages: pageCount })}
     >
-      <p className="text-caption text-tertiary" data-numeric>
-        {t("showing", { from, to, total })}
-      </p>
+      <p className="text-caption text-tertiary">{t("showing", { from, to, total })}</p>
 
       <div className="flex items-center gap-2">
         {page > 1 ? (

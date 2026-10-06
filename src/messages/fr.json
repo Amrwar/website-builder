@@ -2111,9 +2111,9 @@
   },
   "orderLines": {
     "build": {
-      "website": "Création de site web — {tier}",
-      "system": "Création de système de gestion — {tier}",
-      "mobileApp": "Création d’application mobile — {tier}"
+      "website": "Création de site web",
+      "system": "Création de système de gestion",
+      "mobileApp": "Création d’application mobile"
     },
     "service": {
       "design": "Service de design"
@@ -2123,6 +2123,11 @@
       "extended": "Étendu",
       "advanced": "Avancé",
       "custom": "Sur mesure"
+    },
+    "buildWithTier": {
+      "website": "Création de site web — {tier}",
+      "system": "Création de système de gestion — {tier}",
+      "mobileApp": "Création d’application mobile — {tier}"
     }
   },
   "invoice": {
@@ -2235,5 +2240,10 @@
       "preferences": "Choisir les notifications que vous recevez",
       "languageNote": "Envoyé en {language}, la langue de votre compte à ce moment-là."
     }
+  },
+  "languages": {
+    "en": "anglais",
+    "fr": "français",
+    "ar": "arabe"
   }
 }

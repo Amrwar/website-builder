@@ -71,7 +71,7 @@ export async function DeadlineSummary({
             : t("deadline.remaining", { days: standing.workingDaysRemaining })}
       </p>
 
-      <p className="text-caption text-secondary" data-numeric>
+      <p className="text-caption text-secondary">
         {t("deadline.due", { date: formatDate(deadlineAt) })}
       </p>
 

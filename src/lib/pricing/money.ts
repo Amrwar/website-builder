@@ -13,6 +13,8 @@
  * deliberate act -- which is the point. Every entry needs a minor-unit factor
  * below and a presentation rule in `@/config/currency`.
  */
+import { getDirection, resolveLocale } from "@/config/locales";
+
 export const SUPPORTED_CURRENCIES = [
   "CAD",
   "USD",
@@ -87,12 +89,33 @@ export interface FormatMoneyOptions {
  * not the bare language code -- that is what gets the separators, symbol
  * placement and digit shaping right for the region.
  */
+/**
+ * Which currency form to use when the caller has not asked for one.
+ *
+ * A narrow symbol reads best in English and French ("$400"), but several of
+ * them -- "CA$", "A$", "US$" -- put the `$` last, and `$` is a bidi-neutral
+ * character. In an Arabic line the algorithm pushes it to the far end, so
+ * "199 CA$" renders as "$CA 199". "$CA" is not a currency, and no amount of
+ * isolation fixes it: the reordering happens *inside* the isolated run.
+ *
+ * The ISO code has no trailing neutral, so it survives the trip: "199 CAD"
+ * renders as "CAD 199" in Arabic and "CAD 199.00" in English. It is also the
+ * unambiguous form, which matters more here than brevity -- a customer in
+ * Cairo reading "$400" has a fair question about which dollar.
+ *
+ * Checked in the browser rather than reasoned about: the symbol form really
+ * does come out as "$CA" on an Arabic page.
+ */
+function defaultDisplayFor(intlTag: string): FormatMoneyOptions["display"] {
+  return getDirection(resolveLocale(intlTag)) === "rtl" ? "code" : "narrowSymbol";
+}
+
 export function formatMoney(
   value: Money,
   intlTag: string,
   options: FormatMoneyOptions = {},
 ): string {
-  const { trimWholeDecimals = false, display = "narrowSymbol" } = options;
+  const { trimWholeDecimals = false, display = defaultDisplayFor(intlTag) } = options;
   const trim = trimWholeDecimals && isWholeAmount(value);
 
   return new Intl.NumberFormat(intlTag, {

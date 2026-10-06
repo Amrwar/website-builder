@@ -7,6 +7,7 @@ import {
   AssessmentError,
   type AssessmentFailure,
 } from "@/components/configurator/assessment-error";
+import { Numeric } from "@/components/ui/numeric";
 import { Button } from "@/components/ui/button";
 import { Callout } from "@/components/ui/callout";
 import { Card } from "@/components/ui/card";
@@ -218,10 +219,14 @@ export function StepReview({
 
           <div className="flex flex-wrap items-baseline justify-between gap-4">
             <dt className="text-body font-semibold text-primary">{t("rows.total")}</dt>
-            <dd className="text-display-md text-primary" data-numeric>
-              {quote || !total
-                ? t("customQuote")
-                : formatMoney(total, intlTag, { trimWholeDecimals: true })}
+            <dd className="text-display-md text-primary">
+              {quote || !total ? (
+                t("customQuote")
+              ) : (
+                <Numeric>
+                  {formatMoney(total, intlTag, { trimWholeDecimals: true })}
+                </Numeric>
+              )}
             </dd>
           </div>
 

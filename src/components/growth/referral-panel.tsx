@@ -130,7 +130,7 @@ export function ReferralPanel({
 
           <div className="flex flex-col gap-1">
             <dt className="text-caption text-tertiary">{t("stats.earned")}</dt>
-            <dd className="text-display-sm text-primary" data-numeric>
+            <dd className="text-display-sm text-primary">
               {t("earnedValue", { hours: earnedHours, minutes: earnedMinutes })}
             </dd>
           </div>

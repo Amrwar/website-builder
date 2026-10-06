@@ -2111,9 +2111,9 @@
   },
   "orderLines": {
     "build": {
-      "website": "تطوير موقع إلكتروني — {tier}",
-      "system": "تطوير نظام أعمال — {tier}",
-      "mobileApp": "تطوير تطبيق جوّال — {tier}"
+      "website": "تطوير موقع إلكتروني",
+      "system": "تطوير نظام أعمال",
+      "mobileApp": "تطوير تطبيق جوّال"
     },
     "service": {
       "design": "خدمة التصميم"
@@ -2123,6 +2123,11 @@
       "extended": "الموسّع",
       "advanced": "المتقدّم",
       "custom": "مخصّص"
+    },
+    "buildWithTier": {
+      "website": "تطوير موقع إلكتروني — {tier}",
+      "system": "تطوير نظام أعمال — {tier}",
+      "mobileApp": "تطوير تطبيق جوّال — {tier}"
     }
   },
   "invoice": {
@@ -2235,5 +2240,10 @@
       "preferences": "اختر التنبيهات التي تصلك",
       "languageNote": "أُرسلت بـ{language}، وهي لغة حسابك في ذلك الوقت."
     }
+  },
+  "languages": {
+    "en": "الإنجليزية",
+    "fr": "الفرنسية",
+    "ar": "العربية"
   }
 }

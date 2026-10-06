@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 
 import { AdminPageHeader, AdminShell } from "@/components/admin/admin-shell";
 import { DataTable } from "@/components/admin/data-table";
+import { Numeric } from "@/components/ui/numeric";
 import { Badge } from "@/components/ui/badge";
 import { viewerDates } from "@/server/i18n";
 import { requireAdminSection } from "@/server/admin/guard";
@@ -62,7 +63,12 @@ export default async function AdminHostingPage({
             id: "domain",
             header: t("columns.domain"),
             mobile: "secondary",
-            cell: (row) => <span data-numeric>{row.primaryDomain ?? t("noDomain")}</span>,
+            cell: (row) =>
+              row.primaryDomain ? (
+                <Numeric>{row.primaryDomain}</Numeric>
+              ) : (
+                <span>{t("noDomain")}</span>
+              ),
           },
           {
             id: "status",

@@ -313,7 +313,7 @@ export async function PreviewPanel({ workspace, intlTag, timeZone }: PanelProps)
                 {t("preview.version", { version: latestPreview.version })}
               </p>
               {latestPreview.readyAt ? (
-                <p className="text-caption text-tertiary" data-numeric>
+                <p className="text-caption text-tertiary">
                   {t("preview.deployed", {
                     date: formatDate(latestPreview.readyAt, intlTag, timeZone),
                   })}
@@ -343,7 +343,7 @@ export async function PreviewPanel({ workspace, intlTag, timeZone }: PanelProps)
             key={deployment.id}
             className="flex flex-wrap items-center justify-between gap-3 border-b border-line-subtle pb-2"
           >
-            <span className="text-body-sm text-secondary" data-numeric>
+            <span className="text-body-sm text-secondary">
               {t("preview.version", { version: deployment.version })}
             </span>
             <Badge tone={deployment.state === "failed" ? "danger" : "neutral"}>
@@ -413,9 +413,7 @@ export async function FilesPanel({ workspace, intlTag, timeZone }: PanelProps) {
                 </span>
                 <span className="flex flex-wrap items-center gap-2 text-caption text-tertiary">
                   <span>{t(`files.kind.${file.kind}`)}</span>
-                  <span data-numeric>
-                    {t("files.version", { version: file.version })}
-                  </span>
+                  <span>{t("files.version", { version: file.version })}</span>
                   <span data-numeric>
                     {formatDate(file.createdAt, intlTag, timeZone)}
                   </span>
@@ -571,7 +569,7 @@ export async function ChangesPanel({ workspace, intlTag, timeZone }: PanelProps)
                     </p>
                   ) : (
                     <ul className="flex flex-wrap gap-4 text-body-sm text-secondary">
-                      <li data-numeric>
+                      <li>
                         {t("changes.priceImpact")}:{" "}
                         {change.priceImpactMinorUnits
                           ? formatMoney(
@@ -584,7 +582,7 @@ export async function ChangesPanel({ workspace, intlTag, timeZone }: PanelProps)
                           : t("changes.noExtraCost")}
                       </li>
                       {change.additionalDays ? (
-                        <li data-numeric>
+                        <li>
                           {t("changes.daysImpact", { days: change.additionalDays })}
                         </li>
                       ) : null}
@@ -722,18 +720,20 @@ export async function PaymentsPanel({ workspace, intlTag, timeZone }: PanelProps
         </div>
 
         {order.paidAt ? (
-          <p className="text-caption text-tertiary" data-numeric>
+          <p className="text-caption text-tertiary">
             {t("payments.paidOn", { date: formatDate(order.paidAt, intlTag, timeZone) })}
           </p>
         ) : null}
 
         {order.refundedMinorUnits > 0 ? (
-          <p className="text-body-sm text-secondary" data-numeric>
+          <p className="text-body-sm text-secondary">
             {t("payments.refunded")}:{" "}
-            {formatMoney(
-              money(order.refundedMinorUnits, order.currency as Currency),
-              intlTag,
-            )}
+            <Numeric>
+              {formatMoney(
+                money(order.refundedMinorUnits, order.currency as Currency),
+                intlTag,
+              )}
+            </Numeric>
           </p>
         ) : null}
 
@@ -972,10 +972,14 @@ export async function LaunchPanel({
                   <Badge tone={deployment.state === "ready" ? "success" : "neutral"}>
                     {t(`deploymentState.${deployment.state}`)}
                   </Badge>
-                  <span className="text-caption text-tertiary" data-numeric>
-                    {deployment.providerConfirmedAt
-                      ? formatDate(deployment.providerConfirmedAt, intlTag, timeZone)
-                      : t("awaitingProvider")}
+                  <span className="text-caption text-tertiary">
+                    {deployment.providerConfirmedAt ? (
+                      <Numeric>
+                        {formatDate(deployment.providerConfirmedAt, intlTag, timeZone)}
+                      </Numeric>
+                    ) : (
+                      t("awaitingProvider")
+                    )}
                   </span>
                 </span>
               </li>

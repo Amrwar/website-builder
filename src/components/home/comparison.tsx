@@ -1,3 +1,4 @@
+import { Numeric } from "@/components/ui/numeric";
 import { Check, Minus } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 
@@ -70,9 +71,13 @@ export async function Comparison() {
               <TableRowHeader>{t("rows.price")}</TableRowHeader>
               {BUILD_PRODUCT_LIST.map((product) => (
                 <TableCell key={product.id}>
-                  <span className="text-body-sm font-medium text-primary" data-numeric>
+                  <span className="text-body-sm font-medium text-primary">
                     {product.priceModel === "from" ? `${tProducts("fromLabel")} ` : ""}
-                    {formatMoney(product.basePrice, intlTag, { trimWholeDecimals: true })}
+                    <Numeric>
+                      {formatMoney(product.basePrice, intlTag, {
+                        trimWholeDecimals: true,
+                      })}
+                    </Numeric>
                   </span>
                 </TableCell>
               ))}

@@ -172,8 +172,12 @@ export default async function AdminProjectPage({
             </div>
             <div className="flex justify-between gap-3">
               <dt className="text-secondary">{t("pricing.days")}</dt>
-              <dd className="text-primary" data-numeric>
-                {project.guaranteedDays ?? t("common.none")}
+              <dd className="text-primary">
+                {project.guaranteedDays ? (
+                  <Numeric>{project.guaranteedDays}</Numeric>
+                ) : (
+                  t("common.none")
+                )}
               </dd>
             </div>
             <div className="flex justify-between gap-3">
@@ -287,7 +291,7 @@ export default async function AdminProjectPage({
                 </span>
 
                 <span className="flex items-center gap-3">
-                  <span className="text-caption text-tertiary" data-numeric>
+                  <span className="text-caption text-tertiary">
                     {t("projectDetail.minutes", { count: task.estimatedMinutes })}
                     {task.actualMinutes !== null
                       ? ` → ${t("projectDetail.minutes", { count: task.actualMinutes })}`

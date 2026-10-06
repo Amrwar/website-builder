@@ -21,6 +21,7 @@ const lineSchema = z.object({
   productKey: z.string(),
   productName: z.string(),
   translationKey: z.string().nullish(),
+  scopeTier: z.string().nullish(),
   quantity: z.number().int().positive(),
   unitAmountMinorUnits: z.number().int(),
   taxMinorUnits: z.number().int(),

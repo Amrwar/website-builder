@@ -128,7 +128,7 @@ export default async function BillingPage({ params }: PageProps<"/[locale]/billi
           <h2 className="text-display-sm text-primary">{tCredit("title")}</h2>
 
           <Card padding="lg" className="flex flex-col gap-3">
-            <p className="text-display-md text-primary" data-numeric>
+            <p className="text-display-md text-primary">
               {credit.balanceMinutes > 0
                 ? tCredit("balance", {
                     hours: balance.hours,

@@ -50,6 +50,17 @@ export async function InvoiceDocument({
   const definition = getLocaleDefinition(documentLocale);
 
   const t = await getTranslations({ locale: documentLocale, namespace: "invoice" });
+  /**
+   * The note explaining why this document is in another language is the one
+   * thing on the page that must be in the *reader's* language. Rendered in the
+   * document's, it was an Arabic sentence on a French page telling a French
+   * reader why there was an Arabic sentence on their page.
+   */
+  const tViewer = await getTranslations({ locale: viewerLocale, namespace: "invoice" });
+  const tViewerLanguages = await getTranslations({
+    locale: viewerLocale,
+    namespace: "languages",
+  });
   const tLine = await getTranslations({
     locale: documentLocale,
     namespace: "orderLines",
@@ -69,17 +80,31 @@ export async function InvoiceDocument({
   });
 
   const currency = invoice.currency as Currency;
+  /**
+   * Negatives are passed through as negative amounts rather than prefixed with
+   * a minus here, so `Intl` places the sign the way the locale does. A
+   * hand-built "−CAD 50.00" is one string with a leading bidi-neutral,
+   * which in Arabic the algorithm moves to the other end of the figure.
+   */
   const amount = (minorUnits: number) =>
     formatMoney(money(minorUnits, currency), definition.intlTag, { display: "code" });
 
   const nameOf = (line: (typeof lines)[number]) => {
-    const label = lineLabel({ translationKey: line.translationKey });
+    const label = lineLabel({
+      translationKey: line.translationKey,
+      scopeTier: line.scopeTier,
+    });
     if (!label) return line.productName;
     switch (label.kind) {
       case "build":
-        return tLine(`build.${label.buildType}`, {
-          tier: label.tier ? tLine(`tier.${label.tier}`) : "",
-        });
+        // Two messages rather than one with an empty argument: a line whose
+        // tier was never recorded was printing "Website build —" with a
+        // dangling dash and nothing after it.
+        return label.tier
+          ? tLine(`buildWithTier.${label.buildType}`, {
+              tier: tLine(`tier.${label.tier}`),
+            })
+          : tLine(`build.${label.buildType}`);
       case "design_service":
         return tLine("service.design");
       case "capability":
@@ -93,15 +118,22 @@ export async function InvoiceDocument({
     /* The document carries its own direction. An Arabic invoice reads
        right-to-left inside an English page, and vice versa, because the
        document is the thing being read, not the chrome around it. */
-    <div dir={definition.direction} lang={documentLocale} className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6">
       {documentLocale !== viewerLocale ? (
         <Callout
           tone="info"
-          title={t("languageNote", { language: definition.nativeName })}
+          title={tViewer("languageNote", {
+            language: tViewerLanguages(documentLocale),
+          })}
         />
       ) : null}
 
-      <Card padding="lg" className="flex flex-col gap-8">
+      <Card
+        dir={definition.direction}
+        lang={documentLocale}
+        padding="lg"
+        className="flex flex-col gap-8"
+      >
         <header className="flex flex-wrap items-start justify-between gap-4">
           <div className="flex flex-col gap-1">
             <p className="text-eyebrow text-tertiary uppercase">{BRAND.name}</p>
@@ -182,10 +214,7 @@ export async function InvoiceDocument({
         <dl className="flex flex-col gap-2 border-t border-line pt-4">
           <Total label={t("subtotal")} value={amount(invoice.subtotalMinorUnits)} />
           {invoice.discountMinorUnits > 0 ? (
-            <Total
-              label={t("discount")}
-              value={`−${amount(invoice.discountMinorUnits)}`}
-            />
+            <Total label={t("discount")} value={amount(-invoice.discountMinorUnits)} />
           ) : null}
           <Total
             label={
@@ -200,10 +229,7 @@ export async function InvoiceDocument({
           <Total label={t("total")} value={amount(invoice.totalMinorUnits)} strong />
           {invoice.refundedMinorUnits > 0 ? (
             <>
-              <Total
-                label={t("refunded")}
-                value={`−${amount(invoice.refundedMinorUnits)}`}
-              />
+              <Total label={t("refunded")} value={amount(-invoice.refundedMinorUnits)} />
               <Total label={t("balance")} value={amount(outstanding)} strong />
             </>
           ) : null}
