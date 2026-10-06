@@ -17,6 +17,12 @@ import { StatesShowcase } from "@/components/design-system/states";
  * Copy here is English only by design: this is developer tooling, and
  * translating it would triple the message catalogues and the parity test for
  * a page no customer opens.
+ *
+ * Which is why it also declares `dir="ltr"`. English prose inside the Arabic
+ * shell is laid out by the bidi algorithm as a left-to-right run in a
+ * right-to-left paragraph, so every sentence ends up with its full stop at
+ * the wrong end -- ".each specimen". Translated pages have no such problem;
+ * this is the one page whose content does not follow the shell.
  */
 
 export const metadata: Metadata = {
@@ -35,7 +41,7 @@ const SECTIONS = [
 
 export default function DesignSystemPage() {
   return (
-    <Container width="wide" className="py-14 sm:py-20">
+    <Container width="wide" dir="ltr" className="py-14 sm:py-20">
       <header className="flex max-w-3xl flex-col gap-4">
         <p className="text-eyebrow text-tertiary uppercase">Internal reference</p>
         <h1 className="text-display-xl text-primary">Design system</h1>
