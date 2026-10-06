@@ -9,3 +9,6 @@ coverage
 # can be re-synced without producing spurious diffs.
 .agents
 .claude
+
+# Not a format Prettier understands.
+.nvmrc
