@@ -1353,7 +1353,8 @@
       "next": "Suivant",
       "page": "Page {page} sur {pages}",
       "actions": "Actions",
-      "view": "Voir"
+      "view": "Voir",
+      "sort": "Trier"
     },
     "dashboard": {
       "title": "Aujourd’hui",
@@ -1427,7 +1428,8 @@
       "saving": "Enregistrement",
       "cannotManage": "Vous ne pouvez pas modifier le rôle de cette personne.",
       "noAssignable": "Votre rôle ne permet d’attribuer aucun rôle.",
-      "self": "Vous"
+      "self": "Vous",
+      "cannotManageSelf": "Vous ne pouvez pas changer votre propre rôle."
     },
     "refunds": {
       "title": "Remboursements",

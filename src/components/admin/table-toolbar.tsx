@@ -117,7 +117,7 @@ export function AdminTableToolbar({
 
           {sorts.length > 0 ? (
             <div className="flex flex-wrap items-center gap-1.5">
-              <span className="text-caption text-tertiary">{t("filter")}</span>
+              <span className="text-caption text-tertiary">{t("sort")}</span>
               {sorts.map((option) => (
                 <Link
                   key={option.value}

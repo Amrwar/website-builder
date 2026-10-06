@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Lock } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { AdminPageHeader, AdminShell } from "@/components/admin/admin-shell";
@@ -114,9 +113,7 @@ export default async function AdminAuditPage({
       <AdminPageHeader title={t("audit.title")} subtitle={t("audit.subtitle")} />
 
       <div className="mb-4">
-        <Callout tone="info" title={t("audit.immutable")}>
-          <Lock className="size-3.5" aria-hidden />
-        </Callout>
+        <Callout tone="info" title={t("audit.immutable")} />
       </div>
 
       <DataTable

@@ -1353,7 +1353,8 @@
       "next": "Next",
       "page": "Page {page} of {pages}",
       "actions": "Actions",
-      "view": "View"
+      "view": "View",
+      "sort": "Sort"
     },
     "dashboard": {
       "title": "Today",
@@ -1427,7 +1428,8 @@
       "saving": "Saving",
       "cannotManage": "You cannot change this person's role.",
       "noAssignable": "Your role cannot assign any roles.",
-      "self": "You"
+      "self": "You",
+      "cannotManageSelf": "You cannot change your own role."
     },
     "refunds": {
       "title": "Refunds",

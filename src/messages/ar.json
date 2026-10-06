@@ -1353,7 +1353,8 @@
       "next": "التالي",
       "page": "صفحة {page} من {pages}",
       "actions": "إجراءات",
-      "view": "عرض"
+      "view": "عرض",
+      "sort": "ترتيب"
     },
     "dashboard": {
       "title": "اليوم",
@@ -1427,7 +1428,8 @@
       "saving": "جارٍ الحفظ",
       "cannotManage": "لا يمكنك تغيير دور هذا الشخص.",
       "noAssignable": "دورك لا يسمح بإسناد أي دور.",
-      "self": "أنت"
+      "self": "أنت",
+      "cannotManageSelf": "لا يمكنك تغيير دورك بنفسك."
     },
     "refunds": {
       "title": "المستردات",

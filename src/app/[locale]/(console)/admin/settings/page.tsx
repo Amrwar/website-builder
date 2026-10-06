@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Lock } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { AdminPageHeader, AdminShell } from "@/components/admin/admin-shell";
@@ -51,9 +50,7 @@ export default async function AdminSettingsPage({
       <AdminPageHeader title={t("settings.title")} subtitle={t("settings.subtitle")} />
 
       <div className="mb-6">
-        <Callout tone="info" title={t("settings.readOnlyNote")}>
-          <Lock className="size-3.5" aria-hidden />
-        </Callout>
+        <Callout tone="info" title={t("settings.readOnlyNote")} />
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">

@@ -76,15 +76,19 @@ await client.query("update users set role = $1, updated_at = now() where id = $2
   user.id,
 ]);
 
+// `subject_id` is text and `actor_user_id` is uuid, so the same value needs
+// two placeholders with an explicit cast -- Postgres refuses to deduce one
+// type for a parameter used as both.
 await client.query(
   `insert into audit_events
      (category, action, actor_user_id, actor_email, actor_role,
       subject_type, subject_id, subject_label, before, after, reason)
-   values ('security', 'user.role_changed', $1, $2, 'system',
-           'user', $1, $2, $3::jsonb, $4::jsonb, $5)`,
+   values ('security', 'user.role_changed', $1::uuid, $2, 'system',
+           'user', $3::text, $2, $4::jsonb, $5::jsonb, $6)`,
   [
     user.id,
     user.email,
+    user.id,
     JSON.stringify({ role: user.role }),
     JSON.stringify({ role }),
     "Bootstrap promotion via scripts/promote-user.mjs",

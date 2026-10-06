@@ -94,7 +94,14 @@ export default async function AdminTeamPage({
           disabled={
             row.id === context.user.id || !canManageUser(actorRole, row.role as UserRole)
           }
-          disabledReason={t("team.cannotManage")}
+          // Two different refusals, two different sentences: "you cannot do
+          // this to yourself" and "you cannot do this to them" are not the
+          // same message, and conflating them reads as a bug.
+          disabledReason={
+            row.id === context.user.id
+              ? t("team.cannotManageSelf")
+              : t("team.cannotManage")
+          }
         />
       ),
     },

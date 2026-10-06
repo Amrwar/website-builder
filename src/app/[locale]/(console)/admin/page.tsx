@@ -4,7 +4,6 @@ import { getTranslations } from "next-intl/server";
 import { AdminPageHeader, AdminShell } from "@/components/admin/admin-shell";
 import { MetricBar, MetricCard } from "@/components/admin/metric-card";
 import { Callout } from "@/components/ui/callout";
-import { EmptyState } from "@/components/ui/empty-state";
 import { getLocaleDefinition, resolveLocale } from "@/config/locales";
 import { formatMoney, money, type Currency } from "@/lib/pricing/money";
 import { dashboardMetrics } from "@/server/admin/queries";
@@ -44,21 +43,9 @@ export default async function AdminDashboardPage({
       trimWholeDecimals: true,
     });
 
-  const nothingYet =
-    metrics.activeProjects === 0 &&
-    metrics.completedProjects === 0 &&
-    metrics.newOrders === 0;
-
   return (
     <AdminShell role={context.user.role} active="dashboard">
       <AdminPageHeader title={t("dashboard.title")} subtitle={t("dashboard.subtitle")} />
-
-      {nothingYet ? (
-        <EmptyState
-          title={t("dashboard.noData")}
-          description={t("dashboard.noDataHelp")}
-        />
-      ) : null}
 
       {/* --- What needs attention today --------------------------------- */}
       <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
