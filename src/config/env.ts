@@ -30,6 +30,18 @@ const serverSchema = z.object({
    */
   DATABASE_URL_UNPOOLED: z.string().startsWith("postgres").optional(),
 
+  /**
+   * Salt for the one-way identity fingerprints the anti-abuse rules compare.
+   *
+   * Optional, and the degradation is deliberate and visible: without it the
+   * platform stores no fingerprints, the duplicate-account and shared-network
+   * signals never fire, and a warning says so. Every other anti-abuse rule
+   * still applies. The alternative -- hashing with a constant -- would look
+   * like protection while providing none, since an unsalted hash of an email
+   * address is an email address to anyone holding a word list.
+   */
+  GROWTH_FINGERPRINT_SECRET: z.string().min(16).optional(),
+
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
 });
 

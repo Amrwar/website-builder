@@ -1,9 +1,11 @@
 import type { ReactNode } from "react";
 
+import { cookies } from "next/headers";
 import { UserButton } from "@clerk/nextjs";
 import { getTranslations } from "next-intl/server";
 
 import { Container } from "@/components/layout/container";
+import { ReferralClaim } from "@/components/growth/referral-claim";
 import { Logo } from "@/components/site/logo";
 import { clerkAppearance } from "@/lib/clerk-appearance";
 import { Link } from "@/i18n/navigation";
@@ -26,8 +28,13 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
   const context = await getAuthContext();
   const showStaffLink = context ? isStaffRole(context.user.role) : false;
 
+  // Rendered only when a referral cookie is actually present, so the ordinary
+  // signed-in page load does no extra work at all.
+  const hasReferralCookie = (await cookies()).has("bl_ref");
+
   return (
     <div className="flex min-h-dvh flex-col">
+      {hasReferralCookie ? <ReferralClaim /> : null}
       <header className="sticky top-0 z-30 border-b border-line-subtle bg-canvas">
         <Container width="wide">
           <div className="flex h-16 items-center justify-between gap-6">

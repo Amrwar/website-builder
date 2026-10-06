@@ -28,6 +28,7 @@ import {
   MessageComposer,
 } from "@/components/workspace/workspace-forms";
 import { BuildMore, LaunchChecklist } from "@/components/workspace/launch-centre";
+import { ReviewForm, ShowcaseConsent } from "@/components/growth/review-form";
 import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { formatMoney, money, type Currency } from "@/lib/pricing/money";
@@ -63,6 +64,21 @@ export interface LaunchPanelData extends LaunchCentre {
   /** True when more work can be ordered on this project right now. */
   canExpand: boolean;
   credit: { minutes: number; hours: number; remainder: number };
+  /**
+   * The post-launch surfaces: reviewing the work, and agreeing to have it
+   * shown. Null before launch, because neither means anything until then.
+   */
+  growth: {
+    review: {
+      status: string;
+      rating: number | null;
+      body: string | null;
+      published: boolean;
+      moderationNote: string | null;
+    } | null;
+    showcaseConsented: boolean;
+    showcasePublished: boolean;
+  } | null;
 }
 
 interface LaunchPanelProps extends PanelProps {
@@ -930,6 +946,23 @@ export async function LaunchPanel({ workspace, intlTag, launch }: LaunchPanelPro
           </ul>
         )}
       </Card>
+
+      {/* --- After it is live --------------------------------------------- */}
+      {launch.growth ? (
+        <div className="flex flex-col gap-4 border-t border-line-subtle pt-6">
+          <ReviewForm
+            projectId={project.id}
+            existing={launch.growth.review}
+            canReview={project.launchedAt !== null && viewer.isOwner}
+          />
+          <ShowcaseConsent
+            projectId={project.id}
+            consented={launch.growth.showcaseConsented}
+            published={launch.growth.showcasePublished}
+            canConsent={project.launchedAt !== null && viewer.isOwner}
+          />
+        </div>
+      ) : null}
 
       <BuildMore
         projectId={project.id}

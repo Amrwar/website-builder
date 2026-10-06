@@ -22,6 +22,8 @@ import { Link } from "@/i18n/navigation";
 import { getAuthContext } from "@/server/auth";
 import { loadLaunchCentre } from "@/server/launch";
 import { expansionOptionsFor, spendableCredit } from "@/server/expand";
+import { reviewForProject } from "@/server/growth/reviews";
+import { consentStateFor } from "@/server/growth/showcase";
 import { getWorkspace } from "@/server/workspace/queries";
 import { hasPanel } from "@/config/workspace";
 
@@ -61,10 +63,14 @@ export default async function BuildRoomPage({
    */
   const launch = hasPanel(project.productType, "launch")
     ? await (async () => {
-        const [centre, options, credit] = await Promise.all([
+        const [centre, options, credit, review, consent] = await Promise.all([
           loadLaunchCentre(project.id, context),
           expansionOptionsFor(context),
           spendableCredit(context),
+          // Only meaningful once there is something delivered to talk about,
+          // so both are skipped entirely before launch.
+          project.launchedAt ? reviewForProject(project.id, context) : null,
+          project.launchedAt ? consentStateFor(project.id) : null,
         ]);
 
         return {
@@ -73,6 +79,21 @@ export default async function BuildRoomPage({
             options.find((option) => option.project.id === project.id)?.available ??
             false,
           credit,
+          growth: project.launchedAt
+            ? {
+                review: review
+                  ? {
+                      status: review.status,
+                      rating: review.rating,
+                      body: review.body,
+                      published: review.publishedAt !== null,
+                      moderationNote: review.moderationNote,
+                    }
+                  : null,
+                showcaseConsented: consent?.consented ?? false,
+                showcasePublished: consent?.published ?? false,
+              }
+            : null,
         };
       })()
     : null;

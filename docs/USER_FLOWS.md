@@ -140,13 +140,42 @@ Build credit is held by the **person**, not the website, and is counted in
 minutes of build time rather than money, so credit bought a year ago still buys
 the same amount of work. It can be spent on any project they own.
 
-## 6. Not yet built
+## 6. Grow (Phase 12)
+
+**Referrals.** Every account has a code and a `/r/CODE` link from its billing
+page. Attribution happens at signup — the link sets a first-party cookie, or
+attributes immediately for somebody who already has an account — and the reward
+is paid when the referred **build officially starts**, not when they sign up.
+Both sides receive the same credit, through the same ledger as every other
+build credit. Nothing on a referrer's screen says who used their link.
+
+**Partners and affiliates.** `/partners` is open to signed-out visitors,
+because an agency principal deciding whether to refer clients should not have
+to create an account to ask. Applications start at a zero rate with no code;
+approval sets the rate and issues the code, and suspending an account switches
+its code off with it. Commission is earned at the same conversion point and
+held for 30 days so a refund cannot leave a paid commission behind.
+
+**Reviews.** The platform invites the customer of a delivered project; only
+they can answer, once. Consent to publish is off by default and the name is
+kept only when given. Moderation can approve, publish, unpublish or reject with
+a stated reason — and cannot edit. Publishing somebody's words with changes
+they did not make is worse than not publishing them.
+
+**The build wall.** A customer consents from their own Build Room; staff then
+write the entry and publish it. Withdrawal is immediate and takes the entry off
+the wall in the same write. The public query selects named columns and never
+touches a customer-owned table.
+
+## 7. Not yet built
 
 **Renewal billing.** The sweep that advances a subscription into its next period
 is written and tested, but nothing schedules it, and taking the payment is the
 provider's job via webhook. That wiring does not exist.
 
-**Referrals and partners.** Configured with provisional figures, not earnable.
+**Payouts.** Accounts, commissions and payout batches are modelled, but no
+money movement is wired: no provider has been chosen. Marking a commission paid
+is a manual act.
 
 ## Journey to status mapping
 

@@ -158,10 +158,41 @@ The renewal sweep is written, tested and callable, but nothing schedules it —
 the same honest gap as the risk sweep. Taking payment for a renewal is the
 provider's job and arrives by webhook; that wiring is not built.
 
-### Phase 12 — Growth + Referral + Partner System
+### Phase 12 — Growth engine ✅
 
-Referral credits and the partner/affiliate programme. The credit amount is
-configured and provisional.
+Delivered. Referrals, partners, affiliates, reviews and the public build wall,
+with the anti-abuse rules that make any of them safe to pay out on.
+
+**One attribution path.** A customer sharing a link, an agency sending a client
+and an affiliate running ads are the same event: somebody arrived carrying a
+code. They share one `referral_codes` table and one `referrals` ledger, and
+differ only in what the owner earns — build credit for a customer, commission
+for a partner or an affiliate.
+
+**Conversion is build start**, not signup and not payment. The money is in, the
+customer has committed their assets and work has begun, so an order placed to
+claim a reward and then cancelled never pays anybody.
+
+**Nothing here can manufacture proof.** A review exists only against a
+delivered project and only from the person who paid for it, one per project. A
+build-wall entry exists only with recorded customer consent, and names a
+customer only where they separately agreed. Both are schema constraints, not
+service conventions.
+
+Rewards go through the Phase 11 credit ledger rather than a parallel balance.
+30 anti-abuse invariants verified against real Postgres. See
+`docs/SECURITY.md` and `docs/USER_FLOWS.md`.
+
+#### Not done
+
+Payouts are modelled — account, commission, state, batch — but no money
+movement is wired: no provider has been chosen, and `payoutReference` is a
+handle for whatever that turns out to be. Commissions can be approved and
+reversed; marking one paid is a manual act.
+
+`GROWTH_FINGERPRINT_SECRET` is unset, so the duplicate-account and
+shared-network signals do not fire. Every other rule applies, and the log says
+so on first use.
 
 ### Phase 13 — Internationalization
 

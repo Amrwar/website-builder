@@ -527,3 +527,117 @@ export const CREDIT_ENTRY_KINDS = [
 ] as const;
 export type CreditEntryKind = (typeof CREDIT_ENTRY_KINDS)[number];
 export const creditEntryKindEnum = pgEnum("credit_entry_kind", CREDIT_ENTRY_KINDS);
+
+/* -------------------------------------------------------------------------
+ * Growth (Phase 12)
+ * ---------------------------------------------------------------------- */
+
+/**
+ * Who a referral code belongs to.
+ *
+ * One attribution path, three reward policies. A visit carrying `?ref=` is
+ * resolved the same way whoever owns the code; what differs afterwards is what
+ * the owner earns -- build credit for a customer, commission for an affiliate
+ * or a partner. Modelling it as three separate tracking systems would mean
+ * three places for attribution to be wrong.
+ */
+export const REFERRAL_OWNER_KINDS = ["customer", "partner", "affiliate"] as const;
+export type ReferralOwnerKind = (typeof REFERRAL_OWNER_KINDS)[number];
+export const referralOwnerKindEnum = pgEnum("referral_owner_kind", REFERRAL_OWNER_KINDS);
+
+/**
+ * How far a referral has got.
+ *
+ * `signed_up` and `converted` are separate because a signup earns nothing: the
+ * reward exists to pay for revenue, and an account anybody can create for free
+ * is not revenue.
+ */
+export const REFERRAL_STATUSES = [
+  /** The code was used; no account yet. */
+  "visited",
+  "signed_up",
+  /** A build started. This is the only state that earns anything. */
+  "converted",
+  /** Refused by the anti-abuse rules, or by staff. */
+  "rejected",
+  /** Nothing happened inside the attribution window. */
+  "expired",
+] as const;
+export type ReferralStatus = (typeof REFERRAL_STATUSES)[number];
+export const referralStatusEnum = pgEnum("referral_status", REFERRAL_STATUSES);
+
+/**
+ * What the anti-abuse rules concluded.
+ *
+ * Deliberately separate from `status`. A referral can be perfectly converted
+ * and still be fraudulent, and collapsing the two would mean a blocked payout
+ * was indistinguishable from one that simply had not happened yet.
+ */
+export const FRAUD_STATES = [
+  "clear",
+  /** Something looks wrong. Held for a person to decide. */
+  "flagged",
+  /** Refused. No reward is ever paid on this. */
+  "blocked",
+  /** A person looked at a flag and released it. */
+  "cleared",
+] as const;
+export type FraudState = (typeof FRAUD_STATES)[number];
+export const fraudStateEnum = pgEnum("fraud_state", FRAUD_STATES);
+
+/** Whether the reward for a converted referral has actually been handed over. */
+export const REWARD_STATES = [
+  "none",
+  "granted",
+  /** Taken back because the order behind it was refunded or cancelled. */
+  "clawed_back",
+] as const;
+export type RewardState = (typeof REWARD_STATES)[number];
+export const rewardStateEnum = pgEnum("reward_state", REWARD_STATES);
+
+/** An external partner or affiliate account's standing. */
+export const PARTNER_STATUSES = ["applied", "approved", "suspended", "rejected"] as const;
+export type PartnerStatus = (typeof PARTNER_STATUSES)[number];
+export const partnerStatusEnum = pgEnum("partner_status", PARTNER_STATUSES);
+
+/** What kind of business a partner is. Decides nothing technical; it is context. */
+export const PARTNER_KINDS = ["agency", "freelancer", "consultant", "advisor"] as const;
+export type PartnerKind = (typeof PARTNER_KINDS)[number];
+export const partnerKindEnum = pgEnum("partner_kind", PARTNER_KINDS);
+
+/**
+ * A commission's life.
+ *
+ * `reversed` rather than deleted: an affiliate who was told they earned
+ * something and then had it taken back is owed the record of both.
+ */
+export const COMMISSION_STATES = ["pending", "approved", "paid", "reversed"] as const;
+export type CommissionState = (typeof COMMISSION_STATES)[number];
+export const commissionStateEnum = pgEnum("commission_state", COMMISSION_STATES);
+
+export const PAYOUT_STATUSES = ["requested", "approved", "paid", "failed"] as const;
+export type PayoutStatus = (typeof PAYOUT_STATUSES)[number];
+export const payoutStatusEnum = pgEnum("payout_status", PAYOUT_STATUSES);
+
+/**
+ * A review's life.
+ *
+ * `invited` exists as a row so an unanswered invitation is visible rather than
+ * being an absence, and so an invitation cannot be created for a project that
+ * was never delivered.
+ */
+export const REVIEW_STATUSES = [
+  "invited",
+  "submitted",
+  "approved",
+  "rejected",
+  /** Taken back by the customer. Their words, their call. */
+  "withdrawn",
+] as const;
+export type ReviewStatus = (typeof REVIEW_STATUSES)[number];
+export const reviewStatusEnum = pgEnum("review_status", REVIEW_STATUSES);
+
+/** A build-wall entry's publication state. */
+export const SHOWCASE_STATUSES = ["draft", "published", "retired"] as const;
+export type ShowcaseStatus = (typeof SHOWCASE_STATUSES)[number];
+export const showcaseStatusEnum = pgEnum("showcase_status", SHOWCASE_STATUSES);

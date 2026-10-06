@@ -205,3 +205,80 @@ the owner inside the SQL, and answering `not_found` rather than `forbidden`.
   `npm audit --omit=dev` currently reports 0 production vulnerabilities.
 - **No audit-log integrity** — `project_events` is append-only by convention,
   not by constraint.
+
+## Anti-abuse (Phase 12)
+
+Referrals, reviews and commissions are the parts of this platform somebody has
+a direct financial reason to attack. The rules that stop them are deterministic
+and explainable — the same discipline as the deadline-risk engine — and every
+refusal names the rule that fired, because a referral held back with no stated
+reason is a support ticket nobody can answer.
+
+Nothing guesses. These are facts the platform already holds, compared against
+stated rules. There is no scoring model and no threshold anybody has to
+believe.
+
+### The rules
+
+| Rule                  | Severity | What it catches                                      |
+| --------------------- | -------- | ---------------------------------------------------- |
+| `self_referral`       | Block    | Both sides are the same account.                     |
+| `same_email_identity` | Block    | Two accounts fold to one mailbox.                    |
+| `already_referred`    | Block    | A second code claiming an existing signup.           |
+| `referral_loop`       | Block    | Two people introducing each other.                   |
+| `inactive_owner`      | Block    | A suspended partner whose link still earns.          |
+| `backdated_signup`    | Block    | A code applied to somebody who arrived on their own. |
+| `outside_window`      | Block    | A conversion after attribution lapsed.               |
+| `below_minimum_order` | Block    | An order too small to pay a reward on.               |
+| `same_network`        | **Flag** | Two signups from one address prefix.                 |
+
+`same_network` is the only soft signal, deliberately: a household buying two
+websites looks exactly like this, and refusing it outright would punish honest
+customers to catch dishonest ones. A person decides.
+
+### Why a schema, not a service
+
+Each structural rule is enforced in the database as well as in
+`lib/growth/fraud`. A rule that lives only in a service is a rule that one
+forgotten call site removes, and these decide who gets paid.
+
+- `referrals_not_self` — a self-referral row cannot exist.
+- `referrals_referred_user_key` — one customer, one referrer, ever.
+- `referrals_blocked_pays_nothing` — a row cannot say "fraudulent" and "paid".
+- `commissions_amount_sane` — a commission can never exceed its order.
+- `commissions_referral_key` — one conversion earns one commission.
+- `reviews_project_key` — one review per project; nobody buries their own.
+- `reviews_published_only_when_approved` and `reviews_name_needs_consent`.
+- `showcase_published_needs_consent` and `showcase_name_needs_consent`.
+
+Verified against real Postgres: 30 cases, 10 allowed and 20 refused, inside a
+rolled-back transaction.
+
+### Commission cannot be proposed
+
+`commissionFor(gross, rate)` takes an order total and a rate and returns a
+figure. There is no input anywhere on the path through which a caller could
+supply an amount, and both the gross and the rate are frozen onto the
+commission row so a later rate change cannot rewrite what was already earned.
+Approval is refused inside a 30-day hold, so a refund cannot leave a paid
+commission behind.
+
+### Identity fingerprints
+
+Emails are normalised before hashing — plus-tags dropped, and dots folded only
+for providers that ignore them — then salted with a server-side secret.
+Addresses are truncated to a household prefix first. Both are one-way: the
+stored value is useless to anybody who obtains the table, and an unsalted hash
+of an email address is an email address to anyone with a word list.
+
+`GROWTH_FINGERPRINT_SECRET` is optional and the degradation is visible: without
+it nothing is stored, those two signals never fire, and a warning says so. The
+alternative — hashing with a constant — would look like protection while
+providing none.
+
+### Privacy on the public surfaces
+
+The build wall and the reviews section select named columns and never join to a
+customer-owned table. A query that cannot reach a customer's record cannot leak
+one, which is a stronger guarantee than remembering not to render it. Consent
+is re-checked at read time, so consent withdrawn later takes the name with it.

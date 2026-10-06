@@ -28,6 +28,9 @@ export * from "./launch";
 export * from "./subscriptions";
 export * from "./credits";
 
+/* --- Growth ------------------------------------------------------------ */
+export * from "./growth";
+
 /* --- Admin ------------------------------------------------------------- */
 export * from "./audit";
 export * from "./refunds";

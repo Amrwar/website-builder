@@ -325,7 +325,7 @@
       "steps": {
         "share": {
           "title": "Share your link",
-          "body": "Every customer gets one from their dashboard the moment a build starts."
+          "body": "Your link and code are on your billing page from the day you have an account."
         },
         "theyBuild": {
           "title": "They order a build",
@@ -333,12 +333,10 @@
         },
         "bothCredited": {
           "title": "You both get {amount}",
-          "body": "Credited once their build starts, usable against a new build or your monthly plan."
+          "body": "Credited when their build officially starts, not when they sign up — so the reward follows real work."
         }
       },
-      "terms": "Credits expire 12 months after they are issued and cannot be exchanged for cash. One credit per referred build.",
-      "notOpenYet": "Not open yet",
-      "notOpenYetBody": "Referral credits are not being issued yet. This is how the programme will work when it opens, stated now so the terms are not written after the fact."
+      "terms": "Credits expire 12 months after they are issued and cannot be exchanged for cash. One credit per referred build."
     },
     "faq": {
       "eyebrow": "Questions",
@@ -1397,7 +1395,8 @@
       "domains": "Domains",
       "hosting": "Hosting",
       "content": "Content",
-      "notifications": "Notifications"
+      "notifications": "Notifications",
+      "showcase": "Build wall"
     },
     "search": {
       "placeholder": "Search projects, customers, orders",
@@ -1769,6 +1768,144 @@
         "live": "Live version",
         "uptime": "Uptime"
       }
+    },
+    "referralsPage": {
+      "title": "Referrals",
+      "subtitle": "Who referred whom, what it earned, and what is held back.",
+      "empty": "No referrals yet.",
+      "emptyBody": "A referral appears here when somebody signs up through a link.",
+      "columns": {
+        "code": "Code",
+        "owner": "Referrer",
+        "referred": "Referred",
+        "status": "Status",
+        "fraud": "Checks",
+        "reward": "Reward"
+      },
+      "status": {
+        "visited": "Visited",
+        "signed_up": "Signed up",
+        "converted": "Converted",
+        "rejected": "Rejected",
+        "expired": "Expired"
+      },
+      "fraud": {
+        "clear": "Clear",
+        "flagged": "Held",
+        "blocked": "Blocked",
+        "cleared": "Released"
+      },
+      "reward": {
+        "none": "Not paid",
+        "granted": "Paid",
+        "clawed_back": "Reversed"
+      },
+      "reasons": {
+        "self_referral": "Referred themselves",
+        "same_email_identity": "Same mailbox as the referrer",
+        "referral_loop": "These two referred each other",
+        "same_network": "Same network as the referrer",
+        "backdated_signup": "Account predates the code",
+        "outside_window": "Converted after the window closed",
+        "below_minimum_order": "Order below the minimum",
+        "inactive_owner": "Referrer is not active",
+        "already_referred": "Already referred by somebody else"
+      },
+      "reverse": "Reverse reward",
+      "reverseReason": "Why",
+      "flaggedNote": "{count} referrals are held for review. Nothing is paid until somebody decides."
+    },
+    "partnersPage": {
+      "title": "Partners and affiliates",
+      "subtitle": "Applications, commission rates and what is owed.",
+      "tabs": {
+        "partners": "Partners",
+        "affiliates": "Affiliates",
+        "commissions": "Commissions"
+      },
+      "empty": "No applications yet.",
+      "emptyBody": "Applications from the partner page appear here.",
+      "noCommissions": "No commissions yet.",
+      "noCommissionsBody": "A commission is raised when a referred build starts.",
+      "columns": {
+        "name": "Name",
+        "kind": "Kind",
+        "status": "Status",
+        "rate": "Rate",
+        "applied": "Applied",
+        "amount": "Amount",
+        "state": "State",
+        "order": "Order"
+      },
+      "status": {
+        "applied": "Applied",
+        "approved": "Approved",
+        "suspended": "Suspended",
+        "rejected": "Rejected"
+      },
+      "commissionState": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "paid": "Paid",
+        "reversed": "Reversed"
+      },
+      "approve": "Approve",
+      "suspend": "Suspend",
+      "reject": "Reject",
+      "reverse": "Reverse",
+      "rate": "Commission rate (basis points)",
+      "note": "Why",
+      "holdNote": "Commissions are held for {days} days after conversion, so a refund cannot leave a paid commission behind."
+    },
+    "reviewsPage": {
+      "title": "Reviews",
+      "subtitle": "What customers said, and what is published.",
+      "empty": "No reviews yet.",
+      "emptyBody": "A review appears here once a customer answers an invitation.",
+      "columns": {
+        "project": "Project",
+        "rating": "Rating",
+        "review": "Review",
+        "status": "Status",
+        "published": "Published"
+      },
+      "approve": "Approve",
+      "publish": "Publish",
+      "unpublish": "Unpublish",
+      "reject": "Reject",
+      "rejectReason": "Why it is not being published",
+      "noConsent": "No consent to publish",
+      "anonymous": "Anonymous",
+      "moderationNote": "Moderation can reject a review but never edit one. Publishing somebody's words with changes they did not make is worse than not publishing them."
+    },
+    "showcasePage": {
+      "title": "Build wall",
+      "subtitle": "Published builds, and the consent behind each of them.",
+      "empty": "Nothing on the wall yet.",
+      "emptyBody": "An entry appears here when a customer agrees their build may be shown.",
+      "columns": {
+        "title": "Title",
+        "project": "Project",
+        "consent": "Consent",
+        "status": "Status"
+      },
+      "consented": "Given {date}",
+      "noConsent": "Not given",
+      "publish": "Publish",
+      "unpublish": "Unpublish",
+      "edit": "Edit",
+      "save": "Save",
+      "cancel": "Cancel",
+      "fields": {
+        "title": "Title",
+        "summary": "Summary",
+        "industry": "Industry",
+        "technologies": "Technologies (comma separated)",
+        "screenshots": "Screenshot paths (comma separated)",
+        "customerLabel": "Customer label",
+        "sortOrder": "Order"
+      },
+      "consentNote": "Nothing is published without recorded customer consent, and no customer is named unless they separately agreed to be."
     }
   },
   "maintenance": {
@@ -1821,5 +1958,115 @@
   "billing": {
     "title": "Billing",
     "lede": "Your maintenance plan and your build credit. Both are yours to change at any time."
+  },
+  "growth": {
+    "referral": {
+      "title": "Your referral link",
+      "lede": "Send it to someone who needs a build. When their build starts, you both get credit.",
+      "code": "Your code",
+      "link": "Your link",
+      "copy": "Copy",
+      "copied": "Copied",
+      "stats": {
+        "visits": "Visits",
+        "signedUp": "Signed up",
+        "converted": "Builds started",
+        "earned": "Credit earned"
+      },
+      "earnedValue": "{hours}h {minutes}m",
+      "none": "Nobody has used your link yet.",
+      "pending": "{count} converted and held for review. We check every referral before paying it.",
+      "terms": "Credit is granted when the referred build officially starts, not when they sign up. Both sides receive the same amount."
+    },
+    "reviews": {
+      "title": "How did it go?",
+      "lede": "Your build is live. A short, honest review helps the next person decide.",
+      "rating": "Rating",
+      "ratingValue": "{rating} out of 5",
+      "body": "What happened",
+      "bodyPlaceholder": "What you ordered, how it went, what it does now.",
+      "displayName": "How should we credit you?",
+      "displayNamePlaceholder": "Your name, or your business",
+      "consent": "You may publish this review",
+      "consentHelp": "Without this we keep your review internal. We never publish a name you did not give us.",
+      "submit": "Send review",
+      "sent": "Thank you. We read every one.",
+      "yours": "Your review",
+      "statusLabel": {
+        "invited": "Not written yet",
+        "submitted": "With us",
+        "approved": "Approved",
+        "rejected": "Not published",
+        "withdrawn": "Withdrawn"
+      },
+      "published": "Published",
+      "withdraw": "Withdraw it",
+      "notYet": "You can review this build once it is live."
+    },
+    "showcase": {
+      "title": "Show this build publicly",
+      "body": "We would like to put this on our build wall: what it is, what it does, and how long it took. Nothing is published without your say-so, and you can withdraw it at any time.",
+      "consent": "Yes, you may show this build",
+      "nameConsent": "You may name my business",
+      "nameHelp": "Otherwise it appears without attribution.",
+      "consented": "Thank you. We will write it up and show you before it goes live.",
+      "published": "This build is on the wall.",
+      "withdraw": "Take it down",
+      "notLaunched": "A build can appear on the wall once it is live."
+    },
+    "partners": {
+      "metaTitle": "Partner programme",
+      "metaDescription": "Refer clients to a platform that ships in days, at a fixed price, with a guarantee.",
+      "eyebrow": "Partners",
+      "title": "Send your clients somewhere that finishes.",
+      "lede": "Agencies, freelancers, consultants and advisors refer the builds they do not want to take on. You keep the relationship; we keep the deadline.",
+      "how": {
+        "title": "How it works",
+        "apply": {
+          "title": "Apply",
+          "body": "Tell us who you work with. We read every application."
+        },
+        "refer": {
+          "title": "Send a link",
+          "body": "Approved partners get a referral link and a commission rate."
+        },
+        "earn": {
+          "title": "Earn on delivery",
+          "body": "Commission is earned when the build starts, and released after the refund window closes."
+        }
+      },
+      "form": {
+        "title": "Apply",
+        "kind": "What are you?",
+        "kinds": {
+          "agency": "Agency",
+          "freelancer": "Freelancer",
+          "consultant": "Consultant",
+          "advisor": "Business advisor"
+        },
+        "company": "Company or trading name",
+        "contact": "Your name",
+        "email": "Email",
+        "website": "Website",
+        "country": "Country",
+        "pitch": "Who do you work with?",
+        "pitchPlaceholder": "The kind of clients you have, and the work you would send our way.",
+        "submit": "Send application",
+        "sent": "Thank you. We will come back to you by email."
+      },
+      "affiliate": {
+        "title": "Affiliates",
+        "body": "If you have an audience rather than clients, there is a separate affiliate track with its own rate. Apply with the same form and tell us about your audience."
+      },
+      "honest": "Commission rates are set per partner when we approve an application. We publish the range rather than a single number because the work an agency does before a referral is not the work an affiliate does."
+    },
+    "buildWallPage": {
+      "metaTitle": "Build wall",
+      "metaDescription": "Every build that went live, with what it does and how long it took.",
+      "deliveredIn": "Delivered in {days} days",
+      "viewAll": "See the whole wall",
+      "industry": "Industry",
+      "built": "Built with"
+    }
   }
 }

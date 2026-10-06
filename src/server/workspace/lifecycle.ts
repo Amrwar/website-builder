@@ -189,6 +189,22 @@ export async function startBuild(
   // now. Idempotent, so a retried transition does not double the plan.
   await createProductionPlan(updated);
 
+  // A referral converts here and nowhere else. Build start is the strictest
+  // honest trigger -- the money is in, the customer has committed their
+  // assets, and work has begun -- so an order placed to claim a reward and
+  // then cancelled never pays anybody. Called directly rather than through an
+  // event subscriber, because a reward that depends on a handler being
+  // registered is a reward that silently stops.
+  try {
+    const { convertReferralForProject } = await import("@/server/growth/referrals");
+    await convertReferralForProject(projectId, startedAt);
+  } catch (error) {
+    // A referral failure must never roll back a build that has started. The
+    // guarantee clock is the thing that matters here; a missed reward is
+    // recoverable by hand, a lost build start is not.
+    logger.error("referral conversion failed at build start", { projectId, error });
+  }
+
   logger.info("build started; guarantee countdown running", {
     projectId,
     deadlineAt: deadlineAt?.toISOString(),

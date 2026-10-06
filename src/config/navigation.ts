@@ -52,7 +52,7 @@ export const FOOTER_NAV = [
   {
     titleKey: "company",
     items: [
-      { key: "partners", href: "#referral", status: "live" },
+      { key: "partners", href: "/partners", status: "live" },
       { key: "about", href: "/about", status: "planned" },
       { key: "contact", href: "/contact", status: "planned" },
     ],

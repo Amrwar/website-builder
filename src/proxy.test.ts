@@ -204,3 +204,24 @@ describe("config.matcher", () => {
     expect(matches("/account")).toBe(true);
   });
 });
+describe("the referral link", () => {
+  it("is never rewritten onto a locale segment", async () => {
+    // The i18n middleware adds the default locale to everything it handles,
+    // which turned `/r/CODE` into `/en/r/CODE` -- a path that does not exist
+    // -- and answered 404. A real defect, caught in the browser.
+    await proxy({ protect }, request("/r/ABCD2345"));
+    expect(handleI18n).not.toHaveBeenCalled();
+  });
+
+  it("is not gated, because a visitor following one has no account yet", async () => {
+    await proxy({ protect }, request("/r/ABCD2345"));
+    expect(protect).not.toHaveBeenCalled();
+  });
+
+  it("does not claim paths that merely start with the same letter", async () => {
+    // The bypass is a path prefix with its separator, not a letter: `/reviews`
+    // is an ordinary page and must still be localised.
+    await proxy({ protect }, request("/reviews"));
+    expect(handleI18n).toHaveBeenCalled();
+  });
+});

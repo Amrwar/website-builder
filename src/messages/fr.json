@@ -325,7 +325,7 @@
       "steps": {
         "share": {
           "title": "Partagez votre lien",
-          "body": "Chaque client en reçoit un dès le début de son projet."
+          "body": "Votre lien et votre code figurent sur votre page de facturation dès que vous avez un compte."
         },
         "theyBuild": {
           "title": "La personne commande un projet",
@@ -333,12 +333,10 @@
         },
         "bothCredited": {
           "title": "Vous recevez {amount} chacun",
-          "body": "Crédité dès le début de leur projet, utilisable sur un nouveau projet ou votre forfait mensuel."
+          "body": "Crédité au démarrage officiel de leur réalisation, et non à l’inscription : la récompense suit du travail réel."
         }
       },
-      "terms": "Les crédits expirent 12 mois après leur émission et ne sont pas échangeables contre de l’argent. Un crédit par projet recommandé.",
-      "notOpenYet": "Pas encore ouvert",
-      "notOpenYetBody": "Les crédits de parrainage ne sont pas encore émis. Voici le fonctionnement prévu à l’ouverture, annoncé dès maintenant pour que les conditions ne soient pas écrites après coup."
+      "terms": "Les crédits expirent 12 mois après leur émission et ne sont pas échangeables contre de l’argent. Un crédit par projet recommandé."
     },
     "faq": {
       "eyebrow": "Questions",
@@ -1397,7 +1395,8 @@
       "domains": "Domaines",
       "hosting": "Hébergement",
       "content": "Contenu",
-      "notifications": "Notifications"
+      "notifications": "Notifications",
+      "showcase": "Mur des réalisations"
     },
     "search": {
       "placeholder": "Rechercher projets, clients, commandes",
@@ -1769,6 +1768,144 @@
         "live": "Version en ligne",
         "uptime": "Disponibilité"
       }
+    },
+    "referralsPage": {
+      "title": "Parrainages",
+      "subtitle": "Qui a parrainé qui, ce que cela a rapporté, et ce qui est retenu.",
+      "empty": "Aucun parrainage.",
+      "emptyBody": "Un parrainage apparaît ici dès qu’une inscription passe par un lien.",
+      "columns": {
+        "code": "Code",
+        "owner": "Parrain",
+        "referred": "Filleul",
+        "status": "État",
+        "fraud": "Contrôles",
+        "reward": "Récompense"
+      },
+      "status": {
+        "visited": "Visite",
+        "signed_up": "Inscrit",
+        "converted": "Converti",
+        "rejected": "Refusé",
+        "expired": "Expiré"
+      },
+      "fraud": {
+        "clear": "Conforme",
+        "flagged": "Retenu",
+        "blocked": "Bloqué",
+        "cleared": "Débloqué"
+      },
+      "reward": {
+        "none": "Non versée",
+        "granted": "Versée",
+        "clawed_back": "Reprise"
+      },
+      "reasons": {
+        "self_referral": "S’est parrainé soi-même",
+        "same_email_identity": "Même boîte mail que le parrain",
+        "referral_loop": "Ces deux-là se sont parrainés mutuellement",
+        "same_network": "Même réseau que le parrain",
+        "backdated_signup": "Compte antérieur au code",
+        "outside_window": "Converti après la fermeture de la fenêtre",
+        "below_minimum_order": "Commande sous le minimum",
+        "inactive_owner": "Parrain inactif",
+        "already_referred": "Déjà parrainé par quelqu’un d’autre"
+      },
+      "reverse": "Reprendre la récompense",
+      "reverseReason": "Motif",
+      "flaggedNote": "{count} parrainages sont retenus pour vérification. Rien n’est versé avant décision."
+    },
+    "partnersPage": {
+      "title": "Partenaires et affiliés",
+      "subtitle": "Candidatures, taux de commission et sommes dues.",
+      "tabs": {
+        "partners": "Partenaires",
+        "affiliates": "Affiliés",
+        "commissions": "Commissions"
+      },
+      "empty": "Aucune candidature.",
+      "emptyBody": "Les candidatures issues de la page partenaires apparaissent ici.",
+      "noCommissions": "Aucune commission.",
+      "noCommissionsBody": "Une commission est créée au démarrage d’une réalisation parrainée.",
+      "columns": {
+        "name": "Nom",
+        "kind": "Type",
+        "status": "État",
+        "rate": "Taux",
+        "applied": "Candidature",
+        "amount": "Montant",
+        "state": "État",
+        "order": "Commande"
+      },
+      "status": {
+        "applied": "Candidature",
+        "approved": "Approuvé",
+        "suspended": "Suspendu",
+        "rejected": "Refusé"
+      },
+      "commissionState": {
+        "pending": "En attente",
+        "approved": "Approuvée",
+        "paid": "Payée",
+        "reversed": "Annulée"
+      },
+      "approve": "Approuver",
+      "suspend": "Suspendre",
+      "reject": "Refuser",
+      "reverse": "Annuler",
+      "rate": "Taux de commission (points de base)",
+      "note": "Motif",
+      "holdNote": "Les commissions sont retenues {days} jours après conversion, pour qu’un remboursement ne laisse pas une commission déjà payée."
+    },
+    "reviewsPage": {
+      "title": "Avis",
+      "subtitle": "Ce que les clients ont dit, et ce qui est publié.",
+      "empty": "Aucun avis.",
+      "emptyBody": "Un avis apparaît ici dès qu’un client répond à une invitation.",
+      "columns": {
+        "project": "Projet",
+        "rating": "Note",
+        "review": "Avis",
+        "status": "État",
+        "published": "Publié"
+      },
+      "approve": "Approuver",
+      "publish": "Publier",
+      "unpublish": "Dépublier",
+      "reject": "Refuser",
+      "rejectReason": "Pourquoi il n’est pas publié",
+      "noConsent": "Pas d’accord de publication",
+      "anonymous": "Anonyme",
+      "moderationNote": "La modération peut refuser un avis mais jamais le modifier. Publier les mots de quelqu’un avec des changements qu’il n’a pas faits est pire que ne pas les publier."
+    },
+    "showcasePage": {
+      "title": "Mur des réalisations",
+      "subtitle": "Réalisations publiées, et l’accord qui les autorise.",
+      "empty": "Rien sur le mur.",
+      "emptyBody": "Une entrée apparaît ici quand un client accepte que sa réalisation soit montrée.",
+      "columns": {
+        "title": "Titre",
+        "project": "Projet",
+        "consent": "Accord",
+        "status": "État"
+      },
+      "consented": "Donné le {date}",
+      "noConsent": "Non donné",
+      "publish": "Publier",
+      "unpublish": "Dépublier",
+      "edit": "Modifier",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "fields": {
+        "title": "Titre",
+        "summary": "Résumé",
+        "industry": "Secteur",
+        "technologies": "Technologies (séparées par des virgules)",
+        "screenshots": "Chemins des captures (séparés par des virgules)",
+        "customerLabel": "Libellé client",
+        "sortOrder": "Ordre"
+      },
+      "consentNote": "Rien n’est publié sans accord client enregistré, et aucun client n’est nommé sans y avoir consenti séparément."
     }
   },
   "maintenance": {
@@ -1821,5 +1958,115 @@
   "billing": {
     "title": "Facturation",
     "lede": "Votre forfait de maintenance et votre crédit de production. Vous pouvez modifier les deux à tout moment."
+  },
+  "growth": {
+    "referral": {
+      "title": "Votre lien de parrainage",
+      "lede": "Envoyez-le à quelqu’un qui a besoin d’une réalisation. Au démarrage de son projet, vous recevez tous les deux du crédit.",
+      "code": "Votre code",
+      "link": "Votre lien",
+      "copy": "Copier",
+      "copied": "Copié",
+      "stats": {
+        "visits": "Visites",
+        "signedUp": "Inscriptions",
+        "converted": "Projets démarrés",
+        "earned": "Crédit gagné"
+      },
+      "earnedValue": "{hours} h {minutes} min",
+      "none": "Personne n’a encore utilisé votre lien.",
+      "pending": "{count} converti(s) et en cours de vérification. Nous contrôlons chaque parrainage avant de le payer.",
+      "terms": "Le crédit est accordé au démarrage officiel de la réalisation parrainée, et non à l’inscription. Les deux parties reçoivent le même montant."
+    },
+    "reviews": {
+      "title": "Comment cela s’est-il passé ?",
+      "lede": "Votre réalisation est en ligne. Un avis court et honnête aide la personne suivante à décider.",
+      "rating": "Note",
+      "ratingValue": "{rating} sur 5",
+      "body": "Ce qui s’est passé",
+      "bodyPlaceholder": "Ce que vous avez commandé, comment cela s’est passé, à quoi cela sert aujourd’hui.",
+      "displayName": "Comment vous citer ?",
+      "displayNamePlaceholder": "Votre nom, ou celui de votre entreprise",
+      "consent": "Vous pouvez publier cet avis",
+      "consentHelp": "Sans cela, votre avis reste interne. Nous ne publions jamais un nom que vous ne nous avez pas donné.",
+      "submit": "Envoyer l’avis",
+      "sent": "Merci. Nous les lisons tous.",
+      "yours": "Votre avis",
+      "statusLabel": {
+        "invited": "Pas encore rédigé",
+        "submitted": "Chez nous",
+        "approved": "Approuvé",
+        "rejected": "Non publié",
+        "withdrawn": "Retiré"
+      },
+      "published": "Publié",
+      "withdraw": "Le retirer",
+      "notYet": "Vous pourrez donner un avis une fois la réalisation en ligne."
+    },
+    "showcase": {
+      "title": "Montrer cette réalisation publiquement",
+      "body": "Nous aimerions la présenter sur notre mur des réalisations : ce que c’est, ce que cela fait, et le temps que cela a pris. Rien n’est publié sans votre accord, et vous pouvez le retirer à tout moment.",
+      "consent": "Oui, vous pouvez montrer cette réalisation",
+      "nameConsent": "Vous pouvez nommer mon entreprise",
+      "nameHelp": "Sinon elle apparaît sans attribution.",
+      "consented": "Merci. Nous la rédigerons et vous la montrerons avant publication.",
+      "published": "Cette réalisation est sur le mur.",
+      "withdraw": "La retirer",
+      "notLaunched": "Une réalisation peut figurer sur le mur une fois en ligne."
+    },
+    "partners": {
+      "metaTitle": "Programme partenaires",
+      "metaDescription": "Adressez vos clients à une plateforme qui livre en quelques jours, à prix fixe, avec une garantie.",
+      "eyebrow": "Partenaires",
+      "title": "Adressez vos clients là où cela se termine.",
+      "lede": "Agences, indépendants, consultants et conseillers nous adressent les réalisations qu’ils ne veulent pas prendre en charge. Vous gardez la relation ; nous tenons le délai.",
+      "how": {
+        "title": "Comment cela marche",
+        "apply": {
+          "title": "Candidater",
+          "body": "Dites-nous avec qui vous travaillez. Nous lisons chaque candidature."
+        },
+        "refer": {
+          "title": "Envoyer un lien",
+          "body": "Les partenaires approuvés reçoivent un lien de parrainage et un taux de commission."
+        },
+        "earn": {
+          "title": "Gagner à la livraison",
+          "body": "La commission est acquise au démarrage de la réalisation, et versée après la fermeture de la fenêtre de remboursement."
+        }
+      },
+      "form": {
+        "title": "Candidater",
+        "kind": "Vous êtes ?",
+        "kinds": {
+          "agency": "Agence",
+          "freelancer": "Indépendant",
+          "consultant": "Consultant",
+          "advisor": "Conseiller d’entreprise"
+        },
+        "company": "Société ou nom commercial",
+        "contact": "Votre nom",
+        "email": "E-mail",
+        "website": "Site web",
+        "country": "Pays",
+        "pitch": "Avec qui travaillez-vous ?",
+        "pitchPlaceholder": "Le type de clients que vous avez et le travail que vous nous adresseriez.",
+        "submit": "Envoyer la candidature",
+        "sent": "Merci. Nous reviendrons vers vous par e-mail."
+      },
+      "affiliate": {
+        "title": "Affiliés",
+        "body": "Si vous avez une audience plutôt que des clients, il existe une filière affiliée distincte avec son propre taux. Candidatez avec le même formulaire en nous parlant de votre audience."
+      },
+      "honest": "Les taux de commission sont fixés partenaire par partenaire à l’approbation. Nous publions la fourchette plutôt qu’un chiffre unique, car le travail d’une agence avant une recommandation n’est pas celui d’un affilié."
+    },
+    "buildWallPage": {
+      "metaTitle": "Mur des réalisations",
+      "metaDescription": "Chaque réalisation mise en ligne, avec ce qu’elle fait et le temps qu’elle a pris.",
+      "deliveredIn": "Livré en {days} jours",
+      "viewAll": "Voir tout le mur",
+      "industry": "Secteur",
+      "built": "Réalisé avec"
+    }
   }
 }

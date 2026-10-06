@@ -23,7 +23,7 @@ A phase is not complete until its pages have been seen running.
 ## Current state
 
 Vitest + Testing Library, jsdom, `restoreMocks` and `clearMocks` on.
-**692 tests across 36 files.**
+**784 tests across 39 files.**
 
 | Area               | File                                  | What it protects                                                                                                          |
 | ------------------ | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
@@ -42,6 +42,9 @@ Vitest + Testing Library, jsdom, `restoreMocks` and `clearMocks` on.
 | Coupons            | `lib/engine/discounts.test.ts`        | Unknown, withdrawn, expired, exhausted and ineligible codes; reductions clamped to the order value                        |
 | Quote projection   | `lib/commerce/quote.test.ts`          | Lines summing to the header, per-line discount and tax allocation, the absence of any price input                         |
 | Catalogue admin    | `server/admin/catalog.test.ts`        | Only the owner may write, refusal before any query, incoherent figures rejected                                           |
+| Anti-abuse         | `lib/growth/fraud.test.ts`            | Self-referral, loops, duplicate identities, retroactive attribution, commission caps                                      |
+| Referral codes     | `lib/growth/codes.test.ts`            | Unbiased generation, confusable characters, email folding, fingerprints that do not leak                                  |
+| Growth services    | `server/growth/growth.test.ts`        | Who may approve a partner, the payout hold, who may write and moderate a review                                           |
 | Launch readiness   | `lib/launch/readiness.test.ts`        | A checklist tick cannot stand in for a confirmed deployment; every blocker reported at once                               |
 | Going live         | `server/launch/launch.test.ts`        | No parameter sets a deployment ready; none overrides readiness; a concurrent launch loses                                 |
 | Build credit       | `lib/credits/index.test.ts`           | Direction follows the kind, balances never go negative, corrections need a reason                                         |
@@ -90,13 +93,14 @@ queried afterwards to confirm zero rows were created. Results are tabulated in
 Four further behaviours are only true of the real database, so each was probed
 against Postgres inside a transaction that was then rolled back:
 
-| What                             | Cases | Result                                                                                         |
-| -------------------------------- | ----- | ---------------------------------------------------------------------------------------------- |
-| Guarantee timestamp immutability | 4     | First write allowed; moving, back-dating and clearing all refused (23514)                      |
-| Production engine guards         | 3     | Self-dependency refused, duplicate task key refused, readiness promotes on the last dependency |
-| Webhook replay protection        | 4     | Valid 200, replay deduplicated, tampered payload 401, stale capture 401                        |
-| Catalogue invariants             | 22    | All 22 behaved as expected — 5 allowed, 17 refused (23514/23505)                               |
-| Lifecycle invariants             | 30    | All 30 as expected, including the append-only credit ledger refusing UPDATE and DELETE         |
+| What                             | Cases | Result                                                                                                                    |
+| -------------------------------- | ----- | ------------------------------------------------------------------------------------------------------------------------- |
+| Guarantee timestamp immutability | 4     | First write allowed; moving, back-dating and clearing all refused (23514)                                                 |
+| Production engine guards         | 3     | Self-dependency refused, duplicate task key refused, readiness promotes on the last dependency                            |
+| Webhook replay protection        | 4     | Valid 200, replay deduplicated, tampered payload 401, stale capture 401                                                   |
+| Catalogue invariants             | 22    | All 22 behaved as expected — 5 allowed, 17 refused (23514/23505)                                                          |
+| Lifecycle invariants             | 30    | All 30 as expected, including the append-only credit ledger refusing UPDATE and DELETE                                    |
+| Growth invariants                | 30    | All 30 as expected — self-referrals, duplicate attribution, oversized commissions and unconsented publication all refused |
 
 ## Gaps
 

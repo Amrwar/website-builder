@@ -72,9 +72,19 @@ function signInUrlFor(request: NextRequest): string {
 export default clerkMiddleware(async (auth, request: NextRequest) => {
   const { pathname } = request.nextUrl;
 
-  // API routes are not localised: they carry no `[locale]` segment and must
-  // not be rewritten onto one. Their own handlers enforce authentication.
-  if (pathname.startsWith("/api/")) return NextResponse.next();
+  // Routes that live outside `[locale]` must not be rewritten onto one. The
+  // i18n middleware adds the default locale to anything it handles, which
+  // turns `/r/CODE` into `/en/r/CODE` -- a path that does not exist -- and
+  // answers 404. Clerk has already run by this point, so these still carry a
+  // session; their own handlers decide what to do with it.
+  //
+  //  - `/api/*` enforce authentication themselves.
+  //  - `/r/*` is the referral link. It is deliberately unlocalised so a link
+  //    shared by one person works for a visitor in any language, and it
+  //    redirects to the localised home page once it has done its job.
+  if (pathname.startsWith("/api/") || pathname.startsWith("/r/")) {
+    return NextResponse.next();
+  }
 
   if (isPrivateRoute(request)) {
     // Redirects a signed-out visitor to our own sign-in page, preserving where

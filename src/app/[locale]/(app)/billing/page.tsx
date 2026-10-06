@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 
 import { MaintenancePanel } from "@/components/account/maintenance";
+import { ReferralPanel } from "@/components/growth/referral-panel";
 import { Container } from "@/components/layout/container";
 import { Badge } from "@/components/ui/badge";
 import { Callout } from "@/components/ui/callout";
@@ -13,6 +14,8 @@ import { formatMoney, money, type Currency } from "@/lib/pricing/money";
 import { getAuthContext } from "@/server/auth";
 import { statementFor } from "@/server/credits";
 import { loadPlans, subscriptionsFor } from "@/server/subscriptions";
+import { referralSummaryFor } from "@/server/growth/referrals";
+import { siteOrigin } from "@/lib/site-origin";
 
 export const metadata: Metadata = {
   title: "Billing",
@@ -42,11 +45,14 @@ export default async function BillingPage({ params }: PageProps<"/[locale]/billi
   const tCredit = await getTranslations("maintenance.credits");
   const { intlTag } = getLocaleDefinition(resolveLocale(locale));
 
-  const [plans, subscriptions, credit] = await Promise.all([
+  const [plans, subscriptions, credit, referral] = await Promise.all([
     loadPlans(),
     subscriptionsFor(context.user.id, context),
     statementFor(context.user.id, context),
+    referralSummaryFor(context, await siteOrigin()),
   ]);
+
+  const referralEarned = formatMinutes(referral.earnedMinutes);
 
   const date = (value: Date) =>
     new Intl.DateTimeFormat(intlTag, { dateStyle: "medium" }).format(value);
@@ -99,6 +105,18 @@ export default async function BillingPage({ params }: PageProps<"/[locale]/billi
           }
           projectId={current?.projectId ?? null}
           locale={intlTag}
+        />
+
+        {/* --- Referrals ---------------------------------------------------- */}
+        <ReferralPanel
+          code={referral.code}
+          url={referral.url}
+          visits={referral.visits}
+          signedUp={referral.signedUp}
+          converted={referral.converted}
+          earnedHours={referralEarned.hours}
+          earnedMinutes={referralEarned.minutes}
+          pending={referral.pending}
         />
 
         {/* --- Build credit ------------------------------------------------ */}
