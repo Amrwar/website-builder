@@ -872,7 +872,8 @@
   "app": {
     "nav": "Navigation du compte",
     "account": "Compte",
-    "staff": "Équipe"
+    "staff": "Équipe",
+    "builds": "Projets"
   },
   "account": {
     "title": "Compte",
@@ -1015,6 +1016,249 @@
         "project": "Projet",
         "total": "Payé",
         "invoice": "Facture"
+      }
+    }
+  },
+  "workspace": {
+    "list": {
+      "title": "Vos projets",
+      "subtitle": "Chaque projet commandé, et où il en est.",
+      "empty": {
+        "title": "Aucun projet pour l’instant",
+        "body": "Dès que vous commandez un projet, il apparaît ici avec son calendrier, ses fichiers et son délai.",
+        "cta": "Démarrer un projet"
+      }
+    },
+    "back": "Tous les projets",
+    "reference": "Référence",
+    "loading": "Chargement de votre espace de production",
+    "errors": {
+      "notAllowed": "Vous n’avez pas accès à ceci.",
+      "generic": "Une erreur est survenue. Veuillez réessayer.",
+      "loadFailed": "Impossible de charger cet espace de production.",
+      "retry": "Réessayer"
+    },
+    "status": {
+      "draft": "Brouillon",
+      "quoted": "Devis émis",
+      "awaiting_quote": "En attente de devis",
+      "awaiting_payment": "En attente de paiement",
+      "awaiting_assets": "En attente de vos fichiers",
+      "in_build": "En production",
+      "in_preview": "En prévisualisation",
+      "awaiting_approval": "En attente de votre validation",
+      "approved": "Validé",
+      "launching": "Mise en ligne",
+      "launched": "En ligne",
+      "cancelled": "Annulé"
+    },
+    "stage": {
+      "ordered": "Commandé",
+      "assets": "Vos fichiers",
+      "build": "Production",
+      "preview": "Prévisualisation",
+      "approval": "Validation",
+      "launch": "Mise en ligne",
+      "handover": "Remise"
+    },
+    "stageState": {
+      "complete": "Fait",
+      "current": "En cours",
+      "upcoming": "À venir"
+    },
+    "tabs": {
+      "overview": "Aperçu",
+      "timeline": "Chronologie",
+      "preview": "Prévisualisation",
+      "files": "Fichiers",
+      "messages": "Messages",
+      "changes": "Modifications",
+      "approvals": "Validations",
+      "payments": "Paiements",
+      "launch": "Mise en ligne"
+    },
+    "nextAction": {
+      "title": "Votre prochaine étape",
+      "none": "Rien à faire pour le moment. Nous vous préviendrons dès que nous aurons besoin de vous.",
+      "configure": "Terminez la configuration de ce projet.",
+      "pay": "Finalisez le paiement pour entrer dans la file.",
+      "submitAssets": "Envoyez-nous vos contenus et éléments de marque. Le compte à rebours démarre ensuite.",
+      "reviewPreview": "Ouvrez la prévisualisation et dites-nous ce que vous en pensez.",
+      "approve": "Validez pour que nous puissions mettre en ligne."
+    },
+    "deadline": {
+      "title": "Délai",
+      "notStarted": "Non démarré",
+      "notStartedHelp": "Le compte à rebours démarre quand vos fichiers sont reçus et que la production commence officiellement.",
+      "due": "Échéance : {date}",
+      "remaining": "{days} jours ouvrés restants",
+      "lastDay": "Échéance aujourd’hui",
+      "missed": "Délai dépassé",
+      "missedHelp": "Vous pouvez annuler avec un remboursement intégral, ou continuer avec 30 % remboursés.",
+      "level": {
+        "comfortable": "Dans les temps",
+        "tight": "Serré",
+        "critical": "Dernier jour",
+        "missed": "Dépassé"
+      }
+    },
+    "guarantee": {
+      "title": "Votre garantie",
+      "body": "{days} jours ouvrés de développement à partir du démarrage officiel. En cas de dépassement, vous choisissez : annuler avec remboursement intégral, ou continuer avec 30 % remboursés.",
+      "none": "Ce projet fait l’objet d’un devis individuel ; aucun compte à rebours fixe ne s’applique."
+    },
+    "overview": {
+      "title": "Aperçu",
+      "product": "Produit",
+      "scope": "Périmètre",
+      "progress": "Avancement",
+      "team": "Votre équipe",
+      "teamEmpty": "Personne n’est encore assigné. L’équipe est désignée au démarrage de la production.",
+      "paid": "Payé",
+      "stageCount": "Étape {current} sur {total}"
+    },
+    "timeline": {
+      "title": "Activité",
+      "empty": "Rien ne s’est encore passé. Tout sera consigné ici.",
+      "stages": "Jalons"
+    },
+    "event": {
+      "fallback": "Activité",
+      "order.fulfilled": "Paiement reçu et projet créé",
+      "assets.submitted": "Vous avez envoyé vos fichiers",
+      "build.started": "Production démarrée officiellement — compte à rebours en cours",
+      "preview.published": "Prévisualisation publiée",
+      "message.posted": "Nouveau message",
+      "change.requested": "Modification demandée",
+      "change.approved": "Modification acceptée",
+      "change.rejected": "Modification refusée",
+      "change.withdrawn": "Modification retirée",
+      "file.uploaded": "Fichier ajouté",
+      "deployment.started": "Déploiement démarré",
+      "deployment.completed": "Déploiement terminé"
+    },
+    "preview": {
+      "title": "Prévisualisation",
+      "none": "Pas encore de prévisualisation. Elle apparaîtra ici dès qu’il y aura quelque chose à voir.",
+      "notApplicable": "Ce produit n’a pas d’URL de prévisualisation.",
+      "open": "Ouvrir la prévisualisation",
+      "version": "Version {version}",
+      "deployed": "Déployé le {date}",
+      "state": {
+        "queued": "En file",
+        "building": "En construction",
+        "ready": "Prêt",
+        "failed": "Échec",
+        "superseded": "Remplacé"
+      },
+      "failedHelp": "Ce déploiement a échoué. Nous avons été prévenus et nous nous en occupons."
+    },
+    "files": {
+      "title": "Fichiers",
+      "empty": "Aucun fichier pour l’instant.",
+      "emptyCustomer": "Envoyez-nous votre logo, vos textes, vos images et tout ce que nous devons utiliser.",
+      "upload": "Ajouter des fichiers",
+      "uploading": "Envoi en cours",
+      "uploadError": "Ce fichier n’a pas pu être envoyé.",
+      "tooLarge": "Les fichiers doivent faire moins de {limit} Mo.",
+      "download": "Télécharger",
+      "version": "v{version}",
+      "internal": "Interne",
+      "kind": {
+        "customer_upload": "De votre part",
+        "design_asset": "Design",
+        "document": "Document",
+        "generated": "Généré",
+        "deliverable": "Livrable"
+      },
+      "submitTitle": "Prêt à démarrer ?",
+      "submitBody": "Confirmez que vos fichiers sont complets et nous commencerons. Le compte à rebours démarre au lancement officiel de la production, pas maintenant.",
+      "submit": "Mes fichiers sont complets",
+      "submitting": "Confirmation",
+      "submitted": "Fichiers reçus. Nous démarrons votre projet et vous tiendrons informé.",
+      "needFiles": "Ajoutez au moins un fichier avant de confirmer."
+    },
+    "messages": {
+      "title": "Messages",
+      "empty": "Aucun message. Posez-nous toutes vos questions sur ce projet.",
+      "placeholder": "Écrire un message",
+      "send": "Envoyer",
+      "sending": "Envoi",
+      "you": "Vous",
+      "team": "Équipe de production",
+      "unread": "{count} non lus",
+      "attachments": "{count} pièce(s) jointe(s)"
+    },
+    "changes": {
+      "title": "Demandes de modification",
+      "empty": "Aucune modification demandée. Si vous souhaitez autre chose, demandez-le ici.",
+      "new": "Demander une modification",
+      "titleLabel": "Que souhaitez-vous modifier ?",
+      "descriptionLabel": "Décrivez-le aussi précisément que possible",
+      "submit": "Envoyer la demande",
+      "submitting": "Envoi",
+      "cancel": "Annuler",
+      "impactTitle": "Impact",
+      "noImpactYet": "Nous reviendrons vers vous avec l’impact sur le périmètre, le prix et le délai.",
+      "priceImpact": "Prix",
+      "daysImpact": "+{days} jours ouvrés",
+      "noExtraCost": "Sans coût supplémentaire",
+      "approve": "Accepter",
+      "reject": "Refuser",
+      "status": {
+        "submitted": "Envoyée",
+        "under_review": "À l’étude",
+        "quoted": "Chiffrée",
+        "approved": "Acceptée",
+        "rejected": "Refusée",
+        "withdrawn": "Retirée",
+        "applied": "Appliquée"
+      }
+    },
+    "approvals": {
+      "title": "Validations",
+      "empty": "Rien à valider pour l’instant.",
+      "approve": "Valider",
+      "requestChanges": "Demander des modifications",
+      "deciding": "Enregistrement",
+      "round": "Tour {round}",
+      "decidedOn": "Décidé le {date}",
+      "noteLabel": "Quelque chose à nous signaler ?",
+      "kind": {
+        "scope": "Périmètre",
+        "design": "Design",
+        "preview": "Prévisualisation",
+        "launch": "Mise en ligne"
+      },
+      "status": {
+        "pending": "En attente de vous",
+        "approved": "Validé",
+        "changes_requested": "Modifications demandées"
+      }
+    },
+    "payments": {
+      "title": "Paiements",
+      "empty": "Aucun enregistrement de paiement pour ce projet.",
+      "order": "Commande",
+      "invoice": "Facture",
+      "total": "Total",
+      "paidOn": "Payé le {date}",
+      "viewOrder": "Voir la commande",
+      "refunded": "Remboursé"
+    },
+    "launch": {
+      "title": "Mise en ligne",
+      "notYet": "Les détails de mise en ligne apparaissent une fois le projet validé.",
+      "domain": "Domaine",
+      "noDomain": "Aucun domaine connecté pour l’instant.",
+      "deployment": "Déploiement",
+      "live": "Site en ligne",
+      "checklist": "Liste de mise en ligne",
+      "steps": {
+        "assets": "Fichiers reçus",
+        "build": "Production terminée",
+        "approval": "Vous avez validé le projet",
+        "deploy": "Déployé en production"
       }
     }
   }

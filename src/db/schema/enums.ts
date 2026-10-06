@@ -180,3 +180,86 @@ export const paymentProviderEnum = pgEnum("payment_provider", PAYMENT_PROVIDERS)
 export const INVOICE_STATUSES = ["draft", "issued", "paid", "void", "refunded"] as const;
 export type InvoiceStatus = (typeof INVOICE_STATUSES)[number];
 export const invoiceStatusEnum = pgEnum("invoice_status", INVOICE_STATUSES);
+
+/* -------------------------------------------------------------------------
+ * Build Room
+ * ---------------------------------------------------------------------- */
+
+/**
+ * What a file is, which decides who may see it and where it appears.
+ *
+ * `customer_upload` is what the customer sends us and is the thing the
+ * guarantee waits on; `deliverable` is what they receive at the end. The two
+ * are separated because "has the customer sent their assets?" must be an
+ * indexed question, not a guess from a filename.
+ */
+export const FILE_KINDS = [
+  "customer_upload",
+  "design_asset",
+  "document",
+  /** Produced by us during the build: exports, screenshots, reports. */
+  "generated",
+  /** The finished thing being handed over. */
+  "deliverable",
+] as const;
+export type FileKind = (typeof FILE_KINDS)[number];
+export const fileKindEnum = pgEnum("file_kind", FILE_KINDS);
+
+/**
+ * Who a file is for.
+ *
+ * Internal files exist on the same project and are never returned to a
+ * customer-scoped query. Defaulting to `customer` would make an internal note
+ * one forgotten flag away from being published.
+ */
+export const FILE_VISIBILITIES = ["customer", "internal"] as const;
+export type FileVisibility = (typeof FILE_VISIBILITIES)[number];
+export const fileVisibilityEnum = pgEnum("file_visibility", FILE_VISIBILITIES);
+
+/**
+ * Change request lifecycle.
+ *
+ * `quoted` is a distinct state because a change with a price impact is a
+ * commercial offer that the customer has to accept before work starts --
+ * approving and paying are not the same event.
+ */
+export const CHANGE_REQUEST_STATUSES = [
+  "submitted",
+  "under_review",
+  "quoted",
+  "approved",
+  "rejected",
+  "withdrawn",
+  "applied",
+] as const;
+export type ChangeRequestStatus = (typeof CHANGE_REQUEST_STATUSES)[number];
+export const changeRequestStatusEnum = pgEnum(
+  "change_request_status",
+  CHANGE_REQUEST_STATUSES,
+);
+
+/** What is being signed off. Mirrors `APPROVAL_KINDS` in config/workspace. */
+export const APPROVAL_KIND_VALUES = ["scope", "design", "preview", "launch"] as const;
+export const approvalKindEnum = pgEnum("approval_kind", APPROVAL_KIND_VALUES);
+
+export const APPROVAL_STATUSES = ["pending", "approved", "changes_requested"] as const;
+export type ApprovalStatus = (typeof APPROVAL_STATUSES)[number];
+export const approvalStatusEnum = pgEnum("approval_status", APPROVAL_STATUSES);
+
+export const DEPLOYMENT_ENVIRONMENTS = ["preview", "production"] as const;
+export type DeploymentEnvironment = (typeof DEPLOYMENT_ENVIRONMENTS)[number];
+export const deploymentEnvironmentEnum = pgEnum(
+  "deployment_environment",
+  DEPLOYMENT_ENVIRONMENTS,
+);
+
+export const DEPLOYMENT_STATES = [
+  "queued",
+  "building",
+  "ready",
+  "failed",
+  /** Replaced by a newer deployment to the same environment. */
+  "superseded",
+] as const;
+export type DeploymentState = (typeof DEPLOYMENT_STATES)[number];
+export const deploymentStateEnum = pgEnum("deployment_state", DEPLOYMENT_STATES);

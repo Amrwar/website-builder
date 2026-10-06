@@ -62,6 +62,9 @@ describe("private routes are gated", () => {
     "/fr/admin",
     "/ar/account/billing",
     "/orders/ORD-2026-0001",
+    "/projects",
+    "/projects/PRJ-2026-0001",
+    "/ar/projects/PRJ-2026-0001",
     "/fr/orders/ORD-2026-0001/confirmation",
   ];
 
@@ -117,6 +120,7 @@ describe("public routes are not gated", () => {
     "/accounts-payable",
     "/administrators",
     "/ordering-guide",
+    "/projects-we-love",
   ];
 
   it.each(publicPaths)("%s does not call auth.protect()", async (path) => {

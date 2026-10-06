@@ -7,6 +7,7 @@ import { db } from "@/db/client";
 import {
   invoices,
   orders,
+  projectMembers,
   projectBriefs,
   projectEvents,
   projects,
@@ -134,6 +135,8 @@ export async function fulfilCheckout(
           ? (buildLine.scopeSnapshot as { buildType: "website" | "system" | "mobileApp" })
               .buildType
           : "website",
+        productType: buildLine?.productType ?? "build",
+        productId: buildLine?.productId ?? null,
         scopeTier: buildLine?.scopeTier ?? null,
         // Paid, but NOT started. The countdown does not run in this state.
         status: "awaiting_assets",
@@ -148,6 +151,14 @@ export async function fulfilCheckout(
       .returning();
 
     if (!project) throw new Error("Project insert returned no row.");
+
+    // The owner joins their own Build Room. Membership is what unread state
+    // and the activity feed are keyed on, so it has to exist from the start.
+    await tx.insert(projectMembers).values({
+      projectId: project.id,
+      userId: order.ownerId,
+      role: "customer",
+    });
 
     const draft = buildLine?.configuration as ConfiguratorDraft | null | undefined;
     if (draft) {

@@ -37,6 +37,15 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
 
             <nav aria-label={t("nav")} className="flex items-center gap-1">
               <Link
+                href="/projects"
+                className={cn(
+                  "rounded-md px-3 py-2 text-body-sm whitespace-nowrap text-secondary",
+                  "duration-fast transition-colors ease-out-quint hover:bg-hover hover:text-primary",
+                )}
+              >
+                {t("builds")}
+              </Link>
+              <Link
                 href="/account"
                 className={cn(
                   "rounded-md px-3 py-2 text-body-sm whitespace-nowrap text-secondary",

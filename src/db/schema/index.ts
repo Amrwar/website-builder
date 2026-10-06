@@ -16,3 +16,6 @@ export * from "./products";
 export * from "./orders";
 export * from "./payments";
 export * from "./invoices";
+
+/* --- Build Room -------------------------------------------------------- */
+export * from "./workspace";

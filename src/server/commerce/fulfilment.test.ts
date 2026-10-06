@@ -295,6 +295,16 @@ describe("payment creates a project but does not start the clock", () => {
     expect(invoice?.values.billToCountry).toBe("CA");
   });
 
+  it("opens the Build Room by making the owner a member", async () => {
+    // Unread state and the activity feed are keyed on membership, so a project
+    // without it would render an empty workspace to its own owner.
+    await fulfilCheckout("cs_test_1");
+
+    const member = inserts.find((row) => row.table === "project_members");
+    expect(member?.values.userId).toBe("user-1");
+    expect(member?.values.role).toBe("customer");
+  });
+
   it("records the brief so the build team has what was asked for", async () => {
     await fulfilCheckout("cs_test_1");
     const brief = inserts.find((row) => row.table === "project_briefs");

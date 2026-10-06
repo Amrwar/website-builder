@@ -59,7 +59,17 @@ signature verification tested against a running server.
 Phases 7–32 as set by the product owner. Titles are authoritative; the notes
 under each are what the title maps onto in the system as it stands today.
 
-### Phase 7 — Customer Workspace / Build Room
+### Phase 7 — Customer Workspace / Build Room ✅
+
+Delivered. The workspace is driven by `config/workspace.ts`, keyed on
+`projects.product_type`, so a website, an automation and a business product use
+the same room with different stages, panels and approvals. Nine panels:
+overview, timeline, preview, files, messages, changes, approvals, payments,
+launch. Seven new tables. Uploads go browser-to-blob with a scoped token.
+**The guarantee clock starts at `startBuild` and nowhere else**, in working
+days, stored not derived.
+
+#### Original plan
 
 The signed-in project view: timeline, countdown, live preview, files, messages,
 change requests, approvals. Includes asset submission — the gate that sets

@@ -161,6 +161,21 @@ is produced when a quote is priced, which is before payment and therefore
 before a project exists. The order side of the link is
 `order_items.scope_assessment_id`; the project id is filled in at fulfilment.
 
+## Build Room tables (Phase 7)
+
+| Table               | Purpose                                                                                                                                                              |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `project_members`   | Who is on a project, **including the customer**. `last_read_at` is what unread counts are derived from.                                                              |
+| `project_files`     | Versioned by `(group_key, version)`, so re-uploading a logo makes v2 rather than overwriting what the build was done against. `pathname` is a blob key, never a URL. |
+| `project_messages`  | Author name is copied, so a thread still reads correctly after someone leaves.                                                                                       |
+| `change_requests`   | Scope, price and time impact are explicit columns — that is how the fixed price stays honest when scope moves.                                                       |
+| `project_approvals` | Append-only per round. Asking again after changes is a new row, so "approved, then we changed it" stays visible.                                                     |
+| `deployments`       | One row per deployment, not a mutable URL on the project, so a customer can tell that what they approved is not what they are looking at.                            |
+
+`projects` gained `product_type` and `product_id` in this phase. That is what
+makes the Build Room reusable: the room reads the product type to decide which
+stages, panels and approvals apply, and never asks what a website is.
+
 ## Not yet modelled
 
 Files and uploads, messages and change requests, approvals, maintenance

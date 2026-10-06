@@ -872,7 +872,8 @@
   "app": {
     "nav": "Account navigation",
     "account": "Account",
-    "staff": "Staff"
+    "staff": "Staff",
+    "builds": "Builds"
   },
   "account": {
     "title": "Account",
@@ -1015,6 +1016,249 @@
         "project": "Project",
         "total": "Paid",
         "invoice": "Invoice"
+      }
+    }
+  },
+  "workspace": {
+    "list": {
+      "title": "Your builds",
+      "subtitle": "Every project you have ordered, and where each one stands.",
+      "empty": {
+        "title": "No builds yet",
+        "body": "When you order a build it appears here, with its timeline, files and deadline.",
+        "cta": "Start a build"
+      }
+    },
+    "back": "All builds",
+    "reference": "Reference",
+    "loading": "Loading your build room",
+    "errors": {
+      "notAllowed": "You do not have access to this.",
+      "generic": "Something went wrong. Please try again.",
+      "loadFailed": "We could not load this build room.",
+      "retry": "Try again"
+    },
+    "status": {
+      "draft": "Draft",
+      "quoted": "Quoted",
+      "awaiting_quote": "Awaiting quote",
+      "awaiting_payment": "Awaiting payment",
+      "awaiting_assets": "Waiting for your assets",
+      "in_build": "In build",
+      "in_preview": "In preview",
+      "awaiting_approval": "Awaiting your approval",
+      "approved": "Approved",
+      "launching": "Launching",
+      "launched": "Live",
+      "cancelled": "Cancelled"
+    },
+    "stage": {
+      "ordered": "Ordered",
+      "assets": "Your assets",
+      "build": "Build",
+      "preview": "Preview",
+      "approval": "Approval",
+      "launch": "Launch",
+      "handover": "Handover"
+    },
+    "stageState": {
+      "complete": "Done",
+      "current": "Now",
+      "upcoming": "To come"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "timeline": "Timeline",
+      "preview": "Preview",
+      "files": "Files",
+      "messages": "Messages",
+      "changes": "Changes",
+      "approvals": "Approvals",
+      "payments": "Payments",
+      "launch": "Launch"
+    },
+    "nextAction": {
+      "title": "Your next step",
+      "none": "Nothing to do right now. We will tell you when we need you.",
+      "configure": "Finish configuring this build.",
+      "pay": "Complete payment to join the queue.",
+      "submitAssets": "Send us your content and brand assets. The countdown starts after this.",
+      "reviewPreview": "Open the preview and tell us what you think.",
+      "approve": "Review and approve so we can launch."
+    },
+    "deadline": {
+      "title": "Deadline",
+      "notStarted": "Not started",
+      "notStartedHelp": "The countdown begins when your assets are in and the build officially starts.",
+      "due": "Due {date}",
+      "remaining": "{days} working days left",
+      "lastDay": "Due today",
+      "missed": "Deadline passed",
+      "missedHelp": "You can cancel for a full refund, or continue and receive a 30% refund.",
+      "level": {
+        "comfortable": "On track",
+        "tight": "Close",
+        "critical": "Final day",
+        "missed": "Missed"
+      }
+    },
+    "guarantee": {
+      "title": "Your guarantee",
+      "body": "{days} working days of development, from the day the build officially starts. Miss it and you choose: cancel with a full refund, or continue with 30% back.",
+      "none": "This project is quoted individually, so no fixed countdown applies."
+    },
+    "overview": {
+      "title": "Overview",
+      "product": "Product",
+      "scope": "Scope",
+      "progress": "Progress",
+      "team": "Your team",
+      "teamEmpty": "Nobody is assigned yet. We assign the team when the build starts.",
+      "paid": "Paid",
+      "stageCount": "Stage {current} of {total}"
+    },
+    "timeline": {
+      "title": "Activity",
+      "empty": "Nothing has happened yet. Everything that does will be recorded here.",
+      "stages": "Milestones"
+    },
+    "event": {
+      "fallback": "Activity",
+      "order.fulfilled": "Payment received and project created",
+      "assets.submitted": "You sent your assets",
+      "build.started": "Build officially started — countdown running",
+      "preview.published": "Preview published",
+      "message.posted": "New message",
+      "change.requested": "Change requested",
+      "change.approved": "Change approved",
+      "change.rejected": "Change rejected",
+      "change.withdrawn": "Change withdrawn",
+      "file.uploaded": "File uploaded",
+      "deployment.started": "Deployment started",
+      "deployment.completed": "Deployment completed"
+    },
+    "preview": {
+      "title": "Preview",
+      "none": "No preview yet. One appears here as soon as there is something to look at.",
+      "notApplicable": "This product does not have a preview URL.",
+      "open": "Open preview",
+      "version": "Version {version}",
+      "deployed": "Deployed {date}",
+      "state": {
+        "queued": "Queued",
+        "building": "Building",
+        "ready": "Ready",
+        "failed": "Failed",
+        "superseded": "Superseded"
+      },
+      "failedHelp": "This deployment failed. We have been notified and are on it."
+    },
+    "files": {
+      "title": "Files",
+      "empty": "No files yet.",
+      "emptyCustomer": "Send us your logo, copy, images and anything else we should use.",
+      "upload": "Add files",
+      "uploading": "Uploading",
+      "uploadError": "That file could not be uploaded.",
+      "tooLarge": "Files must be under {limit} MB.",
+      "download": "Download",
+      "version": "v{version}",
+      "internal": "Internal",
+      "kind": {
+        "customer_upload": "From you",
+        "design_asset": "Design",
+        "document": "Document",
+        "generated": "Generated",
+        "deliverable": "Deliverable"
+      },
+      "submitTitle": "Ready to start?",
+      "submitBody": "Confirm your assets are complete and we will begin. The countdown starts when we officially start the build, not now.",
+      "submit": "My assets are complete",
+      "submitting": "Confirming",
+      "submitted": "Assets received. We will start your build and let you know.",
+      "needFiles": "Add at least one file before confirming."
+    },
+    "messages": {
+      "title": "Messages",
+      "empty": "No messages yet. Ask us anything about this build.",
+      "placeholder": "Write a message",
+      "send": "Send",
+      "sending": "Sending",
+      "you": "You",
+      "team": "Build team",
+      "unread": "{count} unread",
+      "attachments": "{count} attached"
+    },
+    "changes": {
+      "title": "Change requests",
+      "empty": "No changes requested. If you need something different, ask here.",
+      "new": "Request a change",
+      "titleLabel": "What would you like changed?",
+      "descriptionLabel": "Describe it in as much detail as you can",
+      "submit": "Send request",
+      "submitting": "Sending",
+      "cancel": "Cancel",
+      "impactTitle": "Impact",
+      "noImpactYet": "We will come back to you with the scope, price and time impact.",
+      "priceImpact": "Price",
+      "daysImpact": "+{days} working days",
+      "noExtraCost": "No extra cost",
+      "approve": "Accept",
+      "reject": "Decline",
+      "status": {
+        "submitted": "Submitted",
+        "under_review": "Under review",
+        "quoted": "Quoted",
+        "approved": "Accepted",
+        "rejected": "Declined",
+        "withdrawn": "Withdrawn",
+        "applied": "Applied"
+      }
+    },
+    "approvals": {
+      "title": "Approvals",
+      "empty": "Nothing to approve yet.",
+      "approve": "Approve",
+      "requestChanges": "Request changes",
+      "deciding": "Saving",
+      "round": "Round {round}",
+      "decidedOn": "Decided {date}",
+      "noteLabel": "Anything we should know?",
+      "kind": {
+        "scope": "Scope",
+        "design": "Design",
+        "preview": "Preview",
+        "launch": "Launch"
+      },
+      "status": {
+        "pending": "Waiting for you",
+        "approved": "Approved",
+        "changes_requested": "Changes requested"
+      }
+    },
+    "payments": {
+      "title": "Payments",
+      "empty": "No payment records for this project.",
+      "order": "Order",
+      "invoice": "Invoice",
+      "total": "Total",
+      "paidOn": "Paid {date}",
+      "viewOrder": "View order",
+      "refunded": "Refunded"
+    },
+    "launch": {
+      "title": "Launch",
+      "notYet": "Launch details appear once your build is approved.",
+      "domain": "Domain",
+      "noDomain": "No domain connected yet.",
+      "deployment": "Deployment",
+      "live": "Live site",
+      "checklist": "Launch checklist",
+      "steps": {
+        "assets": "Assets received",
+        "build": "Build complete",
+        "approval": "You approved the build",
+        "deploy": "Deployed to production"
       }
     }
   }

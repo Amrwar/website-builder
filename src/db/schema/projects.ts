@@ -10,7 +10,14 @@ import {
 } from "drizzle-orm/pg-core";
 
 import { users } from "./users";
-import { buildTypeEnum, currencyEnum, projectStatusEnum, scopeTierEnum } from "./enums";
+import {
+  buildTypeEnum,
+  currencyEnum,
+  productTypeEnum,
+  projectStatusEnum,
+  scopeTierEnum,
+} from "./enums";
+import { products } from "./products";
 import { projectBriefs } from "./briefs";
 import { scopeAssessments } from "./scope-assessments";
 import { projectEvents } from "./events";
@@ -45,6 +52,29 @@ export const projects = pgTable(
       // financial and contractual record.
       .references(() => users.id, { onDelete: "restrict" }),
 
+    /**
+     * What kind of thing this project delivers.
+     *
+     * Added in Phase 7 so the Build Room is driven by product type rather than
+     * by build type. An automation, a business product or a feature upgrade is
+     * a project like any other; the workspace reads this to decide which
+     * stages, panels and approvals apply. See `config/workspace.ts`.
+     *
+     * Defaults to `build` because every project that existed before this
+     * column was one.
+     */
+    productType: productTypeEnum("product_type").notNull().default("build"),
+
+    /** The catalogue row ordered, where one applies. */
+    productId: uuid("product_id").references(() => products.id, {
+      onDelete: "set null",
+    }),
+
+    /**
+     * Which build this is, for `build` products. Null is not yet possible --
+     * every current product type is a build -- but the Build Room never reads
+     * it, so a future automation can leave it behind.
+     */
     buildType: buildTypeEnum("build_type").notNull(),
 
     /** Null until the scope engine has run. */
