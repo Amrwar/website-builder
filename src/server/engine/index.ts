@@ -1,6 +1,6 @@
 import "server-only";
 
-import { and, eq, sql } from "drizzle-orm";
+import { and, asc, eq, sql } from "drizzle-orm";
 
 import { db } from "@/db/client";
 import { catalogCurrencies, catalogFeatures, catalogTiers, discounts } from "@/db/schema";
@@ -54,10 +54,19 @@ export function invalidateCatalogCache(): void {
 async function loadOverlay(): Promise<Catalog> {
   const base = defaultCatalog();
 
+  // Ordered in SQL rather than left to row order. An UPDATE moves a row to
+  // the end of a heap, so without this the published price list silently
+  // reorders itself the moment somebody edits a tier.
   const [featureRows, tierRows, currencyRows] = await Promise.all([
-    db.select().from(catalogFeatures),
-    db.select().from(catalogTiers),
-    db.select().from(catalogCurrencies),
+    db
+      .select()
+      .from(catalogFeatures)
+      .orderBy(asc(catalogFeatures.sortOrder), asc(catalogFeatures.key)),
+    db
+      .select()
+      .from(catalogTiers)
+      .orderBy(asc(catalogTiers.buildType), asc(catalogTiers.pointThreshold)),
+    db.select().from(catalogCurrencies).orderBy(asc(catalogCurrencies.code)),
   ]);
 
   const features: readonly FeatureRule[] =

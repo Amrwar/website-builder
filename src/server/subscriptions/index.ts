@@ -324,6 +324,41 @@ async function loadOwned(
 }
 
 /**
+ * What a plan change would cost, without making it.
+ *
+ * Exists because an upgrade takes money immediately, and charging somebody
+ * before showing them the figure is not acceptable regardless of how small it
+ * is. Writes nothing; the same `planChange` arithmetic that `changePlan` uses
+ * decides both the preview and the charge, so they cannot disagree.
+ */
+export async function previewPlanChange(
+  subscriptionId: string,
+  nextPlanKey: string,
+  context: AuthContext,
+  now: Date = new Date(),
+): Promise<SubscriptionResult<PlanChangePlan & { currency: string }>> {
+  const current = await loadOwned(subscriptionId, context);
+  if (!current) return { ok: false, reason: "not_found" };
+
+  const next = await planByKey(nextPlanKey);
+  if (!next) return { ok: false, reason: "unknown_plan" };
+
+  return {
+    ok: true,
+    value: {
+      ...planChange({
+        currentPriceMinorUnits: current.priceMinorUnits,
+        nextPriceMinorUnits: next.priceMinorUnits,
+        periodStart: current.currentPeriodStart,
+        periodEnd: current.currentPeriodEnd,
+        now,
+      }),
+      currency: current.currency,
+    },
+  };
+}
+
+/**
  * Changes plan.
  *
  * An upgrade takes effect immediately and charges the remainder of the period

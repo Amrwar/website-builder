@@ -9,7 +9,7 @@ import {
   type Currency,
   type Money,
 } from "@/lib/pricing/money";
-import { CAPABILITIES, type CapabilityKey, type ScopeAssessment } from "@/lib/scope";
+import type { CapabilityKey, ScopeAssessment } from "@/lib/scope";
 import { applyDiscount } from "./discounts";
 import {
   currencyRule,
@@ -222,16 +222,22 @@ export function evaluateProject(input: EvaluateInput): ProjectAssessment {
   );
 
   const selected = new Set(selectedCapabilities);
-  const present = new Set(assessment.capabilities.map((detected) => detected.key));
-  const excluded = CAPABILITIES.map((capability) => capability.key).filter(
-    (key) => !present.has(key),
-  ) as CapabilityKey[];
+  const present = new Set<string>(
+    assessment.capabilities.map((detected) => detected.key),
+  );
+
+  // Exclusions come from the **catalogue**, not from the shipped constant.
+  // Reading `CAPABILITIES` here would tell a customer their build excludes a
+  // feature an administrator has since withdrawn, or omit one they added.
+  const excluded = catalog.features
+    .filter((feature) => feature.isActive && !present.has(feature.key))
+    .map((feature) => feature.key) as CapabilityKey[];
 
   let price: PriceBreakdown | null = null;
 
-  if (!requiresCustomQuote && rule?.priceMinorUnits !== null && rule) {
+  if (!requiresCustomQuote && rule && rule.priceMinorUnits !== null) {
     const lines: PriceLine[] = [
-      priceLine(`build.${buildType}`, "build", rule.priceMinorUnits!, currency, catalog),
+      priceLine(`build.${buildType}`, "build", rule.priceMinorUnits, currency, catalog),
     ];
 
     if (wantsDesignService && catalog.designFeeMinorUnits > 0) {
@@ -248,7 +254,12 @@ export function evaluateProject(input: EvaluateInput): ProjectAssessment {
 
     // Per-feature surcharges, for capabilities a business has decided are
     // additive rather than scope-defining. None carry one by default.
-    for (const key of selected) {
+    //
+    // Sorted, so the line order is a property of the project rather than of
+    // the order the browser happened to send its selections in. The totals
+    // would be identical either way, but a pricing snapshot that reorders
+    // between two identical requests is one nobody can diff.
+    for (const key of [...selected].sort()) {
       const feature = featureRule(catalog, key);
       if (!feature?.surchargeMinorUnits) continue;
       lines.push(

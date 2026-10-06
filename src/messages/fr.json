@@ -14,7 +14,6 @@
     "closeMenu": "Fermer le menu",
     "skipToContent": "Aller au contenu",
     "howItWorks": "Comment ça marche",
-    "whatsIncluded": "Ce qui est inclus",
     "pricing": "Tarifs",
     "buildWall": "Mur des réalisations",
     "signIn": "Se connecter",
@@ -27,17 +26,17 @@
   "home": {
     "meta": {
       "title": "Votre idée. Réalisée cette semaine.",
-      "description": "Des sites web en 5 jours. Des applications en 14. Un prix fixe. Une garantie claire. Configurez votre projet, voyez le prix exact et suivez-le jusqu'au lancement."
+      "description": "Des sites web en 5 jours. Des applications en 14. Un prix fixe. Une garantie claire. Configurez votre projet, voyez le prix exact et suivez-le jusqu’au lancement."
     },
     "hero": {
       "eyebrow": "Développement numérique standardisé",
       "headline": "Votre idée. Réalisée cette semaine.",
       "promise": "Des sites web en 5 jours. Des applications en 14. Un prix fixe. Une garantie claire.",
-      "support": "Configurez le projet, voyez le prix exact avant de payer, puis suivez-le jusqu'au lancement dans votre espace de production. Aucune proposition, aucune facturation horaire, aucun délai ouvert.",
+      "support": "Configurez le projet, voyez le prix exact avant de payer, puis suivez-le jusqu’au lancement dans votre espace de production. Aucune proposition, aucune facturation horaire, aucun délai ouvert.",
       "primaryCta": "Lancer un projet",
       "secondaryCta": "Voir comment ça marche",
       "trust": {
-        "price": "Prix fixe, annoncé d'avance",
+        "price": "Prix fixe, annoncé d’avance",
         "scope": "Portée écrite, convenue avant la production",
         "deadline": "Délai garanti par remboursement",
         "ownership": "Vous êtes propriétaire de tout"
@@ -56,23 +55,23 @@
       "fromLabel": "à partir de",
       "website": {
         "name": "Site web",
-        "summary": "Sites vitrines, pages d'atterrissage et portfolios, conçus adaptatifs et prêts pour le référencement.",
+        "summary": "Sites vitrines, pages d’atterrissage et portfolios, conçus adaptatifs et prêts pour le référencement.",
         "cta": "Configurer un site web"
       },
       "system": {
-        "name": "Système d'affaires",
+        "name": "Système d’affaires",
         "summary": "Tableaux de bord, réservation, inventaire, CRM et outils internes. Le prix découle de la portée que vous définissez.",
         "cta": "Configurer un système"
       },
       "mobileApp": {
         "name": "Application mobile",
-        "summary": "Un MVP encadré pour iOS et Android. Le temps d'examen des magasins d'applications est exclu de la garantie.",
+        "summary": "Un MVP encadré pour iOS et Android. Le temps d’examen des magasins d’applications est exclu de la garantie.",
         "cta": "Configurer une application"
       }
     },
     "journey": {
       "eyebrow": "Comment ça marche",
-      "title": "De l'idée au lancement, sur une chaîne de production.",
+      "title": "De l’idée au lancement, sur une chaîne de production.",
       "description": "Chaque projet suit les mêmes dix étapes. Vous voyez à tout moment où en est le vôtre.",
       "stages": {
         "idea": {
@@ -81,7 +80,7 @@
         },
         "configure": {
           "name": "Configuration",
-          "detail": "Choisissez le type, les fonctionnalités et l'orientation visuelle, ou confiez-nous le design."
+          "detail": "Choisissez le type, les fonctionnalités et l’orientation visuelle, ou confiez-nous le design."
         },
         "price": {
           "name": "Prix",
@@ -97,7 +96,7 @@
         },
         "preview": {
           "name": "Aperçu",
-          "detail": "Suivez l'avancement sur une adresse d'aperçu mise à jour en continu."
+          "detail": "Suivez l’avancement sur une adresse d’aperçu mise à jour en continu."
         },
         "approve": {
           "name": "Approbation",
@@ -105,7 +104,7 @@
         },
         "launch": {
           "name": "Lancement",
-          "detail": "Nous déployons sur votre domaine ou soumettons aux magasins d'applications pour vous."
+          "detail": "Nous déployons sur votre domaine ou soumettons aux magasins d’applications pour vous."
         },
         "maintain": {
           "name": "Maintenance",
@@ -120,7 +119,7 @@
     },
     "guarantee": {
       "eyebrow": "La garantie",
-      "title": "Le délai, c'est notre responsabilité.",
+      "title": "Le délai, c’est notre responsabilité.",
       "clock": {
         "title": "Le compte à rebours démarre quand le travail peut démarrer",
         "body": "Il commence lorsque vos informations et éléments requis sont soumis et que le projet est officiellement lancé, et non au moment du paiement. Nous ne lançons pas un chronomètre que nous ne contrôlons pas."
@@ -133,28 +132,28 @@
       },
       "stores": {
         "title": "Ce que la garantie ne couvre pas",
-        "body": "Les délais d'examen de l'App Store et de Google Play sont exclus de la garantie de développement. Nous nous engageons sur notre temps de production, pas sur le leur. La soumission et l'examen sont suivis séparément dans votre espace de production."
+        "body": "Les délais d’examen de l’App Store et de Google Play sont exclus de la garantie de développement. Nous nous engageons sur notre temps de production, pas sur le leur. La soumission et l’examen sont suivis séparément dans votre espace de production."
       }
     },
     "scope": {
       "eyebrow": "La portée, franchement",
       "title": "Un prix fixe exige une portée honnête.",
-      "description": "Un projet en {days} jours couvre un ensemble défini de capacités. Lorsqu'une idée dépasse ce cadre, nous le disons avant le paiement et vous montrons le projet plus large, plutôt que de sous-estimer puis de renégocier.",
+      "description": "Un projet en {days} jours couvre un ensemble défini de capacités. Lorsqu’une idée dépasse ce cadre, nous le disons avant le paiement et vous montrons le projet plus large, plutôt que de sous-estimer puis de renégocier.",
       "includedTitle": "Compris dans un projet en {days} jours",
       "includedItems": {
-        "pages": "Un nombre défini de pages ou d'écrans",
+        "pages": "Un nombre défini de pages ou d’écrans",
         "responsive": "Mises en page adaptatives et comportement mobile",
         "forms": "Formulaires, pages de contenu et édition CMS standard",
-        "singleRole": "Un seul type d'utilisateur, ou aucun",
+        "singleRole": "Un seul type d’utilisateur, ou aucun",
         "hostedPayments": "Paiements par page de paiement hébergée",
         "seo": "Bases du référencement et de la performance"
       },
       "largerTitle": "Devient un projet plus large",
       "largerItems": {
-        "multiRole": "Plusieurs types d'utilisateurs avec des permissions distinctes",
+        "multiRole": "Plusieurs types d’utilisateurs avec des permissions distinctes",
         "realtime": "Suivi en direct, répartition ou géolocalisation",
         "marketplace": "Versements à plusieurs parties ou modèle de place de marché",
-        "native": "Capacités natives avancées de l'appareil",
+        "native": "Capacités natives avancées de l’appareil",
         "integrations": "Intégrations sur mesure avec vos systèmes existants",
         "logic": "Logique opérationnelle à concevoir, et non à configurer"
       },
@@ -163,8 +162,8 @@
         "quote": "Je veux un système de restaurant où les clients commandent, paient en ligne, le personnel gère les commandes, les livreurs gèrent les livraisons et les clients suivent les livreurs.",
         "verdictLabel": "Évaluation",
         "verdict": "Cela dépasse un projet en {days} jours.",
-        "reason": "On y trouve quatre types d'utilisateurs distincts, le suivi en direct des livreurs, la répartition des livraisons et le traitement des paiements. Chacun représente du vrai travail : le projet devient donc plus large, avec son propre prix et son propre délai, que vous verrez avant de payer.",
-        "note": "Rien n'est approximatif : le configurateur applique les mêmes règles publiées à votre description et vous montre lesquelles ont été reconnues."
+        "reason": "On y trouve quatre types d’utilisateurs distincts, le suivi en direct des livreurs, la répartition des livraisons et le traitement des paiements. Chacun représente du vrai travail : le projet devient donc plus large, avec son propre prix et son propre délai, que vous verrez avant de payer.",
+        "note": "Rien n’est approximatif : le configurateur applique les mêmes règles publiées à votre description et vous montre lesquelles ont été reconnues."
       }
     },
     "buildWall": {
@@ -172,11 +171,11 @@
       "title": "Récemment livrés",
       "description": "Chaque projet mis en ligne, avec la portée commandée et le nombre de jours réels.",
       "emptyTitle": "Les premiers projets sont en production",
-      "emptyBody": "Les projets terminés apparaîtront ici avec leur portée et leur délai dès leur lancement. Rien n'est simulé ni illustratif : le mur reste vide jusqu'à ce qu'il y ait du réel à montrer.",
+      "emptyBody": "Les projets terminés apparaîtront ici avec leur portée et leur délai dès leur lancement. Rien n’est simulé ni illustratif : le mur reste vide jusqu’à ce qu’il y ait du réel à montrer.",
       "emptyCta": "Soyez parmi les premiers"
     },
     "cta": {
-      "title": "Commencez par l'idée. Nous la chiffrons en quelques minutes.",
+      "title": "Commencez par l’idée. Nous la chiffrons en quelques minutes.",
       "description": "Décrivez ce que vous voulez et voyez votre portée, votre prix et votre date de livraison avant tout engagement.",
       "primary": "Lancer un projet",
       "secondary": "Voir comment ça marche"
@@ -196,7 +195,7 @@
       },
       "preview": {
         "name": "Aperçu",
-        "detail": "Suivez l'avancement"
+        "detail": "Suivez l’avancement"
       },
       "launch": {
         "name": "Lancement",
@@ -206,7 +205,7 @@
     "configuratorEntry": {
       "eyebrow": "Commencez ici",
       "title": "Quatre étapes vers un prix fixe.",
-      "description": "Rien n'est facturé avant que vous ayez vu la portée, le prix et la date de livraison. La plupart des gens y arrivent en moins de dix minutes.",
+      "description": "Rien n’est facturé avant que vous ayez vu la portée, le prix et la date de livraison. La plupart des gens y arrivent en moins de dix minutes.",
       "stepsLabel": "Étapes vers un prix",
       "steps": {
         "describe": {
@@ -237,7 +236,7 @@
     "comparison": {
       "eyebrow": "Lequel me convient ?",
       "title": "Site web, système ou application.",
-      "description": "La différence n'est pas la taille, mais ce que la chose doit faire. Choisissez la ligne qui décrit votre problème.",
+      "description": "La différence n’est pas la taille, mais ce que la chose doit faire. Choisissez la ligne qui décrit votre problème.",
       "tableLabel": "Comparaison des types de projets",
       "columns": {
         "capability": "Capacité"
@@ -252,7 +251,7 @@
         "payments": "Accepter les paiements",
         "dashboard": "Tableau de bord du personnel",
         "offline": "Fonctionne hors ligne",
-        "storeSubmission": "Soumis aux magasins d'applications"
+        "storeSubmission": "Soumis aux magasins d’applications"
       },
       "reviewOutside": "Exclu de la garantie",
       "reviewNone": "Sans objet",
@@ -262,21 +261,21 @@
     },
     "design": {
       "eyebrow": "Design",
-      "title": "Pas besoin d'un designer pour commencer.",
+      "title": "Pas besoin d’un designer pour commencer.",
       "description": "La plupart des gens qui commandent un premier site ont tout au plus un logo. Les trois voies ci-dessous coûtent le même prix ; elles changent seulement ce que vous confiez.",
       "design_for_me": {
         "title": "Concevez-le pour moi",
-        "body": "Décrivez l'entreprise et l'impression voulue. Nous choisissons la typographie, les couleurs et la mise en page, et vous montrons le résultat dans l'aperçu.",
+        "body": "Décrivez l’entreprise et l’impression voulue. Nous choisissons la typographie, les couleurs et la mise en page, et vous montrons le résultat dans l’aperçu.",
         "note": "Le plus courant pour un premier projet."
       },
       "supplied_brand": {
-        "title": "J'ai une identité visuelle",
-        "body": "Téléversez votre logo, vos couleurs, vos polices ou votre guide de marque. Nous construisons à partir d'eux plutôt que d'inventer un style parallèle.",
+        "title": "J’ai une identité visuelle",
+        "body": "Téléversez votre logo, vos couleurs, vos polices ou votre guide de marque. Nous construisons à partir d’eux plutôt que d’inventer un style parallèle.",
         "note": "Logo, couleurs, polices, PDF."
       },
       "existing_design": {
-        "title": "Refaire ce que j'ai",
-        "body": "Donnez-nous un site existant, un fichier Figma ou des captures d'écran. Nous le reconstruisons correctement, sans tout recommencer la discussion.",
+        "title": "Refaire ce que j’ai",
+        "body": "Donnez-nous un site existant, un fichier Figma ou des captures d’écran. Nous le reconstruisons correctement, sans tout recommencer la discussion.",
         "note": "Un lien ou une capture suffit."
       },
       "footnote": "Quelle que soit la voie choisie, le résultat vous appartient entièrement : le design, le code et le contenu sont à vous, sans licence à payer indéfiniment."
@@ -284,12 +283,12 @@
     "maintenance": {
       "eyebrow": "Après le lancement",
       "title": "Le maintien en service est une décision distincte.",
-      "description": "Le projet s'achète une fois. L'hébergement, les mises à jour et la surveillance forment un forfait mensuel annulable, car les inclure dans le prix affiché rendrait ce prix faux dès le deuxième mois.",
+      "description": "Le projet s’achète une fois. L’hébergement, les mises à jour et la surveillance forment un forfait mensuel annulable, car les inclure dans le prix affiché rendrait ce prix faux dès le deuxième mois.",
       "fromLabel": "à partir de",
       "perMonth": "par mois",
       "recommended": "Le plus choisi",
-      "cta": "Ajouter au paiement",
-      "footnote": "Vous pouvez aussi l'héberger vous-même. Nous remettons le code et le déploiement dans tous les cas, et aucun forfait n'est requis pour conserver votre projet.",
+      "cta": "Lancer une réalisation",
+      "footnote": "Les forfaits se choisissent depuis votre page de facturation une fois la réalisation lancée. Rien n’est ajouté au paiement, et aucun forfait n’est requis pour conserver votre réalisation : nous remettons le code et le déploiement dans tous les cas.",
       "plans": {
         "essential": {
           "name": "Essentiel",
@@ -330,76 +329,78 @@
         },
         "theyBuild": {
           "title": "La personne commande un projet",
-          "body": "Le crédit s'applique à tout type de projet et à toute portée."
+          "body": "Le crédit s’applique à tout type de projet et à toute portée."
         },
         "bothCredited": {
           "title": "Vous recevez {amount} chacun",
           "body": "Crédité dès le début de leur projet, utilisable sur un nouveau projet ou votre forfait mensuel."
         }
       },
-      "terms": "Les crédits expirent 12 mois après leur émission et ne sont pas échangeables contre de l'argent. Un crédit par projet recommandé."
+      "terms": "Les crédits expirent 12 mois après leur émission et ne sont pas échangeables contre de l’argent. Un crédit par projet recommandé.",
+      "notOpenYet": "Pas encore ouvert",
+      "notOpenYetBody": "Les crédits de parrainage ne sont pas encore émis. Voici le fonctionnement prévu à l’ouverture, annoncé dès maintenant pour que les conditions ne soient pas écrites après coup."
     },
     "faq": {
       "eyebrow": "Questions",
-      "title": "Ce qu'il vaut la peine de demander d'abord.",
-      "description": "Si quelque chose ici n'est pas clair, c'est à nous de le corriger, pas à vous de le décoder.",
+      "title": "Ce qu’il vaut la peine de demander d’abord.",
+      "description": "Si quelque chose ici n’est pas clair, c’est à nous de le corriger, pas à vous de le décoder.",
       "items": {
         "included": {
-          "q": "Qu'est-ce que j'obtiens exactement pour ce prix ?",
-          "a": "Un projet terminé et déployé, conforme à la portée convenue, ainsi que le code et les fichiers de design. La portée est écrite avant le paiement et c'est à elle que le prix est rattaché : c'est tout l'intérêt d'un prix fixe."
+          "q": "Qu’est-ce que j’obtiens exactement pour ce prix ?",
+          "a": "Un projet terminé et déployé, conforme à la portée convenue, ainsi que le code et les fichiers de design. La portée est écrite avant le paiement et c’est à elle que le prix est rattaché : c’est tout l’intérêt d’un prix fixe."
         },
         "ownership": {
           "q": "Suis-je propriétaire de ce que vous créez ?",
-          "a": "Oui, entièrement. Le code, le design et le contenu vous appartiennent à la livraison, sans licence continue ni rien de retenu. Vous pouvez tout déplacer vers un autre hébergeur ou un autre développeur quand vous voulez, et nous remettons tout ce qu'il faut pour le faire."
+          "a": "Oui, entièrement. Le code, le design et le contenu vous appartiennent à la livraison, sans licence continue ni rien de retenu. Vous pouvez tout déplacer vers un autre hébergeur ou un autre développeur quand vous voulez, et nous remettons tout ce qu’il faut pour le faire."
         },
         "clockStart": {
           "q": "Quand le compte à rebours démarre-t-il vraiment ?",
-          "a": "Lorsque vos informations et éléments requis sont reçus et que le projet est officiellement lancé, et non au moment du paiement. Nous ne lançons pas un chronomètre que nous ne contrôlons pas, et l'heure exacte apparaît dans votre espace de production."
+          "a": "Lorsque vos informations et éléments requis sont reçus et que le projet est officiellement lancé, et non au moment du paiement. Nous ne lançons pas un chronomètre que nous ne contrôlons pas, et l’heure exacte apparaît dans votre espace de production."
         },
         "missedDeadline": {
           "q": "Que se passe-t-il si vous manquez le délai ?",
-          "a": "C'est vous qui choisissez, pas nous. Soit annuler et obtenir un remboursement de 100 %, soit poursuivre et récupérer 30 %. Aucune négociation, aucune procédure à franchir."
+          "a": "C’est vous qui choisissez, pas nous. Soit annuler et obtenir un remboursement de 100 %, soit poursuivre et récupérer 30 %. Aucune négociation, aucune procédure à franchir."
         },
         "biggerIdea": {
           "q": "Et si mon idée dépasse un projet en 5 jours ?",
-          "a": "Le configurateur vous le dit avant le paiement et montre quelles capacités précises l'ont fait basculer : plusieurs types d'utilisateurs, suivi en direct, versements à plusieurs parties, etc. Il propose ensuite le projet plus large avec son prix et son délai, plutôt que de sous-estimer puis de renégocier."
+          "a": "Le configurateur vous le dit avant le paiement et montre quelles capacités précises l’ont fait basculer : plusieurs types d’utilisateurs, suivi en direct, versements à plusieurs parties, etc. Il propose ensuite le projet plus large avec son prix et son délai, plutôt que de sous-estimer puis de renégocier."
         },
         "changes": {
           "q": "Combien de modifications puis-je demander ?",
-          "a": "Les modifications prévues à la portée convenue sont normales et n'affectent pas votre date de livraison. Celles qui ajoutent des capacités sont facturées comme des ajouts, et vous verrez le montant avant toute réalisation."
+          "a": "Les modifications prévues à la portée convenue sont normales et n’affectent pas votre date de livraison. Celles qui ajoutent des capacités sont facturées comme des ajouts, et vous verrez le montant avant toute réalisation."
         },
         "hosting": {
           "q": "Dois-je acheter un forfait de maintenance ?",
-          "a": "Non. Vous pouvez l'héberger vous-même et ne plus jamais nous payer. Les forfaits existent parce que la plupart des gens préfèrent ne pas penser aux certificats SSL et aux sauvegardes, pas parce que votre projet cesserait de fonctionner sans."
+          "a": "Non. Vous pouvez l’héberger vous-même et ne plus jamais nous payer. Les forfaits existent parce que la plupart des gens préfèrent ne pas penser aux certificats SSL et aux sauvegardes, pas parce que votre projet cesserait de fonctionner sans."
         },
         "appStores": {
-          "q": "Les 14 jours incluent-ils l'approbation de l'App Store ?",
-          "a": "Non, et nous le disons clairement. Nous garantissons notre temps de développement. Apple et Google contrôlent leurs propres files d'examen et nous ne pouvons pas promettre le délai d'un tiers. La soumission et l'examen sont suivis séparément."
+          "q": "Les 14 jours incluent-ils l’approbation de l’App Store ?",
+          "a": "Non, et nous le disons clairement. Nous garantissons notre temps de développement. Apple et Google contrôlent leurs propres files d’examen et nous ne pouvons pas promettre le délai d’un tiers. La soumission et l’examen sont suivis séparément."
         },
         "refund": {
           "q": "Comment fonctionne le remboursement concrètement ?",
-          "a": "Il retourne au mode de paiement d'origine, via Stripe, et nous l'amorçons le jour même de votre choix. Aucun formulaire, aucune discussion de rétention."
+          "a": "Il retourne au mode de paiement d’origine, via Stripe, et nous l’amorçons le jour même de votre choix. Aucun formulaire, aucune discussion de rétention."
         },
         "different": {
-          "q": "En quoi est-ce différent d'une agence ?",
-          "a": "Une agence vend une relation facturée à l'heure, où la portée et la date bougent ensemble. Ceci est un produit avec un prix publié, une portée définie et une date qui nous coûte de l'argent si nous la manquons. Si votre projet exige vraiment un mandat ouvert, l'agence est la bonne réponse et nous vous le dirons."
+          "q": "En quoi est-ce différent d’une agence ?",
+          "a": "Une agence vend une relation facturée à l’heure, où la portée et la date bougent ensemble. Ceci est un produit avec un prix publié, une portée définie et une date qui nous coûte de l’argent si nous la manquons. Si votre projet exige vraiment un mandat ouvert, l’agence est la bonne réponse et nous vous le dirons."
         }
       }
     },
     "portfolio": {
       "eyebrow": "Travaux choisis",
       "title": "Des projets, documentés sérieusement.",
-      "description": "Ce qui a été commandé, le coût, la durée et ce que cela fait aujourd'hui. Aucune étude de cas sans un vrai projet derrière.",
+      "description": "Ce qui a été commandé, le coût, la durée et ce que cela fait aujourd’hui. Aucune étude de cas sans un vrai projet derrière.",
       "emptyTitle": "Les premières fiches sont en préparation",
-      "emptyBody": "Les études de cas apparaîtront ici une fois les projets livrés et les clients d'accord pour être nommés. Nous préférons ne rien montrer plutôt que de montrer des travaux inventés.",
+      "emptyBody": "Les études de cas apparaîtront ici une fois les projets livrés et les clients d’accord pour être nommés. Nous préférons ne rien montrer plutôt que de montrer des travaux inventés.",
       "emptyCta": "Lancer le premier"
     },
     "testimonials": {
       "eyebrow": "Avis",
       "title": "Ce que disent les clients.",
       "description": "Recueillis après la livraison, publiés sans retouche, attribués à une personne réelle.",
-      "emptyTitle": "Aucun avis pour l'instant",
-      "emptyBody": "Les avis apparaîtront ici une fois les projets livrés. Nous n'allons pas les écrire nous-mêmes entre-temps : sur une page dont tout l'argument est que les chiffres sont vérifiables, des éloges inventés seraient précisément ce qui la trahirait."
+      "emptyTitle": "Aucun avis pour l’instant",
+      "emptyBody": "Les avis apparaîtront ici une fois les projets livrés. Nous n’allons pas les écrire nous-mêmes entre-temps : sur une page dont tout l’argument est que les chiffres sont vérifiables, des éloges inventés seraient précisément ce qui la trahirait."
     }
   },
   "footer": {
@@ -458,19 +459,19 @@
     "resume": {
       "title": "Nous avons gardé votre progression",
       "body": "Dernier enregistrement : {when}. Conservé dans ce navigateur uniquement.",
-      "continue": "Reprendre où j'en étais",
+      "continue": "Reprendre où j’en étais",
       "startOver": "Recommencer"
     },
     "issues": {
       "chooseType": "Choisissez ce que vous construisez.",
       "describeMore": "Dites-nous en un peu plus — une ou deux phrases suffisent.",
-      "needBusinessName": "Ajoutez le nom de l'entreprise.",
+      "needBusinessName": "Ajoutez le nom de l’entreprise.",
       "chooseDesign": "Choisissez comment gérer le design.",
       "needDirection": "Ajoutez un lien, une couleur ou quelques mots sur le style.",
       "choosePlatform": "Choisissez au moins une plateforme.",
-      "platformConflict": "Le multiplateforme couvre déjà les deux magasins ; choisissez l'un ou l'autre.",
-      "platformUnavailable": "Cette plateforme n'est pas offerte pour ce type.",
-      "completeEarlierSteps": "Terminez d'abord les étapes précédentes."
+      "platformConflict": "Le multiplateforme couvre déjà les deux magasins ; choisissez l’un ou l’autre.",
+      "platformUnavailable": "Cette plateforme n’est pas offerte pour ce type.",
+      "completeEarlierSteps": "Terminez d’abord les étapes précédentes."
     },
     "steps": {
       "type": {
@@ -491,7 +492,7 @@
       "features": {
         "label": "Fonctions",
         "title": "Que doit-il faire ?",
-        "lede": "Ne choisissez que le nécessaire. Le reste pourra s'ajouter plus tard."
+        "lede": "Ne choisissez que le nécessaire. Le reste pourra s’ajouter plus tard."
       },
       "platform": {
         "label": "Plateforme",
@@ -511,7 +512,7 @@
       "start": {
         "label": "Démarrer",
         "title": "Lancez votre projet",
-        "lede": "Ce qui se passe ensuite, dans l'ordre."
+        "lede": "Ce qui se passe ensuite, dans l’ordre."
       }
     },
     "type": {
@@ -519,7 +520,7 @@
     },
     "intake": {
       "businessName": {
-        "label": "Nom de l'entreprise",
+        "label": "Nom de l’entreprise",
         "help": "Comment nommer ce projet ?"
       },
       "industry": {
@@ -528,13 +529,13 @@
       },
       "description": {
         "label": "Décrivez ce que vous voulez",
-        "help": "Que doit-il faire, et pour qui ? Plus c'est concret, meilleure est l'évaluation.",
+        "help": "Que doit-il faire, et pour qui ? Plus c’est concret, meilleure est l’évaluation.",
         "placeholder": "Je veux un système de restaurant où les clients commandent, paient en ligne…",
         "tooShort": "Un peu plus de détail — au moins {min} caractères.",
         "remaining": "{remaining} caractères restants"
       },
       "targetCustomers": {
-        "label": "Qui l'utilisera ?",
+        "label": "Qui l’utilisera ?",
         "help": "Tous ceux qui y touchent, votre équipe comprise.",
         "placeholder": "Clients, personnel, livreurs"
       },
@@ -551,16 +552,16 @@
         "body": "Nous choisissons la typographie, les couleurs et la mise en page."
       },
       "supplied_brand": {
-        "title": "J'ai une identité visuelle",
+        "title": "J’ai une identité visuelle",
         "body": "Construire à partir de mon logo, mes couleurs et mes polices."
       },
       "existing_design": {
-        "title": "Refaire ce que j'ai",
+        "title": "Refaire ce que j’ai",
         "body": "Reproduire un site, un fichier Figma ou des captures."
       },
       "service": {
         "title": "Service de design, {fee}",
-        "body": "Un ajout unique au prix du projet, pas un abonnement. Il couvre le choix et l'application d'une direction visuelle pour une entreprise qui n'en a pas encore. Il apparaît séparément dans votre récapitulatif."
+        "body": "Un ajout unique au prix du projet, pas un abonnement. Il couvre le choix et l’application d’une direction visuelle pour une entreprise qui n’en a pas encore. Il apparaît séparément dans votre récapitulatif."
       },
       "links": {
         "label": "Liens à regarder",
@@ -578,30 +579,30 @@
         "label": "Autre chose sur le style",
         "help": "Polices, ton, choses à éviter."
       },
-      "filesLater": "Logos, captures et PDF se téléversent après la création du compte — c'est aussi à ce moment que le compte à rebours peut démarrer."
+      "filesLater": "Logos, captures et PDF se téléversent après la création du compte — c’est aussi à ce moment que le compte à rebours peut démarrer."
     },
     "features": {
-      "optional": "Tout est optionnel. Ne rien cocher n'exclut rien plus tard ; cela garde simplement ce projet plus petit.",
-      "chooseTypeFirst": "Choisissez d'abord un type.",
+      "optional": "Tout est optionnel. Ne rien cocher n’exclut rien plus tard ; cela garde simplement ce projet plus petit.",
+      "chooseTypeFirst": "Choisissez d’abord un type.",
       "largerBuild": "{feature} — fait basculer vers un projet plus large",
       "noticeTitle": "Certains éléments exigent un projet plus large",
-      "noticeBody": "Vous pouvez les garder. L'étape suivante montre ce que cela change au prix et au délai.",
+      "noticeBody": "Vous pouvez les garder. L’étape suivante montre ce que cela change au prix et au délai.",
       "categories": {
         "content": "Contenu",
         "identity": "Comptes et accès",
         "commerce": "Vente",
         "realtime": "Fonctions en direct",
-        "operations": "Gestion de l'entreprise",
+        "operations": "Gestion de l’entreprise",
         "integration": "Intégrations",
         "platform": "Appareil"
       }
     },
     "platform": {
-      "chooseTypeFirst": "Choisissez d'abord un type.",
-      "singleOption": "Ce type fonctionne à un seul endroit ; il n'y a rien à choisir ici.",
+      "chooseTypeFirst": "Choisissez d’abord un type.",
+      "singleOption": "Ce type fonctionne à un seul endroit ; il n’y a rien à choisir ici.",
       "conflict": {
         "empty": "Choisissez au moins une plateforme.",
-        "crossNative": "Le multiplateforme couvre déjà les deux magasins. Choisissez l'un ou l'autre."
+        "crossNative": "Le multiplateforme couvre déjà les deux magasins. Choisissez l’un ou l’autre."
       },
       "options": {
         "responsive_web": {
@@ -635,8 +636,8 @@
         "advanced": "Avancée"
       },
       "explanation": {
-        "simple": "Cela tient confortablement dans un projet d'entrée.",
-        "moderate": "Plus qu'un projet d'entrée, mais encore bien cadré.",
+        "simple": "Cela tient confortablement dans un projet d’entrée.",
+        "moderate": "Plus qu’un projet d’entrée, mais encore bien cadré.",
         "advanced": "Un travail substantiel avec plusieurs parties mobiles."
       }
     },
@@ -656,8 +657,8 @@
         "includesDesign": "Inclut {fee} de service de design"
       },
       "exceeds": {
-        "title": "C'est plus grand qu'un projet à prix publié",
-        "body": "Nous préférons vous le dire maintenant plutôt que sous-estimer puis renégocier. L'étape suivante envoie cela en devis écrit, avec son prix et son délai."
+        "title": "C’est plus grand qu’un projet à prix publié",
+        "body": "Nous préférons vous le dire maintenant plutôt que sous-estimer puis renégocier. L’étape suivante envoie cela en devis écrit, avec son prix et son délai."
       },
       "why": {
         "title": "Pourquoi ce résultat"
@@ -668,14 +669,14 @@
         "note": "Les correspondances de texte sont des signaux, pas des décisions. Si quelque chose est faux, modifiez votre description et ce sera réévalué."
       },
       "method": {
-        "selected": "Vous l'avez choisi",
-        "text_match": "D'après votre description",
+        "selected": "Vous l’avez choisi",
+        "text_match": "D’après votre description",
         "implied": "Requis par un autre choix",
         "manual": "Ajouté par nous"
       },
       "error": {
         "title": "Impossible de calculer votre portée",
-        "body": "Rien n'a été facturé ni enregistré. Réessayer suffit généralement.",
+        "body": "Rien n’a été facturé ni enregistré. Réessayer suffit généralement.",
         "retry": "Réessayer"
       }
     },
@@ -705,7 +706,7 @@
         "discountCode": "Code de remise"
       },
       "applyDiscount": "Appliquer",
-      "discountRefused": "Ce code n'est pas valable pour cette commande."
+      "discountRefused": "Ce code n’est pas valable pour cette commande."
     },
     "start": {
       "payTitle": "Lancez votre projet",
@@ -718,7 +719,7 @@
         "account": "Créez un compte pour héberger ce projet.",
         "payment": "Payez le prix fixe indiqué ci-dessus.",
         "assets": "Envoyez votre logo, vos contenus et le reste.",
-        "countdown": "Le compte à rebours démarre et votre espace s'ouvre.",
+        "countdown": "Le compte à rebours démarre et votre espace s’ouvre.",
         "quote": "Nous évaluons la portée et rédigeons un devis.",
         "review": "Vous validez le prix et le délai avant tout début."
       },
@@ -739,7 +740,7 @@
     },
     "multilingual": {
       "name": "Plusieurs langues",
-      "hint": "Servir plus d'une langue"
+      "hint": "Servir plus d’une langue"
     },
     "contact_forms": {
       "name": "Formulaires de contact",
@@ -747,14 +748,14 @@
     },
     "user_accounts": {
       "name": "Comptes clients",
-      "hint": "Un seul type d'utilisateur connecté"
+      "hint": "Un seul type d’utilisateur connecté"
     },
     "multi_role_access": {
-      "name": "Plusieurs types d'utilisateurs",
+      "name": "Plusieurs types d’utilisateurs",
       "hint": "Des personnes et des permissions différentes"
     },
     "organisation_accounts": {
-      "name": "Comptes d'équipe",
+      "name": "Comptes d’équipe",
       "hint": "Des clients qui invitent des collègues"
     },
     "hosted_checkout": {
@@ -763,7 +764,7 @@
     },
     "product_catalog": {
       "name": "Catalogue de produits",
-      "hint": "Une liste d'articles à vendre"
+      "hint": "Une liste d’articles à vendre"
     },
     "subscriptions": {
       "name": "Abonnements",
@@ -779,7 +780,7 @@
     },
     "push_notifications": {
       "name": "Notifications push",
-      "hint": "Alerter sur l'appareil"
+      "hint": "Alerter sur l’appareil"
     },
     "live_updates": {
       "name": "Mises à jour en direct",
@@ -787,11 +788,11 @@
     },
     "chat_messaging": {
       "name": "Messagerie",
-      "hint": "Les gens s'écrivent"
+      "hint": "Les gens s’écrivent"
     },
     "realtime_location_tracking": {
       "name": "Suivi de localisation en direct",
-      "hint": "Suivre quelqu'un sur une carte"
+      "hint": "Suivre quelqu’un sur une carte"
     },
     "admin_dashboard": {
       "name": "Tableau de bord du personnel",
@@ -826,7 +827,7 @@
       "hint": "Permettre à des partenaires de bâtir dessus"
     },
     "native_device_features": {
-      "name": "Fonctions de l'appareil",
+      "name": "Fonctions de l’appareil",
       "hint": "Caméra, biométrie, capteurs"
     },
     "offline_sync": {
@@ -836,40 +837,40 @@
   },
   "scopeReasons": {
     "multiple_user_types": {
-      "title": "Plusieurs types d'utilisateurs",
+      "title": "Plusieurs types d’utilisateurs",
       "body": "Chaque type supplémentaire multiplie écrans, permissions et tests."
     },
     "realtime_features": {
       "title": "Données en direct",
-      "body": "Maintenir les données à jour entre appareils est un travail d'infrastructure."
+      "body": "Maintenir les données à jour entre appareils est un travail d’infrastructure."
     },
     "operational_logic": {
       "title": "Logique opérationnelle",
       "body": "Des règles à concevoir selon votre fonctionnement, pas à configurer."
     },
     "commerce_complexity": {
-      "title": "Vente et gestion de l'argent",
+      "title": "Vente et gestion de l’argent",
       "body": "Catalogues, versements et facturation ont leurs propres règles."
     },
     "integration_work": {
-      "title": "Connexion à d'autres systèmes",
-      "body": "Le système d'un tiers impose le rythme et ses pannes."
+      "title": "Connexion à d’autres systèmes",
+      "body": "Le système d’un tiers impose le rythme et ses pannes."
     },
     "native_platform": {
-      "title": "Capacités natives de l'appareil",
+      "title": "Capacités natives de l’appareil",
       "body": "Les fonctions natives diffèrent selon les téléphones."
     },
     "content_scope": {
       "title": "Volume de contenu",
-      "body": "Plus de pages, c'est plus de mise en page et de relecture."
+      "body": "Plus de pages, c’est plus de mise en page et de relecture."
     },
     "additional_scope": {
       "title": "Portée supplémentaire",
-      "body": "Cela ajoute du travail au-delà du projet d'entrée."
+      "body": "Cela ajoute du travail au-delà du projet d’entrée."
     },
     "accumulated_complexity": {
       "title": "Beaucoup de travail ordinaire",
-      "body": "Rien n'est difficile seul, mais l'ensemble dépasse cinq jours."
+      "body": "Rien n’est difficile seul, mais l’ensemble dépasse cinq jours."
     }
   },
   "app": {
@@ -917,25 +918,6 @@
       "deadlinesHelp": "Avant une date de livraison, et si la garantie entre en jeu.",
       "productNews": "Actualités produit",
       "productNewsHelp": "Quelques nouvelles de temps à autre sur les nouveaux types de projets et fonctionnalités."
-    }
-  },
-  "admin": {
-    "title": "Console de l’équipe",
-    "lede": "Ce que votre rôle permet de faire. Les outils eux-mêmes arrivent dans les phases suivantes.",
-    "yourRole": "Votre rôle",
-    "allowed": "Autorisé",
-    "denied": "Refusé",
-    "summary": "{count} permissions sur {total} accordées à ce rôle.",
-    "roles": {
-      "customer": "Client",
-      "admin": "Administrateur",
-      "project_manager": "Chef de projet",
-      "developer": "Développeur",
-      "designer": "Designer",
-      "support": "Support",
-      "owner": "Propriétaire",
-      "finance": "Finance",
-      "qa": "Qualité"
     }
   },
   "checkout": {
@@ -993,7 +975,6 @@
     "paying": "Ouverture du paiement sécurisé",
     "payError": "Impossible d’ouvrir le paiement. Veuillez réessayer.",
     "cancelledNotice": "Le paiement a été annulé. Rien n’a été débité et votre commande est toujours là.",
-    "alreadyPaid": "Cette commande a été payée.",
     "status": {
       "draft": "Brouillon",
       "pending_payment": "En attente de paiement",
@@ -1040,7 +1021,6 @@
     "reference": "Référence",
     "loading": "Chargement de votre espace de production",
     "errors": {
-      "notAllowed": "Vous n’avez pas accès à ceci.",
       "generic": "Une erreur est survenue. Veuillez réessayer.",
       "loadFailed": "Impossible de charger cet espace de production.",
       "retry": "Réessayer"
@@ -1282,7 +1262,7 @@
       "notReady": "Pas encore prêt",
       "launched": "En ligne depuis le {date}",
       "goLive": "Mettre en ligne",
-      "blockers": "Ce qu'il reste",
+      "blockers": "Ce qu’il reste",
       "groups": {
         "customer": "À confirmer de votre côté",
         "technical": "Préparation technique",
@@ -1297,10 +1277,10 @@
       "markDone": "Marquer comme fait",
       "markPending": "Rouvrir",
       "markNotApplicable": "Sans objet",
-      "noteLabel": "Pourquoi cela ne s'applique pas",
+      "noteLabel": "Pourquoi cela ne s’applique pas",
       "items": {
         "contentFinal": "Textes et images définitifs reçus",
-        "previewApproved": "Vous avez approuvé l'aperçu",
+        "previewApproved": "Vous avez approuvé l’aperçu",
         "domainChosen": "Domaine choisi et dirigé vers nous",
         "productionDeployed": "Déployé en production",
         "dnsConfigured": "Les enregistrements DNS pointent vers le site",
@@ -1314,15 +1294,15 @@
       },
       "blocker": {
         "checklist_incomplete": "Des éléments obligatoires restent ouverts.",
-        "no_confirmed_deployment": "L'hébergeur n'a pas confirmé de déploiement en production.",
-        "domain_unverified": "Le domaine n'a pas été vérifié.",
+        "no_confirmed_deployment": "L’hébergeur n’a pas confirmé de déploiement en production.",
+        "domain_unverified": "Le domaine n’a pas été vérifié.",
         "dns_not_configured": "Le DNS ne pointe pas encore ici.",
-        "ssl_not_issued": "Aucun certificat n'a été émis.",
-        "preview_not_approved": "L'aperçu n'a pas été approuvé."
+        "ssl_not_issued": "Aucun certificat n’a été émis.",
+        "preview_not_approved": "L’aperçu n’a pas été approuvé."
       },
       "hosting": {
         "title": "Hébergement",
-        "none": "L'hébergement est mis en place lors de la mise en ligne.",
+        "none": "L’hébergement est mis en place lors de la mise en ligne.",
         "uptime": "Disponibilité {value} %",
         "uptimeAsOf": "Mesurée le {date}",
         "status": {
@@ -1357,7 +1337,7 @@
       "certificateExpiring": "Le certificat expire dans {days} jours.",
       "certificateExpired": "Le certificat a expiré.",
       "history": "Historique des déploiements",
-      "noHistory": "Rien n'a encore été déployé.",
+      "noHistory": "Rien n’a encore été déployé.",
       "deploymentState": {
         "queued": "En file",
         "building": "En construction",
@@ -1365,7 +1345,7 @@
         "failed": "Échoué",
         "superseded": "Remplacé"
       },
-      "awaitingProvider": "En attente de la confirmation de l'hébergeur.",
+      "awaitingProvider": "En attente de la confirmation de l’hébergeur.",
       "buildMore": {
         "title": "Aller plus loin",
         "body": "Ajoutez à ce projet sans repartir de zéro. Votre brief, vos fichiers et votre historique restent en place.",
@@ -1374,9 +1354,9 @@
         "detail": "Décrivez-le avec vos mots",
         "submit": "Envoyer la demande",
         "sent": "Demande {reference} enregistrée. Nous reviendrons avec un prix.",
-        "notYet": "Vous pourrez commander plus de travail dès que votre réalisation atteint l'aperçu.",
+        "notYet": "Vous pourrez commander plus de travail dès que votre réalisation atteint l’aperçu.",
         "credit": "Vous disposez de {hours} h {minutes} min de crédit de production.",
-        "noCredit": "Aucun crédit de production pour l'instant."
+        "noCredit": "Aucun crédit de production pour l’instant."
       }
     }
   },
@@ -1521,7 +1501,6 @@
       "member": "Membre",
       "role": "Rôle",
       "change": "Changer le rôle",
-      "changeTitle": "Changer le rôle",
       "changeBody": "Cette action est consignée dans le journal d’audit.",
       "save": "Enregistrer",
       "saving": "Enregistrement",
@@ -1606,20 +1585,20 @@
     },
     "settings": {
       "title": "Paramètres système",
-      "subtitle": "Configuration de la plateforme. Lecture seule ici ; les changements passent par le code.",
-      "pricing": "Tarifs par palier",
+      "subtitle": "Les parties de la plateforme qui ne se modifient pas ici, et où se trouvent celles qui se modifient.",
       "currency": "Présentation des devises",
       "tax": "Taxes",
       "risk": "Seuils de risque",
       "guarantee": "Garantie",
       "provisional": "Provisoire — validation commerciale requise",
-      "reviewedOn": "Taux révisés le {date}",
+      "reviewedOn": "Révisé le {date}",
       "taxDisabled": "Non activé. Aucun numéro de TVA n’est configuré.",
-      "readOnlyNote": "Les seuils de risque, la garantie et la politique fiscale résident dans la configuration versionnée : toute modification est donc relisible et réversible. Les prix se modifient dans Tarifs, où chaque changement est consigné à la place."
+      "readOnlyNote": "Les seuils de risque, la garantie et la politique fiscale résident dans la configuration versionnée : toute modification est donc relisible et réversible. Les prix se modifient dans Tarifs, où chaque changement est consigné à la place.",
+      "editedUnderPricing": "Modifié dans Tarifs"
     },
     "pricing": {
       "title": "Tarifs",
-      "subtitle": "Le prix de chaque réalisation, sa durée garantie et ce qui fait monter un projet d'un palier.",
+      "subtitle": "Le prix de chaque réalisation, sa durée garantie et ce qui fait monter un projet d’un palier.",
       "tabs": {
         "tiers": "Paliers",
         "features": "Fonctionnalités",
@@ -1636,7 +1615,7 @@
       "threshold": "À partir de",
       "minimumTier": "Impose au moins",
       "surcharge": "Supplément",
-      "noSurcharge": "Compris dans le palier",
+      "noSurcharge": "Laissez vide lorsque le prix du palier le couvre déjà.",
       "active": "En vente",
       "inactive": "Retiré",
       "rate": "Taux",
@@ -1650,7 +1629,7 @@
       "redemptions": "Utilisations",
       "unlimited": "Illimité",
       "window": "Validité",
-      "appliesTo": "S'applique à",
+      "appliesTo": "S’applique à",
       "allBuilds": "Toutes les réalisations",
       "minOrder": "Commande minimale",
       "maxDiscount": "Plafonné à",
@@ -1659,7 +1638,7 @@
       "saved": "Enregistré",
       "cancel": "Annuler",
       "edit": "Modifier",
-      "reason": "Motif (consigné au journal d'audit)",
+      "reason": "Motif (consigné au journal d’audit)",
       "withdraw": "Retirer",
       "reinstate": "Rétablir",
       "newDiscount": "Nouvelle remise",
@@ -1667,30 +1646,31 @@
       "readOnly": "Vous pouvez consulter les tarifs. Les modifier relève du propriétaire.",
       "usingDefaults": {
         "title": "Les tarifs livrés sont actifs",
-        "body": "Rien n'a encore été importé : la plateforme applique les montants définis dans la configuration versionnée. Importez-les pour pouvoir les modifier ici. L'import ne change aucun prix — il recopie les mêmes montants dans la base.",
+        "body": "Rien n’a encore été importé : la plateforme applique les montants définis dans la configuration versionnée. Importez-les pour pouvoir les modifier ici. L’import ne change aucun prix — il recopie les mêmes montants dans la base.",
         "action": "Importer les valeurs livrées",
         "done": "{features} fonctionnalités, {tiers} paliers et {currencies} devises importés."
       },
       "historyNote": "Modifier un prix ne change jamais une commande déjà passée : chaque commande figent le montant exact auquel elle a été tarifée.",
       "provisional": "Provisoire",
       "baseCurrency": "Devise de référence. Jamais convertie.",
-      "empty": "Rien pour l'instant.",
-      "auditedNote": "Chaque modification consigne son auteur, l'état précédent et le motif.",
-      "provisionalNote": "Seul le palier d'entrée de chaque réalisation provient de l'offre convenue. Les montants étendu et avancé sont des valeurs provisoires cohérentes entre elles et doivent être validés commercialement avant d'être montrés aux clients.",
+      "empty": "Rien pour l’instant.",
+      "auditedNote": "Chaque modification consigne son auteur, l’état précédent et le motif.",
+      "provisionalNote": "Seul le palier d’entrée de chaque réalisation provient de l’offre convenue. Les montants étendu et avancé sont des valeurs provisoires cohérentes entre elles et doivent être validés commercialement avant d’être montrés aux clients.",
       "includedCredit": "Crédit inclus (minutes)",
-      "trialDays": "Jours d'essai",
+      "trialDays": "Jours d’essai",
       "recommended": "Mis en avant",
       "group": "Groupe",
       "sortOrder": "Ordre",
       "requiredItem": "Obligatoire pour la mise en ligne",
       "customerVisible": "Visible par le client",
-      "planNote": "Modifier un prix ne change jamais un abonnement existant : le montant a été figé lors de l'achat.",
+      "planNote": "Modifier un prix ne change jamais un abonnement existant : le montant a été figé lors de l’achat.",
       "optional": "Facultatif",
       "usingLifecycleDefaults": {
         "title": "Les forfaits et la liste livrés sont actifs",
-        "body": "Les prix des forfaits de maintenance et la liste de mise en ligne proviennent encore de la configuration versionnée. Importez-les pour pouvoir les modifier ici. L'import ne change rien — il recopie les mêmes valeurs dans la base.",
+        "body": "Les prix des forfaits de maintenance et la liste de mise en ligne proviennent encore de la configuration versionnée. Importez-les pour pouvoir les modifier ici. L’import ne change rien — il recopie les mêmes valeurs dans la base.",
         "action": "Importer forfaits et liste"
-      }
+      },
+      "quoteHint": "Laissez vide pour un devis sur mesure. Les jours doivent l’être aussi."
     },
     "analytics": {
       "title": "Analyses",
@@ -1723,7 +1703,6 @@
       "included": "Inclus",
       "excluded": "Non inclus",
       "changes": "Demandes de modification",
-      "noChanges": "Aucune modification demandée.",
       "historical": "Les évaluations sont en ajout seul ; voici ce qui avait été convenu."
     },
     "common": {
@@ -1761,9 +1740,9 @@
     },
     "domainsPage": {
       "title": "Domaines",
-      "subtitle": "Tous les domaines de la plateforme, certificats les plus proches de l'expiration en premier.",
+      "subtitle": "Tous les domaines de la plateforme, certificats les plus proches de l’expiration en premier.",
       "empty": "Aucun domaine.",
-      "emptyBody": "Un domaine apparaît ici dès qu'il est rattaché à un projet.",
+      "emptyBody": "Un domaine apparaît ici dès qu’il est rattaché à un projet.",
       "primary": "Principal",
       "expiringSoon": "{count} certificats à surveiller",
       "expiringBody": "Un certificat expiré emporte le site avec lui. Ceux-ci expirent sous 30 jours ou sont déjà expirés.",
@@ -1778,8 +1757,8 @@
     "hostingPage": {
       "title": "Hébergement",
       "subtitle": "Où tourne chaque projet en ligne, et ce qui est réellement servi.",
-      "empty": "Rien n'est hébergé pour l'instant.",
-      "emptyBody": "L'hébergement est enregistré lors de la mise en ligne d'un projet.",
+      "empty": "Rien n’est hébergé pour l’instant.",
+      "emptyBody": "L’hébergement est enregistré lors de la mise en ligne d’un projet.",
       "noDomain": "Aucun domaine",
       "noConfirmed": "Aucun déploiement confirmé",
       "notMeasured": "Non mesurée",
@@ -1795,22 +1774,22 @@
   "maintenance": {
     "title": "Maintenance",
     "none": "Aucun forfait de maintenance.",
-    "noneBody": "L'hébergement, les mises à jour et la surveillance font l'objet d'un forfait distinct et résiliable.",
+    "noneBody": "L’hébergement, les mises à jour et la surveillance font l’objet d’un forfait distinct et résiliable.",
     "current": "Forfait actuel",
     "renews": "Renouvellement le {date}",
     "endsOn": "Se termine le {date}",
-    "trialUntil": "Gratuit jusqu'au {date}",
+    "trialUntil": "Gratuit jusqu’au {date}",
     "change": "Changer de forfait",
     "cancel": "Résilier",
     "keep": "Conserver mon forfait",
     "cancelTitle": "Résilier ce forfait ?",
-    "cancelBody": "Votre forfait reste actif jusqu'au {date}. Vous avez payé cette période et elle vous reste acquise.",
+    "cancelBody": "Votre forfait reste actif jusqu’au {date}. Vous avez payé cette période et elle vous reste acquise.",
     "cancelReason": "Pourquoi résiliez-vous ? (facultatif)",
-    "cancelled": "Résilié. Le service continue jusqu'au {date}.",
+    "cancelled": "Résilié. Le service continue jusqu’au {date}.",
     "upgradeNote": "Prend effet immédiatement. {amount} vous seront facturés pour le reste de la période.",
-    "downgradeNote": "Prend effet le {date}. Rien n'est facturé aujourd'hui et rien n'est remboursé : vous conservez le forfait payé jusque-là.",
+    "downgradeNote": "Prend effet le {date}. Rien n’est facturé aujourd’hui et rien n’est remboursé : vous conservez le forfait payé jusque-là.",
     "history": "Historique de facturation",
-    "noHistory": "Rien pour l'instant.",
+    "noHistory": "Rien pour l’instant.",
     "status": {
       "trialing": "Essai",
       "active": "Actif",
@@ -1819,12 +1798,12 @@
       "cancelled": "Résilié",
       "expired": "Expiré"
     },
-    "pastDueNote": "Un paiement n'a pas abouti. Votre site reste en ligne le temps de régler cela.",
+    "pastDueNote": "Un paiement n’a pas abouti. Votre site reste en ligne le temps de régler cela.",
     "credits": {
       "title": "Crédit de production",
       "balance": "{hours} h {minutes} min disponibles",
       "empty": "Aucun crédit de production.",
-      "body": "Le crédit vous appartient, pas à un site en particulier. Utilisez-le sur n'importe lequel de vos projets.",
+      "body": "Le crédit vous appartient, pas à un site en particulier. Utilisez-le sur n’importe lequel de vos projets.",
       "statement": "Relevé",
       "kind": {
         "purchased": "Acheté",
@@ -1836,7 +1815,8 @@
         "adjusted": "Ajusté"
       },
       "expires": "Expire le {date}"
-    }
+    },
+    "choose": "Choisir ce forfait"
   },
   "billing": {
     "title": "Facturation",

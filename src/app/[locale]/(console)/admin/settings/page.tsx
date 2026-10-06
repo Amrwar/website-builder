@@ -8,10 +8,11 @@ import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { MISSED_DEADLINE_REFUND } from "@/config/brand";
 import { TAX } from "@/config/commerce";
-import { CURRENCY_PRESENTATION, RATES_REVIEWED_ON } from "@/config/currency";
 import { getLocaleDefinition, resolveLocale } from "@/config/locales";
+import { Link } from "@/i18n/navigation";
 import { RISK_THRESHOLDS, RISK_RULESET_VERSION } from "@/lib/production/risk";
 import { requireAdminSection } from "@/server/admin/guard";
+import { loadCatalog } from "@/server/engine";
 
 export const metadata: Metadata = {
   title: "System settings",
@@ -23,14 +24,16 @@ export const dynamic = "force-dynamic";
 /**
  * Platform configuration.
  *
- * Read-only, deliberately. Every value here lives in version-controlled
- * configuration, which is what makes a pricing change reviewable, attributable
- * and revertable. An admin screen that could edit them would move those
- * decisions somewhere with no history and no review -- and the commercial
- * figures in this product are exactly the things that need both.
+ * What is *not* editable. Risk thresholds, the guarantee percentages and tax
+ * policy live in version-controlled configuration, which is what makes a change
+ * to any of them reviewable, attributable and revertable.
  *
- * So this screen's job is to show what the running configuration actually is,
- * including which parts are still provisional.
+ * Prices moved out of here in Phase 10: they are edited under Pricing, where
+ * every change is audited instead. The currency rates are shown because they
+ * decide what customers are charged, and they are read from the **live
+ * catalogue** -- the same `loadCatalog()` the engine prices with -- rather than
+ * from the shipped constants. A settings screen that showed a rate the engine
+ * had stopped using would be worse than showing nothing.
  */
 export default async function AdminSettingsPage({
   params,
@@ -41,9 +44,8 @@ export default async function AdminSettingsPage({
   const t = await getTranslations("adminConsole");
   const { intlTag } = getLocaleDefinition(resolveLocale(locale));
 
-  const reviewed = new Intl.DateTimeFormat(intlTag, { dateStyle: "medium" }).format(
-    new Date(RATES_REVIEWED_ON),
-  );
+  const catalog = await loadCatalog();
+  const format = new Intl.DateTimeFormat(intlTag, { dateStyle: "medium" });
 
   return (
     <AdminShell role={context.user.role} active="settings">
@@ -60,23 +62,40 @@ export default async function AdminSettingsPage({
             <h2 className="text-body font-medium text-primary">
               {t("settings.currency")}
             </h2>
-            <Badge tone="warning">{t("settings.provisional")}</Badge>
+            <Link
+              href="/admin/pricing"
+              className="text-caption text-secondary underline underline-offset-2 hover:text-primary"
+            >
+              {t("settings.editedUnderPricing")}
+            </Link>
           </div>
-
-          <p className="text-caption text-tertiary">
-            {t("settings.reviewedOn", { date: reviewed })}
-          </p>
 
           <Separator />
 
           <dl className="flex flex-col gap-1.5">
-            {Object.entries(CURRENCY_PRESENTATION).map(([code, rule]) => (
-              <div key={code} className="flex items-baseline justify-between gap-4">
+            {catalog.currencies.map((rule) => (
+              <div key={rule.code} className="flex items-baseline justify-between gap-4">
                 <dt className="text-body-sm text-secondary" data-numeric>
-                  {code}
+                  {rule.code}
+                  {!rule.isActive ? (
+                    <Badge tone="neutral" className="ms-2">
+                      {t("pricing.inactive")}
+                    </Badge>
+                  ) : null}
                 </dt>
-                <dd className="text-body-sm text-primary" data-numeric>
-                  × {rule.rate} · {rule.roundToMinorUnits}
+                <dd className="flex flex-col items-end">
+                  <span className="text-body-sm text-primary" data-numeric>
+                    × {rule.rate} · {rule.roundToMinorUnits}
+                  </span>
+                  {/* A rate with no review date beside it is one nobody can
+                      hold to account, so the date travels with the figure. */}
+                  <span className="text-caption text-tertiary" data-numeric>
+                    {rule.reviewedOn
+                      ? t("settings.reviewedOn", {
+                          date: format.format(new Date(rule.reviewedOn)),
+                        })
+                      : "—"}
+                  </span>
                 </dd>
               </div>
             ))}

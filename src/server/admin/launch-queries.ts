@@ -1,6 +1,6 @@
 import "server-only";
 
-import { and, asc, desc, eq, lte, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, inArray, lte, or, sql } from "drizzle-orm";
 
 import { db } from "@/db/client";
 import {
@@ -13,7 +13,6 @@ import {
   type Domain,
   type ProjectHosting,
 } from "@/db/schema";
-import { SSL_EXPIRY_WARNING_DAYS } from "@/config/launch";
 import { ApiError } from "@/lib/api/response";
 import type { AuthContext } from "@/server/auth";
 
@@ -81,18 +80,6 @@ export async function listDomains(context: AuthContext): Promise<DomainRow[]> {
   }));
 }
 
-/** Domains whose certificate has expired or is about to. */
-export async function expiringCertificates(
-  context: AuthContext,
-  withinDays = SSL_EXPIRY_WARNING_DAYS,
-): Promise<DomainRow[]> {
-  const all = await listDomains(context);
-  return all.filter(
-    (row) =>
-      row.certificateDaysRemaining !== null && row.certificateDaysRemaining <= withinDays,
-  );
-}
-
 export interface HostingRow {
   hosting: ProjectHosting;
   projectReference: string;
@@ -128,11 +115,14 @@ export async function listHosting(context: AuthContext): Promise<HostingRow[]> {
 
   const projectIds = rows.map((row) => row.hosting.projectId);
 
+  // Both scoped to the projects on this page. Reading every domain and every
+  // production deployment on the platform to fill in a handful of columns is a
+  // scan that only grows, and a query should not read rows nobody asked for.
   const [primaries, live] = await Promise.all([
     db
       .select({ projectId: domains.projectId, name: domains.name })
       .from(domains)
-      .where(and(eq(domains.isPrimary, true))),
+      .where(and(eq(domains.isPrimary, true), inArray(domains.projectId, projectIds))),
     db
       .select({
         projectId: deployments.projectId,
@@ -141,7 +131,11 @@ export async function listHosting(context: AuthContext): Promise<HostingRow[]> {
       })
       .from(deployments)
       .where(
-        and(eq(deployments.environment, "production"), eq(deployments.state, "ready")),
+        and(
+          eq(deployments.environment, "production"),
+          eq(deployments.state, "ready"),
+          inArray(deployments.projectId, projectIds),
+        ),
       )
       .orderBy(desc(deployments.providerConfirmedAt)),
   ]);
@@ -153,19 +147,17 @@ export async function listHosting(context: AuthContext): Promise<HostingRow[]> {
     if (!liveByProject.has(row.projectId)) liveByProject.set(row.projectId, row);
   }
 
-  return rows
-    .filter((row) => projectIds.includes(row.hosting.projectId))
-    .map((row) => {
-      const deployment = liveByProject.get(row.hosting.projectId);
-      return {
-        hosting: row.hosting,
-        projectReference: row.reference,
-        ownerName: row.ownerName,
-        primaryDomain: domainByProject.get(row.hosting.projectId) ?? null,
-        liveVersion: deployment?.version ?? null,
-        liveConfirmedAt: deployment?.confirmedAt ?? null,
-      };
-    });
+  return rows.map((row) => {
+    const deployment = liveByProject.get(row.hosting.projectId);
+    return {
+      hosting: row.hosting,
+      projectReference: row.reference,
+      ownerName: row.ownerName,
+      primaryDomain: domainByProject.get(row.hosting.projectId) ?? null,
+      liveVersion: deployment?.version ?? null,
+      liveConfirmedAt: deployment?.confirmedAt ?? null,
+    };
+  });
 }
 
 export interface SubscriptionRow {

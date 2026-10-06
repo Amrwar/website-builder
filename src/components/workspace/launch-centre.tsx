@@ -8,7 +8,8 @@ import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Callout } from "@/components/ui/callout";
-import { Input } from "@/components/ui/input";
+import { Field } from "@/components/ui/field";
+import { Input, Textarea } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/components/ui/toast";
 import type { ChecklistGroup, ChecklistState } from "@/db/schema/enums";
@@ -125,12 +126,20 @@ export function LaunchChecklist({
       <div className="flex flex-col gap-3">
         <div className="flex flex-wrap items-baseline justify-between gap-3">
           <p className="text-eyebrow text-tertiary uppercase">{t("checklist")}</p>
-          <p className="text-caption text-secondary" data-numeric>
-            {t("readiness", {
-              completed: readiness.completed,
-              required: readiness.required,
-            })}
-          </p>
+          <span className="flex items-center gap-2">
+            {/* Stated as well as counted: "9 of 11" leaves the reader to work
+                out whether that is enough, and the answer also depends on
+                facts outside the checklist. */}
+            <Badge tone={readiness.ready ? "success" : "neutral"}>
+              {readiness.ready ? t("ready") : t("notReady")}
+            </Badge>
+            <span className="text-caption text-secondary" data-numeric>
+              {t("readiness", {
+                completed: readiness.completed,
+                required: readiness.required,
+              })}
+            </span>
+          </span>
         </div>
         <Progress value={readiness.percent} label={t("checklist")} />
       </div>
@@ -215,13 +224,18 @@ export function LaunchChecklist({
 
                   {noteFor === row.key ? (
                     <div className="flex flex-wrap items-end gap-2 ps-6">
-                      <Input
-                        value={note}
-                        maxLength={200}
-                        placeholder={t("noteLabel")}
-                        className="w-64"
-                        onChange={(event) => setNote(event.target.value)}
-                      />
+                      {/* A placeholder is not a label: it disappears on focus
+                          and is announced inconsistently. `hideLabel` keeps the
+                          compact look without costing the accessible name. */}
+                      <Field label={t("noteLabel")} hideLabel>
+                        <Input
+                          value={note}
+                          maxLength={200}
+                          placeholder={t("noteLabel")}
+                          className="w-64"
+                          onChange={(event) => setNote(event.target.value)}
+                        />
+                      </Field>
                       <Button
                         size="sm"
                         disabled={pending || note.trim() === ""}
@@ -328,20 +342,22 @@ export function BuildMore({
         <div className="flex max-w-xl flex-col gap-3">
           {error ? <Callout tone="danger" live title={error} /> : null}
 
-          <Input
-            value={summary}
-            maxLength={160}
-            placeholder={t("summary")}
-            onChange={(event) => setSummary(event.target.value)}
-          />
-          <textarea
-            value={detail}
-            maxLength={5000}
-            rows={4}
-            placeholder={t("detail")}
-            onChange={(event) => setDetail(event.target.value)}
-            className="w-full rounded-md border border-line-strong bg-canvas px-3 py-2.5 text-body-sm text-primary"
-          />
+          <Field label={t("summary")}>
+            <Input
+              value={summary}
+              maxLength={160}
+              onChange={(event) => setSummary(event.target.value)}
+            />
+          </Field>
+
+          <Field label={t("detail")}>
+            <Textarea
+              value={detail}
+              maxLength={5000}
+              rows={4}
+              onChange={(event) => setDetail(event.target.value)}
+            />
+          </Field>
 
           <div className="flex gap-2">
             <Button

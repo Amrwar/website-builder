@@ -116,7 +116,10 @@ Honest list, in rough priority order.
 7. **No automated database-level tests.** The CHECK constraints and triggers are
    verified by hand-run scripts against real Postgres, recorded above, rather
    than by a suite that runs in the gate.
-8. **No load or performance budget.**
+8. **No automated copy review.** Mechanical checks (doubled words, stray
+   whitespace, apostrophe consistency, keys nothing references) are run by hand
+   against the catalogues; nothing enforces them.
+9. **No load or performance budget.**
 
 Items 1 and 3 are the cheapest and most valuable. Item 5 is the one that would
 have caught the suspended-boundary bug automatically.

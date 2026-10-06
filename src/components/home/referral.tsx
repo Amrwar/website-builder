@@ -2,6 +2,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 
 import { Container } from "@/components/layout/container";
 import { Section, SectionHeading } from "@/components/layout/section";
+import { Callout } from "@/components/ui/callout";
 import { Card } from "@/components/ui/card";
 import { getLocaleDefinition } from "@/config/locales";
 import { REFERRAL } from "@/config/referral";
@@ -56,6 +57,14 @@ export async function Referral() {
             </li>
           ))}
         </ol>
+
+        {/* The programme is described but not yet open. Saying so is the same
+            rule the build wall, the portfolio and the reviews follow: a page
+            whose whole argument is that the numbers are checkable cannot
+            advertise a mechanism that does not exist. */}
+        <Callout tone="info" title={t("notOpenYet")}>
+          {t("notOpenYetBody")}
+        </Callout>
 
         <p className="max-w-2xl text-body-sm text-secondary">{t("terms")}</p>
       </Container>

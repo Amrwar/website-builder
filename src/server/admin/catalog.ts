@@ -97,8 +97,14 @@ export async function readCatalogForAdmin(
   requireRead(context);
 
   const [features, tiers, currencies, codes] = await Promise.all([
-    db.select().from(catalogFeatures).orderBy(asc(catalogFeatures.key)),
-    db.select().from(catalogTiers).orderBy(asc(catalogTiers.buildType)),
+    db
+      .select()
+      .from(catalogFeatures)
+      .orderBy(asc(catalogFeatures.sortOrder), asc(catalogFeatures.key)),
+    db
+      .select()
+      .from(catalogTiers)
+      .orderBy(asc(catalogTiers.buildType), asc(catalogTiers.pointThreshold)),
     db.select().from(catalogCurrencies).orderBy(asc(catalogCurrencies.code)),
     db.select().from(discounts).orderBy(asc(discounts.code)),
   ]);

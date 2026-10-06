@@ -14,7 +14,6 @@
     "closeMenu": "Close menu",
     "skipToContent": "Skip to content",
     "howItWorks": "How it works",
-    "whatsIncluded": "What's included",
     "pricing": "Pricing",
     "buildWall": "Build wall",
     "signIn": "Sign in",
@@ -288,8 +287,8 @@
       "fromLabel": "from",
       "perMonth": "per month",
       "recommended": "Most chosen",
-      "cta": "Add at checkout",
-      "footnote": "You can also host it yourself. We hand over the code and the deployment either way, and no plan is required to keep your build.",
+      "cta": "Start a build",
+      "footnote": "Plans are chosen from your billing page once your build is under way. Nothing is added at checkout, and no plan is required to keep your build — we hand over the code and the deployment either way.",
       "plans": {
         "essential": {
           "name": "Essential",
@@ -337,7 +336,9 @@
           "body": "Credited once their build starts, usable against a new build or your monthly plan."
         }
       },
-      "terms": "Credits expire 12 months after they are issued and cannot be exchanged for cash. One credit per referred build."
+      "terms": "Credits expire 12 months after they are issued and cannot be exchanged for cash. One credit per referred build.",
+      "notOpenYet": "Not open yet",
+      "notOpenYetBody": "Referral credits are not being issued yet. This is how the programme will work when it opens, stated now so the terms are not written after the fact."
     },
     "faq": {
       "eyebrow": "Questions",
@@ -919,25 +920,6 @@
       "productNewsHelp": "Occasional notes about new build types and features."
     }
   },
-  "admin": {
-    "title": "Staff console",
-    "lede": "What your role is allowed to do. The tools themselves arrive in later phases.",
-    "yourRole": "Your role",
-    "allowed": "Allowed",
-    "denied": "Denied",
-    "summary": "{count} of {total} permissions granted to this role.",
-    "roles": {
-      "customer": "Customer",
-      "admin": "Administrator",
-      "project_manager": "Project manager",
-      "developer": "Developer",
-      "designer": "Designer",
-      "support": "Support",
-      "owner": "Owner",
-      "finance": "Finance",
-      "qa": "QA"
-    }
-  },
   "checkout": {
     "title": "Review your order",
     "subtitle": "Everything this build includes, everything it does not, and exactly what you pay.",
@@ -993,7 +975,6 @@
     "paying": "Opening secure checkout",
     "payError": "We could not open checkout. Please try again.",
     "cancelledNotice": "Payment was cancelled. Nothing has been charged and your order is still here.",
-    "alreadyPaid": "This order has been paid.",
     "status": {
       "draft": "Draft",
       "pending_payment": "Awaiting payment",
@@ -1040,7 +1021,6 @@
     "reference": "Reference",
     "loading": "Loading your build room",
     "errors": {
-      "notAllowed": "You do not have access to this.",
       "generic": "Something went wrong. Please try again.",
       "loadFailed": "We could not load this build room.",
       "retry": "Try again"
@@ -1521,7 +1501,6 @@
       "member": "Member",
       "role": "Role",
       "change": "Change role",
-      "changeTitle": "Change role",
       "changeBody": "This is recorded in the audit log.",
       "save": "Save",
       "saving": "Saving",
@@ -1606,16 +1585,16 @@
     },
     "settings": {
       "title": "System settings",
-      "subtitle": "Platform configuration. Read-only here; changes are made in code and deployed.",
-      "pricing": "Tier pricing",
+      "subtitle": "The parts of the platform that are not editable here, and where the ones that are live.",
       "currency": "Currency presentation",
       "tax": "Tax",
       "risk": "Risk thresholds",
       "guarantee": "Guarantee",
       "provisional": "Provisional — needs commercial sign-off",
-      "reviewedOn": "Rates reviewed {date}",
+      "reviewedOn": "Reviewed {date}",
       "taxDisabled": "Not enabled. No tax registration is configured.",
-      "readOnlyNote": "Risk thresholds, the guarantee and tax policy live in version-controlled configuration, so changing one is reviewable and revertable. Prices are editable under Pricing, where every change is audited instead."
+      "readOnlyNote": "Risk thresholds, the guarantee and tax policy live in version-controlled configuration, so changing one is reviewable and revertable. Prices are editable under Pricing, where every change is audited instead.",
+      "editedUnderPricing": "Edited under Pricing"
     },
     "pricing": {
       "title": "Pricing",
@@ -1636,7 +1615,7 @@
       "threshold": "Points from",
       "minimumTier": "Lifts to at least",
       "surcharge": "Surcharge",
-      "noSurcharge": "Included in the tier",
+      "noSurcharge": "Leave empty when the tier price already covers it.",
       "active": "Sold",
       "inactive": "Withdrawn",
       "rate": "Rate",
@@ -1690,7 +1669,8 @@
         "title": "The shipped plans and checklist are live",
         "body": "Maintenance plan prices and the launch checklist are still coming from version-controlled configuration. Import them to make them editable here. Importing changes nothing — it copies the same values into the database.",
         "action": "Import plans and checklist"
-      }
+      },
+      "quoteHint": "Leave empty for a custom quote. Days must be empty too."
     },
     "analytics": {
       "title": "Analytics",
@@ -1723,7 +1703,6 @@
       "included": "Included",
       "excluded": "Not included",
       "changes": "Change requests",
-      "noChanges": "No changes requested.",
       "historical": "Assessments are append-only; this is what was agreed at the time."
     },
     "common": {
@@ -1836,7 +1815,8 @@
         "adjusted": "Adjusted"
       },
       "expires": "Expires {date}"
-    }
+    },
+    "choose": "Choose this plan"
   },
   "billing": {
     "title": "Billing",

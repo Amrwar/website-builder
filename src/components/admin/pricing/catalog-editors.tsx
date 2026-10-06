@@ -11,6 +11,13 @@ import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/components/ui/toast";
 import { SCOPE_TIERS, type ScopeTierId } from "@/db/schema/enums";
 import { BUILD_TYPES, type BuildType } from "@/config/products";
@@ -220,7 +227,7 @@ export function TierEditor({ row, canEdit }: { row: TierRow; canEdit: boolean })
           value={price}
           onChange={setPrice}
           step={1}
-          description={t("quote")}
+          description={t("quoteHint")}
         />
         <NumberField label={t("days")} value={days} onChange={setDays} min={1} />
         <NumberField label={t("threshold")} value={threshold} onChange={setThreshold} />
@@ -313,17 +320,18 @@ export function FeatureEditor({ row, canEdit }: { row: FeatureRow; canEdit: bool
         <NumberField label={t("points")} value={points} onChange={setPoints} />
 
         <Field label={t("minimumTier")}>
-          <select
-            value={tier}
-            onChange={(event) => setTier(event.target.value as ScopeTierId)}
-            className="h-10 w-full rounded-md border border-line-strong bg-canvas px-3 text-body-sm text-primary"
-          >
-            {SCOPE_TIERS.map((value) => (
-              <option key={value} value={value}>
-                {value}
-              </option>
-            ))}
-          </select>
+          <Select value={tier} onValueChange={(value) => setTier(value as ScopeTierId)}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {SCOPE_TIERS.map((value) => (
+                <SelectItem key={value} value={value}>
+                  {value}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </Field>
 
         <NumberField
@@ -584,14 +592,18 @@ export function NewDiscount() {
         </Field>
 
         <Field label={t("kind")}>
-          <select
+          <Select
             value={kind}
-            onChange={(event) => setKind(event.target.value as "percentage" | "fixed")}
-            className="h-10 w-full rounded-md border border-line-strong bg-canvas px-3 text-body-sm text-primary"
+            onValueChange={(value) => setKind(value as "percentage" | "fixed")}
           >
-            <option value="percentage">{t("percentage")}</option>
-            <option value="fixed">{t("fixed")}</option>
-          </select>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="percentage">{t("percentage")}</SelectItem>
+              <SelectItem value="fixed">{t("fixed")}</SelectItem>
+            </SelectContent>
+          </Select>
         </Field>
 
         <NumberField label={t("value")} value={value} onChange={setValue} min={1} />
@@ -842,17 +854,21 @@ export function ChecklistItemEditor({
 
       <div className="grid gap-3 sm:grid-cols-2">
         <Field label={t("group")}>
-          <select
+          <Select
             value={group}
-            onChange={(event) => setGroup(event.target.value as ChecklistGroup)}
-            className="h-10 w-full rounded-md border border-line-strong bg-canvas px-3 text-body-sm text-primary"
+            onValueChange={(value) => setGroup(value as ChecklistGroup)}
           >
-            {CHECKLIST_GROUPS.map((value) => (
-              <option key={value} value={value}>
-                {value}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {CHECKLIST_GROUPS.map((value) => (
+                <SelectItem key={value} value={value}>
+                  {value}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </Field>
 
         <NumberField label={t("sortOrder")} value={order} onChange={setOrder} />

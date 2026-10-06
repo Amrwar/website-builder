@@ -98,6 +98,7 @@ export default async function BillingPage({ params }: PageProps<"/[locale]/billi
               : null
           }
           projectId={current?.projectId ?? null}
+          locale={intlTag}
         />
 
         {/* --- Build credit ------------------------------------------------ */}

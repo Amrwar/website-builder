@@ -8,12 +8,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Callout } from "@/components/ui/callout";
 import { Card } from "@/components/ui/card";
+import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/toast";
 import type { SubscriptionStatus } from "@/db/schema/enums";
 import {
   endSubscription,
   keepSubscription,
+  previewSwitch,
   subscribeToPlan,
   switchPlan,
 } from "@/server/launch-actions";
@@ -49,12 +51,23 @@ export function MaintenancePanel({
   plans,
   current,
   projectId,
+  locale,
 }: {
   plans: readonly PlanOption[];
   current: CurrentSubscription | null;
   projectId: string | null;
+  /** BCP-47 tag, for formatting the previewed amount and date. */
+  locale: string;
 }) {
   const t = useTranslations("maintenance");
+
+  const formatAmount = (minorUnits: number, currency: string): string =>
+    new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency,
+      minimumFractionDigits: minorUnits % 100 === 0 ? 0 : 2,
+    }).format(minorUnits / 100);
+
   const tFeature = useTranslations("home.maintenance.features");
   const tPlan = useTranslations("home.maintenance.plans");
   const { toast } = useToast();
@@ -63,6 +76,18 @@ export function MaintenancePanel({
   const [confirming, setConfirming] = useState(false);
   const [reason, setReason] = useState("");
   const [pending, start] = useTransition();
+
+  /**
+   * An upgrade takes money today, so the figure is shown and agreed to before
+   * anything is charged. The preview is computed by the same function that
+   * will charge it, so the two cannot disagree.
+   */
+  const [switching, setSwitching] = useState<{
+    planKey: string;
+    immediate: boolean;
+    amount: string;
+    effectiveAt: string;
+  } | null>(null);
 
   /**
    * Plan keys and feature keys come from the database, so a key can exist that
@@ -154,13 +179,13 @@ export function MaintenancePanel({
                 {t("cancelBody", { date: current.periodEndLabel })}
               </p>
 
-              <Input
-                value={reason}
-                maxLength={200}
-                placeholder={t("cancelReason")}
-                onChange={(event) => setReason(event.target.value)}
-                className="max-w-md"
-              />
+              <Field label={t("cancelReason")} className="max-w-md">
+                <Input
+                  value={reason}
+                  maxLength={200}
+                  onChange={(event) => setReason(event.target.value)}
+                />
+              </Field>
 
               <div className="flex gap-2">
                 <Button
@@ -202,6 +227,35 @@ export function MaintenancePanel({
         </Callout>
       )}
 
+      {switching ? (
+        <Card padding="lg" className="flex flex-col gap-3">
+          <p className="text-body font-medium text-primary">{t("change")}</p>
+          <p className="text-body-sm text-secondary">
+            {switching.immediate
+              ? t("upgradeNote", { amount: switching.amount })
+              : t("downgradeNote", { date: switching.effectiveAt })}
+          </p>
+
+          <div className="flex gap-2">
+            <Button
+              disabled={pending || !current}
+              onClick={() =>
+                run(async () => {
+                  const result = await switchPlan(current!.id, switching.planKey);
+                  if (result.ok) setSwitching(null);
+                  return result;
+                })
+              }
+            >
+              {t("change")}
+            </Button>
+            <Button variant="ghost" onClick={() => setSwitching(null)}>
+              {t("keep")}
+            </Button>
+          </div>
+        </Card>
+      ) : null}
+
       {/* --- The plans ------------------------------------------------------ */}
       <div className="grid gap-4 md:grid-cols-3">
         {plans.map((plan) => {
@@ -238,16 +292,18 @@ export function MaintenancePanel({
                   disabled={pending}
                   onClick={() =>
                     run(async () => {
-                      const result = await switchPlan(current.id, plan.key);
-                      if (result.ok && !result.immediate) {
-                        toast({
-                          title: t("downgradeNote", {
-                            date: current.periodEndLabel,
-                          }),
-                          tone: "neutral",
-                        });
-                      }
-                      return result;
+                      const preview = await previewSwitch(current.id, plan.key);
+                      if (!preview.ok) return preview;
+
+                      setSwitching({
+                        planKey: plan.key,
+                        immediate: preview.immediate,
+                        amount: formatAmount(preview.dueNowMinorUnits, preview.currency),
+                        effectiveAt: new Intl.DateTimeFormat(locale, {
+                          dateStyle: "medium",
+                        }).format(new Date(preview.effectiveAt)),
+                      });
+                      return preview;
                     })
                   }
                 >
@@ -259,7 +315,7 @@ export function MaintenancePanel({
                   disabled={pending}
                   onClick={() => run(() => subscribeToPlan(plan.key, projectId))}
                 >
-                  {planName(plan.key)}
+                  {t("choose")}
                 </Button>
               )}
             </Card>

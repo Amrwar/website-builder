@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Callout } from "@/components/ui/callout";
+import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/toast";
 import { approveRefund, declineRefund } from "@/server/admin-actions";
@@ -65,13 +66,17 @@ export function RefundActions({
 
       {declining ? (
         <div className="flex flex-wrap items-center gap-2">
-          <Input
-            value={note}
-            maxLength={500}
-            onChange={(event) => setNote(event.target.value)}
-            placeholder={t("reason")}
-            className="w-56"
-          />
+          {/* The placeholder alone would leave this control unnamed for a
+              screen reader, on a form that releases money. */}
+          <Field label={t("reason")} hideLabel>
+            <Input
+              value={note}
+              maxLength={500}
+              onChange={(event) => setNote(event.target.value)}
+              placeholder={t("reason")}
+              className="w-56"
+            />
+          </Field>
           <Button
             size="sm"
             variant="secondary"

@@ -10,6 +10,7 @@ import { launchProject, setChecklistState } from "@/server/launch";
 import {
   cancelSubscription,
   changePlan,
+  previewPlanChange,
   resumeSubscription,
   startSubscription,
 } from "@/server/subscriptions";
@@ -135,10 +136,53 @@ export async function subscribeToPlan(
       };
     }
 
-    revalidatePath("/account");
+    revalidatePath("/billing");
     return { ok: true, reference: result.value.reference };
   } catch (error) {
     return failure(error, "That plan could not be started.");
+  }
+}
+
+/**
+ * What switching would cost, before anything is charged.
+ *
+ * A separate read, so the customer sees the figure and agrees to it. The
+ * amount is computed by the same function that will charge it.
+ */
+export async function previewSwitch(
+  subscriptionId: string,
+  planKey: string,
+): Promise<
+  ActionResult<{
+    kind: string;
+    immediate: boolean;
+    dueNowMinorUnits: number;
+    currency: string;
+    effectiveAt: string;
+  }>
+> {
+  try {
+    const context = await requireUser();
+    const result = await previewPlanChange(
+      String(subscriptionId),
+      String(planKey),
+      context,
+    );
+
+    if (!result.ok) {
+      return { ok: false, reason: result.reason, message: "That plan is not available." };
+    }
+
+    return {
+      ok: true,
+      kind: result.value.kind,
+      immediate: result.value.immediate,
+      dueNowMinorUnits: result.value.dueNowMinorUnits,
+      currency: result.value.currency,
+      effectiveAt: result.value.effectiveAt.toISOString(),
+    };
+  } catch (error) {
+    return failure(error, "That change could not be previewed.");
   }
 }
 
@@ -154,7 +198,7 @@ export async function switchPlan(
       return { ok: false, reason: result.reason, message: "That change was refused." };
     }
 
-    revalidatePath("/account");
+    revalidatePath("/billing");
     return {
       ok: true,
       dueNowMinorUnits: result.value.change.dueNowMinorUnits,
@@ -185,7 +229,7 @@ export async function endSubscription(
       };
     }
 
-    revalidatePath("/account");
+    revalidatePath("/billing");
     // Returned so the confirmation can say the date service actually ends: a
     // paid period is never cut short, and the customer should see that.
     return { ok: true, endsAt: result.value.endsAt.toISOString() };
@@ -207,7 +251,7 @@ export async function keepSubscription(subscriptionId: string): Promise<ActionRe
       };
     }
 
-    revalidatePath("/account");
+    revalidatePath("/billing");
     return { ok: true };
   } catch (error) {
     return failure(error, "That subscription could not be resumed.");
