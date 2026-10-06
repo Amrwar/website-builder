@@ -2,51 +2,80 @@
 
 ## Roles
 
-Six roles, one `users` table. Defined in `src/config/roles.ts` — client-safe, no
-database import, so the UI can read the matrix while the enforcement stays on
+Nine roles, one `users` table. Defined in `src/config/roles.ts` — client-safe,
+no database import, so the UI can read the matrix while enforcement stays on
 the server.
 
-| Role              | Purpose                                             |
-| ----------------- | --------------------------------------------------- |
-| `customer`        | Orders builds. The default for every new account.   |
-| `admin`           | Everything, including roles and refunds.            |
-| `project_manager` | Runs the queue: scope, deadlines, customer contact. |
-| `developer`       | Executes builds.                                    |
-| `designer`        | Owns design deliverables.                           |
-| `support`         | Answers customers. Cannot change commercial terms.  |
+| Role              | Purpose                                                |
+| ----------------- | ------------------------------------------------------ |
+| `customer`        | Orders builds. The default for every new account.      |
+| `owner`           | Everything, including platform configuration.          |
+| `admin`           | Everything operational. Not configuration.             |
+| `project_manager` | Runs the queue: scope, deadlines, customer contact.    |
+| `finance`         | Money in and out. Raises refunds; cannot release them. |
+| `developer`       | Executes builds.                                       |
+| `designer`        | Owns design deliverables.                              |
+| `qa`              | Runs and signs off quality passes.                     |
+| `support`         | Answers customers. Cannot change commercial terms.     |
+
+## The rank ladder
+
+Permissions answer "may this person do this thing". Rank answers "may they do
+it **to that person**". Without rank, anyone holding `user:manage` could
+promote themselves and every separation below would be theatre.
+
+| Rank | Roles                    |
+| ---- | ------------------------ |
+| 100  | owner                    |
+| 90   | admin                    |
+| 60   | project_manager, finance |
+| 40   | developer, designer, qa  |
+| 30   | support                  |
+| 0    | customer                 |
+
+Three rules, all enforced in `server/admin/team.ts` and all audited including
+refusals:
+
+1. You may only grant a role **strictly below** your own rank.
+2. You may only act on someone whose current role ranks below yours.
+3. **Nobody changes their own role**, at any rank. Absolute rather than
+   derived — an owner changing their own role is how a company locks itself
+   out of its own platform.
+
+It follows from (1) that only the owner can appoint an administrator.
 
 ## Permissions
 
-Ten permissions. A role is a named bundle of them; nothing is checked by role
-name at a call site.
+Eighteen permissions. A role is a named bundle; nothing is checked by role name
+at a call site.
 
-| Permission         | customer | admin | PM  | dev | designer | support |
-| ------------------ | :------: | :---: | :-: | :-: | :------: | :-----: |
-| `account:manage`   |    ●     |   ●   |  ●  |  ●  |    ●     |    ●    |
-| `project:create`   |    ●     |   ●   |     |     |          |         |
-| `admin:access`     |          |   ●   |  ●  |  ●  |    ●     |    ●    |
-| `project:read:all` |          |   ●   |  ●  |  ●  |    ●     |    ●    |
-| `project:manage`   |          |   ●   |  ●  |     |          |         |
-| `build:execute`    |          |   ●   |     |  ●  |          |         |
-| `design:manage`    |          |   ●   |     |     |    ●     |         |
-| `support:respond`  |          |   ●   |  ●  |     |          |    ●    |
-| `billing:manage`   |          |   ●   |     |     |          |         |
-| `user:manage`      |          |   ●   |     |     |          |         |
+Separations that matter:
 
-### Separations that are deliberate
+- **`user:manage`** — owner and admin only, and then subject to the ladder.
+- **`billing:manage` vs `refund:execute`** — finance raises a refund, owner or
+  admin releases it, and `executeRefund` additionally refuses whoever raised
+  it. Preparing a payment and releasing it are two people.
+- **`settings:manage`** — owner alone. Pricing tables and tax policy are
+  commercial decisions.
+- **`customer:read` vs `customer:read:sensitive`** — a designer needs to know
+  whose project it is, not their VAT number. The commercial columns are
+  stripped in the query, not hidden in the template.
+- **`audit:read`** — owner and admin only.
 
-- **Only `admin` holds `user:manage`.** Anyone who can set roles can grant
-  themselves everything else, so role assignment is the keys to the kingdom.
-- **Only `admin` holds `billing:manage`.** Refunds are money leaving the
-  company.
-- **A developer cannot change design assets; a designer cannot move a build
-  through its stages.** Separate crafts, separate authority.
-- **Support cannot change scope, price or deadline.** Support exists to answer
-  customers, not to renegotiate the contract.
+Every row is asserted in `src/config/roles.test.ts`.
 
-Every row of this table is asserted in `src/config/roles.test.ts`, including
-that `customer` is refused all eight staff permissions and that the default role
-is the least privileged.
+## The console
+
+Twenty-five sections declared in `src/config/admin-nav.ts`, which navigation,
+page guards and tests all read from, so they cannot disagree. `requireAdminSection`
+resolves the section and refuses with `notFound()` — never `forbidden`, which
+would confirm the section is real.
+
+Sections whose data does not exist yet (organizations, referrals, partners,
+reviews, domains, hosting, content, notifications) are marked `planned` with
+the phase that delivers them and render an honest "not built" page. An empty
+table would say "nobody has added a domain"; the truth is that domains do not
+exist here.
 
 ## Enforcement
 

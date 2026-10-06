@@ -96,7 +96,13 @@ The internal pipeline that moves a project through `project_status`, records
 every transition in `project_events`, and makes build execution trackable
 rather than tacit.
 
-### Phase 9 — Admin Production Factory
+### Phase 9 — Admin Production Factory ✅
+
+Delivered. Nine roles with a rank ladder, eighteen permissions, 25 declared
+console sections with server-side guards, an append-only audit log, refunds
+with segregated duties, and the production queue. See `docs/ADMIN_FLOWS.md`.
+
+#### Original plan
 
 Project queue sorted by deadline risk, deadline-risk detection,
 scope override as an append-only assessment, customer management, payment and
