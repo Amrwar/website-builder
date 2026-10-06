@@ -36,6 +36,7 @@ import {
 } from "@/lib/configurator/store";
 import { cn } from "@/lib/cn";
 import type { ProjectAssessment } from "@/lib/engine";
+import type { AssessmentFailure } from "@/components/configurator/assessment-error";
 import { StepDesign } from "./step-design";
 import { StepFeatures } from "./step-features";
 import { StepIntake } from "./step-intake";
@@ -85,7 +86,13 @@ export function Configurator() {
   const [step, setStep] = useState<StepId>("type");
   const [attempted, setAttempted] = useState(false);
   const [assessment, setAssessment] = useState<ProjectAssessment | null>(null);
-  const [assessFailed, setAssessFailed] = useState(false);
+  /**
+   * Why the assessment failed, not merely that it did. The three steps
+   * that depend on an assessment each need to say something different
+   * about a missing answer, an impossible platform choice and an engine
+   * that fell over.
+   */
+  const [assessFailed, setAssessFailed] = useState<AssessmentFailure | null>(null);
   /**
    * A coupon the customer typed. Held outside the draft on purpose: it is a
    * commercial instrument, not part of what is being built, and the engine
@@ -99,13 +106,15 @@ export function Configurator() {
   const isLast = index === STEP_IDS.length - 1;
 
   const runAssessment = useCallback((source: ConfiguratorDraft, code = "") => {
-    setAssessFailed(false);
+    setAssessFailed(null);
     startAssessing(async () => {
       const result = await assessDraft(source, code.trim() || null);
-      if (result.ok) setAssessment(result.assessment);
-      else {
+      if (result.ok) {
+        setAssessment(result.assessment);
+        setAssessFailed(null);
+      } else {
         setAssessment(null);
-        setAssessFailed(true);
+        setAssessFailed(result.reason);
       }
     });
   }, []);
@@ -174,6 +183,7 @@ export function Configurator() {
                 onClick={() => {
                   resetDraft(locale);
                   setAssessment(null);
+                  setAssessFailed(null);
                   goTo("type");
                 }}
               >
@@ -212,12 +222,15 @@ export function Configurator() {
             pending={assessing}
             failed={assessFailed}
             onRetry={() => runAssessment(draft, discountCode)}
+            onEdit={goTo}
           />
         ) : null}
         {step === "review" ? (
           <StepReview
             draft={draft}
             assessment={assessment}
+            failed={assessFailed}
+            onRetry={() => runAssessment(draft, discountCode)}
             onEdit={goTo}
             discountCode={discountCode}
             onDiscountCodeChange={setDiscountCode}
@@ -226,7 +239,14 @@ export function Configurator() {
           />
         ) : null}
         {step === "start" ? (
-          <StepStart assessment={assessment} draft={draft} discountCode={discountCode} />
+          <StepStart
+            assessment={assessment}
+            draft={draft}
+            discountCode={discountCode}
+            failed={assessFailed}
+            onRetry={() => runAssessment(draft, discountCode)}
+            onEdit={goTo}
+          />
         ) : null}
       </div>
 

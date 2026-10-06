@@ -3,6 +3,10 @@
 import { Pencil } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 
+import {
+  AssessmentError,
+  type AssessmentFailure,
+} from "@/components/configurator/assessment-error";
 import { Button } from "@/components/ui/button";
 import { Callout } from "@/components/ui/callout";
 import { Card } from "@/components/ui/card";
@@ -36,6 +40,8 @@ export function StepReview({
   draft,
   assessment,
   onEdit,
+  failed,
+  onRetry,
   discountCode,
   onDiscountCodeChange,
   onApplyDiscount,
@@ -44,6 +50,9 @@ export function StepReview({
   draft: ConfiguratorDraft;
   assessment: ProjectAssessment | null;
   onEdit: (step: StepId) => void;
+  /** Why there is no assessment, when there is none. */
+  failed: AssessmentFailure | null;
+  onRetry: () => void;
   discountCode: string;
   onDiscountCodeChange: (next: string) => void;
   onApplyDiscount: () => void;
@@ -56,7 +65,17 @@ export function StepReview({
   const tPlatform = useTranslations("configurator.platform");
   const { intlTag } = getLocaleDefinition(resolveLocale(useLocale()));
 
-  if (!assessment || !draft.buildType) return null;
+  // Never a blank page. A customer who has answered eight questions and is
+  // shown a heading above nothing cannot tell whether we broke or they did.
+  if (!assessment || !draft.buildType) {
+    return (
+      <AssessmentError
+        reason={failed ?? "invalid_draft"}
+        onRetry={onRetry}
+        onEdit={onEdit}
+      />
+    );
+  }
 
   const quote = assessment.requiresCustomQuote;
   const total = totalPrice(assessment);

@@ -673,9 +673,21 @@
         "manual": "Ajouté par nous"
       },
       "error": {
-        "title": "Impossible de calculer votre portée",
-        "body": "Rien n’a été facturé ni enregistré. Réessayer suffit généralement.",
-        "retry": "Réessayer"
+        "retry": "Réessayer",
+        "failed": {
+          "title": "Nous n’avons pas pu établir votre périmètre",
+          "body": "Un problème est survenu de notre côté. Rien n’a été facturé ni enregistré, et réessayer suffit généralement."
+        },
+        "invalid_draft": {
+          "title": "Il manque encore des réponses",
+          "body": "Il nous en faut un peu plus pour établir le prix. Revenez vérifier les étapes précédentes : rien de ce que vous avez saisi n’est perdu.",
+          "action": "Revenir à vos réponses"
+        },
+        "invalid_platforms": {
+          "title": "Cette combinaison de plateformes est impossible",
+          "body": "Le multiplateforme couvre déjà les deux magasins d’applications ; il ne peut donc pas être combiné aux cibles natives. Choisissez l’un ou l’autre.",
+          "action": "Changer de plateformes"
+        }
       }
     },
     "review": {

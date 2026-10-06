@@ -1,13 +1,15 @@
 "use client";
 
-import { RefreshCw } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import type { StepId } from "@/lib/configurator/draft";
+import {
+  AssessmentError,
+  type AssessmentFailure,
+} from "@/components/configurator/assessment-error";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Callout } from "@/components/ui/callout";
 import { Card } from "@/components/ui/card";
-import { ErrorState } from "@/components/ui/error-state";
 import { Skeleton, SkeletonText } from "@/components/ui/skeleton";
 import { getLocaleDefinition, resolveLocale } from "@/config/locales";
 import { formatMoney } from "@/lib/pricing/money";
@@ -37,10 +39,13 @@ export function StepScopeResult({
   pending,
   failed,
   onRetry,
+  onEdit,
 }: {
   assessment: ProjectAssessment | null;
   pending: boolean;
-  failed: boolean;
+  failed: AssessmentFailure | null;
+  /** Sends the customer back to the step that can fix the problem. */
+  onEdit: (step: StepId) => void;
   onRetry: () => void;
 }) {
   const t = useTranslations("configurator.scope");
@@ -64,19 +69,7 @@ export function StepScopeResult({
 
   if (failed || !assessment) {
     return (
-      <ErrorState
-        title={t("error.title")}
-        description={t("error.body")}
-        action={
-          <Button
-            variant="secondary"
-            onClick={onRetry}
-            startIcon={<RefreshCw className="size-4" />}
-          >
-            {t("error.retry")}
-          </Button>
-        }
-      />
+      <AssessmentError reason={failed ?? "failed"} onRetry={onRetry} onEdit={onEdit} />
     );
   }
 

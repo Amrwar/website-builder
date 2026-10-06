@@ -6,13 +6,17 @@ import { ClerkLoaded, ClerkLoading, Show } from "@clerk/nextjs";
 import { ArrowRight, Lock } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 
+import {
+  AssessmentError,
+  type AssessmentFailure,
+} from "@/components/configurator/assessment-error";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Callout } from "@/components/ui/callout";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getLocaleDefinition, resolveLocale } from "@/config/locales";
 import { Link, useRouter } from "@/i18n/navigation";
-import type { ConfiguratorDraft } from "@/lib/configurator/draft";
+import type { ConfiguratorDraft, StepId } from "@/lib/configurator/draft";
 import { formatMoney } from "@/lib/pricing/money";
 import { totalPrice, type ProjectAssessment } from "@/lib/engine";
 import { placeOrder } from "@/server/checkout-actions";
@@ -32,11 +36,17 @@ export function StepStart({
   assessment,
   draft,
   discountCode,
+  failed,
+  onRetry,
+  onEdit,
 }: {
   assessment: ProjectAssessment | null;
   draft: ConfiguratorDraft;
   /** Passed through as a code. The server re-prices it from the database. */
   discountCode: string;
+  failed: AssessmentFailure | null;
+  onRetry: () => void;
+  onEdit: (step: StepId) => void;
 }) {
   const t = useTranslations("configurator.start");
   const tc = useTranslations("checkout");
@@ -55,7 +65,15 @@ export function StepStart({
   const requestId = useId();
   const submitted = useRef(false);
 
-  if (!assessment) return null;
+  if (!assessment) {
+    return (
+      <AssessmentError
+        reason={failed ?? "invalid_draft"}
+        onRetry={onRetry}
+        onEdit={onEdit}
+      />
+    );
+  }
 
   const quote = assessment.requiresCustomQuote;
   const total = totalPrice(assessment);

@@ -673,9 +673,21 @@
         "manual": "Added by us"
       },
       "error": {
-        "title": "We could not work out your scope",
-        "body": "Nothing has been charged or saved against this. Trying again usually resolves it.",
-        "retry": "Try again"
+        "retry": "Try again",
+        "failed": {
+          "title": "We could not work out your scope",
+          "body": "Something on our side failed. Nothing has been charged or saved against this, and trying again usually resolves it."
+        },
+        "invalid_draft": {
+          "title": "Some answers are still missing",
+          "body": "We need a little more before we can price this. Go back and check the earlier steps — nothing you have entered is lost.",
+          "action": "Back to your answers"
+        },
+        "invalid_platforms": {
+          "title": "That platform combination cannot be built",
+          "body": "Cross-platform already covers both app stores, so it cannot be combined with the native targets. Choose one or the other.",
+          "action": "Change platforms"
+        }
       }
     },
     "review": {

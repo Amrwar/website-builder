@@ -85,10 +85,30 @@
   }
 
   /* Numeric contexts (prices, countdowns, invoice tables) use tabular figures
-   * so digits do not shift width as values change. */
+   * so digits do not shift width as values change.
+   *
+   * `unicode-bidi` is the load-bearing part under RTL. A price, a
+   * reference like SUB-2026-0001 or a date is a left-to-right run; dropped
+   * into an Arabic paragraph, the bidi algorithm absorbs the neutral
+   * characters around it -- separators, hyphens, currency symbols -- and
+   * reorders the whole line. "199 CA$ · SUB-2026-0001" rendered as
+   * "CA$ - SUB-2026-0001 199" before this rule existed.
+   *
+   * `isolate`, not `plaintext`. `plaintext` takes the element's direction
+   * from its first strong character, and `Intl.NumberFormat` prefixes Arabic
+   * currency output with a right-to-left mark -- so a line reading
+   * "199 CA$ · SUB-2026-0001" would be laid out right-to-left as a whole and
+   * come out as "CA$ - SUB-2026-0001 199".
+   *
+   * Isolation instead makes each element an independent run, positioned by
+   * its parent's direction with its internal order decided by its own
+   * content. That is only correct when an element holds exactly one value,
+   * so composite lines are split into one element per value rather than
+   * wrapping several in one. */
   [data-numeric] {
     font-variant-numeric: tabular-nums;
     font-feature-settings: "tnum" 1;
+    unicode-bidi: isolate;
   }
 
   /* --- Media ------------------------------------------------------------- */
