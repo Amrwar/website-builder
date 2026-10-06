@@ -208,6 +208,7 @@ export async function fulfilCheckout(
       lineItems: order.items.map((item) => ({
         productKey: item.productKey,
         productName: item.productName,
+        translationKey: item.translationKey,
         quantity: item.quantity,
         unitAmountMinorUnits: item.unitAmountMinorUnits,
         taxMinorUnits: item.taxMinorUnits,

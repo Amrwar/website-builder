@@ -5,6 +5,7 @@ import { Clock } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { Container } from "@/components/layout/container";
+import { Numeric } from "@/components/ui/numeric";
 import { Badge } from "@/components/ui/badge";
 import { Callout } from "@/components/ui/callout";
 import { Card } from "@/components/ui/card";
@@ -142,8 +143,13 @@ export default async function ConfirmationPage({
               <dt className="text-eyebrow text-tertiary uppercase">
                 {t("confirmation.labels.invoice")}
               </dt>
-              <dd className="text-body font-medium text-primary" data-numeric>
-                {invoice.number}
+              <dd className="text-body font-medium text-primary">
+                <Link
+                  href={`/invoices/${invoice.number}`}
+                  className="duration-fast underline decoration-line underline-offset-4 transition-colors ease-out-quint hover:decoration-current"
+                >
+                  <Numeric>{invoice.number}</Numeric>
+                </Link>
               </dd>
             </div>
           ) : null}

@@ -230,6 +230,7 @@ export async function createOrderFromDraft(
           productKey: line.productKey,
           productType: line.productType,
           productName: line.productName,
+          translationKey: line.translationKey,
           quantity: line.quantity,
           configuration: line.productType === "build" ? draft : null,
           scopeAssessmentId: line.productType === "build" ? storedAssessment?.id : null,

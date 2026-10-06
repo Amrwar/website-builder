@@ -134,7 +134,21 @@ export const orderItems = pgTable(
     /** Snapshots, so the line still reads correctly if the catalogue moves. */
     productKey: text("product_key").notNull(),
     productType: productTypeEnum("product_type").notNull(),
+    /**
+     * The internal English name, kept because it is what the payment provider
+     * shows on a card statement and what staff search on. It is *not* what the
+     * customer is shown -- see `translationKey`.
+     */
     productName: text("product_name").notNull(),
+    /**
+     * The catalogue key the customer-facing label is translated from.
+     *
+     * Snapshotted alongside the price rather than derived on read, so a line
+     * still names itself after the catalogue has moved on. Nullable only
+     * because orders placed before this column existed have no value; those
+     * fall back to `productName`.
+     */
+    translationKey: text("translation_key"),
 
     quantity: integer("quantity").notNull().default(1),
 

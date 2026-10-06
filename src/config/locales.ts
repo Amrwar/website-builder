@@ -69,7 +69,20 @@ export function getDirection(locale: Locale): TextDirection {
   return LOCALE_DEFINITIONS[locale].direction;
 }
 
-/** Coerces untrusted input to a supported locale, falling back to the default. */
+/**
+ * Coerces untrusted input to a supported locale, falling back to the default.
+ *
+ * Accepts a full BCP 47 tag as well as a bare code, because the same value
+ * arrives in both shapes: a URL segment is "fr", but `orders.locale` and
+ * `invoices.locale` store the full `intlTag` ("fr-CA") so the pricing snapshot
+ * records the exact tag the document was priced and rendered in. Matching only
+ * the bare code meant every French order resolved back to English.
+ *
+ * Case-insensitive: language subtags are case-insensitive in BCP 47, and an
+ * `Accept-Language` header can legitimately say "FR-ca".
+ */
 export function resolveLocale(value: unknown): Locale {
-  return isLocale(value) ? value : DEFAULT_LOCALE;
+  if (typeof value !== "string") return DEFAULT_LOCALE;
+  const language = value.split("-")[0]?.toLowerCase();
+  return isLocale(language) ? language : DEFAULT_LOCALE;
 }

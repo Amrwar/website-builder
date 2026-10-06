@@ -690,6 +690,7 @@ export async function ApprovalsPanel({ workspace, intlTag, timeZone }: PanelProp
 
 export async function PaymentsPanel({ workspace, intlTag, timeZone }: PanelProps) {
   const t = await getTranslations("workspace");
+  const tInvoice = await getTranslations("invoice");
   const { order, invoices } = workspace;
 
   if (!order) {
@@ -757,11 +758,16 @@ export async function PaymentsPanel({ workspace, intlTag, timeZone }: PanelProps
             <p className="text-eyebrow text-tertiary uppercase">
               {t("payments.invoice")}
             </p>
-            <p className="text-body-sm text-primary" data-numeric>
-              {invoice.number}
+            <p className="text-body-sm text-primary">
+              <Numeric>{invoice.number}</Numeric>
             </p>
           </div>
-          <Badge tone="success">{t(`changes.status.applied`)}</Badge>
+          <Link
+            href={`/invoices/${invoice.number}`}
+            className={buttonVariants({ variant: "secondary", size: "sm" })}
+          >
+            {tInvoice("view")}
+          </Link>
         </Card>
       ))}
     </div>

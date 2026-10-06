@@ -57,6 +57,13 @@
       "when": 1791306705310,
       "tag": "0007_growth_engine",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1791313376576,
+      "tag": "0008_invoice_line_locale",
+      "breakpoints": true
     }
   ]
 }

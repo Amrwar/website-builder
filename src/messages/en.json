@@ -2106,5 +2106,57 @@
       "industry": "Industry",
       "built": "Built with"
     }
+  },
+  "orderLines": {
+    "build": {
+      "website": "Website build — {tier}",
+      "system": "Business system build — {tier}",
+      "mobileApp": "Mobile app build — {tier}"
+    },
+    "service": {
+      "design": "Design service"
+    },
+    "tier": {
+      "essential": "Essential",
+      "extended": "Extended",
+      "advanced": "Advanced",
+      "custom": "Custom"
+    }
+  },
+  "invoice": {
+    "title": "Invoice",
+    "number": "Invoice number",
+    "issuedOn": "Issued",
+    "dueOn": "Due",
+    "paidOn": "Paid",
+    "billedTo": "Billed to",
+    "order": "Order",
+    "status": {
+      "draft": "Draft",
+      "issued": "Issued",
+      "paid": "Paid",
+      "void": "Void",
+      "refunded": "Refunded",
+      "partially_refunded": "Partially refunded"
+    },
+    "columns": {
+      "item": "Item",
+      "quantity": "Qty",
+      "unit": "Unit price",
+      "amount": "Amount"
+    },
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "tax": "Tax",
+    "total": "Total",
+    "refunded": "Refunded",
+    "balance": "Amount due",
+    "taxRate": "{rate}%",
+    "languageNote": "This invoice was issued in {language} and is shown in that language, as the document of record.",
+    "zoneNote": "All dates are {zone}.",
+    "notFound": "Invoice not found",
+    "notFoundBody": "This invoice does not exist, or it is not yours. Check the number on your confirmation email.",
+    "view": "View invoice",
+    "print": "Print"
   }
 }

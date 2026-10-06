@@ -2106,5 +2106,57 @@
       "industry": "Secteur",
       "built": "Réalisé avec"
     }
+  },
+  "orderLines": {
+    "build": {
+      "website": "Création de site web — {tier}",
+      "system": "Création de système de gestion — {tier}",
+      "mobileApp": "Création d’application mobile — {tier}"
+    },
+    "service": {
+      "design": "Service de design"
+    },
+    "tier": {
+      "essential": "Essentiel",
+      "extended": "Étendu",
+      "advanced": "Avancé",
+      "custom": "Sur mesure"
+    }
+  },
+  "invoice": {
+    "title": "Facture",
+    "number": "Numéro de facture",
+    "issuedOn": "Émise le",
+    "dueOn": "Échéance",
+    "paidOn": "Payée le",
+    "billedTo": "Facturé à",
+    "order": "Commande",
+    "status": {
+      "draft": "Brouillon",
+      "issued": "Émise",
+      "paid": "Payée",
+      "void": "Annulée",
+      "refunded": "Remboursée",
+      "partially_refunded": "Partiellement remboursée"
+    },
+    "columns": {
+      "item": "Article",
+      "quantity": "Qté",
+      "unit": "Prix unitaire",
+      "amount": "Montant"
+    },
+    "subtotal": "Sous-total",
+    "discount": "Remise",
+    "tax": "Taxes",
+    "total": "Total",
+    "refunded": "Remboursé",
+    "balance": "Montant dû",
+    "taxRate": "{rate} %",
+    "languageNote": "Cette facture a été émise en {language} et est affichée dans cette langue, en tant que document officiel.",
+    "zoneNote": "Toutes les dates sont en {zone}.",
+    "notFound": "Facture introuvable",
+    "notFoundBody": "Cette facture n’existe pas, ou elle ne vous appartient pas. Vérifiez le numéro sur votre courriel de confirmation.",
+    "view": "Voir la facture",
+    "print": "Imprimer"
   }
 }
