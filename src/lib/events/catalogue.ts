@@ -106,6 +106,56 @@ export interface DomainEventPayloads {
     url: string | null;
   };
   "deployment.failed": { deploymentId: string; environment: string; reason: string };
+  "deployment.rolled_back": {
+    deploymentId: string;
+    /** The deployment being restored. */
+    restoredDeploymentId: string;
+    environment: string;
+    toVersion: string;
+  };
+
+  /* --- Launch and hosting ----------------------------------------------- */
+  "launch.completed": {
+    launchedAt: string;
+    productionUrl: string | null;
+    domain: string | null;
+  };
+  "domain.verified": { domain: string };
+  "domain.dns_configured": { domain: string };
+  "domain.ssl_issued": { domain: string; expiresAt: string | null };
+  "hosting.activated": { planKey: string | null; provider: string | null };
+  "hosting.suspended": { reason: string };
+
+  /* --- Subscriptions ----------------------------------------------------- */
+  "subscription.started": {
+    subscriptionId: string;
+    reference: string;
+    planKey: string;
+    trialEndsAt: string | null;
+  };
+  "subscription.changed": {
+    subscriptionId: string;
+    fromPlanKey: string;
+    toPlanKey: string;
+    kind: "upgrade" | "downgrade" | "same";
+    effectiveAt: string;
+  };
+  "subscription.cancelled": {
+    subscriptionId: string;
+    /** Service continues to this moment: a paid period is never cut short. */
+    effectiveAt: string;
+    reason: string | null;
+  };
+  "subscription.renewed": {
+    subscriptionId: string;
+    periodStart: string;
+    periodEnd: string;
+  };
+  "subscription.past_due": { subscriptionId: string; since: string };
+
+  /* --- Build credit ------------------------------------------------------ */
+  "credit.granted": { minutes: number; balanceAfter: number; reason: string | null };
+  "credit.spent": { minutes: number; balanceAfter: number; subjectId: string | null };
 }
 
 export type DomainEventName = keyof DomainEventPayloads;
@@ -134,6 +184,20 @@ export const DOMAIN_EVENT_NAMES = [
   "deployment.started",
   "deployment.completed",
   "deployment.failed",
+  "deployment.rolled_back",
+  "launch.completed",
+  "domain.verified",
+  "domain.dns_configured",
+  "domain.ssl_issued",
+  "hosting.activated",
+  "hosting.suspended",
+  "subscription.started",
+  "subscription.changed",
+  "subscription.cancelled",
+  "subscription.renewed",
+  "subscription.past_due",
+  "credit.granted",
+  "credit.spent",
 ] as const satisfies readonly DomainEventName[];
 
 export function isDomainEventName(value: string): value is DomainEventName {
@@ -177,4 +241,10 @@ export const PRIVILEGED_EVENTS: readonly DomainEventName[] = [
   "build.started",
   "deadline.missed",
   "risk.changed",
+  // A launch is our assertion that a site is live and a deployment is the
+  // provider's. Neither is a thing a customer-triggered request may claim.
+  "launch.completed",
+  "deployment.completed",
+  "deployment.rolled_back",
+  "credit.granted",
 ];

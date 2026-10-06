@@ -29,7 +29,7 @@ const localePrefix = `/(${LOCALES.join("|")})`;
  * `/accounts-payable` and `/administrators` and would force a sign-in on a
  * public page that merely starts with the same letters.
  */
-const PRIVATE_SEGMENTS = ["account", "admin", "orders", "projects"] as const;
+const PRIVATE_SEGMENTS = ["account", "admin", "billing", "orders", "projects"] as const;
 
 const isPrivateRoute = createRouteMatcher(
   PRIVATE_SEGMENTS.flatMap((segment) => [

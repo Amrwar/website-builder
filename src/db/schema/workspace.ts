@@ -340,6 +340,31 @@ export const deployments = pgTable(
     commitRef: text("commit_ref"),
     note: text("note"),
 
+    /**
+     * The hosting provider's own record of this deployment.
+     *
+     * `providerConfirmedAt` is the moment the provider told us it was live.
+     * A database CHECK refuses `state = 'ready'` without it, so the platform
+     * cannot claim a deployment succeeded because our own code assumed it
+     * would. "Deployed" is a fact about somebody else's infrastructure, and
+     * the only honest source for it is that infrastructure.
+     */
+    provider: text("provider"),
+    providerDeploymentId: text("provider_deployment_id"),
+    providerConfirmedAt: timestamp("provider_confirmed_at", { withTimezone: true }),
+
+    /**
+     * Set when this deployment exists to put an earlier one back. Kept as a
+     * reference rather than a flag so a rollback names what it restored --
+     * "we rolled back" is not an answer to "to what?".
+     */
+    rollbackOfDeploymentId: uuid("rollback_of_deployment_id"),
+
+    /** Who asked for it. Null for an automatic or provider-driven deploy. */
+    triggeredByUserId: uuid("triggered_by_user_id").references(() => users.id, {
+      onDelete: "set null",
+    }),
+
     startedAt: timestamp("started_at", { withTimezone: true }).notNull().defaultNow(),
     readyAt: timestamp("ready_at", { withTimezone: true }),
     failedAt: timestamp("failed_at", { withTimezone: true }),

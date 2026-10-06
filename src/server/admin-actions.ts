@@ -16,6 +16,11 @@ import {
   updateFeature,
   updateTier,
 } from "@/server/admin/catalog";
+import {
+  importLifecycleDefaults,
+  updateChecklistItem as updateChecklistDefinition,
+  updatePlan,
+} from "@/server/admin/lifecycle";
 import type { RefundReason } from "@/db/schema/enums";
 
 /**
@@ -195,5 +200,38 @@ export async function importCatalogDefaults() {
     return { ok: true, written } as const;
   } catch (error) {
     return failure(error, "The catalogue could not be imported.");
+  }
+}
+
+export async function savePlan(id: string, patch: unknown, reason?: string) {
+  try {
+    const context = await requireUser();
+    await updatePlan(String(id), patch, context, reason);
+    revalidatePath("/admin/pricing");
+    return { ok: true } as const;
+  } catch (error) {
+    return failure(error, "That plan could not be saved.");
+  }
+}
+
+export async function saveChecklistItem(id: string, patch: unknown, reason?: string) {
+  try {
+    const context = await requireUser();
+    await updateChecklistDefinition(String(id), patch, context, reason);
+    revalidatePath("/admin/pricing");
+    return { ok: true } as const;
+  } catch (error) {
+    return failure(error, "That item could not be saved.");
+  }
+}
+
+export async function importLifecycleCatalog() {
+  try {
+    const context = await requireUser();
+    const written = await importLifecycleDefaults(context);
+    revalidatePath("/admin/pricing");
+    return { ok: true, written } as const;
+  } catch (error) {
+    return failure(error, "Those defaults could not be imported.");
   }
 }

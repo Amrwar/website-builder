@@ -23,25 +23,29 @@ A phase is not complete until its pages have been seen running.
 ## Current state
 
 Vitest + Testing Library, jsdom, `restoreMocks` and `clearMocks` on.
-**619 tests across 32 files.**
+**692 tests across 36 files.**
 
-| Area               | File                             | What it protects                                                                                                          |
-| ------------------ | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Class merging      | `lib/cn.test.ts`                 | Custom tokens make size and colour ambiguous to the default merger                                                        |
-| Money              | `lib/pricing/money.test.ts`      | Integer-only invariant, refund percentages, formatting                                                                    |
-| Scope engine       | `lib/scope/*.test.ts`            | Tier selection, Arabic normalization, the restaurant example, false-positive regressions                                  |
-| Configurator draft | `lib/configurator/*.test.ts`     | Schema, per-step validation, build-type reset, storage round-trip                                                         |
-| Logger             | `lib/logger.test.ts`             | Level filtering, child context                                                                                            |
-| Catalogues         | `messages/catalogues.test.ts`    | Key parity across en/fr/ar, ICU placeholders, no empty values                                                             |
-| Permissions        | `config/roles.test.ts`           | The whole matrix, customer confinement, privilege separation                                                              |
-| Authorization      | `server/auth.test.ts`            | Unauthenticated rejection, 404-not-403, role from DB not Clerk, ownership                                                 |
-| Server actions     | `server/account-actions.test.ts` | Signed-out writes nothing, payload cannot redirect the write                                                              |
-| Account schemas    | `lib/account/schema.test.ts`     | Mass-assignment, `javascript:` URLs, preference validation                                                                |
-| Routing            | `proxy.test.ts`                  | Private-route matching, locale-aware sign-in redirect, the matcher regex                                                  |
-| Pricing engine     | `lib/engine/evaluate.test.ts`    | Tier escalation, extreme scope routed to a quote, withdrawn tiers resolving upward, price tampering, historical snapshots |
-| Coupons            | `lib/engine/discounts.test.ts`   | Unknown, withdrawn, expired, exhausted and ineligible codes; reductions clamped to the order value                        |
-| Quote projection   | `lib/commerce/quote.test.ts`     | Lines summing to the header, per-line discount and tax allocation, the absence of any price input                         |
-| Catalogue admin    | `server/admin/catalog.test.ts`   | Only the owner may write, refusal before any query, incoherent figures rejected                                           |
+| Area               | File                                  | What it protects                                                                                                          |
+| ------------------ | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Class merging      | `lib/cn.test.ts`                      | Custom tokens make size and colour ambiguous to the default merger                                                        |
+| Money              | `lib/pricing/money.test.ts`           | Integer-only invariant, refund percentages, formatting                                                                    |
+| Scope engine       | `lib/scope/*.test.ts`                 | Tier selection, Arabic normalization, the restaurant example, false-positive regressions                                  |
+| Configurator draft | `lib/configurator/*.test.ts`          | Schema, per-step validation, build-type reset, storage round-trip                                                         |
+| Logger             | `lib/logger.test.ts`                  | Level filtering, child context                                                                                            |
+| Catalogues         | `messages/catalogues.test.ts`         | Key parity across en/fr/ar, ICU placeholders, no empty values                                                             |
+| Permissions        | `config/roles.test.ts`                | The whole matrix, customer confinement, privilege separation                                                              |
+| Authorization      | `server/auth.test.ts`                 | Unauthenticated rejection, 404-not-403, role from DB not Clerk, ownership                                                 |
+| Server actions     | `server/account-actions.test.ts`      | Signed-out writes nothing, payload cannot redirect the write                                                              |
+| Account schemas    | `lib/account/schema.test.ts`          | Mass-assignment, `javascript:` URLs, preference validation                                                                |
+| Routing            | `proxy.test.ts`                       | Private-route matching, locale-aware sign-in redirect, the matcher regex                                                  |
+| Pricing engine     | `lib/engine/evaluate.test.ts`         | Tier escalation, extreme scope routed to a quote, withdrawn tiers resolving upward, price tampering, historical snapshots |
+| Coupons            | `lib/engine/discounts.test.ts`        | Unknown, withdrawn, expired, exhausted and ineligible codes; reductions clamped to the order value                        |
+| Quote projection   | `lib/commerce/quote.test.ts`          | Lines summing to the header, per-line discount and tax allocation, the absence of any price input                         |
+| Catalogue admin    | `server/admin/catalog.test.ts`        | Only the owner may write, refusal before any query, incoherent figures rejected                                           |
+| Launch readiness   | `lib/launch/readiness.test.ts`        | A checklist tick cannot stand in for a confirmed deployment; every blocker reported at once                               |
+| Going live         | `server/launch/launch.test.ts`        | No parameter sets a deployment ready; none overrides readiness; a concurrent launch loses                                 |
+| Build credit       | `lib/credits/index.test.ts`           | Direction follows the kind, balances never go negative, corrections need a reason                                         |
+| Subscriptions      | `lib/subscriptions/lifecycle.test.ts` | Cancelling never cuts a paid period short; billing dates do not drift; upgrades prorate down                              |
 
 ## What is tested, and why those things
 
@@ -92,6 +96,7 @@ against Postgres inside a transaction that was then rolled back:
 | Production engine guards         | 3     | Self-dependency refused, duplicate task key refused, readiness promotes on the last dependency |
 | Webhook replay protection        | 4     | Valid 200, replay deduplicated, tampered payload 401, stale capture 401                        |
 | Catalogue invariants             | 22    | All 22 behaved as expected — 5 allowed, 17 refused (23514/23505)                               |
+| Lifecycle invariants             | 30    | All 30 as expected, including the append-only credit ledger refusing UPDATE and DELETE         |
 
 ## Gaps
 

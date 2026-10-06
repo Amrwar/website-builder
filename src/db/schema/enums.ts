@@ -398,3 +398,132 @@ export const messageVisibilityEnum = pgEnum("message_visibility", MESSAGE_VISIBI
 export const DISCOUNT_KINDS = ["percentage", "fixed"] as const;
 export type DiscountKind = (typeof DISCOUNT_KINDS)[number];
 export const discountKindEnum = pgEnum("discount_kind", DISCOUNT_KINDS);
+
+/* -------------------------------------------------------------------------
+ * Launch, hosting and the lifecycle after delivery (Phase 11)
+ * ---------------------------------------------------------------------- */
+
+/**
+ * Where a launch checklist item sits.
+ *
+ * Grouping is editable data elsewhere; these are the fixed buckets a launch
+ * actually has, and they decide who is asked to complete an item.
+ */
+export const CHECKLIST_GROUPS = [
+  /** Things the customer owes us: content, credentials, a decision. */
+  "customer",
+  /** Our own technical readiness. */
+  "technical",
+  /** Legal, analytics, anything that must be true before going public. */
+  "compliance",
+] as const;
+export type ChecklistGroup = (typeof CHECKLIST_GROUPS)[number];
+export const checklistGroupEnum = pgEnum("checklist_group", CHECKLIST_GROUPS);
+
+/**
+ * An item's state on one project.
+ *
+ * `not_applicable` is a real outcome, not an absence: a site with no
+ * newsletter never needs the newsletter item, and recording that is different
+ * from leaving it unfinished forever.
+ */
+export const CHECKLIST_STATES = ["pending", "done", "not_applicable"] as const;
+export type ChecklistState = (typeof CHECKLIST_STATES)[number];
+export const checklistStateEnum = pgEnum("checklist_state", CHECKLIST_STATES);
+
+/** Where a site is actually hosted. */
+export const HOSTING_STATUSES = [
+  /** Bought, nothing provisioned yet. */
+  "pending",
+  "provisioning",
+  "active",
+  /** Payment lapsed; still served, but the clock is ticking. */
+  "suspended",
+  "cancelled",
+] as const;
+export type HostingStatus = (typeof HOSTING_STATUSES)[number];
+export const hostingStatusEnum = pgEnum("hosting_status", HOSTING_STATUSES);
+
+/**
+ * Domain ownership and DNS.
+ *
+ * Verification is modelled separately from DNS because they fail for different
+ * reasons and the customer has to fix them differently: a domain can be
+ * verifiably theirs while its records still point somewhere else.
+ */
+export const DOMAIN_VERIFICATIONS = [
+  "unverified",
+  "pending",
+  "verified",
+  "failed",
+] as const;
+export type DomainVerification = (typeof DOMAIN_VERIFICATIONS)[number];
+export const domainVerificationEnum = pgEnum("domain_verification", DOMAIN_VERIFICATIONS);
+
+export const DNS_STATES = [
+  /** No records seen yet. */
+  "unconfigured",
+  /** Records exist but do not point at us. */
+  "misconfigured",
+  "propagating",
+  "configured",
+] as const;
+export type DnsState = (typeof DNS_STATES)[number];
+export const dnsStateEnum = pgEnum("dns_state", DNS_STATES);
+
+export const SSL_STATES = ["none", "pending", "issued", "failed", "expired"] as const;
+export type SslState = (typeof SSL_STATES)[number];
+export const sslStateEnum = pgEnum("ssl_state", SSL_STATES);
+
+/**
+ * Subscription lifecycle.
+ *
+ * `paused` and `past_due` are distinct: one is the customer's decision and the
+ * other is a payment problem, and conflating them would mean treating a
+ * customer who asked for a break like one who is in arrears.
+ */
+export const SUBSCRIPTION_STATUSES = [
+  "trialing",
+  "active",
+  "past_due",
+  "paused",
+  "cancelled",
+  /** Ran to the end of its term and was not renewed. */
+  "expired",
+] as const;
+export type SubscriptionStatus = (typeof SUBSCRIPTION_STATUSES)[number];
+export const subscriptionStatusEnum = pgEnum(
+  "subscription_status",
+  SUBSCRIPTION_STATUSES,
+);
+
+/** How often a subscription bills. */
+export const BILLING_INTERVALS = ["monthly", "yearly"] as const;
+export type BillingInterval = (typeof BILLING_INTERVALS)[number];
+export const billingIntervalEnum = pgEnum("billing_interval", BILLING_INTERVALS);
+
+/**
+ * Why credit moved.
+ *
+ * The ledger is append-only, so a correction is another entry rather than an
+ * edit. Every kind names who caused it, which is what makes a balance
+ * explainable to the person holding it.
+ */
+export const CREDIT_ENTRY_KINDS = [
+  /** Bought outright. */
+  "purchased",
+  /** Included with a subscription period. */
+  "granted",
+  /** Given as an apology or a referral reward. */
+  "awarded",
+  /** Consumed by work. */
+  "spent",
+  /** Returned because the work was cancelled. */
+  "refunded",
+  /** Ran out of time. */
+  "expired",
+  /** A manual correction by staff, always with a reason. */
+  "adjusted",
+] as const;
+export type CreditEntryKind = (typeof CREDIT_ENTRY_KINDS)[number];
+export const creditEntryKindEnum = pgEnum("credit_entry_kind", CREDIT_ENTRY_KINDS);

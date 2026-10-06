@@ -876,7 +876,8 @@
     "nav": "Navigation du compte",
     "account": "Compte",
     "staff": "Équipe",
-    "builds": "Projets"
+    "builds": "Projets",
+    "billing": "Facturation"
   },
   "account": {
     "title": "Compte",
@@ -1270,17 +1271,112 @@
     },
     "launch": {
       "title": "Mise en ligne",
-      "notYet": "Les détails de mise en ligne apparaissent une fois le projet validé.",
+      "notYet": "Les détails de mise en ligne apparaissent une fois votre réalisation approuvée.",
       "domain": "Domaine",
-      "noDomain": "Aucun domaine connecté pour l’instant.",
+      "noDomain": "Aucun domaine connecté.",
       "deployment": "Déploiement",
       "live": "Site en ligne",
       "checklist": "Liste de mise en ligne",
-      "steps": {
-        "assets": "Fichiers reçus",
-        "build": "Production terminée",
-        "approval": "Vous avez validé le projet",
-        "deploy": "Déployé en production"
+      "readiness": "{completed} sur {required} prêts",
+      "ready": "Prêt à être mis en ligne",
+      "notReady": "Pas encore prêt",
+      "launched": "En ligne depuis le {date}",
+      "goLive": "Mettre en ligne",
+      "blockers": "Ce qu'il reste",
+      "groups": {
+        "customer": "À confirmer de votre côté",
+        "technical": "Préparation technique",
+        "compliance": "Avant la publication"
+      },
+      "state": {
+        "pending": "En attente",
+        "done": "Fait",
+        "not_applicable": "Sans objet"
+      },
+      "optional": "Facultatif",
+      "markDone": "Marquer comme fait",
+      "markPending": "Rouvrir",
+      "markNotApplicable": "Sans objet",
+      "noteLabel": "Pourquoi cela ne s'applique pas",
+      "items": {
+        "contentFinal": "Textes et images définitifs reçus",
+        "previewApproved": "Vous avez approuvé l'aperçu",
+        "domainChosen": "Domaine choisi et dirigé vers nous",
+        "productionDeployed": "Déployé en production",
+        "dnsConfigured": "Les enregistrements DNS pointent vers le site",
+        "sslIssued": "Certificat émis",
+        "formsTested": "Les formulaires partent et arrivent",
+        "mobileChecked": "Vérifié sur téléphone",
+        "backupsRunning": "Sauvegardes actives",
+        "analyticsInstalled": "Statistiques installées",
+        "searchIndexable": "Indexable par les moteurs de recherche",
+        "handoverSent": "Notes de prise en main envoyées"
+      },
+      "blocker": {
+        "checklist_incomplete": "Des éléments obligatoires restent ouverts.",
+        "no_confirmed_deployment": "L'hébergeur n'a pas confirmé de déploiement en production.",
+        "domain_unverified": "Le domaine n'a pas été vérifié.",
+        "dns_not_configured": "Le DNS ne pointe pas encore ici.",
+        "ssl_not_issued": "Aucun certificat n'a été émis.",
+        "preview_not_approved": "L'aperçu n'a pas été approuvé."
+      },
+      "hosting": {
+        "title": "Hébergement",
+        "none": "L'hébergement est mis en place lors de la mise en ligne.",
+        "uptime": "Disponibilité {value} %",
+        "uptimeAsOf": "Mesurée le {date}",
+        "status": {
+          "pending": "Non provisionné",
+          "provisioning": "Provisionnement",
+          "active": "Actif",
+          "suspended": "Suspendu",
+          "cancelled": "Résilié"
+        }
+      },
+      "domainState": {
+        "verification": {
+          "unverified": "Non vérifié",
+          "pending": "Vérification en cours",
+          "verified": "Vérifié",
+          "failed": "Vérification échouée"
+        },
+        "dns": {
+          "unconfigured": "Aucun enregistrement",
+          "misconfigured": "Pointe ailleurs",
+          "propagating": "Propagation",
+          "configured": "Configuré"
+        },
+        "ssl": {
+          "none": "Aucun certificat",
+          "pending": "Certificat en attente",
+          "issued": "Sécurisé",
+          "failed": "Certificat échoué",
+          "expired": "Certificat expiré"
+        }
+      },
+      "certificateExpiring": "Le certificat expire dans {days} jours.",
+      "certificateExpired": "Le certificat a expiré.",
+      "history": "Historique des déploiements",
+      "noHistory": "Rien n'a encore été déployé.",
+      "deploymentState": {
+        "queued": "En file",
+        "building": "En construction",
+        "ready": "En ligne",
+        "failed": "Échoué",
+        "superseded": "Remplacé"
+      },
+      "awaitingProvider": "En attente de la confirmation de l'hébergeur.",
+      "buildMore": {
+        "title": "Aller plus loin",
+        "body": "Ajoutez à ce projet sans repartir de zéro. Votre brief, vos fichiers et votre historique restent en place.",
+        "action": "Demander plus de travail",
+        "summary": "Que souhaitez-vous ajouter ?",
+        "detail": "Décrivez-le avec vos mots",
+        "submit": "Envoyer la demande",
+        "sent": "Demande {reference} enregistrée. Nous reviendrons avec un prix.",
+        "notYet": "Vous pourrez commander plus de travail dès que votre réalisation atteint l'aperçu.",
+        "credit": "Vous disposez de {hours} h {minutes} min de crédit de production.",
+        "noCredit": "Aucun crédit de production pour l'instant."
       }
     }
   },
@@ -1528,7 +1624,9 @@
         "tiers": "Paliers",
         "features": "Fonctionnalités",
         "currencies": "Devises",
-        "discounts": "Remises"
+        "discounts": "Remises",
+        "plans": "Forfaits",
+        "checklist": "Liste de mise en ligne"
       },
       "tier": "Palier",
       "price": "Prix",
@@ -1578,7 +1676,21 @@
       "baseCurrency": "Devise de référence. Jamais convertie.",
       "empty": "Rien pour l'instant.",
       "auditedNote": "Chaque modification consigne son auteur, l'état précédent et le motif.",
-      "provisionalNote": "Seul le palier d'entrée de chaque réalisation provient de l'offre convenue. Les montants étendu et avancé sont des valeurs provisoires cohérentes entre elles et doivent être validés commercialement avant d'être montrés aux clients."
+      "provisionalNote": "Seul le palier d'entrée de chaque réalisation provient de l'offre convenue. Les montants étendu et avancé sont des valeurs provisoires cohérentes entre elles et doivent être validés commercialement avant d'être montrés aux clients.",
+      "includedCredit": "Crédit inclus (minutes)",
+      "trialDays": "Jours d'essai",
+      "recommended": "Mis en avant",
+      "group": "Groupe",
+      "sortOrder": "Ordre",
+      "requiredItem": "Obligatoire pour la mise en ligne",
+      "customerVisible": "Visible par le client",
+      "planNote": "Modifier un prix ne change jamais un abonnement existant : le montant a été figé lors de l'achat.",
+      "optional": "Facultatif",
+      "usingLifecycleDefaults": {
+        "title": "Les forfaits et la liste livrés sont actifs",
+        "body": "Les prix des forfaits de maintenance et la liste de mise en ligne proviennent encore de la configuration versionnée. Importez-les pour pouvoir les modifier ici. L'import ne change rien — il recopie les mêmes valeurs dans la base.",
+        "action": "Importer forfaits et liste"
+      }
     },
     "analytics": {
       "title": "Analyses",
@@ -1646,6 +1758,88 @@
       "launching": "Mise en ligne",
       "launched": "En ligne",
       "cancelled": "Annulé"
+    },
+    "domainsPage": {
+      "title": "Domaines",
+      "subtitle": "Tous les domaines de la plateforme, certificats les plus proches de l'expiration en premier.",
+      "empty": "Aucun domaine.",
+      "emptyBody": "Un domaine apparaît ici dès qu'il est rattaché à un projet.",
+      "primary": "Principal",
+      "expiringSoon": "{count} certificats à surveiller",
+      "expiringBody": "Un certificat expiré emporte le site avec lui. Ceux-ci expirent sous 30 jours ou sont déjà expirés.",
+      "columns": {
+        "domain": "Domaine",
+        "project": "Projet",
+        "verification": "Propriété",
+        "dns": "DNS",
+        "certificate": "Certificat"
+      }
+    },
+    "hostingPage": {
+      "title": "Hébergement",
+      "subtitle": "Où tourne chaque projet en ligne, et ce qui est réellement servi.",
+      "empty": "Rien n'est hébergé pour l'instant.",
+      "emptyBody": "L'hébergement est enregistré lors de la mise en ligne d'un projet.",
+      "noDomain": "Aucun domaine",
+      "noConfirmed": "Aucun déploiement confirmé",
+      "notMeasured": "Non mesurée",
+      "columns": {
+        "project": "Projet",
+        "domain": "Domaine",
+        "status": "État",
+        "live": "Version en ligne",
+        "uptime": "Disponibilité"
+      }
     }
+  },
+  "maintenance": {
+    "title": "Maintenance",
+    "none": "Aucun forfait de maintenance.",
+    "noneBody": "L'hébergement, les mises à jour et la surveillance font l'objet d'un forfait distinct et résiliable.",
+    "current": "Forfait actuel",
+    "renews": "Renouvellement le {date}",
+    "endsOn": "Se termine le {date}",
+    "trialUntil": "Gratuit jusqu'au {date}",
+    "change": "Changer de forfait",
+    "cancel": "Résilier",
+    "keep": "Conserver mon forfait",
+    "cancelTitle": "Résilier ce forfait ?",
+    "cancelBody": "Votre forfait reste actif jusqu'au {date}. Vous avez payé cette période et elle vous reste acquise.",
+    "cancelReason": "Pourquoi résiliez-vous ? (facultatif)",
+    "cancelled": "Résilié. Le service continue jusqu'au {date}.",
+    "upgradeNote": "Prend effet immédiatement. {amount} vous seront facturés pour le reste de la période.",
+    "downgradeNote": "Prend effet le {date}. Rien n'est facturé aujourd'hui et rien n'est remboursé : vous conservez le forfait payé jusque-là.",
+    "history": "Historique de facturation",
+    "noHistory": "Rien pour l'instant.",
+    "status": {
+      "trialing": "Essai",
+      "active": "Actif",
+      "past_due": "Paiement échoué",
+      "paused": "En pause",
+      "cancelled": "Résilié",
+      "expired": "Expiré"
+    },
+    "pastDueNote": "Un paiement n'a pas abouti. Votre site reste en ligne le temps de régler cela.",
+    "credits": {
+      "title": "Crédit de production",
+      "balance": "{hours} h {minutes} min disponibles",
+      "empty": "Aucun crédit de production.",
+      "body": "Le crédit vous appartient, pas à un site en particulier. Utilisez-le sur n'importe lequel de vos projets.",
+      "statement": "Relevé",
+      "kind": {
+        "purchased": "Acheté",
+        "granted": "Inclus dans votre forfait",
+        "awarded": "Offert",
+        "spent": "Utilisé",
+        "refunded": "Restitué",
+        "expired": "Expiré",
+        "adjusted": "Ajusté"
+      },
+      "expires": "Expire le {date}"
+    }
+  },
+  "billing": {
+    "title": "Facturation",
+    "lede": "Votre forfait de maintenance et votre crédit de production. Vous pouvez modifier les deux à tout moment."
   }
 }

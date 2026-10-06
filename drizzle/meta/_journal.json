@@ -43,6 +43,13 @@
       "when": 1791260776316,
       "tag": "0005_pricing_catalog",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1791263107960,
+      "tag": "0006_launch_and_lifecycle",
+      "breakpoints": true
     }
   ]
 }

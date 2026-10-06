@@ -59,6 +59,8 @@ export const DOCUMENT_SERIES = {
   invoice: { prefix: "INV", padTo: 4 },
   /** Quoted to the customer in every message about their build. */
   project: { prefix: "PRJ", padTo: 4 },
+  /** A maintenance subscription, referenced on every renewal invoice. */
+  subscription: { prefix: "SUB", padTo: 4 },
 } as const;
 
 export type DocumentScope = keyof typeof DOCUMENT_SERIES;

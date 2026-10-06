@@ -3,11 +3,14 @@ import { getTranslations } from "next-intl/server";
 
 import { AdminPageHeader, AdminShell } from "@/components/admin/admin-shell";
 import {
+  ChecklistItemEditor,
   CurrencyEditor,
   DiscountToggle,
   FeatureEditor,
   ImportDefaults,
+  ImportLifecycleDefaults,
   NewDiscount,
+  PlanEditor,
   TierEditor,
 } from "@/components/admin/pricing/catalog-editors";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +25,7 @@ import { defaultCatalog, tierRule, type Catalog } from "@/lib/engine";
 import { BASE_CURRENCY, formatMoney, money } from "@/lib/pricing/money";
 import { requireAdminSection } from "@/server/admin/guard";
 import { readCatalogForAdmin } from "@/server/admin/catalog";
+import { readLifecycleCatalog } from "@/server/admin/lifecycle";
 import { loadCatalog } from "@/server/engine";
 
 export const metadata: Metadata = {
@@ -52,9 +56,10 @@ export default async function AdminPricingPage({
   const t = await getTranslations("adminConsole.pricing");
   const { intlTag } = getLocaleDefinition(resolveLocale(locale));
 
-  const [live, stored] = await Promise.all([
+  const [live, stored, lifecycle] = await Promise.all([
     loadCatalog(true),
     readCatalogForAdmin(context),
+    readLifecycleCatalog(context),
   ]);
 
   const canEdit = context.can("settings:manage");
@@ -92,6 +97,12 @@ export default async function AdminPricingPage({
           <ImportDefaults />
         ) : null}
 
+        {canEdit &&
+        (lifecycle.usingShippedDefaults.plans ||
+          lifecycle.usingShippedDefaults.checklist) ? (
+          <ImportLifecycleDefaults />
+        ) : null}
+
         <Callout tone="neutral" title={t("historyNote")}>
           {t("auditedNote")}
         </Callout>
@@ -103,6 +114,8 @@ export default async function AdminPricingPage({
           <TabsTrigger value="features">{t("tabs.features")}</TabsTrigger>
           <TabsTrigger value="currencies">{t("tabs.currencies")}</TabsTrigger>
           <TabsTrigger value="discounts">{t("tabs.discounts")}</TabsTrigger>
+          <TabsTrigger value="plans">{t("tabs.plans")}</TabsTrigger>
+          <TabsTrigger value="checklist">{t("tabs.checklist")}</TabsTrigger>
         </TabsList>
 
         {/* --- Tiers ------------------------------------------------------ */}
@@ -338,6 +351,107 @@ export default async function AdminPricingPage({
               </Card>
             )}
           </div>
+        </TabsContent>
+
+        {/* --- Maintenance plans ------------------------------------------ */}
+        <TabsContent value="plans">
+          <div className="flex flex-col gap-4">
+            <Callout tone="neutral" title={t("planNote")} />
+
+            {lifecycle.plans.length === 0 ? (
+              <EmptyState title={t("empty")} description={t("usingDefaults.body")} />
+            ) : (
+              <Card padding="lg">
+                <ul className="flex flex-col gap-4">
+                  {lifecycle.plans.map((plan) => (
+                    <li
+                      key={plan.id}
+                      className="flex flex-col gap-2 border-b border-line-subtle pb-4 last:border-0 last:pb-0"
+                    >
+                      <div className="flex flex-wrap items-baseline justify-between gap-3">
+                        <span className="flex flex-wrap items-center gap-2">
+                          <span className="text-body-sm text-primary">{plan.key}</span>
+                          {plan.isRecommended ? (
+                            <Badge tone="info">{t("recommended")}</Badge>
+                          ) : null}
+                          {!plan.isActive ? (
+                            <Badge tone="neutral">{t("inactive")}</Badge>
+                          ) : null}
+                        </span>
+
+                        <span className="text-caption text-secondary" data-numeric>
+                          {base(plan.priceMinorUnits)} · {plan.interval}
+                          {plan.includedCreditMinutes > 0
+                            ? ` · ${plan.includedCreditMinutes} min`
+                            : ""}
+                          {plan.trialDays > 0 ? ` · ${plan.trialDays}d` : ""}
+                        </span>
+                      </div>
+
+                      <PlanEditor
+                        row={{
+                          id: plan.id,
+                          key: plan.key,
+                          priceMinorUnits: plan.priceMinorUnits,
+                          includedCreditMinutes: plan.includedCreditMinutes,
+                          trialDays: plan.trialDays,
+                          isRecommended: plan.isRecommended,
+                          isActive: plan.isActive,
+                        }}
+                        canEdit={canEdit}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            )}
+          </div>
+        </TabsContent>
+
+        {/* --- The launch checklist --------------------------------------- */}
+        <TabsContent value="checklist">
+          {lifecycle.checklist.length === 0 ? (
+            <EmptyState title={t("empty")} description={t("usingDefaults.body")} />
+          ) : (
+            <Card padding="lg">
+              <ul className="flex flex-col gap-4">
+                {lifecycle.checklist.map((item) => (
+                  <li
+                    key={item.id}
+                    className="flex flex-col gap-2 border-b border-line-subtle pb-4 last:border-0 last:pb-0"
+                  >
+                    <div className="flex flex-wrap items-baseline justify-between gap-3">
+                      <span className="flex flex-wrap items-center gap-2">
+                        <span className="text-body-sm text-primary">{item.key}</span>
+                        <span className="text-caption text-tertiary">{item.group}</span>
+                        {!item.isActive ? (
+                          <Badge tone="neutral">{t("inactive")}</Badge>
+                        ) : null}
+                      </span>
+
+                      <span className="text-caption text-secondary">
+                        {item.isRequired ? t("requiredItem") : t("optional")}
+                        {item.customerVisible ? ` · ${t("customerVisible")}` : ""}
+                      </span>
+                    </div>
+
+                    <ChecklistItemEditor
+                      row={{
+                        id: item.id,
+                        key: item.key,
+                        group: item.group,
+                        isRequired: item.isRequired,
+                        customerVisible: item.customerVisible,
+                        sortOrder: item.sortOrder,
+                        isActive: item.isActive,
+                      }}
+                      canEdit={canEdit}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          )}
         </TabsContent>
       </Tabs>
     </AdminShell>

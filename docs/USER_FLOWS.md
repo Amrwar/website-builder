@@ -91,35 +91,76 @@ on what it accepted — mirroring the rules in two places is how they drift.
 A new account is provisioned at the least-privileged role on first sight, so
 sign-up does not race the Clerk webhook.
 
-## 4. Not yet built
+## 4. Pay, build, approve
 
-Everything after approval of the configured build:
+Shipped in Phases 6 to 8. Checkout prices the configuration **server-side** --
+the browser sends a configuration, never an amount -- creates the order and the
+invoice, and hands off to Stripe. Payment creates the project and does **not**
+start the guarantee.
 
-**Checkout and payment** — Stripe is provisioned in sandbox; no flow exists.
+Asset submission is the gate that does. The customer uploads what the build
+needs; staff then start the build, and that transition is the only place
+`build_started_at` and `deadline_at` are ever written.
 
-**Build Room** — the signed-in project view: timeline, countdown, live preview,
-files, messages, change requests, approvals. This is the core of the product
-after purchase and is the largest remaining body of work.
+The Build Room is the signed-in project view: timeline, countdown, preview,
+files, messages, change requests, approvals, payments and launch. Which panels
+appear comes from the product type, so an automation renders what makes sense
+for an automation.
 
-**Asset submission** — the gate that starts the guarantee countdown. Vercel Blob
-is provisioned (private store) and unused.
+## 5. Launch, maintain, expand
 
-**Maintenance, referrals, credits** — configured with provisional figures, not
-purchasable.
+Shipped in Phase 11.
+
+**Launch** happens in the Launch Centre, inside the Build Room. The checklist is
+configuration rather than code, grouped into what the customer owes, our
+technical readiness, and what has to be true before the site is public. Each
+item is pending, done, or deliberately not applicable with a recorded reason.
+
+A project goes live only when every required item is resolved **and** the
+observed facts agree: a production deployment the hosting provider confirmed, a
+verified domain, DNS that resolves here, and an issued certificate. There is no
+override. "Your site is live" is a claim a customer acts on -- they send the
+link to their own customers -- and being wrong about it is worse than being
+slow.
+
+**Maintain** is `/billing`. The maintenance plan and the build-credit balance
+live together there, apart from account preferences, because they are
+commitments and money rather than settings. Cancelling says the date service
+actually ends and keeps running until then: the customer paid for that period
+and keeps it. An upgrade applies immediately and charges only the remainder of
+the period; a downgrade waits for the next renewal and refunds nothing.
+
+**Expand** is "build more", in the Launch Centre. It raises a change request
+against the project that already exists rather than starting a new one, so the
+brief, the files, the conversation, the approvals and the deployment history all
+carry over -- which is what makes the second piece of work cheaper than the
+first. It quotes through the same engine that priced the original scope.
+
+Build credit is held by the **person**, not the website, and is counted in
+minutes of build time rather than money, so credit bought a year ago still buys
+the same amount of work. It can be spent on any project they own.
+
+## 6. Not yet built
+
+**Renewal billing.** The sweep that advances a subscription into its next period
+is written and tested, but nothing schedules it, and taking the payment is the
+provider's job via webhook. That wiring does not exist.
+
+**Referrals and partners.** Configured with provisional figures, not earnable.
 
 ## Journey to status mapping
 
-| Journey stage    | `project_status`                              |
-| ---------------- | --------------------------------------------- |
-| IDEA, CONFIGURE  | `draft`                                       |
-| PRICE            | `quoted` / `awaiting_quote`                   |
-| PAY              | `awaiting_payment`                            |
-| —                | `awaiting_assets` ← countdown not yet running |
-| BUILD            | `in_build` ← **countdown starts here**        |
-| PREVIEW          | `in_preview`                                  |
-| APPROVE          | `awaiting_approval` → `approved`              |
-| LAUNCH           | `launching` → `launched`                      |
-| MAINTAIN, EXPAND | post-launch, not yet modelled                 |
+| Journey stage    | `project_status`                                  |
+| ---------------- | ------------------------------------------------- |
+| IDEA, CONFIGURE  | `draft`                                           |
+| PRICE            | `quoted` / `awaiting_quote`                       |
+| PAY              | `awaiting_payment`                                |
+| —                | `awaiting_assets` ← countdown not yet running     |
+| BUILD            | `in_build` ← **countdown starts here**            |
+| PREVIEW          | `in_preview`                                      |
+| APPROVE          | `awaiting_approval` → `approved`                  |
+| LAUNCH           | `launching` → `launched`                          |
+| MAINTAIN, EXPAND | `launched` + a subscription and the credit ledger |
 
 `awaiting_assets` has no journey stage of its own on purpose: to the customer it
 is part of paying, but to the business it is the line the clock does not cross

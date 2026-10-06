@@ -17,11 +17,15 @@ import { BUILD_TYPES, type BuildType } from "@/config/products";
 import {
   addDiscount,
   importCatalogDefaults,
+  importLifecycleCatalog,
+  saveChecklistItem,
   saveCurrency,
   saveFeature,
+  savePlan,
   saveTier,
   toggleDiscount,
 } from "@/server/admin-actions";
+import { CHECKLIST_GROUPS, type ChecklistGroup } from "@/db/schema/enums";
 
 /**
  * Editing the commercial catalogue.
@@ -646,5 +650,240 @@ export function NewDiscount() {
         </Button>
       </div>
     </Card>
+  );
+}
+
+/* -------------------------------------------------------------------------
+ * Maintenance plans
+ * ---------------------------------------------------------------------- */
+
+export function ImportLifecycleDefaults() {
+  // Its own copy rather than the pricing banner's: this import is about plans
+  // and the launch checklist, and telling an administrator it is about the
+  // price list would be wrong in the one place they are reading to decide.
+  const t = useTranslations("adminConsole.pricing.usingLifecycleDefaults");
+  const { error, pending, run } = useSaver(t("title"));
+
+  return (
+    <Callout tone="info" title={t("title")}>
+      <p>{t("body")}</p>
+      {error ? <p className="mt-2 text-caption text-danger">{error}</p> : null}
+      <Button
+        size="sm"
+        variant="secondary"
+        className="mt-3"
+        disabled={pending}
+        onClick={() => run(() => importLifecycleCatalog())}
+      >
+        {t("action")}
+      </Button>
+    </Callout>
+  );
+}
+
+export interface PlanRow {
+  id: string;
+  key: string;
+  priceMinorUnits: number;
+  includedCreditMinutes: number;
+  trialDays: number;
+  isRecommended: boolean;
+  isActive: boolean;
+}
+
+export function PlanEditor({ row, canEdit }: { row: PlanRow; canEdit: boolean }) {
+  const t = useTranslations("adminConsole.pricing");
+  const { error, pending, run } = useSaver(t("saved"));
+  const [open, setOpen] = useState(false);
+
+  const [price, setPrice] = useState(String(row.priceMinorUnits / 100));
+  const [credit, setCredit] = useState(String(row.includedCreditMinutes));
+  const [trial, setTrial] = useState(String(row.trialDays));
+  const [recommended, setRecommended] = useState(row.isRecommended);
+  const [active, setActive] = useState(row.isActive);
+  const [reason, setReason] = useState("");
+
+  function submit() {
+    run(
+      () =>
+        savePlan(
+          row.id,
+          {
+            priceMinorUnits: Math.round(Number(price) * 100),
+            includedCreditMinutes: Number(credit),
+            trialDays: Number(trial),
+            isRecommended: recommended,
+            isActive: active,
+          },
+          reason.trim() || undefined,
+        ),
+      () => setOpen(false),
+    );
+  }
+
+  if (!canEdit) return null;
+
+  if (!open) {
+    return (
+      <Button
+        size="sm"
+        variant="ghost"
+        className="self-start"
+        onClick={() => setOpen(true)}
+      >
+        {t("edit")}
+      </Button>
+    );
+  }
+
+  return (
+    <div className="flex w-full max-w-md flex-col gap-3">
+      {error ? <Callout tone="danger" live title={error} /> : null}
+
+      <div className="grid gap-3 sm:grid-cols-3">
+        <NumberField label={t("price")} value={price} onChange={setPrice} min={1} />
+        <NumberField label={t("includedCredit")} value={credit} onChange={setCredit} />
+        <NumberField label={t("trialDays")} value={trial} onChange={setTrial} />
+      </div>
+
+      <Checkbox
+        label={t("recommended")}
+        checked={recommended}
+        onChange={(event) => setRecommended(event.target.checked)}
+      />
+      <Checkbox
+        label={t("active")}
+        checked={active}
+        onChange={(event) => setActive(event.target.checked)}
+      />
+
+      <ReasonField value={reason} onChange={setReason} />
+
+      <div className="flex gap-2">
+        <Button size="sm" disabled={pending} onClick={submit}>
+          {t("save")}
+        </Button>
+        <Button size="sm" variant="ghost" onClick={() => setOpen(false)}>
+          {t("cancel")}
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------
+ * The launch checklist
+ * ---------------------------------------------------------------------- */
+
+export interface ChecklistDefinitionRow {
+  id: string;
+  key: string;
+  group: ChecklistGroup;
+  isRequired: boolean;
+  customerVisible: boolean;
+  sortOrder: number;
+  isActive: boolean;
+}
+
+export function ChecklistItemEditor({
+  row,
+  canEdit,
+}: {
+  row: ChecklistDefinitionRow;
+  canEdit: boolean;
+}) {
+  const t = useTranslations("adminConsole.pricing");
+  const { error, pending, run } = useSaver(t("saved"));
+  const [open, setOpen] = useState(false);
+
+  const [group, setGroup] = useState<ChecklistGroup>(row.group);
+  const [required, setRequired] = useState(row.isRequired);
+  const [visible, setVisible] = useState(row.customerVisible);
+  const [order, setOrder] = useState(String(row.sortOrder));
+  const [active, setActive] = useState(row.isActive);
+  const [reason, setReason] = useState("");
+
+  function submit() {
+    run(
+      () =>
+        saveChecklistItem(
+          row.id,
+          {
+            group,
+            isRequired: required,
+            customerVisible: visible,
+            sortOrder: Number(order),
+            isActive: active,
+          },
+          reason.trim() || undefined,
+        ),
+      () => setOpen(false),
+    );
+  }
+
+  if (!canEdit) return null;
+
+  if (!open) {
+    return (
+      <Button
+        size="sm"
+        variant="ghost"
+        className="self-start"
+        onClick={() => setOpen(true)}
+      >
+        {t("edit")}
+      </Button>
+    );
+  }
+
+  return (
+    <div className="flex w-full max-w-md flex-col gap-3">
+      {error ? <Callout tone="danger" live title={error} /> : null}
+
+      <div className="grid gap-3 sm:grid-cols-2">
+        <Field label={t("group")}>
+          <select
+            value={group}
+            onChange={(event) => setGroup(event.target.value as ChecklistGroup)}
+            className="h-10 w-full rounded-md border border-line-strong bg-canvas px-3 text-body-sm text-primary"
+          >
+            {CHECKLIST_GROUPS.map((value) => (
+              <option key={value} value={value}>
+                {value}
+              </option>
+            ))}
+          </select>
+        </Field>
+
+        <NumberField label={t("sortOrder")} value={order} onChange={setOrder} />
+      </div>
+
+      <Checkbox
+        label={t("requiredItem")}
+        checked={required}
+        onChange={(event) => setRequired(event.target.checked)}
+      />
+      <Checkbox
+        label={t("customerVisible")}
+        checked={visible}
+        onChange={(event) => setVisible(event.target.checked)}
+      />
+      <Checkbox
+        label={t("active")}
+        checked={active}
+        onChange={(event) => setActive(event.target.checked)}
+      />
+
+      <ReasonField value={reason} onChange={setReason} />
+
+      <div className="flex gap-2">
+        <Button size="sm" disabled={pending} onClick={submit}>
+          {t("save")}
+        </Button>
+        <Button size="sm" variant="ghost" onClick={() => setOpen(false)}>
+          {t("cancel")}
+        </Button>
+      </div>
+    </div>
   );
 }

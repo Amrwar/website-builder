@@ -131,10 +131,32 @@ assessment, so a future swap stays interpretable.
 Formalize and extend the rule-based engine (26 capabilities, points plus tier
 floors, actor-group detection across three languages).
 
-### Phase 11 — Launch + Hosting + Maintenance
+### Phase 11 — Launch + Hosting + Maintenance ✅
 
-Deployment, domain management, and maintenance subscriptions. The plans are
-configured with provisional prices and are not purchasable.
+Delivered. The lifecycle now runs past delivery: BUILD → PREVIEW → APPROVE →
+DEPLOY → LAUNCH → MAINTAIN → EXPAND.
+
+The Launch Centre replaced four hard-coded steps with a configurable
+checklist, and readiness is computed from recorded facts rather than asserted.
+A deployment counts only once the hosting provider has confirmed it — enforced
+in the service, in the schema and by a database CHECK. Domains track
+verification, DNS and SSL separately because they fail differently and are
+fixed differently.
+
+Maintenance plans are editable and audited like build prices. Cancelling never
+cuts a paid period short. Build credit is a platform-level resource held by a
+person, denominated in minutes, on an append-only ledger a trigger refuses to
+rewrite. "Build more" raises a change request on the existing project rather
+than forking a new one, so brief, files, messages and history survive.
+
+Hosting and domains moved from `planned` to live in the console. See
+`docs/USER_FLOWS.md` and `docs/ADMIN_FLOWS.md`.
+
+#### Not done
+
+The renewal sweep is written, tested and callable, but nothing schedules it —
+the same honest gap as the risk sweep. Taking payment for a renewal is the
+provider's job and arrives by webhook; that wiring is not built.
 
 ### Phase 12 — Growth + Referral + Partner System
 

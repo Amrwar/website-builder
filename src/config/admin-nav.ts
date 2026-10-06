@@ -206,16 +206,14 @@ export const ADMIN_SECTIONS = [
     id: "domains",
     path: "/domains",
     requires: ["project:manage"],
-    status: "planned",
-    plannedFor: 11,
+    status: "live",
     group: "platform",
   },
   {
     id: "hosting",
     path: "/hosting",
     requires: ["project:manage"],
-    status: "planned",
-    plannedFor: 11,
+    status: "live",
     group: "platform",
   },
   {

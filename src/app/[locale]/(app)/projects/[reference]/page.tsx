@@ -20,7 +20,10 @@ import {
 import { getLocaleDefinition, resolveLocale } from "@/config/locales";
 import { Link } from "@/i18n/navigation";
 import { getAuthContext } from "@/server/auth";
+import { loadLaunchCentre } from "@/server/launch";
+import { expansionOptionsFor, spendableCredit } from "@/server/expand";
 import { getWorkspace } from "@/server/workspace/queries";
+import { hasPanel } from "@/config/workspace";
 
 export const metadata: Metadata = {
   title: "Build room",
@@ -51,6 +54,29 @@ export default async function BuildRoomPage({
   const { intlTag } = getLocaleDefinition(resolveLocale(locale));
   const { project, definition } = workspace;
 
+  /**
+   * The Launch Centre costs several queries, so it is loaded only for products
+   * that actually have a launch panel. A maintenance plan has no domain and
+   * nothing to deploy; paying for those reads on its page would be waste.
+   */
+  const launch = hasPanel(project.productType, "launch")
+    ? await (async () => {
+        const [centre, options, credit] = await Promise.all([
+          loadLaunchCentre(project.id, context),
+          expansionOptionsFor(context),
+          spendableCredit(context),
+        ]);
+
+        return {
+          ...centre,
+          canExpand:
+            options.find((option) => option.project.id === project.id)?.available ??
+            false,
+          credit,
+        };
+      })()
+    : null;
+
   const panelContent = {
     overview: <OverviewPanel workspace={workspace} intlTag={intlTag} />,
     timeline: <TimelinePanel workspace={workspace} intlTag={intlTag} />,
@@ -60,7 +86,7 @@ export default async function BuildRoomPage({
     changes: <ChangesPanel workspace={workspace} intlTag={intlTag} />,
     approvals: <ApprovalsPanel workspace={workspace} intlTag={intlTag} />,
     payments: <PaymentsPanel workspace={workspace} intlTag={intlTag} />,
-    launch: <LaunchPanel workspace={workspace} intlTag={intlTag} />,
+    launch: <LaunchPanel workspace={workspace} intlTag={intlTag} launch={launch} />,
   };
 
   // Only the panels this product actually uses are handed to the shell.

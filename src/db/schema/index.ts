@@ -23,6 +23,11 @@ export * from "./workspace";
 /* --- Production engine ------------------------------------------------- */
 export * from "./production";
 
+/* --- Launch, hosting and the post-delivery lifecycle -------------------- */
+export * from "./launch";
+export * from "./subscriptions";
+export * from "./credits";
+
 /* --- Admin ------------------------------------------------------------- */
 export * from "./audit";
 export * from "./refunds";

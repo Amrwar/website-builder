@@ -232,7 +232,43 @@ can act on; these hold whatever path a write arrives by.
 | `discounts_value_matches_kind`      | A percentage outside 1–100, or a fixed amount of zero.                        |
 | `discounts_limits_sane`             | A lower-case code, a window that ends before it starts, a negative use count. |
 
+## Lifecycle tables (Phase 11)
+
+| Table                    | Purpose                                                                                                                                                                    |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `launch_checklist_items` | What a launch requires, as data. `appliesTo` is empty for "every product"; an item that applied to nothing would be invisible, so empty reads as all.                      |
+| `project_launch_checks`  | One item's state on one project. Rows are created lazily, so an untouched project costs nothing. `item_key` is copied, not referenced, so a launch reads back years later. |
+| `project_hosting`        | Where one project runs. Uptime is a recorded observation with the moment it was measured beside it, never a claim.                                                         |
+| `domains`                | Verification, DNS and SSL as three columns, because they are three failures with three different fixes. `owned_by_customer` decides who renews it.                         |
+| `maintenance_plans`      | Editable plan prices, seeded from `config/maintenance`. `included_credit_minutes` is why plans are modelled rather than being three product rows.                          |
+| `subscriptions`          | One commitment. `cancel_at_period_end` is what makes cancelling non-destructive.                                                                                           |
+| `subscription_events`    | Append-only. The only thing that settles "I was charged after I cancelled".                                                                                                |
+| `credit_accounts`        | One balance per person. A cache of the ledger, rebuildable by `recomputeBalance`.                                                                                          |
+| `credit_ledger`          | Append-only, signed minutes. `subject_type`/`subject_id` are untyped on purpose: a column per product type would be the coupling credits exist to avoid.                   |
+
+`deployments` gained `provider`, `provider_deployment_id`,
+`provider_confirmed_at`, `rollback_of_deployment_id` and `triggered_by_user_id`.
+
+### Lifecycle invariants
+
+Verified against real Postgres (30 cases, in a rolled-back transaction).
+
+| Constraint                                | Refuses                                                                        |
+| ----------------------------------------- | ------------------------------------------------------------------------------ |
+| `deployments_ready_requires_confirmation` | `state = 'ready'` without a provider confirmation. **The rule of this phase.** |
+| `deployments_failure_coherent`            | A failed deployment with no failure time, or a time without the state.         |
+| `credit_ledger_direction_matches_kind`    | A "spent" entry that adds credit, or a "purchased" one that removes it.        |
+| `credit_ledger_adjustment_needs_reason`   | A manual correction with no stated reason.                                     |
+| `credit_ledger_balance_nonnegative`       | A balance below zero. Credit is prepaid.                                       |
+| `credit_ledger_no_update` (trigger)       | **Any** update or delete. Corrections are new rows.                            |
+| `domains_one_primary_per_project`         | A second primary domain on one project.                                        |
+| `domains_name_lowercase`                  | An upper-case hostname, or one carrying a path.                                |
+| `project_hosting_uptime_dated`            | An uptime figure with no measurement date, or a date with no figure.           |
+| `project_launch_checks_na_needs_note`     | "Not applicable" with no reason recorded.                                      |
+| `subscriptions_period_forward`            | A period that ends before it starts.                                           |
+
 ## Not yet modelled
 
-Maintenance subscriptions, build credits, referrals, hosting and domains.
-These arrive with their phases.
+Referrals and partner payouts, the content system, and notification
+preferences beyond the per-user flags already on `users`. These arrive with
+their phases.

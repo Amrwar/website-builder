@@ -144,12 +144,35 @@ figures into the database — it changes no price, it makes them editable — an
 refuses if rows already exist, because overwriting an administrator's edits
 with the shipped figures is a destructive act disguised as a convenience.
 
+## Hosting and domains (Phase 11)
+
+`/admin/hosting` lists every hosted project with the version that is **actually
+live** — read from a deployment the provider confirmed, not from the hosting
+row's own status. A project whose hosting says "active" with no live version is
+not a rendering gap; it is a disagreement between two records, and showing it is
+the point.
+
+`/admin/domains` is sorted by certificate expiry, soonest first, because a
+certificate that lapses takes the site with it and a list sorted by name buries
+the only row that matters today. Verification, DNS and SSL are three columns for
+the same reason they are three columns in the schema.
+
+Uptime is only ever shown with the moment it was measured. A percentage with no
+"as of" beside it is a claim nobody can check, so the column says "not measured"
+rather than showing a zero.
+
+The pricing console gained two tabs: **Plans**, where maintenance prices and the
+credit each plan includes are edited, and **Launch checklist**, where what a
+launch requires is edited. Both follow the Phase 10 rules exactly — owner-only
+writes, audited changes, shipped config as the seed and the fallback. A plan
+price change never alters an existing subscription, which froze its figure when
+it was bought.
+
 ## Still to build
 
-**Organizations, referrals, partners, reviews, domains, hosting, content and
-notifications** are declared in the navigation as `planned` with the phase that
-delivers them, and render an honest "not built" page rather than an empty
-table.
+**Organizations, referrals, partners, reviews, content and notifications** are
+declared in the navigation as `planned` with the phase that delivers them, and
+render an honest "not built" page rather than an empty table.
 
 ## Audit
 

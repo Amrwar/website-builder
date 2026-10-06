@@ -1,6 +1,5 @@
 import {
   ArrowUpRight,
-  CheckCircle2,
   CircleDashed,
   Download,
   ExternalLink,
@@ -28,9 +27,11 @@ import {
   ConfirmAssetsButton,
   MessageComposer,
 } from "@/components/workspace/workspace-forms";
+import { BuildMore, LaunchChecklist } from "@/components/workspace/launch-centre";
 import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { formatMoney, money, type Currency } from "@/lib/pricing/money";
+import type { LaunchCentre } from "@/server/launch";
 import type { Workspace } from "@/server/workspace/queries";
 import { cn } from "@/lib/cn";
 
@@ -49,6 +50,23 @@ import { cn } from "@/lib/cn";
 interface PanelProps {
   workspace: Workspace;
   intlTag: string;
+}
+
+/**
+ * The Launch Centre's own data.
+ *
+ * Passed in rather than fetched here, because loading it costs several queries
+ * and only one of nine panels needs it. Null when the project has not reached
+ * a point where any of it is meaningful.
+ */
+export interface LaunchPanelData extends LaunchCentre {
+  /** True when more work can be ordered on this project right now. */
+  canExpand: boolean;
+  credit: { minutes: number; hours: number; remainder: number };
+}
+
+interface LaunchPanelProps extends PanelProps {
+  launch: LaunchPanelData | null;
 }
 
 function formatDate(date: Date, intlTag: string): string {
@@ -717,73 +735,208 @@ export async function PaymentsPanel({ workspace, intlTag }: PanelProps) {
  * Launch
  * ---------------------------------------------------------------------- */
 
-export async function LaunchPanel({ workspace, intlTag }: PanelProps) {
-  const t = await getTranslations("workspace");
-  const { project, latestProduction } = workspace;
+/**
+ * The Launch Centre.
+ *
+ * Replaces the four hard-coded steps this panel used to render. What a launch
+ * requires is configuration now, so this shows whatever the checklist holds,
+ * grouped and explained, alongside the facts a launch actually depends on: the
+ * deployment the hosting provider confirmed, the domain, DNS, the certificate
+ * and hosting itself.
+ *
+ * Nothing here concludes anything. Readiness was computed on the server from
+ * recorded observations, and the Go live button only submits -- the refusal
+ * lives in `launchProject`, which re-derives everything before writing.
+ */
+export async function LaunchPanel({ workspace, intlTag, launch }: LaunchPanelProps) {
+  const t = await getTranslations("workspace.launch");
+  const { project, viewer } = workspace;
 
-  const steps = [
-    { id: "assets", done: Boolean(project.assetsSubmittedAt) },
-    { id: "build", done: Boolean(project.deliveredAt) },
-    { id: "approval", done: Boolean(project.approvedAt) },
-    { id: "deploy", done: Boolean(project.launchedAt) },
-  ] as const;
+  if (!launch) {
+    return (
+      <EmptyState
+        size="sm"
+        icon={<Rocket className="size-6" />}
+        title={t("title")}
+        description={t("notYet")}
+      />
+    );
+  }
+
+  const { readiness, checklist, production, history, hosting, primary } = launch;
 
   return (
     <div className="flex flex-col gap-6">
-      <Card padding="lg" className="flex flex-col gap-5">
-        <p className="text-eyebrow text-tertiary uppercase">{t("launch.checklist")}</p>
-        <ul className="flex flex-col gap-3">
-          {steps.map((step) => (
-            <li key={step.id} className="flex items-center gap-2.5">
-              {step.done ? (
-                <CheckCircle2 className="size-4 shrink-0 text-success" aria-hidden />
-              ) : (
-                <CircleDashed className="size-4 shrink-0 text-tertiary" aria-hidden />
-              )}
-              <span
-                className={cn(
-                  "text-body-sm",
-                  step.done ? "text-primary" : "text-tertiary",
-                )}
-              >
-                {t(`launch.steps.${step.id}`)}
-              </span>
-            </li>
-          ))}
-        </ul>
+      {project.launchedAt ? (
+        <Callout
+          tone="success"
+          title={t("launched", { date: formatDate(project.launchedAt, intlTag) })}
+        />
+      ) : null}
+
+      {launch.certificateWarning ? (
+        <Callout
+          tone={launch.certificateWarning.expired ? "danger" : "warning"}
+          title={
+            launch.certificateWarning.expired
+              ? t("certificateExpired")
+              : t("certificateExpiring", {
+                  days: launch.certificateWarning.daysRemaining,
+                })
+          }
+        />
+      ) : null}
+
+      <Card padding="lg">
+        <LaunchChecklist
+          projectId={project.id}
+          rows={checklist.map((entry) => ({
+            key: entry.item.key,
+            group: entry.item.group,
+            translationKey: entry.item.translationKey,
+            isRequired: entry.item.isRequired,
+            state: entry.state,
+            note: entry.note,
+          }))}
+          canEdit={viewer.canExecuteBuild}
+          readiness={{
+            completed: readiness.completed,
+            required: readiness.required,
+            percent: readiness.percent,
+            ready: readiness.ready,
+          }}
+          blockers={readiness.blockers.map((blocker) => blocker.code)}
+          canLaunch={viewer.canExecuteBuild}
+        />
       </Card>
 
-      {latestProduction?.url ? (
+      {/* --- What is live ------------------------------------------------- */}
+      {production?.url ? (
         <Card padding="lg" className="flex flex-col gap-3">
           <p className="flex items-center gap-2 text-eyebrow text-tertiary uppercase">
             <Globe className="size-3.5" aria-hidden />
-            {t("launch.live")}
+            {t("live")}
           </p>
           <a
-            href={latestProduction.url}
+            href={production.url}
             target="_blank"
             rel="noreferrer noopener"
             className={cn(buttonVariants({ variant: "primary" }), "self-start")}
           >
-            {latestProduction.url}
+            {production.url}
             <ArrowUpRight className="rtl-flip size-4" aria-hidden />
           </a>
-          {latestProduction.readyAt ? (
+          {production.providerConfirmedAt ? (
             <p className="text-caption text-tertiary" data-numeric>
-              {t("preview.deployed", {
-                date: formatDate(latestProduction.readyAt, intlTag),
-              })}
+              {t("deployment")} · {formatDate(production.providerConfirmedAt, intlTag)}
             </p>
           ) : null}
         </Card>
-      ) : (
-        <EmptyState
-          size="sm"
-          icon={<Rocket className="size-6" />}
-          title={t("launch.title")}
-          description={project.approvedAt ? t("launch.noDomain") : t("launch.notYet")}
-        />
-      )}
+      ) : null}
+
+      {/* --- Domain -------------------------------------------------------- */}
+      <Card padding="lg" className="flex flex-col gap-3">
+        <p className="text-eyebrow text-tertiary uppercase">{t("domain")}</p>
+
+        {primary ? (
+          <div className="flex flex-col gap-2">
+            <p className="text-body-sm text-primary" data-numeric>
+              {primary.name}
+            </p>
+            {/* Three badges rather than one status: verification, DNS and the
+                certificate fail for different reasons and are fixed
+                differently, and a customer has to see which one they have. */}
+            <div className="flex flex-wrap gap-2">
+              <Badge tone={primary.verification === "verified" ? "success" : "neutral"}>
+                {t(`domainState.verification.${primary.verification}`)}
+              </Badge>
+              <Badge tone={primary.dnsState === "configured" ? "success" : "neutral"}>
+                {t(`domainState.dns.${primary.dnsState}`)}
+              </Badge>
+              <Badge tone={primary.sslState === "issued" ? "success" : "neutral"}>
+                {t(`domainState.ssl.${primary.sslState}`)}
+              </Badge>
+            </div>
+          </div>
+        ) : (
+          <p className="text-body-sm text-secondary">{t("noDomain")}</p>
+        )}
+      </Card>
+
+      {/* --- Hosting ------------------------------------------------------- */}
+      <Card padding="lg" className="flex flex-col gap-3">
+        <p className="text-eyebrow text-tertiary uppercase">{t("hosting.title")}</p>
+
+        {hosting ? (
+          <div className="flex flex-col items-start gap-2">
+            <Badge tone={hosting.status === "active" ? "success" : "neutral"}>
+              {t(`hosting.status.${hosting.status}`)}
+            </Badge>
+            {/* An uptime figure is only shown with the moment it was measured.
+                A percentage with no "as of" is a number nobody should act on. */}
+            {hosting.uptimeBasisPoints !== null && hosting.uptimeCheckedAt ? (
+              <p className="text-caption text-secondary" data-numeric>
+                {t("hosting.uptime", {
+                  value: (hosting.uptimeBasisPoints / 100).toFixed(2),
+                })}{" "}
+                ·{" "}
+                {t("hosting.uptimeAsOf", {
+                  date: formatDate(hosting.uptimeCheckedAt, intlTag),
+                })}
+              </p>
+            ) : null}
+          </div>
+        ) : (
+          <p className="text-body-sm text-secondary">{t("hosting.none")}</p>
+        )}
+      </Card>
+
+      {/* --- History ------------------------------------------------------- */}
+      <Card padding="lg" className="flex flex-col gap-3">
+        <p className="text-eyebrow text-tertiary uppercase">{t("history")}</p>
+
+        {history.length === 0 ? (
+          <p className="text-body-sm text-secondary">{t("noHistory")}</p>
+        ) : (
+          <ul className="flex flex-col gap-2.5">
+            {history.map((deployment) => (
+              <li
+                key={deployment.id}
+                className="flex flex-wrap items-baseline justify-between gap-3 border-b border-line-subtle pb-2.5 last:border-0 last:pb-0"
+              >
+                <span className="flex items-center gap-2">
+                  <span className="text-body-sm text-primary" data-numeric>
+                    {deployment.version}
+                  </span>
+                  <span className="text-caption text-tertiary">
+                    {deployment.environment}
+                  </span>
+                </span>
+
+                <span className="flex items-center gap-2">
+                  {/* Only a provider-confirmed deployment reads as live. One
+                      still building says so rather than implying success. */}
+                  <Badge tone={deployment.state === "ready" ? "success" : "neutral"}>
+                    {t(`deploymentState.${deployment.state}`)}
+                  </Badge>
+                  <span className="text-caption text-tertiary" data-numeric>
+                    {deployment.providerConfirmedAt
+                      ? formatDate(deployment.providerConfirmedAt, intlTag)
+                      : t("awaitingProvider")}
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Card>
+
+      <BuildMore
+        projectId={project.id}
+        available={launch.canExpand}
+        creditHours={launch.credit.hours}
+        creditMinutes={launch.credit.remainder}
+      />
     </div>
   );
 }

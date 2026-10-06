@@ -876,7 +876,8 @@
     "nav": "Account navigation",
     "account": "Account",
     "staff": "Staff",
-    "builds": "Builds"
+    "builds": "Builds",
+    "billing": "Billing"
   },
   "account": {
     "title": "Account",
@@ -1276,11 +1277,106 @@
       "deployment": "Deployment",
       "live": "Live site",
       "checklist": "Launch checklist",
-      "steps": {
-        "assets": "Assets received",
-        "build": "Build complete",
-        "approval": "You approved the build",
-        "deploy": "Deployed to production"
+      "readiness": "{completed} of {required} ready",
+      "ready": "Ready to go live",
+      "notReady": "Not ready yet",
+      "launched": "Live since {date}",
+      "goLive": "Go live",
+      "blockers": "What is left",
+      "groups": {
+        "customer": "Yours to confirm",
+        "technical": "Technical readiness",
+        "compliance": "Before it goes public"
+      },
+      "state": {
+        "pending": "Pending",
+        "done": "Done",
+        "not_applicable": "Not applicable"
+      },
+      "optional": "Optional",
+      "markDone": "Mark done",
+      "markPending": "Reopen",
+      "markNotApplicable": "Does not apply",
+      "noteLabel": "Why it does not apply",
+      "items": {
+        "contentFinal": "Final text and images are in",
+        "previewApproved": "You approved the preview",
+        "domainChosen": "Domain chosen and pointed at us",
+        "productionDeployed": "Deployed to production",
+        "dnsConfigured": "DNS records resolve to the site",
+        "sslIssued": "Certificate issued",
+        "formsTested": "Forms send and arrive",
+        "mobileChecked": "Checked on a phone",
+        "backupsRunning": "Backups running",
+        "analyticsInstalled": "Analytics installed",
+        "searchIndexable": "Search engines can index it",
+        "handoverSent": "Handover notes sent"
+      },
+      "blocker": {
+        "checklist_incomplete": "Some required items are still open.",
+        "no_confirmed_deployment": "The hosting provider has not confirmed a production deployment.",
+        "domain_unverified": "The domain has not been verified.",
+        "dns_not_configured": "DNS does not point here yet.",
+        "ssl_not_issued": "No certificate has been issued.",
+        "preview_not_approved": "The preview has not been approved."
+      },
+      "hosting": {
+        "title": "Hosting",
+        "none": "Hosting is set up when the site goes live.",
+        "uptime": "Uptime {value}%",
+        "uptimeAsOf": "Measured {date}",
+        "status": {
+          "pending": "Not provisioned",
+          "provisioning": "Provisioning",
+          "active": "Active",
+          "suspended": "Suspended",
+          "cancelled": "Cancelled"
+        }
+      },
+      "domainState": {
+        "verification": {
+          "unverified": "Not verified",
+          "pending": "Verification pending",
+          "verified": "Verified",
+          "failed": "Verification failed"
+        },
+        "dns": {
+          "unconfigured": "No records",
+          "misconfigured": "Pointing elsewhere",
+          "propagating": "Propagating",
+          "configured": "Configured"
+        },
+        "ssl": {
+          "none": "No certificate",
+          "pending": "Certificate pending",
+          "issued": "Secured",
+          "failed": "Certificate failed",
+          "expired": "Certificate expired"
+        }
+      },
+      "certificateExpiring": "Certificate expires in {days} days.",
+      "certificateExpired": "The certificate has expired.",
+      "history": "Deployment history",
+      "noHistory": "Nothing has been deployed yet.",
+      "deploymentState": {
+        "queued": "Queued",
+        "building": "Building",
+        "ready": "Live",
+        "failed": "Failed",
+        "superseded": "Replaced"
+      },
+      "awaitingProvider": "Waiting for the provider to confirm.",
+      "buildMore": {
+        "title": "Build more",
+        "body": "Add to this project without starting over. Your brief, files and history stay where they are.",
+        "action": "Request more work",
+        "summary": "What would you like added?",
+        "detail": "Describe it in your own words",
+        "submit": "Send request",
+        "sent": "Request {reference} raised. We will come back with a price.",
+        "notYet": "More work can be ordered once your build reaches preview.",
+        "credit": "You have {hours}h {minutes}m of build credit.",
+        "noCredit": "No build credit yet."
       }
     }
   },
@@ -1528,7 +1624,9 @@
         "tiers": "Tiers",
         "features": "Features",
         "currencies": "Currencies",
-        "discounts": "Discounts"
+        "discounts": "Discounts",
+        "plans": "Plans",
+        "checklist": "Launch checklist"
       },
       "tier": "Tier",
       "price": "Price",
@@ -1578,7 +1676,21 @@
       "baseCurrency": "Base currency. Never converted.",
       "empty": "Nothing here yet.",
       "auditedNote": "Every change records who made it, what it was before, and why.",
-      "provisionalNote": "Only the entry tier of each build comes from the agreed offer. The extended and advanced figures are internally consistent placeholders and need commercial sign-off before customers see them."
+      "provisionalNote": "Only the entry tier of each build comes from the agreed offer. The extended and advanced figures are internally consistent placeholders and need commercial sign-off before customers see them.",
+      "includedCredit": "Included credit (minutes)",
+      "trialDays": "Trial days",
+      "recommended": "Highlighted",
+      "group": "Group",
+      "sortOrder": "Order",
+      "requiredItem": "Required for launch",
+      "customerVisible": "Customers see this",
+      "planNote": "Changing a price never changes an existing subscription. The figure was frozen when it was bought.",
+      "optional": "Optional",
+      "usingLifecycleDefaults": {
+        "title": "The shipped plans and checklist are live",
+        "body": "Maintenance plan prices and the launch checklist are still coming from version-controlled configuration. Import them to make them editable here. Importing changes nothing — it copies the same values into the database.",
+        "action": "Import plans and checklist"
+      }
     },
     "analytics": {
       "title": "Analytics",
@@ -1646,6 +1758,88 @@
       "launching": "Launching",
       "launched": "Launched",
       "cancelled": "Cancelled"
+    },
+    "domainsPage": {
+      "title": "Domains",
+      "subtitle": "Every domain on the platform, soonest certificate expiry first.",
+      "empty": "No domains yet.",
+      "emptyBody": "A domain appears here once one is attached to a project.",
+      "primary": "Primary",
+      "expiringSoon": "{count} certificates need attention",
+      "expiringBody": "A certificate that lapses takes the site with it. These expire within 30 days or already have.",
+      "columns": {
+        "domain": "Domain",
+        "project": "Project",
+        "verification": "Ownership",
+        "dns": "DNS",
+        "certificate": "Certificate"
+      }
+    },
+    "hostingPage": {
+      "title": "Hosting",
+      "subtitle": "Where every live project runs, and what is actually serving.",
+      "empty": "Nothing is hosted yet.",
+      "emptyBody": "Hosting is recorded when a project goes live.",
+      "noDomain": "No domain",
+      "noConfirmed": "No confirmed deployment",
+      "notMeasured": "Not measured",
+      "columns": {
+        "project": "Project",
+        "domain": "Domain",
+        "status": "Status",
+        "live": "Live version",
+        "uptime": "Uptime"
+      }
     }
+  },
+  "maintenance": {
+    "title": "Maintenance",
+    "none": "No maintenance plan yet.",
+    "noneBody": "Hosting, updates and monitoring are a separate, cancellable plan.",
+    "current": "Current plan",
+    "renews": "Renews {date}",
+    "endsOn": "Ends {date}",
+    "trialUntil": "Free until {date}",
+    "change": "Change plan",
+    "cancel": "Cancel",
+    "keep": "Keep my plan",
+    "cancelTitle": "Cancel this plan?",
+    "cancelBody": "Your plan keeps running until {date}. You have paid for that period and you keep it.",
+    "cancelReason": "Why are you cancelling? (optional)",
+    "cancelled": "Cancelled. Service continues until {date}.",
+    "upgradeNote": "Takes effect now. You will be charged {amount} for the rest of this period.",
+    "downgradeNote": "Takes effect on {date}. Nothing is charged today and nothing is refunded — you keep the plan you paid for until then.",
+    "history": "Billing history",
+    "noHistory": "Nothing yet.",
+    "status": {
+      "trialing": "Trial",
+      "active": "Active",
+      "past_due": "Payment failed",
+      "paused": "Paused",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    },
+    "pastDueNote": "A payment did not go through. Your site stays up while this is sorted out.",
+    "credits": {
+      "title": "Build credit",
+      "balance": "{hours}h {minutes}m available",
+      "empty": "No build credit yet.",
+      "body": "Credit is held by you, not by one website. Spend it on any project you own.",
+      "statement": "Statement",
+      "kind": {
+        "purchased": "Purchased",
+        "granted": "Included with your plan",
+        "awarded": "Awarded",
+        "spent": "Spent",
+        "refunded": "Returned",
+        "expired": "Expired",
+        "adjusted": "Adjusted"
+      },
+      "expires": "Expires {date}"
+    }
+  },
+  "billing": {
+    "title": "Billing",
+    "lede": "Your maintenance plan and your build credit. Both are yours to change at any time."
   }
 }
