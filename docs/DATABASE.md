@@ -176,6 +176,28 @@ before a project exists. The order side of the link is
 makes the Build Room reusable: the room reads the product type to decide which
 stages, panels and approvals apply, and never asks what a website is.
 
+## Production engine tables (Phase 8)
+
+| Table                | Purpose                                                                                                                                                                                                             |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `production_tasks`   | The internal plan. `estimated` and `actual` are separate columns and `actual` is measured, never typed in; `blocked_minutes` accumulates so a task that waited two of its three days is recorded as a one-day task. |
+| `task_dependencies`  | A table rather than an array, because the question asked most often is the reverse one — "what is this blocking?" — which an array makes an unindexable scan. A check constraint forbids self-reference.            |
+| `project_milestones` | Derived from task state, so a milestone cannot claim a stage is complete while work in it is open.                                                                                                                  |
+| `deliverables`       | Points at a file, a deployment or an external URL. `delivered` and `accepted` are separate states because the gap between them is the customer's review.                                                            |
+
+`projects` gained `risk_level`, `risk_reasons` and `risk_assessed_at`. These are
+a **cache for sorting the queue**, not a source of truth: `assessRisk` is
+deterministic, so they can always be rebuilt from task state and the clock.
+
+### The guarantee trigger
+
+`projects_guard_guarantee` is a `BEFORE UPDATE` trigger that refuses any change
+to `paid_at`, `assets_submitted_at`, `build_started_at` or `deadline_at` once
+set — including clearing one. These four columns decide whether a refund is
+owed, so the database protects them regardless of which code path asks. A
+deliberate correction sets `app.allow_guarantee_edit` inside a transaction,
+which is auditable precisely because it is unusual.
+
 ## Not yet modelled
 
 Files and uploads, messages and change requests, approvals, maintenance

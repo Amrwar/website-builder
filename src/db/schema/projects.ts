@@ -2,6 +2,7 @@ import { relations } from "drizzle-orm";
 import {
   index,
   integer,
+  jsonb,
   pgTable,
   text,
   timestamp,
@@ -15,6 +16,7 @@ import {
   currencyEnum,
   productTypeEnum,
   projectStatusEnum,
+  riskLevelEnum,
   scopeTierEnum,
 } from "./enums";
 import { products } from "./products";
@@ -105,6 +107,19 @@ export const projects = pgTable(
     launchedAt: timestamp("launched_at", { withTimezone: true }),
     cancelledAt: timestamp("cancelled_at", { withTimezone: true }),
 
+    /**
+     * Last computed schedule risk, stored so the production queue can sort and
+     * filter on it without recomputing for every open project on every load.
+     *
+     * Derived state, not a source of truth: `assessRisk` is deterministic, so
+     * this is a cache that can always be rebuilt. `riskReasons` carries the
+     * explanation alongside the level, because a red with no reason is not
+     * actionable.
+     */
+    riskLevel: riskLevelEnum("risk_level").notNull().default("green"),
+    riskReasons: jsonb("risk_reasons").$type<unknown[]>().notNull().default([]),
+    riskAssessedAt: timestamp("risk_assessed_at", { withTimezone: true }),
+
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
@@ -114,6 +129,8 @@ export const projects = pgTable(
     index("projects_status_idx").on(table.status),
     /** Drives deadline-risk detection in the admin queue. */
     index("projects_deadline_at_idx").on(table.deadlineAt),
+    /** The production queue: open projects, worst risk first. */
+    index("projects_risk_idx").on(table.riskLevel, table.deadlineAt),
   ],
 );
 

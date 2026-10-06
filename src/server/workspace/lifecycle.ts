@@ -3,11 +3,13 @@ import "server-only";
 import { and, eq, sql } from "drizzle-orm";
 
 import { db } from "@/db/client";
-import { projectEvents, projectFiles, projects, type Project } from "@/db/schema";
+import { projectFiles, projects, type Project } from "@/db/schema";
 import { ApiError } from "@/lib/api/response";
 import { logger } from "@/lib/logger";
 import { deadlineFrom } from "@/lib/schedule/deadline";
 import type { AuthContext } from "@/server/auth";
+import { emit } from "@/server/events/bus";
+import { createProductionPlan } from "@/server/production/plan";
 
 /**
  * The project lifecycle, and the guarantee clock.
@@ -31,16 +33,6 @@ export type TransitionRefusal =
 
 export type TransitionResult<T> =
   { ok: true; value: T } | { ok: false; reason: TransitionRefusal };
-
-async function recordEvent(
-  projectId: string,
-  type: string,
-  actorType: "customer" | "staff" | "system",
-  actorId: string | null,
-  payload: Record<string, unknown> = {},
-): Promise<void> {
-  await db.insert(projectEvents).values({ projectId, type, actorType, actorId, payload });
-}
 
 /**
  * Confirms the customer's information and assets are in.
@@ -108,10 +100,16 @@ export async function submitAssets(
     return current ? { ok: true, value: current } : { ok: false, reason: "wrong_status" };
   }
 
-  await recordEvent(projectId, "assets.submitted", "customer", context.user.clerkUserId, {
-    fileCount: uploaded.count,
-    // Stated explicitly: this event is not the start of the guarantee.
-    guaranteeStarted: false,
+  await emit({
+    name: "assets.submitted",
+    projectId,
+    actorType: "customer",
+    actorId: context.user.clerkUserId,
+    payload: {
+      fileCount: uploaded.count,
+      // Stated explicitly: this event is not the start of the guarantee.
+      guaranteeStarted: false,
+    },
   });
 
   logger.info("assets submitted", { projectId, files: uploaded.count });
@@ -171,14 +169,25 @@ export async function startBuild(
 
   if (!updated) return { ok: false, reason: "already_started" };
 
-  await recordEvent(projectId, "build.started", "staff", context.user.clerkUserId, {
-    guaranteedDays: project.guaranteedDays,
-    startedAt: startedAt.toISOString(),
-    deadlineAt: deadlineAt?.toISOString() ?? null,
-    // The moment the clock starts, written into the audit trail. A disputed
-    // deadline is settled against this row.
-    guaranteeStarted: true,
+  await emit({
+    name: "build.started",
+    projectId,
+    actorType: "staff",
+    actorId: context.user.clerkUserId,
+    payload: {
+      guaranteedDays: project.guaranteedDays,
+      startedAt: startedAt.toISOString(),
+      deadlineAt: deadlineAt?.toISOString() ?? null,
+      // The moment the clock starts, written into the audit trail. A disputed
+      // deadline is settled against this row.
+      guaranteeStarted: true,
+    },
   });
+
+  // The plan is generated here rather than at payment, because its dates are
+  // spread across the guaranteed window and that window does not exist until
+  // now. Idempotent, so a retried transition does not double the plan.
+  await createProductionPlan(updated);
 
   logger.info("build started; guarantee countdown running", {
     projectId,
@@ -204,6 +213,12 @@ export async function publishPreview(
 
   if (!updated) return { ok: false, reason: "wrong_status" };
 
-  await recordEvent(projectId, "preview.published", "staff", context.user.clerkUserId);
+  await emit({
+    name: "preview.published",
+    projectId,
+    actorType: "staff",
+    actorId: context.user.clerkUserId,
+    payload: {},
+  });
   return { ok: true, value: updated };
 }

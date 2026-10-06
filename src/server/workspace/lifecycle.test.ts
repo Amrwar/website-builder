@@ -57,6 +57,11 @@ vi.mock("@/db/client", () => ({
   },
 }));
 
+const createProductionPlan = vi.fn();
+vi.mock("@/server/production/plan", () => ({
+  createProductionPlan: (project: unknown) => createProductionPlan(project),
+}));
+
 const { publishPreview, startBuild, submitAssets } = await import("./lifecycle");
 
 /* --- Fixtures ----------------------------------------------------------- */
@@ -93,6 +98,8 @@ beforeEach(() => {
   uploadCount = 1;
   updateMatches = true;
   projectRow = project();
+  createProductionPlan.mockReset();
+  createProductionPlan.mockResolvedValue({ created: true, taskCount: 13 });
 });
 
 /* --- Submitting assets -------------------------------------------------- */
@@ -214,6 +221,19 @@ describe("starting the build is what starts the clock", () => {
     expect(
       (event?.values.payload as { guaranteeStarted: boolean }).guaranteeStarted,
     ).toBe(true);
+  });
+
+  it("generates the production plan, because the window now exists", async () => {
+    // The plan's dates are spread across the guaranteed window, which does not
+    // exist until the clock starts -- so it is built here, not at payment.
+    await startBuild("project-1", developer);
+    expect(createProductionPlan).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not generate a plan when the transition is refused", async () => {
+    projectRow = project({ assetsSubmittedAt: null });
+    await startBuild("project-1", developer);
+    expect(createProductionPlan).not.toHaveBeenCalled();
   });
 
   it("refuses before the customer's assets are in", async () => {

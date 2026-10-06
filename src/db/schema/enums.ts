@@ -263,3 +263,60 @@ export const DEPLOYMENT_STATES = [
 ] as const;
 export type DeploymentState = (typeof DEPLOYMENT_STATES)[number];
 export const deploymentStateEnum = pgEnum("deployment_state", DEPLOYMENT_STATES);
+
+/* -------------------------------------------------------------------------
+ * Production engine
+ * ---------------------------------------------------------------------- */
+
+/**
+ * Task lifecycle.
+ *
+ * `pending` and `ready` are separated because the difference is a dependency:
+ * a pending task is waiting on something else, a ready one is waiting on a
+ * person. Collapsing them would make "what can actually be picked up right
+ * now" unanswerable without re-walking the dependency graph.
+ *
+ * `blocked` is distinct from `pending` for the same reason in reverse: a
+ * blocked task has started and stopped, and the time it spends here is lost
+ * time that the risk engine has to see.
+ */
+export const TASK_STATUSES = [
+  "pending",
+  "ready",
+  "in_progress",
+  "blocked",
+  "in_review",
+  "done",
+  "cancelled",
+] as const;
+export type TaskStatus = (typeof TASK_STATUSES)[number];
+export const taskStatusEnum = pgEnum("task_status", TASK_STATUSES);
+
+export const TASK_PRIORITIES = ["low", "normal", "high", "urgent"] as const;
+export type TaskPriority = (typeof TASK_PRIORITIES)[number];
+export const taskPriorityEnum = pgEnum("task_priority", TASK_PRIORITIES);
+
+export const MILESTONE_STATUSES = ["pending", "reached", "missed", "cancelled"] as const;
+export type MilestoneStatus = (typeof MILESTONE_STATUSES)[number];
+export const milestoneStatusEnum = pgEnum("milestone_status", MILESTONE_STATUSES);
+
+/**
+ * Deliverable lifecycle.
+ *
+ * `delivered` and `accepted` are separate states because the gap between them
+ * is the customer's review, and conflating them would let an unreviewed
+ * handover count as a finished one.
+ */
+export const DELIVERABLE_STATUSES = [
+  "pending",
+  "in_progress",
+  "delivered",
+  "accepted",
+  "rejected",
+] as const;
+export type DeliverableStatus = (typeof DELIVERABLE_STATUSES)[number];
+export const deliverableStatusEnum = pgEnum("deliverable_status", DELIVERABLE_STATUSES);
+
+/** Schedule risk, mirroring `RISK_LEVELS` in `lib/production/risk`. */
+export const RISK_LEVEL_VALUES = ["green", "yellow", "red"] as const;
+export const riskLevelEnum = pgEnum("risk_level", RISK_LEVEL_VALUES);

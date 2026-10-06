@@ -79,7 +79,18 @@ The core of the product after purchase.
 **Gate:** the clock starts on entry to `in_build` and never earlier; the stored
 deadline survives a later change to tier rules.
 
-### Phase 8 — Project Production Engine
+### Phase 8 — Project Production Engine ✅
+
+Delivered. Workflows are configuration (`config/production.ts`) keyed on
+product type, with stages, weighted durations, task templates, dependencies and
+milestones. Four new tables plus a risk cache on `projects`. The deadline and
+risk engines are pure, deterministic and explainable -- a red project always
+carries the reason that made it red. A typed event bus (`lib/events/catalogue`,
+`server/events/bus`) is the contract future automation reads against.
+**Guarantee timestamps are immutable at the database level**, enforced by a
+Postgres trigger, not only by a permission check.
+
+#### Original plan
 
 The internal pipeline that moves a project through `project_status`, records
 every transition in `project_events`, and makes build execution trackable
