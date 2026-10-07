@@ -62,7 +62,7 @@ test.describe("signed out", () => {
     // 400/401 when the signing secret is configured; 503 when it is not, which
     // is the handler refusing to trust anything it cannot verify. Either way
     // the property under test holds: an unsigned delivery is never accepted.
-    // (The secret is currently missing everywhere — see the readiness report.)
+    // (Production has the secret; local and CI environments do not.)
     expect(response.status()).toBeGreaterThanOrEqual(400);
     expect(response.ok()).toBe(false);
   });
