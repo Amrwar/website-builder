@@ -46,3 +46,8 @@ next-env.d.ts
 # The documented env template holds variable names only, never values.
 # Must stay last: `vercel link` appends its own `.env*` rule above.
 !.env.example
+
+# Playwright run output
+/test-results/
+/playwright-report/
+/blob-report/
