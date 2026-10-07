@@ -6,7 +6,7 @@ import Script from "next/script";
 
 import { ClerkProvider } from "@clerk/nextjs";
 import { NextIntlClientProvider } from "next-intl";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 
 import { BRAND } from "@/config/brand";
 import {
@@ -20,6 +20,7 @@ import { ToastProvider } from "@/components/ui/toast";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/cn";
 import { THEME_SCRIPT } from "@/lib/theme";
+import { PUBLIC_CLIENT_NAMESPACES, pickMessages } from "@/i18n/client-messages";
 import "@/styles/globals.css";
 
 const geistSans = Geist({
@@ -152,7 +153,11 @@ export default async function LocaleLayout({
           signInFallbackRedirectUrl="/account"
           signUpFallbackRedirectUrl="/account"
         >
-          <NextIntlClientProvider>
+          {/* Only what public client components read. The full catalogue,
+              staff console copy included, used to ship on every page. */}
+          <NextIntlClientProvider
+            messages={pickMessages(await getMessages(), PUBLIC_CLIENT_NAMESPACES)}
+          >
             <ToastProvider label={t("notifications")} dismissLabel={t("dismiss")}>
               {/* One shared tooltip provider: it is what lets the second
                 tooltip in a group open instantly rather than re-waiting

@@ -1,5 +1,10 @@
 import type { ReactNode } from "react";
 
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+
+import { CONSOLE_CLIENT_NAMESPACES, pickMessages } from "@/i18n/client-messages";
+
 /**
  * Admin console route group.
  *
@@ -8,10 +13,17 @@ import type { ReactNode } from "react";
  * customer-facing header would give staff two navigations competing for the
  * same screen.
  *
- * The layout itself is a pass-through. `AdminShell` is rendered per page, so
- * each page declares which section it is, and the guard that checks access
- * reads the same declaration.
+ * `AdminShell` is rendered per page, so each page declares which section it
+ * is, and the guard that checks access reads the same declaration. The layout
+ * only adds the console's copy for its client components, which nothing
+ * outside the console should download.
  */
-export default function ConsoleLayout({ children }: { children: ReactNode }) {
-  return <>{children}</>;
+export default async function ConsoleLayout({ children }: { children: ReactNode }) {
+  return (
+    <NextIntlClientProvider
+      messages={pickMessages(await getMessages(), CONSOLE_CLIENT_NAMESPACES)}
+    >
+      {children}
+    </NextIntlClientProvider>
+  );
 }
