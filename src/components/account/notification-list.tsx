@@ -4,11 +4,13 @@ import { useTransition } from "react";
 import { CheckCheck } from "lucide-react";
 import { useTranslations } from "next-intl";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Numeric } from "@/components/ui/numeric";
 import { useToast } from "@/components/ui/toast";
+import { cn } from "@/lib/cn";
 import { getLocaleDefinition, resolveLocale, type Locale } from "@/config/locales";
 import type { NotificationKind } from "@/config/notifications";
 import { markNotificationsRead } from "@/server/notification-actions";
@@ -87,14 +89,25 @@ export function NotificationList({
             <li key={item.id}>
               <Card
                 padding="lg"
-                className="flex flex-col gap-2"
+                className={cn(
+                  "flex flex-col gap-2",
+                  // Unread is marked on the row, not only counted above it.
+                  // The count said "3 unread" and nothing said which three.
+                  // A logical border so it stays on the reading edge in Arabic.
+                  item.unread && "border-s-2 border-s-accent",
+                )}
                 /* The notification keeps the direction it was written in. An
                    Arabic notice inside an English page reads right-to-left. */
                 dir={definition.direction}
               >
                 <div className="flex flex-wrap items-baseline justify-between gap-3">
-                  <p className="text-body font-medium text-primary">
+                  <p className="flex items-center gap-2 text-body font-medium text-primary">
                     {tKind(`${item.kind}.title`, item.params)}
+                    {item.unread ? (
+                      <Badge tone="info" aria-label={t("unread")}>
+                        {t("unread")}
+                      </Badge>
+                    ) : null}
                   </p>
                   <p className="text-caption text-tertiary">
                     <Numeric>{item.when}</Numeric>
