@@ -103,6 +103,12 @@ export const orders = pgTable(
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
+    /* Foreign keys are not indexed automatically. Without these, every
+       delete or key update on the referenced table scans this one to check
+       the constraint, and every join on the column walks the heap. Cheap to
+       hold while the tables are small; an incident to add once they are not. */
+    index("orders_project_id_idx").on(table.projectId),
+
     uniqueIndex("orders_number_key").on(table.number),
     /** The duplicate-order guard, enforced by the database rather than by a check-then-insert. */
     uniqueIndex("orders_idempotency_key_key").on(table.idempotencyKey),
@@ -187,7 +193,15 @@ export const orderItems = pgTable(
 
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
-  (table) => [index("order_items_order_id_idx").on(table.orderId)],
+  (table) => [
+    /* Foreign keys are not indexed automatically. Without these, every
+       delete or key update on the referenced table scans this one to check
+       the constraint, and every join on the column walks the heap. Cheap to
+       hold while the tables are small; an incident to add once they are not. */
+    index("order_items_product_id_idx").on(table.productId),
+    index("order_items_scope_assessment_id_idx").on(table.scopeAssessmentId),
+    index("order_items_order_id_idx").on(table.orderId),
+  ],
 );
 
 export const ordersRelations = relations(orders, ({ one, many }) => ({

@@ -6,6 +6,7 @@ import type { ProjectAssessment } from "@/lib/engine";
 import { quoteCurrencyFor } from "@/lib/pricing/localize";
 import { assessAndPrice, type ConfiguredDraft } from "@/server/engine";
 import { getAuthContext } from "@/server/auth";
+import { RATE_LIMITS, consume, limiterKey } from "@/server/platform/rate-limit";
 
 /**
  * Scope assessment and pricing, for the configurator.
@@ -33,7 +34,10 @@ import { getAuthContext } from "@/server/auth";
 
 export type AssessDraftResult =
   | { ok: true; assessment: ProjectAssessment }
-  | { ok: false; reason: "invalid_draft" | "invalid_platforms" | "failed" };
+  | {
+      ok: false;
+      reason: "invalid_draft" | "invalid_platforms" | "failed" | "rate_limited";
+    };
 
 export async function assessDraft(
   rawDraft: unknown,
@@ -55,6 +59,16 @@ export async function assessDraft(
   // from the draft. A browser that could name its own currency could pick the
   // one with the softest rate.
   const auth = await getAuthContext();
+
+  // Anonymous and compute-bearing: every call runs the scope engine and the
+  // catalogue queries. Checked after validation, so a malformed draft costs
+  // the caller nothing it could not already spend.
+  const budget = consume(
+    "assess",
+    await limiterKey(auth?.user.id ?? null),
+    RATE_LIMITS.assess,
+  );
+  if (!budget.ok) return { ok: false, reason: "rate_limited" };
   const currency = quoteCurrencyFor(auth?.user.preferredCurrency);
 
   return assessAndPrice(draft as ConfiguredDraft, {

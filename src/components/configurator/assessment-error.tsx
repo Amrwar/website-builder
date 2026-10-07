@@ -20,7 +20,8 @@ import { ErrorState } from "@/components/ui/error-state";
  * message for an engine failure and the wrong one for a missing answer, and
  * the two need different actions from the person reading them.
  */
-export type AssessmentFailure = "invalid_draft" | "invalid_platforms" | "failed";
+export type AssessmentFailure =
+  "invalid_draft" | "invalid_platforms" | "failed" | "rate_limited";
 
 export function AssessmentError({
   reason,
@@ -34,9 +35,10 @@ export function AssessmentError({
 }) {
   const t = useTranslations("configurator.scope.error");
 
-  // Only a genuine engine failure is worth retrying: retrying an incomplete
-  // draft just fails again, which teaches the customer the button is broken.
-  const retryable = reason === "failed";
+  // Only a genuine engine failure, or a busy window that has since passed, is
+  // worth retrying: retrying an incomplete draft just fails again, which
+  // teaches the customer the button is broken.
+  const retryable = reason === "failed" || reason === "rate_limited";
 
   const target =
     reason === "invalid_platforms"

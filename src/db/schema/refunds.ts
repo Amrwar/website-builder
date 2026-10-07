@@ -68,6 +68,14 @@ export const refunds = pgTable(
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
+    /* Foreign keys are not indexed automatically. Without these, every
+       delete or key update on the referenced table scans this one to check
+       the constraint, and every join on the column walks the heap. Cheap to
+       hold while the tables are small; an incident to add once they are not. */
+    index("refunds_requested_by_user_id_idx").on(table.requestedByUserId),
+    index("refunds_payment_id_idx").on(table.paymentId),
+    index("refunds_approved_by_user_id_idx").on(table.approvedByUserId),
+
     index("refunds_order_idx").on(table.orderId),
     index("refunds_status_idx").on(table.status, table.requestedAt.desc()),
   ],

@@ -689,6 +689,10 @@
           "title": "That platform combination cannot be built",
           "body": "Cross-platform already covers both app stores, so it cannot be combined with the native targets. Choose one or the other.",
           "action": "Change platforms"
+        },
+        "rate_limited": {
+          "title": "Too many checks in a short time",
+          "body": "Give it a minute and try again. Nothing you have entered is lost."
         }
       }
     },

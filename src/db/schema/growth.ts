@@ -162,6 +162,12 @@ export const referrals = pgTable(
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
+    /* Foreign keys are not indexed automatically. Without these, every
+       delete or key update on the referenced table scans this one to check
+       the constraint, and every join on the column walks the heap. Cheap to
+       hold while the tables are small; an incident to add once they are not. */
+    index("referrals_converted_project_id_idx").on(table.convertedProjectId),
+
     uniqueIndex("referrals_referred_user_key").on(table.referredUserId),
     index("referrals_code_idx").on(table.codeId),
     index("referrals_referrer_idx").on(table.referrerUserId),
@@ -218,6 +224,13 @@ export const partners = pgTable(
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
+    /* Foreign keys are not indexed automatically. Without these, every
+       delete or key update on the referenced table scans this one to check
+       the constraint, and every join on the column walks the heap. Cheap to
+       hold while the tables are small; an incident to add once they are not. */
+    index("partners_user_id_idx").on(table.userId),
+    index("partners_approved_by_user_id_idx").on(table.approvedByUserId),
+
     uniqueIndex("partners_email_key").on(table.email),
     index("partners_status_idx").on(table.status),
   ],
@@ -264,6 +277,13 @@ export const affiliates = pgTable(
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
+    /* Foreign keys are not indexed automatically. Without these, every
+       delete or key update on the referenced table scans this one to check
+       the constraint, and every join on the column walks the heap. Cheap to
+       hold while the tables are small; an incident to add once they are not. */
+    index("affiliates_user_id_idx").on(table.userId),
+    index("affiliates_approved_by_user_id_idx").on(table.approvedByUserId),
+
     uniqueIndex("affiliates_email_key").on(table.email),
     index("affiliates_status_idx").on(table.status),
   ],
@@ -322,6 +342,13 @@ export const commissions = pgTable(
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
+    /* Foreign keys are not indexed automatically. Without these, every
+       delete or key update on the referenced table scans this one to check
+       the constraint, and every join on the column walks the heap. Cheap to
+       hold while the tables are small; an incident to add once they are not. */
+    index("commissions_order_id_idx").on(table.orderId),
+    index("commissions_approved_by_user_id_idx").on(table.approvedByUserId),
+
     uniqueIndex("commissions_referral_key").on(table.referralId),
     index("commissions_affiliate_idx").on(table.affiliateId, table.state),
     index("commissions_partner_idx").on(table.partnerId, table.state),
@@ -363,6 +390,12 @@ export const payouts = pgTable(
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
+    /* Foreign keys are not indexed automatically. Without these, every
+       delete or key update on the referenced table scans this one to check
+       the constraint, and every join on the column walks the heap. Cheap to
+       hold while the tables are small; an incident to add once they are not. */
+    index("payouts_approved_by_user_id_idx").on(table.approvedByUserId),
+
     uniqueIndex("payouts_reference_key").on(table.reference),
     index("payouts_affiliate_idx").on(table.affiliateId, table.status),
     index("payouts_partner_idx").on(table.partnerId, table.status),
@@ -427,6 +460,13 @@ export const reviews = pgTable(
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
+    /* Foreign keys are not indexed automatically. Without these, every
+       delete or key update on the referenced table scans this one to check
+       the constraint, and every join on the column walks the heap. Cheap to
+       hold while the tables are small; an incident to add once they are not. */
+    index("reviews_author_user_id_idx").on(table.authorUserId),
+    index("reviews_moderated_by_user_id_idx").on(table.moderatedByUserId),
+
     uniqueIndex("reviews_project_key").on(table.projectId),
     index("reviews_status_idx").on(table.status),
     index("reviews_published_idx").on(table.publishedAt),
@@ -498,6 +538,13 @@ export const showcaseEntries = pgTable(
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
+    /* Foreign keys are not indexed automatically. Without these, every
+       delete or key update on the referenced table scans this one to check
+       the constraint, and every join on the column walks the heap. Cheap to
+       hold while the tables are small; an incident to add once they are not. */
+    index("showcase_entries_review_id_idx").on(table.reviewId),
+    index("showcase_entries_consent_given_by_user_id_idx").on(table.consentGivenByUserId),
+
     uniqueIndex("showcase_entries_slug_key").on(table.slug),
     uniqueIndex("showcase_entries_project_key").on(table.projectId),
     index("showcase_entries_published_idx").on(table.status, table.sortOrder),

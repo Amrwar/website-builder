@@ -120,6 +120,12 @@ export const projectLaunchChecks = pgTable(
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
+    /* Foreign keys are not indexed automatically. Without these, every
+       delete or key update on the referenced table scans this one to check
+       the constraint, and every join on the column walks the heap. Cheap to
+       hold while the tables are small; an incident to add once they are not. */
+    index("project_launch_checks_completed_by_user_id_idx").on(table.completedByUserId),
+
     uniqueIndex("project_launch_checks_item_key").on(table.projectId, table.itemKey),
   ],
 );

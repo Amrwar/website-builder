@@ -85,6 +85,20 @@
       "when": 1791336429015,
       "tag": "0011_event_subjects",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1791390590935,
+      "tag": "0012_foreign_key_indexes",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1791390666746,
+      "tag": "0013_append_only_ledgers",
+      "breakpoints": true
     }
   ]
 }

@@ -124,6 +124,12 @@ export const projects = pgTable(
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
+    /* Foreign keys are not indexed automatically. Without these, every
+       delete or key update on the referenced table scans this one to check
+       the constraint, and every join on the column walks the heap. Cheap to
+       hold while the tables are small; an incident to add once they are not. */
+    index("projects_product_id_idx").on(table.productId),
+
     uniqueIndex("projects_reference_key").on(table.reference),
     index("projects_owner_id_idx").on(table.ownerId),
     index("projects_status_idx").on(table.status),

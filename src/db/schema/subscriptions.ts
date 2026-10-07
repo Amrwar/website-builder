@@ -179,6 +179,12 @@ export const subscriptionEvents = pgTable(
     occurredAt: timestamp("occurred_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
+    /* Foreign keys are not indexed automatically. Without these, every
+       delete or key update on the referenced table scans this one to check
+       the constraint, and every join on the column walks the heap. Cheap to
+       hold while the tables are small; an incident to add once they are not. */
+    index("subscription_events_actor_user_id_idx").on(table.actorUserId),
+
     index("subscription_events_subscription_idx").on(
       table.subscriptionId,
       table.occurredAt.desc(),

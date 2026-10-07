@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { ApiError } from "@/lib/api/response";
 import { logger } from "@/lib/logger";
 import { getAuthContext, requireUser } from "@/server/auth";
+import { RATE_LIMITS, consume, limiterKey } from "@/server/platform/rate-limit";
 import { applyAsAffiliate, applyAsPartner } from "@/server/growth/partners";
 import {
   approveCommission,
@@ -46,6 +47,24 @@ export type GrowthResult<T = unknown> =
   | ({ ok: true } & (T extends object ? T : object))
   | { ok: false; reason: string; message: string };
 
+/**
+ * Refuses a call that is over budget, in the same shape as every other
+ * refusal, so the form shows a message instead of a generic failure.
+ * `reason` is stable for the UI; the wording is for the person.
+ */
+async function overBudget(
+  scope: keyof typeof RATE_LIMITS,
+  userId: string | null,
+): Promise<GrowthResult<never> | null> {
+  const verdict = consume(scope, await limiterKey(userId), RATE_LIMITS[scope]);
+  if (verdict.ok) return null;
+  return {
+    ok: false,
+    reason: "rate_limited",
+    message: "Too many attempts in a short time. Please wait a little and try again.",
+  };
+}
+
 function failure(error: unknown, fallback: string): GrowthResult<never> {
   if (error instanceof ApiError) {
     return { ok: false, reason: error.code, message: error.message };
@@ -69,6 +88,8 @@ function failure(error: unknown, fallback: string): GrowthResult<never> {
 export async function submitPartnerApplication(input: unknown): Promise<GrowthResult> {
   try {
     const context = (await getAuthContext()) ?? undefined;
+    const limited = await overBudget("application", context?.user.id ?? null);
+    if (limited) return limited;
     const result = await applyAsPartner(input, context);
 
     if (!result.ok) {
@@ -91,6 +112,8 @@ export async function submitPartnerApplication(input: unknown): Promise<GrowthRe
 export async function submitAffiliateApplication(input: unknown): Promise<GrowthResult> {
   try {
     const context = (await getAuthContext()) ?? undefined;
+    const limited = await overBudget("application", context?.user.id ?? null);
+    if (limited) return limited;
     const result = await applyAsAffiliate(input, context);
 
     if (!result.ok) {
@@ -123,6 +146,8 @@ export async function sendReview(
 ): Promise<GrowthResult> {
   try {
     const context = await requireUser();
+    const limited = await overBudget("review", context.user.id);
+    if (limited) return limited;
 
     const result = await submitReview(
       {
@@ -194,6 +219,8 @@ export async function requestReview(projectId: string): Promise<GrowthResult> {
 export async function retractReview(reviewId: string): Promise<GrowthResult> {
   try {
     const context = await requireUser();
+    const limited = await overBudget("review", context.user.id);
+    if (limited) return limited;
     await withdrawReview(String(reviewId), context);
     revalidatePath("/projects");
     return { ok: true };

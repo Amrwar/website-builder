@@ -130,6 +130,12 @@ export const projectFiles = pgTable(
     deletedAt: timestamp("deleted_at", { withTimezone: true }),
   },
   (table) => [
+    /* Foreign keys are not indexed automatically. Without these, every
+       delete or key update on the referenced table scans this one to check
+       the constraint, and every join on the column walks the heap. Cheap to
+       hold while the tables are small; an incident to add once they are not. */
+    index("project_files_uploaded_by_user_id_idx").on(table.uploadedByUserId),
+
     index("project_files_project_idx").on(table.projectId, table.createdAt.desc()),
     uniqueIndex("project_files_group_version_key").on(
       table.projectId,
@@ -190,6 +196,12 @@ export const projectMessages = pgTable(
     editedAt: timestamp("edited_at", { withTimezone: true }),
   },
   (table) => [
+    /* Foreign keys are not indexed automatically. Without these, every
+       delete or key update on the referenced table scans this one to check
+       the constraint, and every join on the column walks the heap. Cheap to
+       hold while the tables are small; an incident to add once they are not. */
+    index("project_messages_author_user_id_idx").on(table.authorUserId),
+
     index("project_messages_project_idx").on(table.projectId, table.createdAt.desc()),
     /** "What can this customer see" has to be an indexed question. */
     index("project_messages_visibility_idx").on(table.projectId, table.visibility),
@@ -255,6 +267,14 @@ export const changeRequests = pgTable(
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
+    /* Foreign keys are not indexed automatically. Without these, every
+       delete or key update on the referenced table scans this one to check
+       the constraint, and every join on the column walks the heap. Cheap to
+       hold while the tables are small; an incident to add once they are not. */
+    index("change_requests_order_id_idx").on(table.orderId),
+    index("change_requests_requested_by_user_id_idx").on(table.requestedByUserId),
+    index("change_requests_decided_by_user_id_idx").on(table.decidedByUserId),
+
     uniqueIndex("change_requests_reference_key").on(table.reference),
     index("change_requests_project_idx").on(table.projectId, table.createdAt.desc()),
     index("change_requests_status_idx").on(table.status),
@@ -300,6 +320,12 @@ export const projectApprovals = pgTable(
     note: text("note"),
   },
   (table) => [
+    /* Foreign keys are not indexed automatically. Without these, every
+       delete or key update on the referenced table scans this one to check
+       the constraint, and every join on the column walks the heap. Cheap to
+       hold while the tables are small; an incident to add once they are not. */
+    index("project_approvals_decided_by_user_id_idx").on(table.decidedByUserId),
+
     uniqueIndex("project_approvals_kind_round_key").on(
       table.projectId,
       table.kind,
@@ -373,6 +399,12 @@ export const deployments = pgTable(
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
+    /* Foreign keys are not indexed automatically. Without these, every
+       delete or key update on the referenced table scans this one to check
+       the constraint, and every join on the column walks the heap. Cheap to
+       hold while the tables are small; an incident to add once they are not. */
+    index("deployments_triggered_by_user_id_idx").on(table.triggeredByUserId),
+
     index("deployments_project_idx").on(table.projectId, table.createdAt.desc()),
     index("deployments_environment_idx").on(table.projectId, table.environment),
   ],

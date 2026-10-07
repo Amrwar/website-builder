@@ -689,6 +689,10 @@
           "title": "Cette combinaison de plateformes est impossible",
           "body": "Le multiplateforme couvre déjà les deux magasins d’applications ; il ne peut donc pas être combiné aux cibles natives. Choisissez l’un ou l’autre.",
           "action": "Changer de plateformes"
+        },
+        "rate_limited": {
+          "title": "Trop de vérifications en peu de temps",
+          "body": "Patientez une minute et réessayez. Rien de ce que vous avez saisi n’est perdu."
         }
       }
     },
