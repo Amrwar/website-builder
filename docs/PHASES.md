@@ -249,11 +249,34 @@ the bus is its foundation and nothing more is needed until there is something
 to automate. Both are named here so the absence is a decision rather than an
 oversight.
 
-### Phase 15 — Production Hardening + Security
+### Phase 15 — Production Hardening + Security — done
 
-Where the known security gaps land: nonce-based CSP, rate limiting on our own
-endpoints, dependency scanning in CI, audit-log integrity. All four are written
-up in `docs/SECURITY.md`.
+A full audit of security, data, performance, accessibility, layout and the two
+end-to-end flows. Of the four gaps listed for it, two closed: rate limiting on
+our own endpoints (assessment, applications, reviews, referral claims) and
+audit-log integrity (the four ledgers are append-only at the database, by
+trigger, not by convention). Nonce-based CSP and CI dependency scanning remain
+open: the first would make every marketing page dynamic, the second needs a CI
+that does not exist yet.
+
+What the audit found that no earlier gate had:
+
+- **Refunds could never execute.** The webhook never stored the payment intent
+  id, so a refund had nothing to refund against, guarantee refunds included.
+- **No notification was ever recorded.** A partial unique index cannot satisfy
+  `ON CONFLICT (dedupe_key)`, so every insert threw and was swallowed.
+- **A current-step label was invisible** (1.0:1 contrast) on the configurator's
+  dark entry panel, and four other text colours were below AA.
+- **The Arabic header overflowed a tablet**, and two private sections
+  (invoices, notifications) were missing from the proxy's coarse gate.
+- **32 foreign keys had no index.**
+
+The first two were found by `server/lifecycle.integration.test.ts`, which
+walks an order from draft to refund against real Postgres (PGlite, real
+migrations, the real webhook route) with only the outside providers faked. It
+fails with the fulfilment fix reverted. The Playwright suite (`npm run
+test:e2e`) covers the public journey, four viewports, both directions and the
+signed-out access boundary against a production build.
 
 ### Phases 16–30 — Platform expansion
 
