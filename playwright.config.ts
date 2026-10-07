@@ -29,6 +29,9 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 1 : 0,
+  // Every worker is a full Chrome sharing the machine with the server; past
+  // four, cold-start navigations outrun the expect timeout and fail at random.
+  workers: 4,
   reporter: [["list"]],
   timeout: 45_000,
   use: {

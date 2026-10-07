@@ -38,7 +38,9 @@ test.describe("visitor → configure → price", () => {
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
     await page.getByRole("link", { name: "Start a build" }).first().click();
-    await expect(page).toHaveURL(/\/configure$/);
+    // A click during hydration becomes a client navigation, which can take
+    // longer than the default wait on a loaded machine. Not a user-visible bug.
+    await expect(page).toHaveURL(/\/configure$/, { timeout: 15_000 });
 
     // 1. Type
     await choose(page, /Website/);

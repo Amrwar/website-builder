@@ -1,6 +1,7 @@
 // @vitest-environment node
 import { and, eq, sql } from "drizzle-orm";
 import { beforeAll, describe, expect, it, vi } from "vitest";
+import type { AuthContext } from "@/server/auth";
 
 /**
  * The whole commercial lifecycle, against a real database.
@@ -148,7 +149,7 @@ const { db } = await import("@/db/client");
 const schema = await import("@/db/schema");
 const { roleHasPermission } = await import("@/config/roles");
 
-type Context = import("@/server/auth").AuthContext;
+type Context = AuthContext;
 
 function contextFor(user: typeof schema.users.$inferSelect): Context {
   return { user, can: (p) => roleHasPermission(user.role, p) };
