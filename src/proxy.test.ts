@@ -225,3 +225,30 @@ describe("the referral link", () => {
     expect(handleI18n).toHaveBeenCalled();
   });
 });
+
+describe("every signed-in route is gated by the proxy", () => {
+  /**
+   * Held against the route tree, not a hand-kept list. `invoices` and
+   * `notifications` were added as pages without being added to the proxy:
+   * the pages re-check the session themselves, so nothing leaked, but a
+   * signed-out visitor lost the address they were trying to reach. New route
+   * groups fail here instead.
+   */
+  it("lists every top-level segment of the app and console groups", async () => {
+    const { readdirSync, statSync } = await import("node:fs");
+    const { join } = await import("node:path");
+
+    const segmentsIn = (group: string) => {
+      const dir = join("src", "app", "[locale]", group);
+      return readdirSync(dir).filter(
+        (name) => statSync(join(dir, name)).isDirectory() && !name.startsWith("("),
+      );
+    };
+
+    const signedIn = [...segmentsIn("(app)"), ...segmentsIn("(console)")];
+    expect(signedIn.length).toBeGreaterThan(3);
+    for (const segment of signedIn) {
+      expect(proxyModule.PRIVATE_SEGMENTS, segment).toContain(segment);
+    }
+  });
+});

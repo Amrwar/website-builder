@@ -36,7 +36,7 @@ export function MobileNav({ locale }: MobileNavProps) {
         <Button
           variant="ghost"
           size="sm"
-          className="px-2 md:hidden"
+          className="px-2 lg:hidden"
           aria-label={t("openMenu")}
         >
           <Menu className="size-5" aria-hidden />

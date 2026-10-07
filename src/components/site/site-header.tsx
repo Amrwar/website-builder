@@ -38,7 +38,11 @@ export async function SiteHeader({ locale }: SiteHeaderProps) {
             <Logo />
           </Link>
 
-          <nav aria-label={t("primary")} className="hidden shrink-0 md:block">
+          {/* The full header needs lg, not md. At tablet width the desktop
+              cluster overflowed in Arabic — measured end-to-end at 820px —
+              because its labels run wider than English, so tablets get the
+              menu, which has room for any language. */}
+          <nav aria-label={t("primary")} className="hidden shrink-0 lg:block">
             <ul className="flex items-center gap-1">
               {items.map((item) => (
                 <li key={item.key}>
@@ -58,7 +62,7 @@ export async function SiteHeader({ locale }: SiteHeaderProps) {
           </nav>
 
           <div className="flex items-center gap-2">
-            <div className="hidden items-center gap-2 md:flex">
+            <div className="hidden items-center gap-2 lg:flex">
               <AccountControl />
               <LocaleSwitcher current={locale} />
               <ThemeToggle />

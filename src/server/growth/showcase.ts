@@ -1,6 +1,6 @@
 import "server-only";
 
-import { and, asc, desc, eq, isNotNull } from "drizzle-orm";
+import { and, asc, desc, eq, isNotNull, like, or } from "drizzle-orm";
 import { z } from "zod";
 
 import { db } from "@/db/client";
@@ -262,17 +262,37 @@ export async function unpublishShowcaseEntry(
   return { ok: true };
 }
 
+/**
+ * A slug nobody else has, as `name`, `name-2`, `name-3`…
+ *
+ * One query for every taken slug that could clash, rather than a query per
+ * candidate: the previous loop issued up to fifty sequential round trips for a
+ * popular name. The unique index on `slug` is still what guarantees
+ * uniqueness — two concurrent publishes can both see `name-2` free here — so
+ * this only has to be a good first guess, and the insert is the referee.
+ */
 async function uniqueSlug(base: string): Promise<string> {
   const root = slugify(base) || "build";
 
-  for (let suffix = 0; suffix < 50; suffix += 1) {
-    const candidate = suffix === 0 ? root : `${root}-${suffix + 1}`;
-    const clash = await db.query.showcaseEntries.findFirst({
-      where: eq(showcaseEntries.slug, candidate),
-    });
-    if (!clash) return candidate;
-  }
+  const taken = new Set(
+    (
+      await db
+        .select({ slug: showcaseEntries.slug })
+        .from(showcaseEntries)
+        .where(
+          or(
+            eq(showcaseEntries.slug, root),
+            like(showcaseEntries.slug, `${root.replace(/[%_]/g, "\\$&")}-%`),
+          ),
+        )
+    ).map((row) => row.slug),
+  );
 
+  if (!taken.has(root)) return root;
+  for (let suffix = 2; suffix <= taken.size + 2; suffix += 1) {
+    const candidate = `${root}-${suffix}`;
+    if (!taken.has(candidate)) return candidate;
+  }
   return `${root}-${Date.now()}`;
 }
 

@@ -29,7 +29,21 @@ const localePrefix = `/(${LOCALES.join("|")})`;
  * `/accounts-payable` and `/administrators` and would force a sign-in on a
  * public page that merely starts with the same letters.
  */
-const PRIVATE_SEGMENTS = ["account", "admin", "billing", "orders", "projects"] as const;
+/**
+ * Exported so a test can hold it against the route tree. `invoices` and
+ * `notifications` shipped without being added here: the pages still re-check
+ * the session themselves, so nothing leaked, but the proxy waved them through
+ * and a signed-out visitor lost the address they were trying to reach.
+ */
+export const PRIVATE_SEGMENTS = [
+  "account",
+  "admin",
+  "billing",
+  "invoices",
+  "notifications",
+  "orders",
+  "projects",
+] as const;
 
 const isPrivateRoute = createRouteMatcher(
   PRIVATE_SEGMENTS.flatMap((segment) => [
