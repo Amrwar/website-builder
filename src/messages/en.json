@@ -430,7 +430,9 @@
       "title": "Something went wrong",
       "body": "The page failed to load. This has been logged, and trying again often resolves it.",
       "retry": "Try again",
-      "home": "Back to home"
+      "home": "Back to home",
+      "backToBuilds": "Back to your builds",
+      "backToConsole": "Back to the console"
     }
   },
   "common": {
@@ -1427,7 +1429,8 @@
     "planned": {
       "title": "Not built yet",
       "body": "This section has no data behind it yet. It arrives in Phase {phase}.",
-      "note": "Showing an empty table here would suggest the feature exists and nobody has used it. It does not exist."
+      "note": "Showing an empty table here would suggest the feature exists and nobody has used it. It does not exist.",
+      "unscheduled": "This section has no data behind it yet, and is not scheduled."
     },
     "table": {
       "search": "Search",
@@ -1936,6 +1939,37 @@
         "sortOrder": "Order"
       },
       "consentNote": "Nothing is published without recorded customer consent, and no customer is named unless they separately agreed to be."
+    },
+    "notificationsView": {
+      "subtitle": "What the platform has told people, and whether it reached them.",
+      "empty": "Nothing sent yet",
+      "emptyBody": "Notifications appear here as the platform sends them.",
+      "unread": "Unread",
+      "sent": "Sent",
+      "failed": "Failed",
+      "inFlight": "Sending",
+      "notEmailed": "Not emailed",
+      "columns": {
+        "kind": "Notification",
+        "recipient": "Recipient",
+        "language": "Language",
+        "delivery": "Email",
+        "read": "Read",
+        "created": "Sent"
+      },
+      "kinds": {
+        "order_paid": "Order paid",
+        "invoice_issued": "Invoice issued",
+        "refund_issued": "Refund issued",
+        "deadline_missed": "Deadline missed",
+        "build_started": "Build started",
+        "preview_ready": "Preview ready",
+        "project_launched": "Project launched",
+        "approval_requested": "Approval requested",
+        "message_received": "Message received",
+        "deadline_approaching": "Deadline approaching",
+        "product_news": "Product news"
+      }
     }
   },
   "maintenance": {

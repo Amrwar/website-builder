@@ -24,7 +24,10 @@ export async function PlannedSection({ id }: { id: AdminSectionId }) {
   const t = await getTranslations("adminConsole");
 
   const section = adminSection(id);
-  const phase = section?.plannedFor ?? 0;
+  // Some sections have a phase that genuinely covers them; others do not, and
+  // inventing a number for those is how a placeholder ends up promising a date
+  // that has already gone past.
+  const phase = section?.plannedFor;
 
   return (
     <AdminShell role={context.user.role} active={id}>
@@ -33,7 +36,9 @@ export async function PlannedSection({ id }: { id: AdminSectionId }) {
       <EmptyState
         icon={<Construction className="size-6" />}
         title={t("planned.title")}
-        description={t("planned.body", { phase })}
+        description={
+          phase === undefined ? t("planned.unscheduled") : t("planned.body", { phase })
+        }
       />
 
       <div className="mx-auto mt-6 max-w-xl">

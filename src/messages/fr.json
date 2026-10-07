@@ -430,7 +430,9 @@
       "title": "Une erreur est survenue",
       "body": "La page n’a pas pu être chargée. L’incident a été enregistré et réessayer suffit souvent.",
       "retry": "Réessayer",
-      "home": "Retour à l’accueil"
+      "home": "Retour à l’accueil",
+      "backToBuilds": "Retour à vos projets",
+      "backToConsole": "Retour à la console"
     }
   },
   "common": {
@@ -1427,7 +1429,8 @@
     "planned": {
       "title": "Pas encore construit",
       "body": "Cette section n’a pas encore de données. Elle arrive à la phase {phase}.",
-      "note": "Afficher un tableau vide ici laisserait croire que la fonctionnalité existe et que personne ne l’utilise. Elle n’existe pas."
+      "note": "Afficher un tableau vide ici laisserait croire que la fonctionnalité existe et que personne ne l’utilise. Elle n’existe pas.",
+      "unscheduled": "Cette section n’a pas encore de données, et n’est pas planifiée."
     },
     "table": {
       "search": "Rechercher",
@@ -1936,6 +1939,37 @@
         "sortOrder": "Ordre"
       },
       "consentNote": "Rien n’est publié sans accord client enregistré, et aucun client n’est nommé sans y avoir consenti séparément."
+    },
+    "notificationsView": {
+      "subtitle": "Ce que la plateforme a signalé, et si le message est arrivé.",
+      "empty": "Rien d’envoyé pour l’instant",
+      "emptyBody": "Les notifications apparaissent ici au fur et à mesure des envois.",
+      "unread": "Non lu",
+      "sent": "Envoyé",
+      "failed": "Échec",
+      "inFlight": "En cours",
+      "notEmailed": "Pas d’e-mail",
+      "columns": {
+        "kind": "Notification",
+        "recipient": "Destinataire",
+        "language": "Langue",
+        "delivery": "E-mail",
+        "read": "Lu",
+        "created": "Envoyé"
+      },
+      "kinds": {
+        "order_paid": "Commande payée",
+        "invoice_issued": "Facture émise",
+        "refund_issued": "Remboursement émis",
+        "deadline_missed": "Échéance manquée",
+        "build_started": "Développement commencé",
+        "preview_ready": "Aperçu prêt",
+        "project_launched": "Projet en ligne",
+        "approval_requested": "Validation demandée",
+        "message_received": "Message reçu",
+        "deadline_approaching": "Échéance proche",
+        "product_news": "Actualités produit"
+      }
     }
   },
   "maintenance": {

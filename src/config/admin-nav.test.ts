@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   ADMIN_GROUPS,
   ADMIN_SECTIONS,
+  SHIPPED_THROUGH_PHASE,
   canSeeSection,
   groupedSectionsFor,
   sectionForPath,
@@ -51,13 +52,23 @@ describe("the section declarations are sound", () => {
     }
   });
 
-  it("gives every planned section the phase it arrives in", () => {
-    // A "planned" page states when it is coming. Without that it is just an
-    // empty page, which is the thing the status exists to avoid.
+  it("never promises a phase that has already shipped", () => {
+    // The failure this replaces an older assertion for: two sections said
+    // "arrives in Phase 12" long after Phase 12 had shipped, so the page
+    // promised the past. A section with no credible phase says so instead of
+    // naming one, which is why the phase is optional and the date is not.
     for (const section of ADMIN_SECTIONS) {
-      if (section.status === "planned") {
-        expect(section.plannedFor, section.id).toBeGreaterThan(9);
-      }
+      if (section.status !== "planned") continue;
+      const phase = "plannedFor" in section ? section.plannedFor : undefined;
+      if (phase === undefined) continue;
+      expect(phase, section.id).toBeGreaterThan(SHIPPED_THROUGH_PHASE);
+    }
+  });
+
+  it("does not leave a live section claiming a future phase", () => {
+    for (const section of ADMIN_SECTIONS) {
+      if (section.status !== "live") continue;
+      expect("plannedFor" in section, section.id).toBe(false);
     }
   });
 

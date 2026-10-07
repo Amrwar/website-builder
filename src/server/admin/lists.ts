@@ -11,6 +11,7 @@ import {
   projectApprovals,
   projectFiles,
   projectMessages,
+  notifications,
   projects,
   refunds,
   users,
@@ -324,6 +325,64 @@ export async function messageList(
 
   return paged(rows, counted?.total ?? 0, current, size);
 }
+
+/**
+ * Notifications the platform has sent, newest first.
+ *
+ * Gated on `settings:manage` rather than general console access. The rows name
+ * a recipient and carry the parameters a message was built from, which can
+ * include a project reference or an excerpt — the same reasoning that puts the
+ * message list behind `support:respond`.
+ *
+ * The body is deliberately not reconstructed here. What is useful to staff is
+ * whether a notification was sent, in what language, and whether the email got
+ * out; rendering the sentence would mean resolving the catalogue per row for
+ * a view nobody reads prose in.
+ */
+export async function notificationList(
+  filters: { kind?: string; page?: number },
+  context: AuthContext,
+) {
+  require(context, "settings:manage");
+  const { current, size, offset } = page(filters);
+
+  const where = filters.kind
+    ? sql`${notifications.kind}::text = ${filters.kind}`
+    : undefined;
+
+  const [rows, [counted]] = await Promise.all([
+    db
+      .select({
+        id: notifications.id,
+        kind: notifications.kind,
+        locale: notifications.locale,
+        createdAt: notifications.createdAt,
+        readAt: notifications.readAt,
+        emailAttemptedAt: notifications.emailAttemptedAt,
+        emailSentAt: notifications.emailSentAt,
+        emailFailedAt: notifications.emailFailedAt,
+        emailError: notifications.emailError,
+        recipientEmail: users.email,
+        recipientName: users.displayName,
+      })
+      .from(notifications)
+      .innerJoin(users, eq(users.id, notifications.recipientId))
+      .where(where)
+      .orderBy(desc(notifications.createdAt))
+      .limit(size)
+      .offset(offset),
+    db
+      .select({ total: sql<number>`count(*)::int` })
+      .from(notifications)
+      .where(where),
+  ]);
+
+  return paged(rows, counted?.total ?? 0, current, size);
+}
+
+export type AdminNotificationRow = Awaited<
+  ReturnType<typeof notificationList>
+>["rows"][number];
 
 /* -------------------------------------------------------------------------
  * Commerce

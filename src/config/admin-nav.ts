@@ -21,6 +21,16 @@ import { roleHasPermission } from "./roles";
 
 export type AdminSectionStatus = "live" | "planned";
 
+/**
+ * The last phase that has shipped.
+ *
+ * Declared so that a `plannedFor` naming a phase already behind us fails a
+ * test rather than reaching a staff page. It got there once: two sections
+ * promised "Phase 12" long after Phase 12 had shipped as the growth engine,
+ * which never covered either of them.
+ */
+export const SHIPPED_THROUGH_PHASE = 13;
+
 export interface AdminSection {
   id: string;
   /** Path under /admin. Empty string is the dashboard itself. */
@@ -225,15 +235,16 @@ export const ADMIN_SECTIONS = [
     path: "/content",
     requires: ["settings:manage"],
     status: "planned",
-    plannedFor: 12,
+    // Deliberately no `plannedFor`. It used to say Phase 12, which has since
+    // shipped and was the growth engine -- it never covered a CMS. Naming a
+    // phase that has passed is a worse answer than admitting it is unscheduled.
     group: "platform",
   },
   {
     id: "notifications",
     path: "/notifications",
     requires: ["settings:manage"],
-    status: "planned",
-    plannedFor: 12,
+    status: "live",
     group: "platform",
   },
 ] as const satisfies readonly AdminSection[];
