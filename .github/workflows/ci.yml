@@ -1,0 +1,92 @@
+name: CI
+
+# The phase gate from CLAUDE.md, run on every push and pull request, plus the
+# E2E suite against a production build. Nothing here touches the real
+# database or a real provider: Postgres is a throwaway service container and
+# Clerk runs on placeholder keys, which is enough for everything the suite
+# does signed out.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Format, types, lint, tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run format:check
+      # Route types (PageProps, LayoutProps) are generated, not committed;
+      # without them tsc fails on every page.
+      - run: npx next typegen
+      - run: npm run typecheck
+      - run: npm run lint
+      # Unit tests plus the lifecycle integration test, which runs on PGlite
+      # in-process and needs no service.
+      - run: npm test
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=high
+
+  e2e:
+    name: Build and end-to-end
+    runs-on: ubuntu-latest
+    needs: verify
+    timeout-minutes: 25
+    services:
+      postgres:
+        # Neon runs Postgres 17.
+        image: postgres:17
+        env:
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ci
+          POSTGRES_DB: buildline
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U ci" --health-interval 5s --health-timeout 5s
+          --health-retries 10
+    env:
+      # The marketing pages read published reviews and showcase entries while
+      # prerendering, so the build needs a migrated database, if an empty one.
+      DATABASE_URL: postgres://ci:ci@localhost:5432/buildline
+      DATABASE_URL_UNPOOLED: postgres://ci:ci@localhost:5432/buildline
+      NEXT_PUBLIC_SITE_ORIGIN: http://localhost:3100
+      # Placeholder keys: well-formed, pointing at no instance. Signed-out
+      # rendering and the proxy's redirects never call Clerk. These are not
+      # secrets and must never be replaced with the real ones here.
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_test_Y2kuY2xlcmsuYWNjb3VudHMuZGV2JA==
+      CLERK_SECRET_KEY: sk_test_ci_placeholder
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Apply migrations
+        run: npm run db:migrate
+      - run: npm run build
+      # The runner image ships Google Chrome, which is what the config's
+      # `channel: "chrome"` uses; no browser download needed.
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-results
+          path: test-results/
+          retention-days: 7
