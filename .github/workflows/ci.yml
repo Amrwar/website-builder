@@ -3,8 +3,7 @@ name: CI
 # The phase gate from CLAUDE.md, run on every push and pull request, plus the
 # E2E suite against a production build. Nothing here touches the real
 # database or a real provider: Postgres is a throwaway service container and
-# Clerk runs on placeholder keys, which is enough for everything the suite
-# does signed out.
+# Clerk runs on placeholder keys unless CI-specific secrets are configured.
 
 on:
   push:
@@ -65,11 +64,15 @@ jobs:
       DATABASE_URL: postgres://ci:ci@localhost:5432/buildline
       DATABASE_URL_UNPOOLED: postgres://ci:ci@localhost:5432/buildline
       NEXT_PUBLIC_SITE_ORIGIN: http://localhost:3100
-      # Placeholder keys: well-formed, pointing at no instance. Signed-out
-      # rendering and the proxy's redirects never call Clerk. These are not
-      # secrets and must never be replaced with the real ones here.
-      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_test_Y2kuY2xlcmsuYWNjb3VudHMuZGV2JA==
-      CLERK_SECRET_KEY: sk_test_ci_placeholder
+      # Clerk: the repository secrets when they exist, otherwise placeholders
+      # that point at no instance. The placeholder must be a pk_live key: a
+      # pk_test key makes the middleware send every page through the dev
+      # instance's handshake, which a non-existent instance never answers.
+      # On placeholders the one assertion that needs Clerk's browser script
+      # is skipped (E2E_CLERK_STUB) and the run says so.
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.CI_CLERK_PUBLISHABLE_KEY || 'pk_live_Y2xlcmsuY2kuaW52YWxpZCQ=' }}
+      CLERK_SECRET_KEY: ${{ secrets.CI_CLERK_SECRET_KEY || 'sk_live_ci_placeholder' }}
+      E2E_CLERK_STUB: ${{ secrets.CI_CLERK_SECRET_KEY == '' && '1' || '' }}
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v5

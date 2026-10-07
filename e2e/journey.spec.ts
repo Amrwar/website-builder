@@ -83,6 +83,15 @@ test.describe("visitor → configure → price", () => {
     await expect(
       page.getByRole("heading", { level: 1, name: "Start your build" }),
     ).toBeVisible();
+    // Holds with or without Clerk: nothing on this step takes payment.
+    await expect(page.getByRole("button", { name: "Pay and start" })).toHaveCount(0);
+
+    // The account prompt waits for Clerk's browser script, which a placeholder
+    // key can never load. CI without Clerk secrets says so instead of failing.
+    test.skip(
+      Boolean(process.env.E2E_CLERK_STUB),
+      "Clerk is a placeholder here; the account prompt needs a real instance",
+    );
     await expect(
       page
         .getByRole("link", { name: "Create an account" })
