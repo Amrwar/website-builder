@@ -17,6 +17,8 @@
  * subscriber's decision, which is what makes them safe to add consumers to.
  */
 
+import type { EventSubjectType } from "@/db/schema/enums";
+
 export const EVENT_PAYLOAD_VERSION = 1;
 
 /* -------------------------------------------------------------------------
@@ -208,9 +210,24 @@ export function isDomainEventName(value: string): value is DomainEventName {
  * The envelope
  * ---------------------------------------------------------------------- */
 
+/**
+ * What an event is about.
+ *
+ * Most events concern a project, and for a long time that was the only option
+ * the envelope allowed. The cost was quiet: a subscription started without a
+ * project was wrapped in `if (projectId)` and recorded nothing at all, so no
+ * audit row, no notification and no future automation would ever see it.
+ */
+export interface EventSubject {
+  type: EventSubjectType;
+  id: string;
+}
+
 export interface DomainEvent<N extends DomainEventName = DomainEventName> {
   name: N;
-  projectId: string;
+  subject: EventSubject;
+  /** The project id when the subject is a project, null otherwise. */
+  projectId: string | null;
   payload: DomainEventPayloads[N];
   actorType: "customer" | "staff" | "system";
   /** Clerk user id, or null for system events. */

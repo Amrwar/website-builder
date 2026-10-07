@@ -34,6 +34,15 @@ export interface BuildProduct {
    * review, which is outside our control and must be disclosed as such.
    */
   hasExternalReviewStep: boolean;
+  /**
+   * True when the customer picks more than one delivery target.
+   *
+   * Declared rather than inferred from the id. It was `buildType ===
+   * "mobileApp"`, which is only true by coincidence: a future product that
+   * ships to several targets would have had to edit that predicate, and one
+   * that does not would have been caught by it.
+   */
+  allowsMultiplePlatforms: boolean;
 }
 
 export const BUILD_PRODUCTS: Record<BuildType, BuildProduct> = {
@@ -43,6 +52,7 @@ export const BUILD_PRODUCTS: Record<BuildType, BuildProduct> = {
     priceModel: "fixed",
     guaranteedDays: DELIVERY_DAYS.website,
     hasExternalReviewStep: false,
+    allowsMultiplePlatforms: false,
   },
   system: {
     id: "system",
@@ -50,6 +60,7 @@ export const BUILD_PRODUCTS: Record<BuildType, BuildProduct> = {
     priceModel: "from",
     guaranteedDays: DELIVERY_DAYS.system,
     hasExternalReviewStep: false,
+    allowsMultiplePlatforms: false,
   },
   mobileApp: {
     id: "mobileApp",
@@ -57,8 +68,27 @@ export const BUILD_PRODUCTS: Record<BuildType, BuildProduct> = {
     priceModel: "fixed",
     guaranteedDays: DELIVERY_DAYS.mobileApp,
     hasExternalReviewStep: true,
+    allowsMultiplePlatforms: true,
   },
 };
+
+/**
+ * Narrows an untrusted or stored value to a build type.
+ *
+ * Needed because a build type arrives from places TypeScript cannot vouch for:
+ * a `jsonb` scope snapshot, a query string, a column typed `text`. Without a
+ * guard those become `string` and every lookup against a product map is an
+ * implicit `any`, which is how a retired product id ends up indexing into
+ * nothing at runtime.
+ */
+export function isBuildType(value: unknown): value is BuildType {
+  return typeof value === "string" && (BUILD_TYPES as readonly string[]).includes(value);
+}
+
+/** The product for a build type, or null when the value is not one. */
+export function buildProduct(value: unknown): BuildProduct | null {
+  return isBuildType(value) ? BUILD_PRODUCTS[value] : null;
+}
 
 /** Ordered for display: cheapest and fastest first. */
 export const BUILD_PRODUCT_LIST: readonly BuildProduct[] = BUILD_TYPES.map(

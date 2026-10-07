@@ -70,6 +70,8 @@ async function recordEvent(
   payload: Record<string, unknown> = {},
 ): Promise<void> {
   await db.insert(projectEvents).values({
+    subjectType: "project",
+    subjectId: projectId,
     projectId,
     type,
     actorType: isStaff ? "staff" : "customer",

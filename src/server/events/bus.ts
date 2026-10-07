@@ -7,6 +7,7 @@ import {
   EVENT_PAYLOAD_VERSION,
   type DomainEvent,
   type DomainEventName,
+  type EventSubject,
   type DomainEventPayloads,
   type EventHandler,
 } from "@/lib/events/catalogue";
@@ -72,13 +73,27 @@ export function subscriberCount(eventName: DomainEventName): number {
   return subscribers.get(eventName)?.length ?? 0;
 }
 
-export interface EmitOptions<N extends DomainEventName> {
+interface EmitBase<N extends DomainEventName> {
   name: N;
-  projectId: string;
   payload: DomainEventPayloads[N];
   actorType: "customer" | "staff" | "system";
   actorId?: string | null;
   occurredAt?: Date;
+}
+
+/**
+ * Either a project id or an explicit subject, never both and never neither.
+ *
+ * Expressed as a union so the compiler enforces it. `projectId` is kept
+ * because it is what almost every caller has and means exactly
+ * `{ type: "project", id }`; requiring the longer form everywhere would have
+ * been churn with no gain.
+ */
+export type EmitOptions<N extends DomainEventName> = EmitBase<N> &
+  ({ projectId: string; subject?: never } | { subject: EventSubject; projectId?: never });
+
+function subjectOf<N extends DomainEventName>(options: EmitOptions<N>): EventSubject {
+  return options.subject ?? { type: "project", id: options.projectId };
 }
 
 /**
@@ -93,14 +108,28 @@ export interface EmitOptions<N extends DomainEventName> {
 export async function emit<N extends DomainEventName>(
   options: EmitOptions<N>,
 ): Promise<DomainEvent<N>> {
-  const {
-    name,
-    projectId,
-    payload,
-    actorType,
-    actorId = null,
-    occurredAt = new Date(),
-  } = options;
+  const dispatch = await record(db, options);
+  return dispatch();
+}
+
+/**
+ * Records the fact, and returns the function that notifies subscribers.
+ *
+ * Two phases, because a fact created inside a transaction and a notification
+ * about it want opposite things. The row belongs in the caller's transaction,
+ * so a rollback takes the event with it. The dispatch does not: handlers read
+ * the database, and running them before commit shows them a world that may
+ * never exist.
+ *
+ * `emit` is this, with both phases run against the pool. A caller already in a
+ * transaction records inside it and dispatches after committing.
+ */
+export async function record<N extends DomainEventName>(
+  executor: Pick<typeof db, "insert">,
+  options: EmitOptions<N>,
+): Promise<() => Promise<DomainEvent<N>>> {
+  const { name, payload, actorType, actorId = null, occurredAt = new Date() } = options;
+  const subject = subjectOf(options);
 
   if (actorType === "customer" && PRIVILEGED_EVENTS.includes(name)) {
     throw new Error(
@@ -110,7 +139,8 @@ export async function emit<N extends DomainEventName>(
 
   const event: DomainEvent<N> = {
     name,
-    projectId,
+    subject,
+    projectId: subject.type === "project" ? subject.id : null,
     payload,
     actorType,
     actorId,
@@ -119,8 +149,10 @@ export async function emit<N extends DomainEventName>(
   };
 
   // Persisted first. A handler failure must not lose the fact.
-  await db.insert(projectEvents).values({
-    projectId,
+  await executor.insert(projectEvents).values({
+    subjectType: subject.type,
+    subjectId: subject.id,
+    projectId: event.projectId,
     type: name,
     actorType,
     actorId,
@@ -128,6 +160,13 @@ export async function emit<N extends DomainEventName>(
     occurredAt,
   });
 
+  return () => dispatch(event);
+}
+
+async function dispatch<N extends DomainEventName>(
+  event: DomainEvent<N>,
+): Promise<DomainEvent<N>> {
+  const { name } = event;
   const handlers = subscribers.get(name) ?? [];
   for (const entry of handlers) {
     try {
@@ -138,7 +177,7 @@ export async function emit<N extends DomainEventName>(
       logger.error("event handler failed", {
         event: name,
         handler: entry.name,
-        projectId,
+        subject: `${event.subject.type}:${event.subject.id}`,
         error,
       });
     }

@@ -4,10 +4,11 @@ import { head } from "@vercel/blob";
 import { and, desc, eq } from "drizzle-orm";
 
 import { db } from "@/db/client";
-import { projectEvents, projectFiles, type ProjectFile } from "@/db/schema";
+import { projectFiles, type ProjectFile } from "@/db/schema";
 import type { FileKind } from "@/db/schema/enums";
 import { ApiError } from "@/lib/api/response";
 import { logger } from "@/lib/logger";
+import { emit } from "@/server/events/bus";
 import type { AuthContext } from "@/server/auth";
 import { assertParticipant } from "./collaboration";
 
@@ -129,9 +130,12 @@ export async function recordUpload(
 
   if (!created) throw new Error("File insert returned no row.");
 
-  await db.insert(projectEvents).values({
+  // Through the bus, not straight to the table. It is a catalogued event, and
+  // written directly no subscriber could ever see it -- which is the whole
+  // point of having catalogued it.
+  await emit({
+    name: "file.uploaded",
     projectId,
-    type: "file.uploaded",
     actorType: isStaff ? "staff" : "customer",
     actorId: context.user.clerkUserId,
     payload: { fileId: created.id, name: created.name, version: created.version },

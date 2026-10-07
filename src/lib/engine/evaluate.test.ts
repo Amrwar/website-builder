@@ -160,7 +160,7 @@ describe("an incoherent catalogue degrades safely", () => {
 
   it("keeps app store review outside the guarantee", () => {
     const result = evaluate(scope({ buildType: "mobileApp", complexityPoints: 2 }));
-    expect(result.delivery.plan).toBe("fourteen_day");
+    expect(result.delivery.plan).toBe("guaranteed");
     // The review is somebody else's queue. Counting it would make the promise
     // one we cannot keep.
     expect(result.delivery.externalReviewExcluded).toBe(true);
@@ -172,14 +172,30 @@ describe("an incoherent catalogue degrades safely", () => {
  * ---------------------------------------------------------------------- */
 
 describe("the delivery plan follows the promise, not a label", () => {
-  it("names the five-day build only when five days is the promise", () => {
-    expect(deliveryFor("website", "essential", 5, false).plan).toBe("five_day");
-    expect(deliveryFor("website", "extended", 10, false).plan).toBe("extended");
+  /**
+   * The plan says whether the product's own published guarantee holds, not how
+   * many days it is. It used to be `five_day` / `fourteen_day`, which meant
+   * every product with a different promise needed another member of the union
+   * and another branch choosing it.
+   */
+  it("holds the guarantee when the days are within what the product publishes", () => {
+    // Website publishes five days; app publishes fourteen. Same answer, from
+    // each product's own figure rather than from a literal.
+    expect(deliveryFor("website", "essential", 5, false).plan).toBe("guaranteed");
+    expect(deliveryFor("mobileApp", "essential", 14, true).plan).toBe("guaranteed");
   });
 
-  it("names the fourteen-day build for an app within fourteen days", () => {
-    expect(deliveryFor("mobileApp", "essential", 14, true).plan).toBe("fourteen_day");
+  it("calls anything longer an extended build, per product", () => {
+    expect(deliveryFor("website", "extended", 10, false).plan).toBe("extended");
     expect(deliveryFor("mobileApp", "advanced", 30, true).plan).toBe("extended");
+  });
+
+  it("does not judge one product by another product's promise", () => {
+    // Ten days is extended for a website and well inside an app's guarantee.
+    // The old code reached the same answer by branching on the id; this one
+    // reaches it by reading what each product actually promises.
+    expect(deliveryFor("website", "advanced", 10, false).plan).toBe("extended");
+    expect(deliveryFor("mobileApp", "advanced", 10, true).plan).toBe("guaranteed");
   });
 
   it("moves between plans when an administrator edits the duration", () => {
@@ -187,7 +203,7 @@ describe("the delivery plan follows the promise, not a label", () => {
     // advertising itself as an extended build automatically.
     const catalog = withTier(defaultCatalog(), { tier: "extended", guaranteedDays: 5 });
     const result = evaluate(scope({ complexityPoints: 12 }), catalog);
-    expect(result.delivery.plan).toBe("five_day");
+    expect(result.delivery.plan).toBe("guaranteed");
     expect(result.requiresExtendedBuild).toBe(false);
   });
 });

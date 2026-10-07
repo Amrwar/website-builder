@@ -42,7 +42,8 @@ vi.mock("@/lib/logger", () => ({
   },
 }));
 
-const { emit, resetSubscribers, subscribe, subscriberCount } = await import("./bus");
+const { emit, record, resetSubscribers, subscribe, subscriberCount } =
+  await import("./bus");
 
 beforeEach(() => {
   inserted.length = 0;
@@ -277,5 +278,114 @@ describe("when the audit write fails", () => {
     ).rejects.toThrow();
 
     expect(calls).toEqual([]);
+  });
+});
+
+/* -------------------------------------------------------------------------
+ * Subjects
+ * ---------------------------------------------------------------------- */
+
+describe("what an event is about", () => {
+  /**
+   * The limitation this replaces: the envelope required a project id, so a
+   * fact with no project had nowhere to go. The call sites dealt with that by
+   * wrapping the emit in `if (projectId)`, which meant a subscription bought
+   * against the account recorded nothing at all -- silently, with no error.
+   */
+  it("treats a project id as the project subject", async () => {
+    const event = await emit({
+      name: "preview.published",
+      projectId: "project-1",
+      actorType: "staff",
+      payload: {},
+    });
+
+    expect(event.subject).toEqual({ type: "project", id: "project-1" });
+    expect(event.projectId).toBe("project-1");
+    expect(inserted.at(-1)).toMatchObject({
+      subjectType: "project",
+      subjectId: "project-1",
+      projectId: "project-1",
+    });
+  });
+
+  it("records a subject that is not a project, with no project id", async () => {
+    const event = await emit({
+      name: "subscription.started",
+      subject: { type: "subscription", id: "sub-1" },
+      actorType: "customer",
+      payload: {
+        subscriptionId: "sub-1",
+        reference: "SUB-2026-0001",
+        planKey: "essential",
+        trialEndsAt: null,
+      },
+    });
+
+    expect(event.subject).toEqual({ type: "subscription", id: "sub-1" });
+    // Null rather than absent: the timeline column has no project to point at.
+    expect(event.projectId).toBeNull();
+    expect(inserted.at(-1)).toMatchObject({
+      subjectType: "subscription",
+      subjectId: "sub-1",
+      projectId: null,
+    });
+  });
+
+  it("still refuses a privileged event from a customer, whatever the subject", async () => {
+    await expect(
+      emit({
+        name: "build.started",
+        subject: { type: "subscription", id: "sub-1" },
+        actorType: "customer",
+        payload: {
+          guaranteedDays: 5,
+          startedAt: new Date().toISOString(),
+          deadlineAt: null,
+          guaranteeStarted: true,
+        },
+      }),
+    ).rejects.toThrow(/customer actor/);
+  });
+});
+
+describe("recording inside a transaction", () => {
+  /**
+   * Why `record` exists separately from `emit`: a fact created in a
+   * transaction and the notification about it want opposite things. The row
+   * belongs in the transaction, so a rollback takes it. The dispatch does not
+   * — handlers read the database, and running them before commit shows them a
+   * world that may never exist.
+   */
+  it("writes through the caller's executor and defers the dispatch", async () => {
+    const seen: string[] = [];
+    subscribe("preview.published", "probe", async () => {
+      seen.push("handled");
+    });
+
+    const written: Record<string, unknown>[] = [];
+    const tx = {
+      insert: () => ({
+        values: (values: Record<string, unknown>) => {
+          written.push(values);
+          return Promise.resolve([]);
+        },
+      }),
+    } as unknown as Parameters<typeof record>[0];
+
+    const dispatch = await record(tx, {
+      name: "preview.published",
+      projectId: "project-1",
+      actorType: "staff",
+      payload: {},
+    });
+
+    // Written to the transaction, not the pool, and nobody notified yet.
+    expect(written).toHaveLength(1);
+    expect(inserted).toHaveLength(0);
+    expect(seen).toEqual([]);
+
+    await dispatch();
+    expect(seen).toEqual(["handled"]);
   });
 });

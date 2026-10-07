@@ -95,6 +95,20 @@ export type ActorType = (typeof ACTOR_TYPES)[number];
 export const actorTypeEnum = pgEnum("actor_type", ACTOR_TYPES);
 
 /**
+ * What a domain event is about.
+ *
+ * Most events concern a project. These exist so that a fact with no project --
+ * a subscription started without one, an order paid before any project is
+ * created -- still has a subject rather than being dropped.
+ *
+ * An enum rather than free text: the subject is what a future consumer filters
+ * on, and a typo in a filter is a silently empty result.
+ */
+export const EVENT_SUBJECTS = ["project", "order", "subscription", "user"] as const;
+export type EventSubjectType = (typeof EVENT_SUBJECTS)[number];
+export const eventSubjectEnum = pgEnum("event_subject", EVENT_SUBJECTS);
+
+/**
  * What a person can be notified about.
  *
  * The list, and which of them a recipient may switch off, lives in

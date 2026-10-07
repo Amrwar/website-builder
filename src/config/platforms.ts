@@ -1,4 +1,4 @@
-import type { BuildType } from "./products";
+import { BUILD_PRODUCTS, type BuildType } from "./products";
 
 /**
  * Delivery platforms, per build type.
@@ -45,7 +45,7 @@ export const PLATFORMS_BY_BUILD_TYPE = {
 
 /** True when the build type lets the customer choose more than one platform. */
 export function allowsMultiplePlatforms(buildType: BuildType): boolean {
-  return buildType === "mobileApp";
+  return BUILD_PRODUCTS[buildType].allowsMultiplePlatforms;
 }
 
 /** The option list for a build type. Never empty. */

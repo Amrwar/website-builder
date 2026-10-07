@@ -40,6 +40,21 @@ import { emit } from "@/server/events/bus";
  * that current state alone cannot settle.
  */
 
+/**
+ * Where a subscription event belongs.
+ *
+ * A subscription attached to a project reads best on that project's timeline;
+ * one bought against the account has the subscription itself as its subject.
+ */
+function subjectFor(
+  projectId: string | null,
+  subscriptionId: string,
+): { projectId: string } | { subject: { type: "subscription"; id: string } } {
+  return projectId
+    ? { projectId }
+    : { subject: { type: "subscription", id: subscriptionId } };
+}
+
 /* -------------------------------------------------------------------------
  * Plans
  * ---------------------------------------------------------------------- */
@@ -257,20 +272,27 @@ export async function startSubscription(
     actorUserId: context.user.id,
   });
 
-  if (input.projectId) {
-    await emit({
-      name: "subscription.started",
-      projectId: input.projectId,
-      actorType: "customer",
-      actorId: context.user.id,
-      payload: {
-        subscriptionId: created.id,
-        reference: created.reference,
-        planKey: plan.key,
-        trialEndsAt: trialEndsAt?.toISOString() ?? null,
-      },
-    });
-  }
+  /**
+   * Emitted whether or not there is a project.
+   *
+   * These were wrapped in `if (projectId)`, and a subscription can exist
+   * without one -- the column is nullable. So a maintenance plan bought
+   * against the account recorded nothing at all: no audit row, no
+   * notification, nothing for a future automation to react to, and no error
+   * either. The subscription is the subject when there is no project.
+   */
+  await emit({
+    name: "subscription.started",
+    ...subjectFor(input.projectId ?? null, created.id),
+    actorType: "customer",
+    actorId: context.user.id,
+    payload: {
+      subscriptionId: created.id,
+      reference: created.reference,
+      planKey: plan.key,
+      trialEndsAt: trialEndsAt?.toISOString() ?? null,
+    },
+  });
 
   await grantIncludedCredit(created, plan, context.user.id);
 
@@ -414,21 +436,19 @@ export async function changePlan(
     note: `effective ${change.effectiveAt.toISOString()}`,
   });
 
-  if (updated.projectId) {
-    await emit({
-      name: "subscription.changed",
-      projectId: updated.projectId,
-      actorType: "customer",
-      actorId: context.user.id,
-      payload: {
-        subscriptionId,
-        fromPlanKey: current.planKey,
-        toPlanKey: next.key,
-        kind: change.kind,
-        effectiveAt: change.effectiveAt.toISOString(),
-      },
-    });
-  }
+  await emit({
+    name: "subscription.changed",
+    ...subjectFor(updated.projectId, subscriptionId),
+    actorType: "customer",
+    actorId: context.user.id,
+    payload: {
+      subscriptionId,
+      fromPlanKey: current.planKey,
+      toPlanKey: next.key,
+      kind: change.kind,
+      effectiveAt: change.effectiveAt.toISOString(),
+    },
+  });
 
   return { ok: true, value: { subscription: updated, change } };
 }
@@ -476,19 +496,17 @@ export async function cancelSubscription(
     note: reason,
   });
 
-  if (updated.projectId) {
-    await emit({
-      name: "subscription.cancelled",
-      projectId: updated.projectId,
-      actorType: "customer",
-      actorId: context.user.id,
-      payload: {
-        subscriptionId,
-        effectiveAt: endsAt.toISOString(),
-        reason,
-      },
-    });
-  }
+  await emit({
+    name: "subscription.cancelled",
+    ...subjectFor(updated.projectId, subscriptionId),
+    actorType: "customer",
+    actorId: context.user.id,
+    payload: {
+      subscriptionId,
+      effectiveAt: endsAt.toISOString(),
+      reason,
+    },
+  });
 
   return { ok: true, value: { subscription: updated, endsAt } };
 }

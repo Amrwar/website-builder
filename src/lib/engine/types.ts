@@ -43,12 +43,19 @@ export const BAND_BY_TIER: Record<ScopeTierId, ScopeBand> = {
 /**
  * How the work will be delivered.
  *
- * `five_day` and `fourteen_day` are the guaranteed products. `extended` is a
- * longer build that still carries a published price and deadline. `quote` has
- * neither, and therefore no guarantee -- which is the whole reason the four
- * are modelled separately rather than as a number of days.
+ * `guaranteed` means the product's own published duration applies. `extended`
+ * is a longer build that still carries a published price and deadline.
+ * `quote` has neither, and therefore no guarantee -- which is the whole reason
+ * these are modelled separately rather than as a number of days.
+ *
+ * Deliberately *not* named after durations. The union used to be `five_day`
+ * and `fourteen_day`, which meant every new product with a different promise
+ * needed a new member and a new branch deciding which one applied. The
+ * question is the same for every product -- does its published guarantee hold,
+ * or is this longer -- so the answer is one member and a comparison against
+ * whatever that product publishes.
  */
-export const DELIVERY_PLANS = ["five_day", "fourteen_day", "extended", "quote"] as const;
+export const DELIVERY_PLANS = ["guaranteed", "extended", "quote"] as const;
 export type DeliveryPlan = (typeof DELIVERY_PLANS)[number];
 
 export interface Delivery {

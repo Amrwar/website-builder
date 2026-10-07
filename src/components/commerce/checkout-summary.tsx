@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Callout } from "@/components/ui/callout";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { buildProduct } from "@/config/products";
 import { MISSED_DEADLINE_REFUND } from "@/config/brand";
 import { TAX } from "@/config/commerce";
 import { getLocaleDefinition, resolveLocale, type Locale } from "@/config/locales";
@@ -104,7 +105,12 @@ export async function CheckoutSummary({ order, locale }: CheckoutSummaryProps) {
   const included = CAPABILITIES.filter((capability) => includedKeys.has(capability.key));
   const excluded = CAPABILITIES.filter((capability) => !includedKeys.has(capability.key));
 
-  const isMobile = assessment?.buildType === "mobileApp";
+  // The declared capability, not the product id. "Is it mobile?" and "does a
+  // third party review it outside our deadline?" happen to coincide for the
+  // three products sold today, and there is no reason a fourth would respect
+  // that coincidence.
+  const hasExternalReview =
+    buildProduct(assessment?.buildType)?.hasExternalReviewStep ?? false;
   const days = buildLine?.guaranteedDays ?? assessment?.guaranteedDays ?? null;
 
   return (
@@ -249,7 +255,7 @@ export async function CheckoutSummary({ order, locale }: CheckoutSummaryProps) {
           </div>
         </div>
 
-        {isMobile ? (
+        {hasExternalReview ? (
           <Callout tone="warning" title={t("delivery.storeReviewTitle")}>
             {t("delivery.storeReview")}
           </Callout>

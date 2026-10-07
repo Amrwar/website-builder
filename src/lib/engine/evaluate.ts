@@ -1,5 +1,5 @@
 import { TAX } from "@/config/commerce";
-import type { BuildType } from "@/config/products";
+import { BUILD_PRODUCTS, type BuildType } from "@/config/products";
 import type { ScopeTierId } from "@/db/schema/enums";
 import { localizePrice } from "@/lib/pricing/localize";
 import {
@@ -89,14 +89,11 @@ export function deliveryFor(
     };
   }
 
-  const plan: DeliveryPlan =
-    buildType === "mobileApp"
-      ? guaranteedDays <= 14
-        ? "fourteen_day"
-        : "extended"
-      : guaranteedDays <= 5
-        ? "five_day"
-        : "extended";
+  // Compared against what this product actually publishes, rather than
+  // against 5 or 14 chosen by build type. Same answer for the three products
+  // that exist today; a fourth needs no change here at all.
+  const published = BUILD_PRODUCTS[buildType].guaranteedDays;
+  const plan: DeliveryPlan = guaranteedDays <= published ? "guaranteed" : "extended";
 
   return {
     plan,

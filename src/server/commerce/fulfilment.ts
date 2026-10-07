@@ -9,7 +9,6 @@ import {
   orders,
   projectMembers,
   projectBriefs,
-  projectEvents,
   projects,
   scopeAssessments,
   users,
@@ -18,6 +17,7 @@ import {
 import type { ConfiguratorDraft } from "@/lib/configurator/draft";
 import { logger } from "@/lib/logger";
 import { outboundOrigin } from "@/lib/site-origin";
+import { record } from "@/server/events/bus";
 import { notify } from "@/server/notifications";
 import { paymentProvider } from "@/server/payments";
 import { nextDocumentNumber } from "./numbering";
@@ -226,9 +226,19 @@ export async function fulfilCheckout(
       paidAt: now,
     });
 
-    await tx.insert(projectEvents).values({
+    /**
+     * Recorded inside the transaction, dispatched after it commits.
+     *
+     * This used to be a direct insert, which meant the platform's flagship
+     * commerce fact was invisible to every subscriber -- nothing could react to
+     * an order being paid without re-reading the table. It cannot simply move
+     * to `emit` either: the row belongs in this transaction so a rollback takes
+     * it, while handlers must not run until the project they will read actually
+     * exists.
+     */
+    const dispatchFulfilled = await record(tx, {
+      name: "order.fulfilled",
       projectId: project.id,
-      type: "order.fulfilled",
       actorType: "system",
       payload: {
         orderId: order.id,
@@ -246,6 +256,7 @@ export async function fulfilCheckout(
       projectId: project.id,
       projectReference: project.reference,
       invoiceNumber,
+      dispatchFulfilled,
     };
   });
 
@@ -285,6 +296,18 @@ export async function fulfilCheckout(
    * rolled back. The dedupe keys make this safe to reach twice, which it will:
    * the Stripe webhook and the confirmation page both call this.
    */
+  // The transaction has committed, so the project the handlers will read now
+  // exists. Isolated for the same reason the notifications below are: a
+  // subscriber must not be able to fail a fulfilment that already happened.
+  try {
+    await result.dispatchFulfilled();
+  } catch (error) {
+    logger.error("order.fulfilled dispatch failed", {
+      orderId: result.order.id,
+      error,
+    });
+  }
+
   const origin = outboundOrigin();
   const projectPath = `/projects/${result.projectReference}`;
 
