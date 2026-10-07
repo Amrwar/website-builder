@@ -55,6 +55,7 @@ export async function ConfiguratorEntry() {
          */}
         <div className="rounded-lg border border-line-inverse/40 p-6 sm:p-8">
           <Stepper
+            surface="inverse"
             steps={steps}
             current={0}
             label={t("stepsLabel")}

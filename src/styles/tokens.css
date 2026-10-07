@@ -20,6 +20,12 @@
   --palette-ink-300: oklch(0.835 0.0058 265);
   --palette-ink-400: oklch(0.715 0.008 265);
   --palette-ink-500: oklch(0.605 0.0098 265);
+  /* Exists for one job: tertiary text in the light theme. ink-500 measured
+     3.59:1 on the subtle surface and 3.39:1 on sunken, below AA for the
+     12–14px eyebrows and captions it is used for. 0.53 is the lightest
+     value that clears 4.5:1 on every light surface (4.63 on sunken) while
+     staying visibly lighter than secondary (ink-600). */
+  --palette-ink-550: oklch(0.53 0.0105 265);
   --palette-ink-600: oklch(0.505 0.011 265);
   --palette-ink-700: oklch(0.41 0.011 265);
   --palette-ink-800: oklch(0.3 0.0098 265);
@@ -53,6 +59,8 @@
   --palette-warning-300: oklch(0.875 0.13 80);
   --palette-warning-500: oklch(0.755 0.16 70);
   --palette-warning-700: oklch(0.575 0.13 55);
+  /* Warning text on the warning surface measured 4.03:1. */
+  --palette-warning-750: oklch(0.53 0.13 55);
   --palette-warning-900: oklch(0.375 0.085 55);
 
   --palette-danger-100: oklch(0.955 0.03 25);
@@ -92,7 +100,7 @@
   /* Text */
   --text-primary: var(--palette-ink-950);
   --text-secondary: var(--palette-ink-600);
-  --text-tertiary: var(--palette-ink-500);
+  --text-tertiary: var(--palette-ink-550);
   --text-disabled: var(--palette-ink-400);
   --text-inverse: var(--palette-ink-0);
   --text-accent: var(--palette-brand-600);
@@ -112,7 +120,7 @@
   --status-success-surface: var(--palette-success-100);
   --status-success-border: var(--palette-success-300);
 
-  --status-warning-fg: var(--palette-warning-700);
+  --status-warning-fg: var(--palette-warning-750);
   --status-warning-surface: var(--palette-warning-100);
   --status-warning-border: var(--palette-warning-300);
 

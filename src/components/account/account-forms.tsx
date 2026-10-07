@@ -154,9 +154,12 @@ function ProfileForm({ values }: { values: AccountValues }) {
       onSubmit={() => submit({ displayName })}
     >
       {/* Email is Clerk's to change: it owns verification and the
-          re-authentication that changing it requires. */}
-      <Field label={t("email.label")} description={t("email.help")} disabled>
-        <Input value={values.email} readOnly disabled />
+          re-authentication that changing it requires. Read-only, not
+          disabled: it is the person's own address, and disabling it dimmed
+          the label to 2.3:1, dropped it from the tab order and made it
+          impossible to copy. */}
+      <Field label={t("email.label")} description={t("email.help")}>
+        <Input value={values.email} readOnly />
       </Field>
 
       <Field label={t("name.label")} error={firstError("displayName")}>

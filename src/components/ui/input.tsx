@@ -21,6 +21,10 @@ const CONTROL_BASE = [
   "hover:border-line-strong",
   "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus",
   "disabled:cursor-not-allowed disabled:bg-disabled disabled:text-fg-disabled",
+  // Read-only is not disabled: the value is information the person needs
+  // to read and may want to copy, so it keeps full-strength text and stays
+  // focusable, and only the surface says it cannot be edited.
+  "read-only:bg-subtle read-only:cursor-default",
   // The error state is driven by the field, not by a separate prop, so the
   // visual and the announced state can never disagree.
   "aria-[invalid=true]:border-danger aria-[invalid=true]:outline-danger",

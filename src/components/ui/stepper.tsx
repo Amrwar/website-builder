@@ -37,8 +37,37 @@ export interface StepperProps {
   /** Builds the status text announced per step, e.g. (s) => "completed". */
   statusLabel: (status: StepStatus) => string;
   orientation?: "horizontal" | "vertical";
+  /**
+   * The surface it sits on. The default tokens are for the page surface; on
+   * the inverse panel they read light-on-light, which is how the home page's
+   * "start here" stepper ended up with an invisible current step in dark mode
+   * — measured at a contrast ratio of 1.0.
+   */
+  surface?: "default" | "inverse";
   className?: string;
 }
+
+/**
+ * Text and line colours per surface. Muted text on the inverse panel is the
+ * inverse ink at reduced strength rather than a second palette, matching how
+ * the panel's own headings and descriptions are muted.
+ */
+const TONES = {
+  default: {
+    strong: "text-primary",
+    muted: "text-secondary",
+    faint: "text-tertiary",
+    line: "border-line",
+    rail: "bg-line",
+  },
+  inverse: {
+    strong: "text-fg-inverse",
+    muted: "text-fg-inverse/80",
+    faint: "text-fg-inverse/70",
+    line: "border-line-inverse/60",
+    rail: "bg-line-inverse/40",
+  },
+} as const;
 
 function statusOf(index: number, current: number): StepStatus {
   if (index < current) return "complete";
@@ -52,8 +81,10 @@ export function Stepper({
   label,
   statusLabel,
   orientation = "horizontal",
+  surface = "default",
   className,
 }: StepperProps) {
+  const tone = TONES[surface];
   return (
     <ol
       aria-label={label}
@@ -89,8 +120,8 @@ export function Stepper({
                   "grid size-7 shrink-0 place-items-center rounded-full border text-caption font-medium tabular-nums",
                   "duration-base transition-colors ease-out-quint",
                   status === "complete" && "border-action bg-action text-action-fg",
-                  status === "current" && "border-action text-primary",
-                  status === "upcoming" && "border-line text-tertiary",
+                  status === "current" && cn("border-action", tone.strong),
+                  status === "upcoming" && cn(tone.line, tone.faint),
                 )}
               >
                 {status === "complete" ? (
@@ -106,7 +137,7 @@ export function Stepper({
                   aria-hidden
                   className={cn(
                     "hidden h-px flex-1 sm:block",
-                    status === "complete" ? "bg-action" : "bg-line",
+                    status === "complete" ? "bg-action" : tone.rail,
                   )}
                 />
               ) : null}
@@ -116,7 +147,7 @@ export function Stepper({
               <span
                 className={cn(
                   "text-body-sm",
-                  status === "upcoming" ? "text-tertiary" : "font-medium text-primary",
+                  status === "upcoming" ? tone.faint : cn("font-medium", tone.strong),
                 )}
               >
                 {step.label}
@@ -124,7 +155,7 @@ export function Stepper({
                 <span className="sr-only"> — {statusLabel(status)}</span>
               </span>
               {step.description ? (
-                <span className="hidden text-caption text-secondary sm:block">
+                <span className={cn("hidden text-caption sm:block", tone.muted)}>
                   {step.description}
                 </span>
               ) : null}

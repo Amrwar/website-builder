@@ -42,8 +42,12 @@ export async function SiteFooter() {
                         </Link>
                       ) : (
                         /* Not yet a route. Rendered as plain text rather than
-                         * a link so nothing in the footer leads to a 404. */
-                        <span className="text-body-sm text-fg-disabled">
+                         * a link so nothing in the footer leads to a 404.
+                         * Tertiary, not the disabled token: this is text a
+                         * visitor reads, not an inactive control, so the
+                         * contrast exemption for disabled UI does not apply —
+                         * the disabled token measured 2.24:1. */
+                        <span className="text-body-sm text-tertiary">
                           {t(`links.${item.key}`)}
                         </span>
                       )}
