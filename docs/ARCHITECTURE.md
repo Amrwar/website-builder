@@ -61,19 +61,31 @@ build error rather than a leak.
 ├── (marketing)                     static, prerendered per locale
 │   ├── /                           home: 15 sections
 │   ├── /configure                  8-step build configurator
+│   ├── /partners                   partner and affiliate applications
 │   └── /design-system              component gallery
 ├── (auth)                          dynamic
 │   ├── /sign-in/[[...rest]]        Clerk, optional catch-all for its sub-steps
 │   └── /sign-up/[[...rest]]
 ├── (app)                           dynamic, session required
-│   ├── /account                    profile, business, preferences
-│   └── /admin                      staff console, gated on admin:access
+│   ├── /projects                   build list
+│   ├── /projects/[reference]       the Build Room
+│   ├── /orders/[number]/...        checkout return and confirmation
+│   ├── /invoices/[number]          the invoice, in its own language
+│   ├── /billing                    maintenance plan, credit, referrals
+│   ├── /notifications              what the platform has told you
+│   └── /account                    profile, business, preferences
+├── (console)                       dynamic, gated on admin:access
+│   └── /admin/...                  the staff console
 └── /[...rest]                      404
 
 /api                                not localised
 ├── /health
 ├── /account/me                     401 when signed out
-└── /webhooks/clerk                 Svix signature required
+├── /projects/[reference]/files/... upload and download
+├── /webhooks/clerk                 Svix signature required
+└── /webhooks/stripe                Stripe signature required
+
+/r/[code]                           referral links, deliberately unlocalised
 ```
 
 `localePrefix: "as-needed"` — English URLs carry no prefix, French and Arabic do.
@@ -135,6 +147,75 @@ hand-maintained inflection table.
 Every assessment is written append-only with its `assessorVersion` and an
 `inputSnapshot`, so a price quoted last month can be explained after the rules
 change.
+
+## Extending the platform
+
+The platform is a modular monolith. Adding a product is meant to be entries in
+configuration, not branches in services, and these are the places that take the
+entries.
+
+### Adding a product type
+
+`BuildType` is a union, and the maps keyed by it are `Record<BuildType, …>`, so
+the compiler lists every place a new product needs an answer rather than
+leaving one to be discovered in production:
+
+| Where                        | What it declares                               |
+| ---------------------------- | ---------------------------------------------- |
+| `config/products.ts`         | price, price model, guarantee, capabilities    |
+| `config/platforms.ts`        | delivery targets                               |
+| `config/production.ts`       | the internal workflow and its stage weights    |
+| `config/workspace.ts`        | what the customer sees in the Build Room       |
+| `lib/scope/tiers.ts`         | tier prices                                    |
+| `lib/scope/rule-assessor.ts` | screen allowance                               |
+| `messages/*.json`            | names and descriptions, in all three languages |
+
+Capabilities a product cannot carry are declared on the capability, not
+branched on in the engine.
+
+**What is _not_ on that list is the point.** No service asks what a website is.
+Properties that vary by product — whether a third party reviews the result,
+whether more than one delivery target is chosen, how long the guarantee runs —
+are declared on the product and read from there. A branch on a product id is a
+bug; `deliveryFor` carried one, comparing against a literal 5 or 14 chosen by
+build type, and it is now a comparison against whatever that product publishes.
+
+### Modules
+
+`config/modules.ts` declares reusable bundles of capability — booking,
+commerce, CRM. A module is defined as the `CapabilityKey`s it provides, so its
+price, complexity and minimum tier all fall out of the scope engine rather than
+being restated. `planned` modules carry no capabilities, which is what keeps
+them un-orderable.
+
+### Integrations
+
+`config/integrations.ts` names every external system, the seam it is reached
+through, and what breaks without it. `server/platform/integrations.ts` reports
+which are actually configured, by variable name — never value. The question it
+exists to answer is "is this wired, and if not, what stops working?", which
+went unanswered when email shipped with a transport that could not deliver.
+
+### Domain events
+
+`lib/events/catalogue.ts` is the contract. Names are stable, payloads are
+versioned, and events are facts in the past tense — they describe what
+happened, never what should happen next, which is what makes a new subscriber
+safe to add.
+
+`server/events/bus.ts` persists first and dispatches second, isolates failing
+handlers, and refuses to let a customer-triggered request emit a privileged
+event such as `build.started`.
+
+An event names its **subject**: usually a project, but an order, a subscription
+or a user where there is no project. `projectId` remains as the denormalised
+column the Build Room timeline reads, and the database enforces that a project
+event carries it. `record(tx, …)` writes the row inside a caller's transaction
+and returns the dispatcher to run after it commits — a fact belongs in the
+transaction, a notification about it does not.
+
+Automation is not built. The bus is the foundation it will attach to, and
+nothing else is needed until there is something to automate.
 
 ## Error handling
 

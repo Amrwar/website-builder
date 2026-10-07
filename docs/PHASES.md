@@ -194,16 +194,60 @@ reversed; marking one paid is a manual act.
 shared-network signals do not fire. Every other rule applies, and the log says
 so on first use.
 
-### Phase 13 — Internationalization
+### Phase 13 — Internationalization ✅
 
-en/fr/ar with RTL, a typed catalogue and a parity test already ship from Phase
+Delivered, and larger than the one-line scope it was written against.
 
-1. This phase is the expansion beyond that — additional locales, and the
-   decision on Clerk widget localisation currently sitting in the backlog.
+en/fr/ar with RTL, a typed catalogue and a parity test shipped from Phase 1.
+This phase was everything that turned out to be missing behind that:
 
-### Phase 14 — Platform Core / Extensibility Layer
+- **Time zones.** Twenty-eight call sites built `Intl.DateTimeFormat` with no
+  `timeZone`, which means the server's — UTC in production. `users.timezone`
+  existed and nothing read it, so a guaranteed delivery date read a day out for
+  anyone east of Toronto.
+- **Invoices in their own language**, from `invoices.locale`, with the order's
+  currency and a frozen issue date. `resolveLocale("fr-CA")` returned `en`, so
+  every French invoice would have rendered in English.
+- **Notifications and email**, composed in the recipient's language rather than
+  the language of whoever caused the event. Email behind a transport seam.
+- **RTL in practice.** Radix writes `dir="ltr"` onto its own wrapper and does
+  not read the document, so whole tab panels laid out backwards inside Arabic.
+  Currency rendered as "$CA 199" until the formatter switched to the ISO code
+  for RTL locales.
 
-Scope to be defined.
+### Phase 14 — Platform Core / Extensibility Layer ✅
+
+Architectural. No customer-facing functionality added.
+
+The audit found less to fix than expected: product properties were already
+declared as data, workflows were already configuration keyed by product type,
+and `Record<BuildType, …>` already makes the compiler list what a new product
+must answer. What it did find:
+
+- **Events could only be about a project.** The envelope required a project id,
+  so three emits in the subscription service were wrapped in `if (projectId)` —
+  a plan bought against the account recorded nothing at all, silently. Events
+  now name a subject.
+- **Two catalogued events were written straight to the table**, bypassing the
+  bus, so nothing could ever subscribe to them. One of them was `order.fulfilled`,
+  the platform's flagship commerce fact.
+- **Three branches on a product id** where the product already declared the
+  property as data, including `deliveryFor` comparing against a literal 5 or 14.
+  The delivery plan union itself encoded durations (`five_day`, `fourteen_day`),
+  so every new product with a different promise needed another member.
+
+Added: `config/modules.ts` (reusable modules, defined as the capabilities they
+provide so the scope engine stays the only thing that prices anything),
+`config/integrations.ts` plus `server/platform/integrations.ts` (what the
+platform depends on, and whether it is actually configured), and `record()` for
+emitting inside a transaction.
+
+**Deliberately not built.** Organization is not an entity: ownership is
+per-user, introducing an account boundary means re-pointing every ownership
+check, and the roadmap puts it at Phase 27. Automation is not built either —
+the bus is its foundation and nothing more is needed until there is something
+to automate. Both are named here so the absence is a decision rather than an
+oversight.
 
 ### Phase 15 — Production Hardening + Security
 
