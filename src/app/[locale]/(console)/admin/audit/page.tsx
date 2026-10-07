@@ -118,6 +118,7 @@ export default async function AdminAuditPage({
         rowKey={(row) => row.id}
         caption={t("audit.title")}
         filtered={Boolean(category || search)}
+        outOfRange={result.page > result.pageCount}
         empty={{ title: t("audit.empty") }}
         toolbar={
           <AdminTableToolbar

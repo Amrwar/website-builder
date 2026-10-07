@@ -97,6 +97,7 @@ export default async function AdminInvoicesPage({
         rowKey={(row) => row.id}
         caption={t("invoices.title")}
         filtered={Boolean(search)}
+        outOfRange={result.page > result.pageCount}
         empty={{ title: t("invoices.empty") }}
         toolbar={<AdminTableToolbar basePath="/admin/invoices" search={search} />}
         pagination={

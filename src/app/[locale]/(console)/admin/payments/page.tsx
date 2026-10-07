@@ -109,6 +109,7 @@ export default async function AdminPaymentsPage({
         rowKey={(row) => row.id}
         caption={t("payments.title")}
         filtered={Boolean(search || status)}
+        outOfRange={result.page > result.pageCount}
         empty={{ title: t("payments.empty") }}
         toolbar={
           <AdminTableToolbar

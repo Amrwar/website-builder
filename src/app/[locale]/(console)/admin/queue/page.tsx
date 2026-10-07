@@ -169,6 +169,7 @@ export default async function ProductionQueuePage({
         href={(row) => `/admin/projects/${row.project.reference}`}
         caption={t("queue.title")}
         filtered={Boolean(risk || search)}
+        outOfRange={result.page > result.pageCount}
         empty={{ title: t("queue.empty"), description: t("queue.emptyHelp") }}
         toolbar={
           <AdminTableToolbar

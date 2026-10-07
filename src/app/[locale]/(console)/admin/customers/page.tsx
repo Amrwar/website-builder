@@ -118,6 +118,7 @@ export default async function AdminCustomersPage({
         href={(row) => `/admin/customers/${row.id}`}
         caption={t("customers.title")}
         filtered={Boolean(search)}
+        outOfRange={result.page > result.pageCount}
         empty={{ title: t("customers.empty") }}
         toolbar={
           <AdminTableToolbar

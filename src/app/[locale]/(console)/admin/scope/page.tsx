@@ -98,6 +98,7 @@ export default async function AdminScopePage({
         href={(row) => `/admin/projects/${row.reference}`}
         caption={t("scopeView.title")}
         filtered={Boolean(tier)}
+        outOfRange={result.page > result.pageCount}
         empty={{ title: t("queue.empty"), description: t("scopeView.historical") }}
         toolbar={
           <AdminTableToolbar

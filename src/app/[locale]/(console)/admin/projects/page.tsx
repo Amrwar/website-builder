@@ -97,6 +97,7 @@ export default async function AdminProjectsPage({
         href={(row) => `/admin/projects/${row.reference}`}
         caption={t("sections.projects")}
         filtered={Boolean(search || status)}
+        outOfRange={result.page > result.pageCount}
         empty={{ title: t("queue.empty") }}
         toolbar={<AdminTableToolbar basePath="/admin/projects" search={search} />}
         pagination={

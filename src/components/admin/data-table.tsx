@@ -5,6 +5,7 @@ import { getTranslations } from "next-intl/server";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Link } from "@/i18n/navigation";
 import { buttonVariants } from "@/components/ui/button";
+import { paginationRange } from "@/lib/pagination";
 import { cn } from "@/lib/cn";
 
 /**
@@ -47,6 +48,15 @@ export interface DataTableProps<Row> {
   empty: { title: string; description?: string };
   /** Shown instead of the generic empty state when filters are active. */
   filtered?: boolean;
+  /**
+   * True when the requested page is past the last one.
+   *
+   * Without this the body says "nothing yet" while the pager beside it says
+   * there is 1 page -- two messages contradicting each other, and the wrong
+   * one is the bigger, more prominent one. The table cannot work this out for
+   * itself: it is handed rows, not the page count.
+   */
+  outOfRange?: boolean;
   toolbar?: ReactNode;
   pagination?: ReactNode;
 }
@@ -59,6 +69,7 @@ export async function DataTable<Row>({
   caption,
   empty,
   filtered = false,
+  outOfRange = false,
   toolbar,
   pagination,
 }: DataTableProps<Row>) {
@@ -76,8 +87,10 @@ export async function DataTable<Row>({
       {rows.length === 0 ? (
         <EmptyState
           size="sm"
-          title={filtered ? t("noMatch") : empty.title}
-          description={filtered ? undefined : empty.description}
+          title={
+            outOfRange ? t("outOfRangeTitle") : filtered ? t("noMatch") : empty.title
+          }
+          description={outOfRange || filtered ? undefined : empty.description}
         />
       ) : (
         <>
@@ -219,6 +232,32 @@ export async function TablePagination({
   const t = await getTranslations("adminConsole.table");
   if (total === 0) return null;
 
+  /**
+   * A page past the end renders as an empty table, which reads as "there is no
+   * data" rather than "you asked for a page that does not exist". Reachable by
+   * editing the query string, and by being on the last page when rows are
+   * removed underneath you. Filters already reset the page, so this is the
+   * remainder.
+   */
+  if (page > pageCount) {
+    return (
+      <nav
+        className="flex flex-wrap items-center justify-between gap-3 border-t border-line-subtle pt-4"
+        aria-label={t("page", { page, pages: pageCount })}
+      >
+        <p className="text-caption text-tertiary">
+          {t("outOfRange", { pages: pageCount })}
+        </p>
+        <Link
+          href={hrefFor(pageCount)}
+          className={buttonVariants({ variant: "secondary", size: "sm" })}
+        >
+          {t("backToLastPage")}
+        </Link>
+      </nav>
+    );
+  }
+
   const from = (page - 1) * pageSize + 1;
   const to = Math.min(total, page * pageSize);
 
@@ -229,7 +268,7 @@ export async function TablePagination({
     >
       <p className="text-caption text-tertiary">{t("showing", { from, to, total })}</p>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1">
         {page > 1 ? (
           <Link
             href={hrefFor(page - 1)}
@@ -238,6 +277,49 @@ export async function TablePagination({
             {t("previous")}
           </Link>
         ) : null}
+
+        {/*
+          Numbered links, not just previous/next. The same window the design
+          system's `Pagination` uses -- shared through `paginationRange` rather
+          than reimplemented -- but rendered as links, because this table is a
+          server component and its pages belong in the URL.
+
+          Hidden on phones, where a row of numbered targets falls below a
+          comfortable touch size; the position summary carries it there.
+        */}
+        {/* A lone "1" is noise, so the numbers appear only once there is a
+            choice to make. */}
+        <ul className={cn("hidden items-center gap-1", pageCount > 1 && "sm:flex")}>
+          {paginationRange(page, pageCount).map((candidate, index) =>
+            candidate === null ? (
+              <li
+                key={`gap-${index}`}
+                aria-hidden
+                className="grid h-8 w-8 place-items-center text-tertiary"
+              >
+                …
+              </li>
+            ) : (
+              <li key={candidate}>
+                <Link
+                  href={hrefFor(candidate)}
+                  aria-current={candidate === page ? "page" : undefined}
+                  aria-label={t("pageNumber", { page: candidate })}
+                  className={cn(
+                    buttonVariants({
+                      variant: candidate === page ? "primary" : "ghost",
+                      size: "sm",
+                    }),
+                    "min-w-8 tabular-nums",
+                  )}
+                >
+                  {candidate}
+                </Link>
+              </li>
+            ),
+          )}
+        </ul>
+
         {page < pageCount ? (
           <Link
             href={hrefFor(page + 1)}

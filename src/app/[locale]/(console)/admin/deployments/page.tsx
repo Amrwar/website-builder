@@ -101,6 +101,7 @@ export default async function AdminDeploymentsPage({
         href={(row) => `/admin/projects/${row.projectReference}`}
         caption={t("sections.deployments")}
         filtered={Boolean(environment)}
+        outOfRange={result.page > result.pageCount}
         empty={{ title: t("table.empty") }}
         toolbar={
           <AdminTableToolbar

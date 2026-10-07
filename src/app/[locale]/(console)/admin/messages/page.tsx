@@ -93,6 +93,7 @@ export default async function AdminMessagesPage({
         href={(row) => `/admin/projects/${row.projectReference}`}
         caption={t("sections.messages")}
         filtered={Boolean(visibility)}
+        outOfRange={result.page > result.pageCount}
         empty={{ title: t("table.empty") }}
         toolbar={
           <AdminTableToolbar

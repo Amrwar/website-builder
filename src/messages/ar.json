@@ -1446,7 +1446,11 @@
       "page": "صفحة {page} من {pages}",
       "actions": "إجراءات",
       "view": "عرض",
-      "sort": "ترتيب"
+      "sort": "ترتيب",
+      "pageNumber": "صفحة {page}",
+      "outOfRange": "هذه الصفحة غير موجودة. يوجد {pages, plural, one {صفحة واحدة} two {صفحتان} few {# صفحات} other {# صفحة}}.",
+      "backToLastPage": "الانتقال إلى الصفحة الأخيرة",
+      "outOfRangeTitle": "هذه الصفحة غير موجودة"
     },
     "dashboard": {
       "title": "اليوم",

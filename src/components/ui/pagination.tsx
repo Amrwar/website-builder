@@ -3,6 +3,7 @@
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 
 import { cn } from "@/lib/cn";
+import { paginationRange } from "@/lib/pagination";
 
 /**
  * Pagination.
@@ -17,6 +18,8 @@ import { cn } from "@/lib/cn";
  * targets at phone width is below a comfortable touch size.
  */
 
+export { paginationRange } from "@/lib/pagination";
+
 export interface PaginationProps {
   page: number;
   pageCount: number;
@@ -30,29 +33,6 @@ export interface PaginationProps {
   /** Mobile summary, e.g. (p, total) => `Page ${p} of ${total}`. */
   summaryLabel: (page: number, pageCount: number) => string;
   className?: string;
-}
-
-/** Page numbers to show, with `null` marking a collapsed run. */
-export function paginationRange(page: number, pageCount: number): (number | null)[] {
-  // First, last, current, and one neighbour either side; everything else
-  // collapses. Seven slots is the most that stays scannable at a glance.
-  if (pageCount <= 7) {
-    return Array.from({ length: pageCount }, (_, index) => index + 1);
-  }
-
-  const pages = new Set<number>([1, pageCount, page, page - 1, page + 1]);
-  const visible = [...pages]
-    .filter((candidate) => candidate >= 1 && candidate <= pageCount)
-    .sort((a, b) => a - b);
-
-  const output: (number | null)[] = [];
-  let previous: number | undefined;
-  for (const candidate of visible) {
-    if (previous !== undefined && candidate - previous > 1) output.push(null);
-    output.push(candidate);
-    previous = candidate;
-  }
-  return output;
 }
 
 const CONTROL = [

@@ -109,6 +109,7 @@ export default async function AdminFilesPage({
         href={(row) => `/admin/projects/${row.projectReference}`}
         caption={t("sections.files")}
         filtered={Boolean(kind)}
+        outOfRange={result.page > result.pageCount}
         empty={{ title: t("table.empty") }}
         toolbar={
           <AdminTableToolbar

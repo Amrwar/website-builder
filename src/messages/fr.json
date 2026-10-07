@@ -1446,7 +1446,11 @@
       "page": "Page {page} sur {pages}",
       "actions": "Actions",
       "view": "Voir",
-      "sort": "Trier"
+      "sort": "Trier",
+      "pageNumber": "Page {page}",
+      "outOfRange": "Cette page n’existe pas. Il y a {pages, plural, one {# page} other {# pages}}.",
+      "backToLastPage": "Aller à la dernière page",
+      "outOfRangeTitle": "Cette page n’existe pas"
     },
     "dashboard": {
       "title": "Aujourd’hui",

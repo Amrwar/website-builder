@@ -100,6 +100,7 @@ export default async function AdminApprovalsPage({
         href={(row) => `/admin/projects/${row.reference}`}
         caption={t("sections.approvals")}
         filtered={Boolean(status)}
+        outOfRange={result.page > result.pageCount}
         empty={{ title: t("table.empty") }}
         toolbar={
           <AdminTableToolbar

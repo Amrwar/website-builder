@@ -107,6 +107,7 @@ export default async function AdminChangesPage({
         href={(row) => `/admin/projects/${row.projectReference}`}
         caption={t("sections.changes")}
         filtered={Boolean(status)}
+        outOfRange={result.page > result.pageCount}
         empty={{ title: t("table.empty") }}
         toolbar={
           <AdminTableToolbar

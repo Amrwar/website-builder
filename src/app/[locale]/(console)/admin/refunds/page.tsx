@@ -154,6 +154,7 @@ export default async function AdminRefundsPage({
         rowKey={(row) => row.id}
         caption={t("refunds.title")}
         filtered={Boolean(status)}
+        outOfRange={result.page > result.pageCount}
         empty={{ title: t("refunds.empty") }}
         toolbar={
           <AdminTableToolbar

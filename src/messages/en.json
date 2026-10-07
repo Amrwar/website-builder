@@ -1446,7 +1446,11 @@
       "page": "Page {page} of {pages}",
       "actions": "Actions",
       "view": "View",
-      "sort": "Sort"
+      "sort": "Sort",
+      "pageNumber": "Page {page}",
+      "outOfRange": "That page does not exist. There {pages, plural, one {is # page} other {are # pages}}.",
+      "backToLastPage": "Go to the last page",
+      "outOfRangeTitle": "That page does not exist"
     },
     "dashboard": {
       "title": "Today",
