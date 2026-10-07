@@ -14,6 +14,7 @@ import { quoteCurrencyFor } from "@/lib/pricing/localize";
 import { ApiError } from "@/lib/api/response";
 import { logger } from "@/lib/logger";
 import { requireUser, type AuthContext } from "@/server/auth";
+import { isKnownBlueprintVersion } from "@/server/business/blueprints";
 import { assessAndPrice, recordDiscountRedemption } from "@/server/engine";
 import { nextDocumentNumber } from "./numbering";
 
@@ -125,6 +126,21 @@ export async function createOrderFromDraft(
     return { ok: false, reason: "invalid_draft" };
   }
   const draft = parsed.data as ConfiguredDraft;
+
+  // Business-in-a-Box provenance is a claim made by the browser. It never
+  // affects the price, but it is stored with the order and counted in the
+  // console, so a version nobody was offered is dropped rather than recorded.
+  if (
+    draft.blueprint &&
+    !(await isKnownBlueprintVersion(draft.blueprint.key, draft.blueprint.version))
+  ) {
+    logger.warn("order: unknown blueprint version dropped", {
+      userId: user.id,
+      key: draft.blueprint.key,
+      version: draft.blueprint.version,
+    });
+    delete draft.blueprint;
+  }
 
   // Re-checked server-side. The configurator blocks this, but a disabled
   // button is a convenience, not a control.

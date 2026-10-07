@@ -666,3 +666,11 @@ export const reviewStatusEnum = pgEnum("review_status", REVIEW_STATUSES);
 export const SHOWCASE_STATUSES = ["draft", "published", "retired"] as const;
 export type ShowcaseStatus = (typeof SHOWCASE_STATUSES)[number];
 export const showcaseStatusEnum = pgEnum("showcase_status", SHOWCASE_STATUSES);
+
+/**
+ * Whether a Business-in-a-Box blueprint is offered. Archiving hides it from
+ * customers without losing its versions, which orders still refer to.
+ */
+export const BLUEPRINT_STATUSES = ["active", "archived"] as const;
+export type BlueprintStatus = (typeof BLUEPRINT_STATUSES)[number];
+export const blueprintStatusEnum = pgEnum("blueprint_status", BLUEPRINT_STATUSES);

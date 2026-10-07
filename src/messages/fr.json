@@ -21,7 +21,8 @@
     "startBuild": "Lancer un projet",
     "notifications": "Notifications",
     "dismiss": "Fermer",
-    "faq": "Questions"
+    "faq": "Questions",
+    "startBusiness": "Lancer mon entreprise"
   },
   "home": {
     "meta": {
@@ -416,7 +417,8 @@
       "contact": "Contact",
       "terms": "Conditions",
       "privacy": "Confidentialité",
-      "guarantee": "Conditions de la garantie"
+      "guarantee": "Conditions de la garantie",
+      "startBusiness": "Lancer mon entreprise"
     },
     "rights": "© {year} {brand}. Tous droits réservés."
   },
@@ -743,6 +745,10 @@
         "title": "Les comptes et le paiement ne sont pas encore connectés",
         "body": "Clerk et Stripe sont provisionnés pour ce projet, mais les routes de connexion et de paiement ne sont pas construites. Ce bouton est donc volontairement inactif plutôt que de ne mener nulle part. Votre configuration reste enregistrée dans ce navigateur."
       }
+    },
+    "fromBlueprint": {
+      "title": "Commencé depuis Lancer mon entreprise",
+      "body": "Recommandé pour : {name}. Tout reste modifiable."
     }
   },
   "capabilities": {
@@ -1416,7 +1422,8 @@
       "hosting": "Hébergement",
       "content": "Contenu",
       "notifications": "Notifications",
-      "showcase": "Mur des réalisations"
+      "showcase": "Mur des réalisations",
+      "blueprints": "Modèles d'entreprise"
     },
     "search": {
       "placeholder": "Rechercher projets, clients, commandes",
@@ -1974,6 +1981,115 @@
         "deadline_approaching": "Échéance proche",
         "product_news": "Actualités produit"
       }
+    },
+    "blueprintsPage": {
+      "title": "Modèles d'entreprise",
+      "description": "Business-in-a-Box : ce qui est recommandé à chaque type d'entreprise, version par version.",
+      "pricingNote": {
+        "title": "Les prix ne se règlent pas ici",
+        "body": "Le prix d'un modèle est ce que le moteur facture pour ses fonctionnalités recommandées. Modifiez les points des fonctionnalités et les prix des paliers dans Tarifs.",
+        "link": "Ouvrir les tarifs"
+      },
+      "readOnly": "Vous pouvez consulter les modèles. Seul le propriétaire peut les modifier.",
+      "table": {
+        "name": "Modèle",
+        "category": "Catégorie",
+        "product": "Produit",
+        "version": "Version en ligne",
+        "status": "Statut",
+        "recommended": "Recommandé",
+        "estimate": "Estimation",
+        "orders": "Commandes payées",
+        "actions": "Actions"
+      },
+      "shipped": "Livré (v0)",
+      "versionLabel": "v{version}",
+      "active": "Actif",
+      "archived": "Archivé",
+      "unpublished": "Modifications non publiées",
+      "open": "Ouvrir",
+      "quote": "Sur devis",
+      "drafts": {
+        "title": "Pas encore publiés",
+        "body": "Créés ici et jamais publiés : les clients ne les voient pas encore."
+      },
+      "create": {
+        "title": "Nouveau modèle",
+        "body": "Commence en brouillon non publié recommandant une page d'accueil et une page contact. Choisissez ses fonctionnalités à l'écran suivant.",
+        "key": "Clé",
+        "keyHelp": "Lettres minuscules, chiffres et tirets bas. Elle ne change jamais.",
+        "category": "Catégorie",
+        "product": "Produit",
+        "name": "Nom ({language})",
+        "summary": "Résumé ({language})",
+        "submit": "Créer le brouillon"
+      },
+      "categories": {
+        "title": "Catégories",
+        "body": "Masquer une catégorie masque tous ses modèles.",
+        "key": "Clé",
+        "name": "Nom",
+        "order": "Ordre",
+        "shown": "Affichée",
+        "save": "Enregistrer",
+        "createTitle": "Nouvelle catégorie",
+        "nameIn": "Nom ({language})",
+        "create": "Ajouter la catégorie",
+        "fromCatalogue": "Nom issu des catalogues"
+      },
+      "editor": {
+        "back": "Tous les modèles",
+        "live": "En ligne : v{version}",
+        "liveShipped": "En ligne : définition livrée",
+        "notLive": "Non publié",
+        "archive": "Archiver",
+        "restore": "Restaurer",
+        "archivedNote": "Archivé. Les clients ne voient plus ce modèle ; les commandes qui en sont issues gardent leur historique.",
+        "workingFrom": "Modification à partir de {version}",
+        "shippedVersion": "la définition livrée",
+        "category": "Catégorie",
+        "product": "Produit",
+        "features": "Fonctionnalités",
+        "featuresHelp": "Chaque fonctionnalité est recommandée, facultative ou pas nécessaire. Son prix vient des capacités qu'elle demande.",
+        "levels": {
+          "recommended": "Recommandé",
+          "optional": "Facultatif",
+          "not_needed": "Pas nécessaire"
+        },
+        "copy": "Textes",
+        "useCatalogue": "Utiliser les textes livrés dans les catalogues de traduction",
+        "copyRequired": "Un modèle créé ici a besoin de ses textes dans chaque langue.",
+        "name": "Nom ({language})",
+        "summary": "Résumé ({language})",
+        "note": "Note pour cette version",
+        "noteHelp": "Pourquoi cette version existe. Conservée dans l'historique et le journal d'audit.",
+        "save": "Enregistrer une nouvelle version",
+        "saveAndPublish": "Enregistrer et publier",
+        "saved": "Version {version} enregistrée.",
+        "published": "La version {version} est en ligne.",
+        "failed": "Impossible d'enregistrer."
+      },
+      "preview": {
+        "title": "Estimation de l'ensemble recommandé",
+        "body": "Ce qui est proposé à un client qui garde toutes les recommandations, hors frais de design.",
+        "live": "Version en ligne",
+        "working": "Dernière version",
+        "quote": "Sur devis",
+        "days": "{days} jours",
+        "unavailable": "Pas d'estimation"
+      },
+      "versions": {
+        "title": "Historique des versions",
+        "version": "Version",
+        "author": "Par",
+        "created": "Enregistrée",
+        "published": "Publiée",
+        "note": "Note",
+        "live": "En ligne",
+        "publish": "Mettre en ligne",
+        "never": "Non publiée",
+        "empty": "Aucune version enregistrée. La définition livrée est en ligne."
+      }
     }
   },
   "maintenance": {
@@ -2287,5 +2403,323 @@
     "en": "anglais",
     "fr": "français",
     "ar": "arabe"
+  },
+  "blueprints": {
+    "categories": {
+      "food_hospitality": "Restauration et hôtellerie",
+      "beauty_grooming": "Beauté et soins",
+      "health": "Santé",
+      "fitness": "Sport et forme",
+      "home_services": "Services à domicile",
+      "automotive": "Automobile",
+      "professional_services": "Services professionnels",
+      "property": "Immobilier",
+      "retail": "Commerce de détail",
+      "creative": "Création"
+    },
+    "items": {
+      "restaurant": {
+        "name": "Restaurant",
+        "summary": "Menu, commande en ligne, réservations et un espace équipe pour tout gérer."
+      },
+      "barber": {
+        "name": "Barbier",
+        "summary": "Prestations et tarifs, réservation en ligne et vos plus belles coupes en vitrine."
+      },
+      "salon": {
+        "name": "Salon de beauté",
+        "summary": "Soins, votre équipe, réservation en ligne et une galerie de vos réalisations."
+      },
+      "dental_clinic": {
+        "name": "Cabinet dentaire",
+        "summary": "Soins, vos praticiens, prise de rendez-vous et les réponses que cherchent les patients."
+      },
+      "gym": {
+        "name": "Salle de sport",
+        "summary": "Cours, abonnements, réservations et un tableau de bord pour votre équipe."
+      },
+      "cleaning_company": {
+        "name": "Entreprise de nettoyage",
+        "summary": "Prestations, demandes de devis et réservations, avec la planification pour grandir."
+      },
+      "contractor": {
+        "name": "Entrepreneur en bâtiment",
+        "summary": "Vos chantiers, vos services et un flux régulier de demandes de devis."
+      },
+      "auto_repair": {
+        "name": "Garage automobile",
+        "summary": "Prestations, réservations et demandes de devis pour un atelier chargé."
+      },
+      "consultant": {
+        "name": "Consultant",
+        "summary": "Votre expertise, la réservation d'appels et des articles qui attirent des clients."
+      },
+      "freelancer": {
+        "name": "Indépendant",
+        "summary": "Un portfolio, vos services et un moyen simple de vous contacter."
+      },
+      "real_estate": {
+        "name": "Agence immobilière",
+        "summary": "Annonces de biens, vos agents et des demandes qui arrivent à la bonne personne."
+      },
+      "retail_store": {
+        "name": "Boutique",
+        "summary": "Une boutique en ligne avec stock, paiements et tableau de bord pour l'équipe."
+      },
+      "photographer": {
+        "name": "Photographe",
+        "summary": "Un portfolio, vos formules et la réservation de séances."
+      }
+    },
+    "features": {
+      "home": {
+        "name": "Page d'accueil",
+        "description": "La première page que l'on voit : qui vous êtes et quoi faire ensuite."
+      },
+      "about": {
+        "name": "Page À propos",
+        "description": "Votre histoire et pourquoi vous choisir."
+      },
+      "services": {
+        "name": "Services et tarifs",
+        "description": "Ce que vous proposez et ce que cela coûte."
+      },
+      "contact": {
+        "name": "Page Contact",
+        "description": "Adresse, horaires, plan et formulaire de contact."
+      },
+      "gallery": {
+        "name": "Galerie",
+        "description": "Des photos de votre lieu et de votre travail."
+      },
+      "team": {
+        "name": "Page Équipe",
+        "description": "Les personnes derrière l'entreprise."
+      },
+      "faq": {
+        "name": "Questions fréquentes",
+        "description": "Les réponses à ce que les clients demandent avant d'acheter."
+      },
+      "menu": {
+        "name": "Menu",
+        "description": "Un menu que vous mettez à jour vous-même."
+      },
+      "portfolio": {
+        "name": "Portfolio",
+        "description": "Vos meilleures réalisations, organisées et faciles à mettre à jour."
+      },
+      "listings": {
+        "name": "Annonces",
+        "description": "Des annonces consultables avec détails et photos."
+      },
+      "blog": {
+        "name": "Blog",
+        "description": "Des articles et actualités qui aident à vous trouver."
+      },
+      "online_booking": {
+        "name": "Réservation en ligne",
+        "description": "Les clients choisissent un créneau et réservent sans appeler."
+      },
+      "reservations": {
+        "name": "Réservations de table",
+        "description": "Des réservations directement depuis votre site."
+      },
+      "online_ordering": {
+        "name": "Commande en ligne",
+        "description": "Les clients commandent et paient en ligne, à emporter ou en livraison."
+      },
+      "online_store": {
+        "name": "Boutique en ligne",
+        "description": "Des produits, un panier et un paiement."
+      },
+      "payments": {
+        "name": "Paiements en ligne",
+        "description": "Paiements par carte via une page de paiement sécurisée."
+      },
+      "memberships": {
+        "name": "Abonnements",
+        "description": "Des formules récurrentes que les clients souscrivent et gèrent."
+      },
+      "customer_accounts": {
+        "name": "Comptes clients",
+        "description": "Les clients se connectent pour voir leurs réservations et commandes."
+      },
+      "client_portal": {
+        "name": "Espace client",
+        "description": "Un espace privé où vos clients voient leurs fichiers et leur suivi."
+      },
+      "quote_requests": {
+        "name": "Demandes de devis",
+        "description": "Un formulaire qui recueille ce qu'il faut pour chiffrer un travail."
+      },
+      "reviews": {
+        "name": "Avis",
+        "description": "Affichez les avis de votre choix, modifiables comme tout autre contenu."
+      },
+      "multilingual": {
+        "name": "Plusieurs langues",
+        "description": "Votre site dans chaque langue parlée par vos clients."
+      },
+      "content_editing": {
+        "name": "Modifier vos contenus",
+        "description": "Changez textes et images sans rien demander à personne."
+      },
+      "staff_dashboard": {
+        "name": "Tableau de bord équipe",
+        "description": "Un seul endroit où votre équipe voit ce qui arrive."
+      },
+      "staff_roles": {
+        "name": "Droits de l'équipe",
+        "description": "Des accès différents pour la direction, les responsables et l'équipe."
+      },
+      "inventory": {
+        "name": "Gestion des stocks",
+        "description": "Suivez le stock pour ne jamais vendre ce que vous n'avez pas."
+      },
+      "analytics": {
+        "name": "Statistiques",
+        "description": "Des rapports sur les réservations, les commandes et les visites."
+      },
+      "integrations": {
+        "name": "Connecter vos outils",
+        "description": "Reliez les logiciels que vous utilisez déjà."
+      },
+      "data_import": {
+        "name": "Reprise de vos données",
+        "description": "Transférez clients, produits ou fiches depuis votre ancien système."
+      },
+      "order_fulfilment": {
+        "name": "Suivi des commandes",
+        "description": "Les commandes passent de reçue à prête avec un statut clair."
+      },
+      "job_scheduling": {
+        "name": "Planification des interventions",
+        "description": "Attribuez les interventions à des dates et des personnes."
+      },
+      "lead_pipeline": {
+        "name": "Suivi des prospects",
+        "description": "Suivez les demandes du premier contact au contrat signé."
+      },
+      "dispatch": {
+        "name": "Répartition des équipes",
+        "description": "Organisez les tournées des équipes entre les chantiers. Sur devis."
+      }
+    },
+    "goals": {
+      "get_found": "Être trouvé en ligne",
+      "take_bookings": "Prendre des réservations",
+      "sell_online": "Vendre en ligne",
+      "take_payments": "Encaisser des paiements",
+      "keep_customers": "Fidéliser la clientèle",
+      "run_operations": "Gérer le quotidien",
+      "reach_languages": "Toucher des clients dans d'autres langues"
+    }
+  },
+  "startBusiness": {
+    "meta": {
+      "title": "Lancer mon entreprise",
+      "description": "Dites-nous ce que vous lancez. Nous recommandons le site ou le système dont l'entreprise a besoin, le chiffrons et le livrons avec une garantie de délai."
+    },
+    "eyebrow": "Lancer mon entreprise",
+    "progressLabel": "Progression de Lancer mon entreprise",
+    "status": {
+      "complete": "terminée",
+      "current": "étape en cours",
+      "upcoming": "non commencée"
+    },
+    "steps": {
+      "business": {
+        "label": "Activité",
+        "title": "Que lancez-vous ?",
+        "lead": "Choisissez l'activité la plus proche. Elle donne la recommandation de départ, et tout reste modifiable ensuite."
+      },
+      "details": {
+        "label": "Présentation",
+        "title": "Parlez-nous-en",
+        "lead": "Quelques détails pour que la recommandation vous corresponde. Vos réponses passent dans le cahier des charges."
+      },
+      "recommend": {
+        "label": "Besoins",
+        "title": "Ce dont votre entreprise a besoin",
+        "lead": "Voici ce qu'ont habituellement les entreprises comme la vôtre. Activez ou désactivez ce que vous voulez, l'estimation suit."
+      }
+    },
+    "next": "Suivant",
+    "back": "Retour",
+    "continue": "Continuer vers le design",
+    "continueNote": "Vous choisirez ensuite une approche de design, puis vous verrez le périmètre et le prix complets avant toute commande.",
+    "noBlueprints": "Aucun modèle d'entreprise n'est disponible pour le moment. Vous pouvez toujours décrire votre projet dans le configurateur.",
+    "notListed": "Votre activité n'y est pas ? Choisissez la plus proche, ou décrivez votre projet directement dans le configurateur.",
+    "issues": {
+      "chooseBusiness": "Choisissez le type d'entreprise que vous lancez.",
+      "needBusinessName": "Indiquez le nom de votre entreprise.",
+      "describeMore": "Décrivez ce que vous vendez en au moins {min} caractères."
+    },
+    "details": {
+      "businessName": {
+        "label": "Nom de l'entreprise",
+        "required": "Indiquez le nom de votre entreprise."
+      },
+      "location": {
+        "label": "Lieu",
+        "help": "La ville ou la zone que vous desservez. Facultatif."
+      },
+      "targetCustomers": {
+        "label": "Qui sont vos clients ?",
+        "help": "Par exemple : des familles du quartier, des salariés, des entreprises locales."
+      },
+      "offering": {
+        "label": "Que vendez-vous ?",
+        "help": "Les services ou produits que vous proposez en tant que {business}, avec vos mots.",
+        "tooShort": "Ajoutez un peu plus : au moins {min} caractères.",
+        "remaining": "{remaining} caractères restants"
+      },
+      "goals": {
+        "label": "À quoi doit-il vous servir ?",
+        "help": "Facultatif. Un objectif peut faire remonter des fonctionnalités liées, et la liste l'indique."
+      }
+    },
+    "recommend": {
+      "levels": {
+        "recommended": {
+          "title": "Recommandé",
+          "body": "Ce dont les entreprises comme la vôtre ont habituellement besoin. Activé au départ."
+        },
+        "optional": {
+          "title": "Facultatif",
+          "body": "Utile pour certaines entreprises comme la vôtre. Activez ce qui vous convient."
+        },
+        "not_needed": {
+          "title": "Pas nécessaire",
+          "body": "Rarement utile pour ce type d'entreprise, mais toujours disponible si vous le souhaitez."
+        }
+      },
+      "count": "{count, plural, one {# fonctionnalité} other {# fonctionnalités}}",
+      "showNotNeeded": "Afficher {count, plural, one {# autre fonctionnalité} other {# autres fonctionnalités}}",
+      "kind": {
+        "page": "Page",
+        "feature": "Fonctionnalité",
+        "workflow": "Processus"
+      },
+      "audience": {
+        "customer": "Pour vos clients",
+        "admin": "Pour vous et votre équipe"
+      },
+      "because": "Remonté parce que vous avez choisi : {goals}",
+      "ruleBased": "Ces recommandations viennent de règles fixes pour chaque type d'entreprise et des objectifs choisis. Rien n'est généré ni deviné."
+    },
+    "estimate": {
+      "title": "Estimation",
+      "price": "Prix",
+      "time": "Livraison",
+      "quote": "Sur devis",
+      "quoted": "Fixée avec le devis",
+      "days": "{days} jours après réception de vos éléments",
+      "selected": "{count, plural, one {# fonctionnalité choisie.} other {# fonctionnalités choisies.}}",
+      "note": "Calculée par le même moteur que le paiement. Des frais de design s'ajoutent si nous le concevons pour vous.",
+      "quoteNote": "Un élément choisi nécessite un devis : cette combinaison n'a donc ni prix fixe ni garantie.",
+      "storeReview": "Le délai de validation des boutiques d'applications ne fait pas partie de la garantie.",
+      "failed": "Impossible de calculer une estimation pour le moment. Vous verrez le prix complet dans le configurateur."
+    }
   }
 }

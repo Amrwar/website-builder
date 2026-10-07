@@ -1,7 +1,13 @@
 "use client";
 
-import { createEmptyDraft, draftSchema, type ConfiguratorDraft } from "./draft";
-import { clearDraft, loadDraft, saveDraft } from "./storage";
+import {
+  createEmptyDraft,
+  draftSchema,
+  firstUnsatisfiedStep,
+  type ConfiguratorDraft,
+  type StepId,
+} from "./draft";
+import { clearDraft, loadDraft, saveDraft, takeHandoff } from "./storage";
 import type { Locale } from "@/config/locales";
 
 /**
@@ -25,6 +31,13 @@ interface StoreState {
   /** When a draft was recovered from a previous visit, else null. */
   resumedFrom: Date | null;
   saveState: SaveState;
+  /**
+   * Where to open when another flow just handed this draft over, else null.
+   * Fixed at the moment of arrival: derived from the live draft instead, the
+   * screen would jump ahead the instant the customer answered the question
+   * it opened on.
+   */
+  handoffStep: StepId | null;
 }
 
 let current: StoreState | null = null;
@@ -55,7 +68,12 @@ export function subscribe(listener: () => void): () => void {
  * and leaving the restored draft invisible.
  */
 export function ensureInitialised(locale: Locale): void {
-  current ??= { draft: createEmptyDraft(locale), resumedFrom: null, saveState: "idle" };
+  current ??= {
+    draft: createEmptyDraft(locale),
+    resumedFrom: null,
+    saveState: "idle",
+    handoffStep: null,
+  };
 }
 
 /**
@@ -67,8 +85,17 @@ export function ensureInitialised(locale: Locale): void {
  * rather than through component state.
  */
 export function restoreSaved(): void {
-  if (restoreAttempted) return;
+  // A handoff is read even after the once-per-load restore has happened:
+  // client navigation keeps this module alive, so someone who opened the
+  // configurator, went to Start my business and came back would otherwise
+  // be shown the old in-memory draft instead of the one they just built.
+  const handoff = takeHandoff();
+  if (restoreAttempted && !handoff) return;
   restoreAttempted = true;
+
+  // An autosave still pending from the old in-memory draft would land on
+  // top of the one just handed over.
+  if (handoff) clearTimeout(saveTimer);
 
   const restored = loadDraft();
   if (!restored || !current) return;
@@ -76,7 +103,9 @@ export function restoreSaved(): void {
   current = {
     ...current,
     draft: restored.draft,
-    resumedFrom: restored.savedAt,
+    // Not "we kept your progress": this is progress made a moment ago.
+    resumedFrom: handoff ? null : restored.savedAt,
+    handoffStep: handoff ? (firstUnsatisfiedStep(restored.draft) ?? "platform") : null,
   };
   emit();
 }
@@ -92,6 +121,7 @@ export function getServerSnapshot(locale: Locale): StoreState {
     draft: createEmptyDraft(locale),
     resumedFrom: null,
     saveState: "idle",
+    handoffStep: null,
   };
   return serverSnapshot;
 }
@@ -129,7 +159,12 @@ export function resetDraft(locale: Locale): void {
   clearTimeout(saveTimer);
   restoreAttempted = true;
   clearDraft();
-  current = { draft: createEmptyDraft(locale), resumedFrom: null, saveState: "idle" };
+  current = {
+    draft: createEmptyDraft(locale),
+    resumedFrom: null,
+    saveState: "idle",
+    handoffStep: null,
+  };
   emit();
 }
 

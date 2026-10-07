@@ -278,7 +278,51 @@ fails with the fulfilment fix reverted. The Playwright suite (`npm run
 test:e2e`) covers the public journey, four viewports, both directions and the
 signed-out access boundary against a production build.
 
-### Phases 16–30 — Platform expansion
+### Phase 16 — Business-in-a-Box — done
+
+"I am starting a business" → a recommendation → the ordinary configurator.
+Start my business (`/start`) asks for the kind of business, its name,
+location, customers, what it sells and its goals, then shows every feature at
+one of three levels — recommended, optional, not needed — for the customer to
+switch on or off, with a live estimate from the configurator's own server
+action. Continuing writes a normal configurator draft and opens the
+configurator at the design question. From there it is the existing flow:
+scope, review, checkout, project. Nothing about pricing, ordering or
+production was reimplemented.
+
+How it is built:
+
+- **Blueprints are data.** `config/business.ts` ships 13 blueprints (version
+  0), 10 categories, 33 features and 7 goals; no blueprint is named in UI
+  code. A feature is defined as the capabilities it needs plus the screens it
+  adds, so the scope engine prices it — there is no blueprint price list to
+  drift. Dedupe means two features needing a product catalogue charge once.
+- **Goals are a stated rule.** A goal moves a feature one level (optional →
+  recommended, not needed → optional), and the screen says which goal did it.
+  Rule-based, and the page says so.
+- **Versions.** Admin edits write a new row in `business_blueprint_versions`,
+  which is append-only by trigger (migration 0016); publishing points the
+  blueprint at a version, and publishing an older one is the rollback. An
+  empty table means the shipped definitions are live.
+- **Provenance, not price.** The draft carries `blueprint: { key, version,
+features, goals }`. Order creation re-checks it against published versions
+  and drops a claim nobody was offered. It never affects the price.
+- **Admin** (`/admin/blueprints`): blueprints, recommendation levels, product,
+  wording in all three languages, categories (add, hide, reorder), version
+  history with publish/rollback, archive, and the engine's estimate for each
+  blueprint's recommended set. Reading needs console access; writing needs
+  `settings:manage`. Pricing stays in Pricing, on purpose.
+
+Found while building it: under the current tier thresholds the restaurant
+blueprint's full recommended set (the brief's own example) prices as a custom
+quote. That is rule 1 working, not a bug; moving items to optional or tuning
+thresholds in Pricing changes it.
+
+Not built: features are code, not admin data — a feature's capability mapping
+is what keeps its price honest, and one editable to `[]` would price as free.
+Mobile-app blueprints are possible (product is selectable) but none ship.
+
+### Phases 17–30 — Platform expansion
 
 These titles arrived without specifications. The one-line readings below are
 the obvious reading of each title and are **not** commitments — each needs
@@ -286,7 +330,6 @@ defining before it is implemented, in the way Phases 1–5 were.
 
 | Phase | Title                         | Reads as                                                       |
 | ----- | ----------------------------- | -------------------------------------------------------------- |
-| 16    | Business-in-a-Box             | A bundled starting package rather than a single build          |
 | 17    | Business Idea Validator       | Assessing an idea before it is configured and ordered          |
 | 18    | Spreadsheet → Software        | Turning a customer's existing spreadsheet into an application  |
 | 19    | Process Rescue                | Replacing a broken or manual business process                  |

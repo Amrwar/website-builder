@@ -31,6 +31,7 @@ export const PUBLIC_CLIENT_NAMESPACES = [
   "scopeReasons",
   "checkout",
   "growth",
+  "startBusiness",
 ] as const;
 
 export const APP_CLIENT_NAMESPACES = [

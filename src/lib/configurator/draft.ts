@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { LOCALES } from "@/config/locales";
 import { PLATFORM_IDS, defaultPlatformsFor, platformConflict } from "@/config/platforms";
+import { BLUEPRINT_KEY_PATTERN, FEATURE_IDS, GOAL_IDS } from "@/config/business";
 import { BUILD_TYPES, type BuildType } from "@/config/products";
 import { DESIGN_APPROACHES } from "@/db/schema/enums";
 import { CAPABILITIES } from "@/lib/scope";
@@ -61,6 +62,8 @@ export const draftSchema = z.object({
     description: z.string().trim().max(MAX_DESCRIPTION),
     targetCustomers: z.string().trim().max(MAX_SHORT_TEXT),
     desiredOutcome: z.string().trim().max(MAX_SHORT_TEXT),
+    /** Where the business operates. Asked by Business-in-a-Box. */
+    location: z.string().trim().max(MAX_SHORT_TEXT).optional(),
   }),
 
   design: z.object({
@@ -79,6 +82,25 @@ export const draftSchema = z.object({
   estimatedScreens: z.number().int().min(1).max(500).nullable(),
 
   locale: z.enum(LOCALES),
+
+  /**
+   * The Business-in-a-Box blueprint this draft started from, if any.
+   *
+   * Provenance only. Nothing reads it to decide a price -- the capabilities
+   * above are what the engine charges for -- so a forged value can mislabel
+   * an order and do nothing else, and the server re-checks it against the
+   * published versions before it is stored with one.
+   */
+  blueprint: z
+    .object({
+      key: z.string().regex(BLUEPRINT_KEY_PATTERN),
+      version: z.number().int().min(0).max(100_000),
+      /** The name as the customer saw it, for display beside the draft. */
+      name: z.string().trim().max(MAX_SHORT_TEXT),
+      features: z.array(z.enum(FEATURE_IDS)).max(FEATURE_IDS.length),
+      goals: z.array(z.enum(GOAL_IDS)).max(GOAL_IDS.length),
+    })
+    .optional(),
 });
 
 export type ConfiguratorDraft = z.infer<typeof draftSchema>;

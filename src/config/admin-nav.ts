@@ -29,7 +29,7 @@ export type AdminSectionStatus = "live" | "planned";
  * promised "Phase 12" long after Phase 12 had shipped as the growth engine,
  * which never covered either of them.
  */
-export const SHIPPED_THROUGH_PHASE = 13;
+export const SHIPPED_THROUGH_PHASE = 16;
 
 export interface AdminSection {
   id: string;
@@ -138,6 +138,16 @@ export const ADMIN_SECTIONS = [
     id: "pricing",
     path: "/pricing",
     requires: ["finance:read"],
+    status: "live",
+    group: "commerce",
+  },
+  {
+    // Business-in-a-Box. Any staff member may read what customers are
+    // recommended; changing it needs `settings:manage`, checked by the
+    // service, because a recommendation decides what a customer is quoted.
+    id: "blueprints",
+    path: "/blueprints",
+    requires: ["admin:access"],
     status: "live",
     group: "commerce",
   },

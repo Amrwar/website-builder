@@ -28,6 +28,7 @@ export interface NavItem {
  * against the translation catalogue.
  */
 export const PRIMARY_NAV = [
+  { key: "startBusiness", href: "/start", status: "live" },
   { key: "pricing", href: "#pricing", status: "live" },
   { key: "howItWorks", href: "#how-it-works", status: "live" },
   { key: "faq", href: "#faq", status: "live" },
@@ -43,6 +44,7 @@ export const FOOTER_NAV = [
   {
     titleKey: "product",
     items: [
+      { key: "startBusiness", href: "/start", status: "live" },
       { key: "howItWorks", href: "#how-it-works", status: "live" },
       { key: "pricing", href: "#pricing", status: "live" },
       { key: "buildWall", href: "#build-wall", status: "live" },

@@ -12,6 +12,13 @@ async function choose(page: Page, name: RegExp) {
   await expect(radio).toBeChecked();
 }
 
+/** The same for a checkbox card: click what a person clicks, assert the state. */
+async function tick(page: Page, name: RegExp) {
+  const box = page.getByRole("checkbox", { name });
+  await page.locator("label").filter({ has: box }).click();
+  await expect(box).toBeChecked();
+}
+
 /**
  * The visitor journey, from the home page to the point where money would
  * change hands, on every viewport the config defines.
@@ -117,5 +124,62 @@ test.describe("visitor → configure → price", () => {
 
     await page.reload();
     await expect(page.getByText("We kept your progress")).toBeVisible();
+  });
+});
+
+test.describe("start my business → configurator", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      if (sessionStorage.getItem("__e2e_cleared")) return;
+      window.localStorage.clear();
+      sessionStorage.setItem("__e2e_cleared", "1");
+    });
+  });
+
+  test("recommends, prices and hands over a configured draft", async ({ page }) => {
+    await page.goto("/start");
+    await expect(
+      page.getByRole("heading", { level: 1, name: "What are you starting?" }),
+    ).toBeVisible();
+
+    // 1. The business. Next is refused, with a reason, until one is chosen.
+    await page.getByRole("button", { name: "Next" }).click();
+    await expect(
+      page.getByText("Choose the kind of business you are starting."),
+    ).toBeVisible();
+    await choose(page, /^Barber/);
+    await page.getByRole("button", { name: "Next" }).click();
+
+    // 2. About it.
+    await page.getByRole("textbox", { name: /Business name/ }).fill("Fade Street");
+    await page
+      .getByRole("textbox", { name: /What do you sell/ })
+      .fill("Haircuts, beard trims and hot towel shaves for walk-ins and bookings.");
+    await tick(page, /Take payments/);
+    await page.getByRole("button", { name: "Next" }).click();
+
+    // 3. What it needs: three levels, a goal's effect explained, a real price.
+    await expect(
+      page.getByRole("heading", { level: 1, name: "What your business needs" }),
+    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Recommended" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Optional" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Not needed" })).toBeVisible();
+    await expect(page.getByRole("checkbox", { name: /Online booking/ })).toBeChecked();
+    await expect(page.getByRole("checkbox", { name: /Online payments/ })).toBeChecked();
+    await expect(
+      page.getByText("Moved up because you chose: Take payments"),
+    ).toBeVisible();
+    await expect(page.getByText(/\$\d[\d,]*/).first()).toBeVisible({ timeout: 15_000 });
+
+    // 4. Into the ordinary configurator, at the first unanswered question.
+    await page.getByRole("button", { name: "Continue to design" }).click();
+    await expect(page).toHaveURL(/\/configure$/);
+    await expect(page.getByText("Started from Start my business")).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "How should it look?" }),
+    ).toBeVisible();
+    // Not offered back as an abandoned draft: it was made a moment ago.
+    await expect(page.getByText("We kept your progress")).toBeHidden();
   });
 });

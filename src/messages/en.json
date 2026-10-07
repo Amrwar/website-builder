@@ -21,7 +21,8 @@
     "startBuild": "Start a build",
     "notifications": "Notifications",
     "dismiss": "Dismiss",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "startBusiness": "Start my business"
   },
   "home": {
     "meta": {
@@ -416,7 +417,8 @@
       "contact": "Contact",
       "terms": "Terms",
       "privacy": "Privacy",
-      "guarantee": "Guarantee terms"
+      "guarantee": "Guarantee terms",
+      "startBusiness": "Start my business"
     },
     "rights": "© {year} {brand}. All rights reserved."
   },
@@ -743,6 +745,10 @@
         "title": "Accounts and payment are not connected yet",
         "body": "Clerk and Stripe are provisioned for this project but the sign-in and checkout routes are not built, so this button is deliberately inactive rather than leading nowhere. Your configuration is saved in this browser and will still be here."
       }
+    },
+    "fromBlueprint": {
+      "title": "Started from Start my business",
+      "body": "Recommended for a {name}. Everything here is still yours to change."
     }
   },
   "capabilities": {
@@ -1416,7 +1422,8 @@
       "hosting": "Hosting",
       "content": "Content",
       "notifications": "Notifications",
-      "showcase": "Build wall"
+      "showcase": "Build wall",
+      "blueprints": "Blueprints"
     },
     "search": {
       "placeholder": "Search projects, customers, orders",
@@ -1974,6 +1981,115 @@
         "deadline_approaching": "Deadline approaching",
         "product_news": "Product news"
       }
+    },
+    "blueprintsPage": {
+      "title": "Blueprints",
+      "description": "Business-in-a-Box: what each kind of business is recommended, by version.",
+      "pricingNote": {
+        "title": "Prices are not set here",
+        "body": "A blueprint's price is what the engine charges for its recommended features. Change feature points and tier prices in Pricing.",
+        "link": "Open pricing"
+      },
+      "readOnly": "You can view blueprints. Only the owner can change them.",
+      "table": {
+        "name": "Blueprint",
+        "category": "Category",
+        "product": "Product",
+        "version": "Live version",
+        "status": "Status",
+        "recommended": "Recommended",
+        "estimate": "Estimate",
+        "orders": "Paid orders",
+        "actions": "Actions"
+      },
+      "shipped": "Shipped (v0)",
+      "versionLabel": "v{version}",
+      "active": "Active",
+      "archived": "Archived",
+      "unpublished": "Unpublished changes",
+      "open": "Open",
+      "quote": "Quote",
+      "drafts": {
+        "title": "Not yet published",
+        "body": "Created here and never published, so customers do not see them yet."
+      },
+      "create": {
+        "title": "New blueprint",
+        "body": "Starts as an unpublished draft recommending a home page and a contact page. Choose its features on the next screen.",
+        "key": "Key",
+        "keyHelp": "Lowercase letters, digits and underscores. It never changes.",
+        "category": "Category",
+        "product": "Product",
+        "name": "Name ({language})",
+        "summary": "Summary ({language})",
+        "submit": "Create draft"
+      },
+      "categories": {
+        "title": "Categories",
+        "body": "Hiding a category hides every blueprint in it.",
+        "key": "Key",
+        "name": "Name",
+        "order": "Order",
+        "shown": "Shown",
+        "save": "Save",
+        "createTitle": "New category",
+        "nameIn": "Name ({language})",
+        "create": "Add category",
+        "fromCatalogue": "Name from the catalogues"
+      },
+      "editor": {
+        "back": "All blueprints",
+        "live": "Live: v{version}",
+        "liveShipped": "Live: shipped definition",
+        "notLive": "Not published",
+        "archive": "Archive",
+        "restore": "Restore",
+        "archivedNote": "Archived. Customers do not see this blueprint; orders that started from it keep their record.",
+        "workingFrom": "Editing from {version}",
+        "shippedVersion": "the shipped definition",
+        "category": "Category",
+        "product": "Product",
+        "features": "Features",
+        "featuresHelp": "Each feature is recommended, optional or not needed. Its price comes from the capabilities it needs.",
+        "levels": {
+          "recommended": "Recommended",
+          "optional": "Optional",
+          "not_needed": "Not needed"
+        },
+        "copy": "Wording",
+        "useCatalogue": "Use the shipped wording from the translation catalogues",
+        "copyRequired": "A blueprint created here needs its wording in every language.",
+        "name": "Name ({language})",
+        "summary": "Summary ({language})",
+        "note": "Note for this version",
+        "noteHelp": "Why this version exists. Kept in the history and the audit log.",
+        "save": "Save as new version",
+        "saveAndPublish": "Save and publish",
+        "saved": "Version {version} saved.",
+        "published": "Version {version} is live.",
+        "failed": "That could not be saved."
+      },
+      "preview": {
+        "title": "Estimate for the recommended set",
+        "body": "What a customer who keeps every recommendation is quoted, before any design fee.",
+        "live": "Live version",
+        "working": "Latest version",
+        "quote": "Custom quote",
+        "days": "{days} days",
+        "unavailable": "No estimate"
+      },
+      "versions": {
+        "title": "Version history",
+        "version": "Version",
+        "author": "By",
+        "created": "Saved",
+        "published": "Published",
+        "note": "Note",
+        "live": "Live",
+        "publish": "Make live",
+        "never": "Not published",
+        "empty": "No versions saved yet. The shipped definition is live."
+      }
     }
   },
   "maintenance": {
@@ -2287,5 +2403,323 @@
     "en": "English",
     "fr": "French",
     "ar": "Arabic"
+  },
+  "blueprints": {
+    "categories": {
+      "food_hospitality": "Food & hospitality",
+      "beauty_grooming": "Beauty & grooming",
+      "health": "Health",
+      "fitness": "Fitness",
+      "home_services": "Home services",
+      "automotive": "Automotive",
+      "professional_services": "Professional services",
+      "property": "Property",
+      "retail": "Retail",
+      "creative": "Creative"
+    },
+    "items": {
+      "restaurant": {
+        "name": "Restaurant",
+        "summary": "Menu, online ordering, reservations and a staff side to run it."
+      },
+      "barber": {
+        "name": "Barber",
+        "summary": "Services and prices, online booking and your best cuts on show."
+      },
+      "salon": {
+        "name": "Salon",
+        "summary": "Treatments, your team, online booking and a gallery of your work."
+      },
+      "dental_clinic": {
+        "name": "Dental clinic",
+        "summary": "Treatments, your practitioners, appointment booking and the answers patients look for."
+      },
+      "gym": {
+        "name": "Gym",
+        "summary": "Classes, memberships, booking and a dashboard for your staff."
+      },
+      "cleaning_company": {
+        "name": "Cleaning company",
+        "summary": "Services, quote requests and booking, with scheduling for when you grow."
+      },
+      "contractor": {
+        "name": "Contractor",
+        "summary": "Your work, your services and a steady flow of quote requests."
+      },
+      "auto_repair": {
+        "name": "Auto repair",
+        "summary": "Services, booking and quote requests for a busy workshop."
+      },
+      "consultant": {
+        "name": "Consultant",
+        "summary": "Your expertise, booking for calls and writing that brings clients in."
+      },
+      "freelancer": {
+        "name": "Freelancer",
+        "summary": "A portfolio, your services and a simple way to get in touch."
+      },
+      "real_estate": {
+        "name": "Real estate",
+        "summary": "Property listings, your agents and enquiries that reach the right person."
+      },
+      "retail_store": {
+        "name": "Retail store",
+        "summary": "An online store with stock, payments and a staff dashboard."
+      },
+      "photographer": {
+        "name": "Photographer",
+        "summary": "A portfolio, your packages and booking for shoots."
+      }
+    },
+    "features": {
+      "home": {
+        "name": "Home page",
+        "description": "The first page people see: who you are and what to do next."
+      },
+      "about": {
+        "name": "About page",
+        "description": "Your story and why people should choose you."
+      },
+      "services": {
+        "name": "Services and prices",
+        "description": "What you offer and what it costs."
+      },
+      "contact": {
+        "name": "Contact page",
+        "description": "Address, opening hours, a map and a contact form."
+      },
+      "gallery": {
+        "name": "Gallery",
+        "description": "Photos of your space and your work."
+      },
+      "team": {
+        "name": "Team page",
+        "description": "The people behind the business."
+      },
+      "faq": {
+        "name": "Questions and answers",
+        "description": "Answers to what customers ask before they buy."
+      },
+      "menu": {
+        "name": "Menu",
+        "description": "A menu you can update yourself."
+      },
+      "portfolio": {
+        "name": "Portfolio",
+        "description": "Your best work, organised and easy to update."
+      },
+      "listings": {
+        "name": "Listings",
+        "description": "Browsable listings with details and photos."
+      },
+      "blog": {
+        "name": "Blog",
+        "description": "Articles and news that help people find you."
+      },
+      "online_booking": {
+        "name": "Online booking",
+        "description": "Customers pick a time and book without calling."
+      },
+      "reservations": {
+        "name": "Reservations",
+        "description": "Table bookings straight from your site."
+      },
+      "online_ordering": {
+        "name": "Online ordering",
+        "description": "Customers order and pay online for pickup or delivery."
+      },
+      "online_store": {
+        "name": "Online store",
+        "description": "Products, a cart and a checkout."
+      },
+      "payments": {
+        "name": "Online payments",
+        "description": "Card payments through a secure hosted checkout."
+      },
+      "memberships": {
+        "name": "Memberships",
+        "description": "Recurring plans customers sign up for and manage."
+      },
+      "customer_accounts": {
+        "name": "Customer accounts",
+        "description": "Customers sign in to see their bookings and orders."
+      },
+      "client_portal": {
+        "name": "Client portal",
+        "description": "A private area where clients see their files and updates."
+      },
+      "quote_requests": {
+        "name": "Quote requests",
+        "description": "A form that collects what you need to price a job."
+      },
+      "reviews": {
+        "name": "Reviews",
+        "description": "Show the reviews you choose, edited like any other content."
+      },
+      "multilingual": {
+        "name": "More than one language",
+        "description": "Your site in each language your customers speak."
+      },
+      "content_editing": {
+        "name": "Edit your own content",
+        "description": "Change text and images without asking anyone."
+      },
+      "staff_dashboard": {
+        "name": "Staff dashboard",
+        "description": "One place for your team to see what is coming in."
+      },
+      "staff_roles": {
+        "name": "Staff permissions",
+        "description": "Different access for owners, managers and staff."
+      },
+      "inventory": {
+        "name": "Inventory",
+        "description": "Track stock so you never sell what you do not have."
+      },
+      "analytics": {
+        "name": "Analytics",
+        "description": "Reports on bookings, orders and visitors."
+      },
+      "integrations": {
+        "name": "Connect your tools",
+        "description": "Link the software you already use."
+      },
+      "data_import": {
+        "name": "Bring your data",
+        "description": "Move customers, products or records from your old system."
+      },
+      "order_fulfilment": {
+        "name": "Order workflow",
+        "description": "Orders move from received to ready with a clear status."
+      },
+      "job_scheduling": {
+        "name": "Job scheduling",
+        "description": "Assign jobs to dates and people."
+      },
+      "lead_pipeline": {
+        "name": "Lead pipeline",
+        "description": "Track enquiries from first contact to won work."
+      },
+      "dispatch": {
+        "name": "Crew dispatch",
+        "description": "Route crews between jobs. Priced by quotation."
+      }
+    },
+    "goals": {
+      "get_found": "Get found online",
+      "take_bookings": "Take bookings",
+      "sell_online": "Sell online",
+      "take_payments": "Take payments",
+      "keep_customers": "Keep customers coming back",
+      "run_operations": "Run day-to-day operations",
+      "reach_languages": "Reach customers in other languages"
+    }
+  },
+  "startBusiness": {
+    "meta": {
+      "title": "Start my business",
+      "description": "Tell us what you are starting. We recommend the website or system it needs, price it, and build it with a delivery guarantee."
+    },
+    "eyebrow": "Start my business",
+    "progressLabel": "Start my business progress",
+    "status": {
+      "complete": "completed",
+      "current": "current step",
+      "upcoming": "not started"
+    },
+    "steps": {
+      "business": {
+        "label": "Business",
+        "title": "What are you starting?",
+        "lead": "Pick the closest match. It sets the starting recommendation, and you can change all of it afterwards."
+      },
+      "details": {
+        "label": "About it",
+        "title": "Tell us about it",
+        "lead": "A few details so the recommendation fits. Your answers carry into the brief."
+      },
+      "recommend": {
+        "label": "What it needs",
+        "title": "What your business needs",
+        "lead": "This is what businesses like yours usually have. Switch anything on or off and the estimate follows."
+      }
+    },
+    "next": "Next",
+    "back": "Back",
+    "continue": "Continue to design",
+    "continueNote": "Next you choose a design approach, then review the full scope and price before anything is ordered.",
+    "noBlueprints": "No business blueprints are available right now. You can still describe your build in the configurator.",
+    "notListed": "Not listed? Pick the closest one, or describe your build directly in the configurator.",
+    "issues": {
+      "chooseBusiness": "Choose the kind of business you are starting.",
+      "needBusinessName": "Add your business name.",
+      "describeMore": "Describe what you sell in at least {min} characters."
+    },
+    "details": {
+      "businessName": {
+        "label": "Business name",
+        "required": "Add your business name."
+      },
+      "location": {
+        "label": "Location",
+        "help": "The city or area you serve. Optional."
+      },
+      "targetCustomers": {
+        "label": "Who are your customers?",
+        "help": "For example: families nearby, office workers, local businesses."
+      },
+      "offering": {
+        "label": "What do you sell?",
+        "help": "The services or products your business offers as a {business}, in your own words.",
+        "tooShort": "Add a little more: at least {min} characters.",
+        "remaining": "{remaining} characters left"
+      },
+      "goals": {
+        "label": "What should it help you do?",
+        "help": "Optional. A goal can move related features up the list, and the list says when it did."
+      }
+    },
+    "recommend": {
+      "levels": {
+        "recommended": {
+          "title": "Recommended",
+          "body": "What businesses like yours usually need. Switched on to start with."
+        },
+        "optional": {
+          "title": "Optional",
+          "body": "Useful for some businesses like yours. Switch on what fits."
+        },
+        "not_needed": {
+          "title": "Not needed",
+          "body": "Rarely needed for this kind of business, and still available if you want it."
+        }
+      },
+      "count": "{count, plural, one {# feature} other {# features}}",
+      "showNotNeeded": "Show {count, plural, one {# more feature} other {# more features}}",
+      "kind": {
+        "page": "Page",
+        "feature": "Feature",
+        "workflow": "Workflow"
+      },
+      "audience": {
+        "customer": "For your customers",
+        "admin": "For you and your staff"
+      },
+      "because": "Moved up because you chose: {goals}",
+      "ruleBased": "These recommendations come from fixed rules for each kind of business and the goals you chose. Nothing is generated or guessed."
+    },
+    "estimate": {
+      "title": "Estimate",
+      "price": "Price",
+      "time": "Delivery",
+      "quote": "Custom quote",
+      "quoted": "Agreed with the quote",
+      "days": "{days} days after your assets are in",
+      "selected": "{count, plural, one {# feature selected.} other {# features selected.}}",
+      "note": "Worked out by the same engine as checkout. A design fee is added if we design it for you.",
+      "quoteNote": "Something you chose needs a quotation, so this combination has no fixed price or guarantee.",
+      "storeReview": "App store review time is not part of the delivery guarantee.",
+      "failed": "We could not work out an estimate just now. You will see the full price in the configurator."
+    }
   }
 }

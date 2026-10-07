@@ -21,6 +21,13 @@ import {
   updateChecklistItem as updateChecklistDefinition,
   updatePlan,
 } from "@/server/admin/lifecycle";
+import {
+  createBlueprint,
+  publishBlueprintVersion,
+  saveBlueprintVersion,
+  saveCategory,
+  setBlueprintStatus,
+} from "@/server/business/blueprints";
 import type { RefundReason } from "@/db/schema/enums";
 
 /**
@@ -233,5 +240,90 @@ export async function importLifecycleCatalog() {
     return { ok: true, written } as const;
   } catch (error) {
     return failure(error, "Those defaults could not be imported.");
+  }
+}
+
+/* -------------------------------------------------------------------------
+ * Business-in-a-Box blueprints
+ * ---------------------------------------------------------------------- */
+
+/**
+ * Blueprint edits. The service re-checks `settings:manage`, validates the
+ * definition and audits the change; these only transport it.
+ *
+ * Publishing anything also revalidates Start my business in every locale:
+ * that page is prerendered, and a blueprint an administrator has just made
+ * live should not wait for the backstop interval.
+ */
+function revalidateBlueprints(key?: string) {
+  revalidatePath("/admin/blueprints");
+  if (key) revalidatePath(`/admin/blueprints/${key}`);
+  revalidatePath("/[locale]/start", "page");
+}
+
+export async function createBlueprintAction(
+  key: string,
+  input: unknown,
+): Promise<AdminResult<{ key: string }>> {
+  try {
+    const context = await requireUser();
+    await createBlueprint(String(key), input, context);
+    revalidateBlueprints(String(key));
+    return { ok: true, key: String(key) };
+  } catch (error) {
+    return failure(error, "That blueprint could not be created.");
+  }
+}
+
+export async function saveBlueprintAction(
+  key: string,
+  input: unknown,
+): Promise<AdminResult<{ version: number; published: boolean }>> {
+  try {
+    const context = await requireUser();
+    const result = await saveBlueprintVersion(String(key), input, context);
+    revalidateBlueprints(String(key));
+    return { ok: true, ...result };
+  } catch (error) {
+    return failure(error, "That blueprint could not be saved.");
+  }
+}
+
+export async function publishBlueprintAction(
+  key: string,
+  version: number,
+): Promise<AdminResult> {
+  try {
+    const context = await requireUser();
+    await publishBlueprintVersion(String(key), version, context);
+    revalidateBlueprints(String(key));
+    return { ok: true };
+  } catch (error) {
+    return failure(error, "That version could not be published.");
+  }
+}
+
+export async function setBlueprintStatusAction(
+  key: string,
+  status: string,
+): Promise<AdminResult> {
+  try {
+    const context = await requireUser();
+    await setBlueprintStatus(String(key), status, context);
+    revalidateBlueprints(String(key));
+    return { ok: true };
+  } catch (error) {
+    return failure(error, "That blueprint could not be updated.");
+  }
+}
+
+export async function saveBlueprintCategoryAction(input: unknown): Promise<AdminResult> {
+  try {
+    const context = await requireUser();
+    await saveCategory(input, context);
+    revalidateBlueprints();
+    return { ok: true };
+  } catch (error) {
+    return failure(error, "That category could not be saved.");
   }
 }

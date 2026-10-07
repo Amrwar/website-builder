@@ -9,7 +9,7 @@ import { expect, test } from "@playwright/test";
  * physical margin that should have been logical pushes something off-screen.
  */
 
-const PAGES = ["/", "/configure", "/partners"];
+const PAGES = ["/", "/configure", "/partners", "/start"];
 const LOCALES = [
   { prefix: "", dir: "ltr" },
   { prefix: "/ar", dir: "rtl" },
@@ -89,4 +89,26 @@ test.describe("primary navigation", () => {
     await expect(dialog).toBeHidden();
     await expect(trigger).toBeFocused();
   });
+});
+
+test("the full header fits at its narrowest width, in Arabic", async ({ page }, info) => {
+  // `lg` is where the full header appears; Arabic labels run widest. A nav
+  // item that fits at 1366 can still push the cluster off-screen at 1024.
+  test.skip(info.project.name !== "desktop", "one width is the point");
+  await page.setViewportSize({ width: 1024, height: 768 });
+  await page.goto("/ar");
+  const overflow = await page.evaluate(
+    () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+  );
+  expect(overflow).toBeLessThanOrEqual(0);
+  const header = await page
+    .locator("header")
+    .first()
+    .evaluate((node) => {
+      const width = document.documentElement.clientWidth;
+      return [...node.querySelectorAll("a, button")]
+        .map((el) => el.getBoundingClientRect())
+        .filter((r) => r.width > 0 && (r.left < -1 || r.right > width + 1)).length;
+    });
+  expect(header).toBe(0);
 });

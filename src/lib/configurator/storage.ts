@@ -97,3 +97,38 @@ export function clearDraft(): void {
     // Nothing useful to do; the draft simply will not be cleared.
   }
 }
+
+/* -------------------------------------------------------------------------
+ * Handoff
+ * ---------------------------------------------------------------------- */
+
+const HANDOFF_KEY = "buildline.configurator.handoff";
+
+/**
+ * Marks the saved draft as freshly handed over by another flow --
+ * Business-in-a-Box -- rather than left behind by an earlier visit.
+ *
+ * The difference decides what the configurator says on arrival. A draft the
+ * customer abandoned is offered back with "we kept your progress"; a draft
+ * they built thirty seconds ago should simply open at the next question.
+ * Session storage, so the mark cannot outlive the tab that set it.
+ */
+export function markHandoff(): void {
+  try {
+    window.sessionStorage.setItem(HANDOFF_KEY, "1");
+  } catch {
+    // Without the mark the configurator offers the draft as resumable, which
+    // is still correct, only one click longer.
+  }
+}
+
+/** Reads and clears the mark, so it applies to exactly one arrival. */
+export function takeHandoff(): boolean {
+  try {
+    const marked = window.sessionStorage.getItem(HANDOFF_KEY) === "1";
+    window.sessionStorage.removeItem(HANDOFF_KEY);
+    return marked;
+  } catch {
+    return false;
+  }
+}

@@ -72,7 +72,7 @@ export function Configurator() {
 
   // Prepared during render so the first committed snapshot is already correct.
   ensureInitialised(locale);
-  const { draft, resumedFrom, saveState } = useSyncExternalStore(
+  const { draft, resumedFrom, saveState, handoffStep } = useSyncExternalStore(
     subscribe,
     getSnapshot,
     () => getServerSnapshot(locale),
@@ -84,7 +84,10 @@ export function Configurator() {
     restoreSaved();
   }, []);
 
-  const [step, setStep] = useState<StepId>("type");
+  // Null until the customer moves; until then a draft handed over by
+  // Business-in-a-Box opens at its first unanswered question.
+  const [chosenStep, setStep] = useState<StepId | null>(null);
+  const step = chosenStep ?? handoffStep ?? "type";
   const [attempted, setAttempted] = useState(false);
   const [assessment, setAssessment] = useState<ProjectAssessment | null>(null);
   /**
@@ -161,6 +164,12 @@ export function Configurator() {
         label={t("progressLabel")}
         statusLabel={(status) => t(`status.${status}`)}
       />
+
+      {draft.blueprint && !resumedFrom ? (
+        <Callout tone="info" title={t("fromBlueprint.title")}>
+          {t("fromBlueprint.body", { name: draft.blueprint.name })}
+        </Callout>
+      ) : null}
 
       {resumedFrom ? (
         <Callout
