@@ -84,7 +84,7 @@ jobs:
       # The runner image ships Google Chrome, which is what the config's
       # `channel: "chrome"` uses; no browser download needed.
       - run: npm run test:e2e
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: playwright-results
