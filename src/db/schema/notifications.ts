@@ -99,13 +99,15 @@ export const notifications = pgTable(
     index("notifications_recipient_id_idx").on(table.recipientId),
     index("notifications_created_at_idx").on(table.createdAt),
     /**
-     * Partial unique: Postgres treats NULLs as distinct, so a plain unique
-     * index would already allow many null keys, but stating it partially makes
-     * the intent explicit and keeps the index off the null rows.
+     * Plain, not partial. Postgres already treats NULLs as distinct in a unique
+     * index, so any number of keyless notifications coexist — and a partial
+     * index cannot be matched by `ON CONFLICT (dedupe_key)`, so every insert
+     * through `notify()` failed. The failure was caught and logged by design,
+     * so the platform recorded no notifications at all and nothing said so.
+     * Found by the lifecycle integration test; the live probe of this index
+     * had only ever tried plain inserts.
      */
-    uniqueIndex("notifications_dedupe_key_key")
-      .on(table.dedupeKey)
-      .where(sql`${table.dedupeKey} is not null`),
+    uniqueIndex("notifications_dedupe_key_key").on(table.dedupeKey),
 
     /**
      * The email columns describe one attempt, and the database enforces that

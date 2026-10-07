@@ -1,18 +1,19 @@
 import "server-only";
 
-import { and, eq, ne } from "drizzle-orm";
+import { and, eq, ne, sql } from "drizzle-orm";
 
 import { INVOICE_DUE_DAYS, TAX } from "@/config/commerce";
 import { db } from "@/db/client";
 import {
+  type Order,
   invoices,
   orders,
-  projectMembers,
+  payments,
   projectBriefs,
+  projectMembers,
   projects,
   scopeAssessments,
   users,
-  type Order,
 } from "@/db/schema";
 import type { ConfiguratorDraft } from "@/lib/configurator/draft";
 import { logger } from "@/lib/logger";
@@ -103,6 +104,32 @@ export async function fulfilCheckout(
       expected: order.totalMinorUnits,
     });
     return { ok: false, reason: "amount_mismatch" };
+  }
+
+  /**
+   * Record the settlement, on every path that confirms payment.
+   *
+   * The provider's payment id is what a refund is issued against, and nothing
+   * stored it: the webhook marked the attempt succeeded without it, so
+   * `executeRefund` found no settled payment and every refund failed —
+   * including the missed-deadline refunds the guarantee promises. Found by the
+   * lifecycle integration test, which is the first thing that ever ran a
+   * refund after a payment.
+   *
+   * Here rather than in the webhook because the landing page fulfils too, and
+   * often first. Idempotent: `coalesce` keeps the first values recorded, so a
+   * redelivery cannot move the settlement time or swap the id.
+   */
+  if (state.providerPaymentId) {
+    await db
+      .update(payments)
+      .set({
+        status: "succeeded",
+        providerPaymentId: sql`coalesce(${payments.providerPaymentId}, ${state.providerPaymentId})`,
+        succeededAt: sql`coalesce(${payments.succeededAt}, now())`,
+        updatedAt: new Date(),
+      })
+      .where(eq(payments.providerReference, providerReference));
   }
 
   if (order.projectId && order.status === "paid") {
