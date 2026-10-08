@@ -28,6 +28,7 @@ import {
   saveCategory,
   setBlueprintStatus,
 } from "@/server/business/blueprints";
+import { closeExperimentAsStaff } from "@/server/validation/experiments";
 import type { RefundReason } from "@/db/schema/enums";
 
 /**
@@ -325,5 +326,23 @@ export async function saveBlueprintCategoryAction(input: unknown): Promise<Admin
     return { ok: true };
   } catch (error) {
     return failure(error, "That category could not be saved.");
+  }
+}
+
+/* -------------------------------------------------------------------------
+ * Validation pages
+ * ---------------------------------------------------------------------- */
+
+export async function closeValidationAction(
+  id: string,
+  reason: string,
+): Promise<AdminResult> {
+  try {
+    const context = await requireUser();
+    await closeExperimentAsStaff(String(id), String(reason ?? ""), context);
+    revalidatePath("/admin/validations");
+    return { ok: true };
+  } catch (error) {
+    return failure(error, "That page could not be closed.");
   }
 }

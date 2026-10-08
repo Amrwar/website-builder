@@ -120,6 +120,13 @@
       "when": 1791400155404,
       "tag": "0016_blueprint_versions_append_only",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1791420598390,
+      "tag": "0017_business_idea_validator",
+      "breakpoints": true
     }
   ]
 }

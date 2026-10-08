@@ -147,4 +147,10 @@ export const RATE_LIMITS = {
   review: { limit: 10, windowMs: 3_600_000 },
   /** Referral claims: already idempotent, this just caps the probing rate. */
   referralClaim: { limit: 20, windowMs: 3_600_000 },
+  /** Publishing a validation page: each one is a public page on our domain. */
+  validationPublish: { limit: 10, windowMs: 3_600_000 },
+  /** Page views and clicks on a validation page, anonymous. */
+  validationEvent: { limit: 120, windowMs: 60_000 },
+  /** Leads on a validation page, per visitor per page. */
+  validationLead: { limit: 5, windowMs: 3_600_000 },
 } as const satisfies Record<string, RateLimitRule>;

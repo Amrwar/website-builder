@@ -9,7 +9,7 @@ import { expect, test } from "@playwright/test";
  * physical margin that should have been logical pushes something off-screen.
  */
 
-const PAGES = ["/", "/configure", "/partners", "/start"];
+const PAGES = ["/", "/configure", "/partners", "/start", "/validate"];
 const LOCALES = [
   { prefix: "", dir: "ltr" },
   { prefix: "/ar", dir: "rtl" },

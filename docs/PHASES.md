@@ -322,7 +322,42 @@ Not built: features are code, not admin data — a feature's capability mapping
 is what keeps its price honest, and one editable to `[]` would price as free.
 Mobile-app blueprints are possible (product is selectable) but none ship.
 
-### Phases 17–30 — Platform expansion
+### Phase 17 — Business Idea Validator — done
+
+"Test my business idea" (`/validate`) is a guided wizard — idea, description,
+target customer, offer, pricing, landing page, lead capture, publish — that
+ends in a real public page at `/v/{slug}` with an inquiry form or a waitlist.
+The owner's results (`/ideas/{id}`) show visitors, page views, button clicks,
+inquiries, sign-ups and conversion, with a daily breakdown and the leads
+themselves, then offer **Turn this into my business**, which carries the
+idea's words into Start my business (Phase 16).
+
+Decisions worth knowing:
+
+- **Signals, not proof.** Every surface says "early validation signals" and
+  that the numbers do not prove a market. Below 100 visitors the results say
+  it is too early to read the ratios. No benchmarks, no score, no generated
+  copy — the page is the customer's words and the numbers are counts.
+- **Deterministic capture.** "Not available yet" suggests a waitlist,
+  "available now" an inquiry form; the customer can override it.
+- **Frozen after publishing.** A test cannot be edited, so its numbers always
+  describe one page. To try another headline or price, start another test.
+- **Cookie-free counting.** Distinct visitors come from a salted hash of the
+  network prefix and browser, rotated daily and scoped to the test. Crawlers,
+  headless browsers and the owner's own visits are not counted.
+- **Abuse.** No links allowed in page text, a disclosure footer on every page,
+  `noindex`, three live tests per account, rate limits on publishing, events
+  and leads, a honeypot, required consent, and a "Report this page" link.
+  Staff with `project:manage` can close any page from `/admin/validations`,
+  with a reason in the audit log; staff never see the leads.
+- **Ownership.** Results and leads are scoped to the session's user; leads
+  are deleted with the owner's account.
+
+Not built: lead notifications by email (the owner checks the results page),
+CSV export, and custom domains for test pages. Free for now — no price is
+attached to the product.
+
+### Phases 18–30 — Platform expansion
 
 These titles arrived without specifications. The one-line readings below are
 the obvious reading of each title and are **not** commitments — each needs
@@ -330,7 +365,6 @@ defining before it is implemented, in the way Phases 1–5 were.
 
 | Phase | Title                         | Reads as                                                       |
 | ----- | ----------------------------- | -------------------------------------------------------------- |
-| 17    | Business Idea Validator       | Assessing an idea before it is configured and ordered          |
 | 18    | Spreadsheet → Software        | Turning a customer's existing spreadsheet into an application  |
 | 19    | Process Rescue                | Replacing a broken or manual business process                  |
 | 20    | Software Renovation           | Rebuilding or extending software a customer already owns       |

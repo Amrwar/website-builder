@@ -18,6 +18,8 @@ test.describe("signed out", () => {
     "/billing",
     "/account",
     "/notifications",
+    "/ideas",
+    "/ideas/00000000-0000-4000-8000-000000000000",
     "/invoices/INV-2026-0001",
     "/admin",
     "/admin/pricing",
@@ -79,6 +81,19 @@ test.describe("signed out", () => {
     expect(same.status()).toBe(404);
     expect(foreign.status()).not.toBe(404);
     expect(foreign.status()).toBeGreaterThanOrEqual(400);
+  });
+
+  test("an idea test that does not exist is a 404, and its endpoint says nothing", async ({
+    page,
+    request,
+  }) => {
+    const response = await page.goto("/v/no-such-test-0000");
+    expect(response?.status()).toBe(404);
+    // 204 whatever happened, so a stranger cannot probe for live slugs.
+    const beacon = await request.post("/api/v/no-such-test-0000/events", {
+      data: { kind: "view" },
+    });
+    expect(beacon.status()).toBe(204);
   });
 
   test("an unknown page is a real 404 with a way home", async ({ page }) => {

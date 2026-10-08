@@ -183,3 +183,85 @@ test.describe("start my business → configurator", () => {
     await expect(page.getByText("We kept your progress")).toBeHidden();
   });
 });
+
+test.describe("test my business idea", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      if (sessionStorage.getItem("__e2e_cleared")) return;
+      window.localStorage.clear();
+      sessionStorage.setItem("__e2e_cleared", "1");
+    });
+  });
+
+  test("builds a landing page, then asks for an account to publish it", async ({
+    page,
+  }) => {
+    await page.goto("/validate");
+    const next = page.getByRole("button", { name: "Next" });
+
+    // Idea
+    await next.click();
+    await expect(page.getByText("Add a working name.")).toBeVisible();
+    await page.getByRole("textbox", { name: /Working name/ }).fill("Little Loaves");
+    await page
+      .getByRole("textbox", { name: /idea in one sentence/ })
+      .fill("Fresh sourdough delivered every Saturday.");
+    await next.click();
+
+    // Description
+    await page
+      .getByRole("textbox", { name: /Description/ })
+      .fill("A weekly bread subscription baked in Laval and delivered by bike.");
+    await next.click();
+
+    // Customer
+    await page
+      .getByRole("textbox", { name: /Target customer/ })
+      .fill("Families in Laval");
+    await next.click();
+
+    // Offer: a link is refused, with the reason.
+    await page
+      .getByRole("textbox", { name: /Headline/ })
+      .fill("Order at www.example.com");
+    await next.click();
+    await expect(page.getByText(/Links are not allowed/)).toBeVisible();
+    await page
+      .getByRole("textbox", { name: /Headline/ })
+      .fill("Saturday bread, at your door");
+    await choose(page, /Not yet/);
+    await next.click();
+
+    // Pricing
+    await choose(page, /^Monthly/);
+    await page.getByRole("spinbutton", { name: /Amount/ }).fill("32");
+    await next.click();
+
+    // The preview is the real page.
+    await expect(
+      page.getByRole("heading", { level: 1, name: "Saturday bread, at your door" }),
+    ).toBeVisible();
+    await expect(page.getByText("$32 a month")).toBeVisible();
+    await expect(page.getByText(/early test of an idea by Little Loaves/)).toBeVisible();
+    await next.click();
+
+    // Capture: a waitlist, suggested because the offer is not available yet.
+    await expect(page.getByRole("radio", { name: /Waitlist/ })).toBeChecked();
+    await expect(
+      page.getByText("Suggested because it is not available yet"),
+    ).toBeVisible();
+    await next.click();
+
+    // Publish: honest framing, and an account first.
+    await expect(page.getByText("Early validation signals, not proof")).toBeVisible();
+    await page.getByRole("button", { name: "Publish test" }).click();
+    await expect(page.getByText("Sign in to publish")).toBeVisible();
+    await expect(page.getByRole("link", { name: "Create an account" })).toBeVisible();
+
+    // And nothing typed is lost on the way to sign-up.
+    await page.reload();
+    await expect(page.getByRole("textbox", { name: /Working name/ })).toHaveValue(
+      "Little Loaves",
+    );
+  });
+});

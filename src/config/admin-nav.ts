@@ -29,7 +29,7 @@ export type AdminSectionStatus = "live" | "planned";
  * promised "Phase 12" long after Phase 12 had shipped as the growth engine,
  * which never covered either of them.
  */
-export const SHIPPED_THROUGH_PHASE = 16;
+export const SHIPPED_THROUGH_PHASE = 17;
 
 export interface AdminSection {
   id: string;
@@ -108,6 +108,15 @@ export const ADMIN_SECTIONS = [
     id: "scope",
     path: "/scope",
     requires: ["project:read:all"],
+    status: "live",
+    group: "operate",
+  },
+  {
+    // Test my business idea pages are customers' words on our domain. Staff
+    // who can manage projects can take one down; nobody here sees its leads.
+    id: "validations",
+    path: "/validations",
+    requires: ["project:manage"],
     status: "live",
     group: "operate",
   },

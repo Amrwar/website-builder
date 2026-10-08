@@ -2,7 +2,14 @@
 
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { useEffect, useMemo, useRef, useState, useTransition } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  useTransition,
+} from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -20,7 +27,7 @@ import type {
   RecommendationLevel,
 } from "@/config/business";
 import { getLocaleDefinition, resolveLocale } from "@/config/locales";
-import { useRouter } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import {
   draftFromBlueprint,
   initialSelection,
@@ -35,9 +42,11 @@ import {
   MAX_SHORT_TEXT,
   MIN_DESCRIPTION,
 } from "@/lib/configurator/draft";
+import { readPrefill, serverPrefill, subscribePrefill } from "@/lib/business/prefill";
 import { markHandoff, saveDraft } from "@/lib/configurator/storage";
 import { guaranteedDays, totalPrice, type ProjectAssessment } from "@/lib/engine";
 import { formatMoney } from "@/lib/pricing/money";
+import type { StartPrefill } from "@/lib/validation/content";
 import { assessDraft } from "@/server/configurator-actions";
 
 /**
@@ -79,14 +88,49 @@ const EMPTY_DETAILS: BusinessDetails = {
 const ESTIMATE_DELAY_MS = 600;
 
 export function StartBusiness({ catalog }: { catalog: StartCatalog }) {
+  // An idea carried over from Test my business idea, if the customer just
+  // clicked "Turn this into my business". Null on the server and on any
+  // other arrival; when it appears after hydration the flow remounts with it.
+  const prefill = useSyncExternalStore(subscribePrefill, readPrefill, serverPrefill);
+  return (
+    <StartBusinessFlow
+      key={prefill ? "prefilled" : "blank"}
+      catalog={catalog}
+      initial={prefill}
+    />
+  );
+}
+
+function StartBusinessFlow({
+  catalog,
+  initial,
+}: {
+  catalog: StartCatalog;
+  initial: StartPrefill | null;
+}) {
   const t = useTranslations("startBusiness");
   const locale = resolveLocale(useLocale());
   const { intlTag } = getLocaleDefinition(locale);
   const router = useRouter();
 
-  const [step, setStep] = useState<StartStep>("business");
-  const [blueprintKey, setBlueprintKey] = useState<string | null>(null);
-  const [details, setDetails] = useState<BusinessDetails>(EMPTY_DETAILS);
+  // A blueprint the idea named is used only if it is still offered.
+  const initialBlueprint =
+    initial?.blueprintKey &&
+    catalog.blueprints.some((entry) => entry.key === initial.blueprintKey)
+      ? initial.blueprintKey
+      : null;
+  const [step, setStep] = useState<StartStep>(initialBlueprint ? "details" : "business");
+  const [blueprintKey, setBlueprintKey] = useState<string | null>(initialBlueprint);
+  const [details, setDetails] = useState<BusinessDetails>(() =>
+    initial
+      ? {
+          ...EMPTY_DETAILS,
+          businessName: initial.businessName,
+          targetCustomers: initial.targetCustomers,
+          offering: initial.offering,
+        }
+      : EMPTY_DETAILS,
+  );
   const [selected, setSelected] = useState<BusinessFeatureId[]>([]);
   const [attempted, setAttempted] = useState(false);
 
@@ -201,6 +245,12 @@ export function StartBusiness({ catalog }: { catalog: StartCatalog }) {
         <h1 className="text-display-lg text-primary">{t(`steps.${step}.title`)}</h1>
         <p className="max-w-2xl text-body text-secondary">{t(`steps.${step}.lead`)}</p>
       </header>
+
+      {initial && step !== "recommend" ? (
+        <Callout tone="info" title={t("fromValidation.title")}>
+          {t("fromValidation.body")}
+        </Callout>
+      ) : null}
 
       <Stepper
         steps={STEPS.map((id) => ({ id, label: t(`steps.${id}.label`) }))}
@@ -336,6 +386,12 @@ function ChooseBusiness({
         );
       })}
       <p className="text-body-sm text-tertiary">{t("notListed")}</p>
+      <p className="text-body-sm text-secondary">
+        {t("testFirst")}{" "}
+        <Link href="/validate" className="font-medium text-accent hover:underline">
+          {t("testFirstLink")}
+        </Link>
+      </p>
     </div>
   );
 }

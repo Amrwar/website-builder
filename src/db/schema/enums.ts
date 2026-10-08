@@ -3,6 +3,11 @@ import { pgEnum } from "drizzle-orm/pg-core";
 import { NOTIFICATION_KIND_IDS } from "@/config/notifications";
 import { BUILD_TYPES } from "@/config/products";
 import { USER_ROLES } from "@/config/roles";
+import {
+  CAPTURE_MODES,
+  VALIDATION_EVENT_KINDS,
+  VALIDATION_STATUSES,
+} from "@/config/validation";
 import { SUPPORTED_CURRENCIES } from "@/lib/pricing/money";
 
 /**
@@ -674,3 +679,11 @@ export const showcaseStatusEnum = pgEnum("showcase_status", SHOWCASE_STATUSES);
 export const BLUEPRINT_STATUSES = ["active", "archived"] as const;
 export type BlueprintStatus = (typeof BLUEPRINT_STATUSES)[number];
 export const blueprintStatusEnum = pgEnum("blueprint_status", BLUEPRINT_STATUSES);
+
+/** A business-idea validation page's state. See `config/validation.ts`. */
+export const validationStatusEnum = pgEnum("validation_status", VALIDATION_STATUSES);
+export const validationEventKindEnum = pgEnum(
+  "validation_event_kind",
+  VALIDATION_EVENT_KINDS,
+);
+export const validationCaptureModeEnum = pgEnum("validation_capture_mode", CAPTURE_MODES);

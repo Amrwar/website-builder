@@ -39,3 +39,6 @@ export * from "./catalog";
 
 /* --- Business-in-a-Box ------------------------------------------------- */
 export * from "./business";
+
+/* --- Test my business idea --------------------------------------------- */
+export * from "./validation";

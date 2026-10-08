@@ -22,7 +22,8 @@
     "notifications": "Notifications",
     "dismiss": "Dismiss",
     "faq": "FAQ",
-    "startBusiness": "Start my business"
+    "startBusiness": "Start my business",
+    "testIdea": "Test my idea"
   },
   "home": {
     "meta": {
@@ -418,7 +419,8 @@
       "terms": "Terms",
       "privacy": "Privacy",
       "guarantee": "Guarantee terms",
-      "startBusiness": "Start my business"
+      "startBusiness": "Start my business",
+      "testIdea": "Test my business idea"
     },
     "rights": "© {year} {brand}. All rights reserved."
   },
@@ -902,7 +904,8 @@
     "builds": "Builds",
     "billing": "Billing",
     "notifications": "Notifications",
-    "unreadBadge": "{count} unread"
+    "unreadBadge": "{count} unread",
+    "ideas": "Ideas"
   },
   "account": {
     "title": "Account",
@@ -1423,7 +1426,8 @@
       "content": "Content",
       "notifications": "Notifications",
       "showcase": "Build wall",
-      "blueprints": "Blueprints"
+      "blueprints": "Blueprints",
+      "validations": "Idea tests"
     },
     "search": {
       "placeholder": "Search projects, customers, orders",
@@ -2090,6 +2094,25 @@
         "never": "Not published",
         "empty": "No versions saved yet. The shipped definition is live."
       }
+    },
+    "validationsPage": {
+      "title": "Idea tests",
+      "subtitle": "Public pages published with Test my business idea. Close any that misuse the product. Responses are the customer's and are not shown here.",
+      "page": "Page",
+      "owner": "Published by",
+      "created": "Published",
+      "visitors": "Visitors",
+      "leads": "Responses",
+      "status": "Status",
+      "actions": "Actions",
+      "empty": "No idea tests have been published.",
+      "reason": "Reason",
+      "close": "Close page",
+      "statuses": {
+        "live": "Live",
+        "paused": "Paused",
+        "closed": "Closed"
+      }
     }
   },
   "maintenance": {
@@ -2720,6 +2743,307 @@
       "quoteNote": "Something you chose needs a quotation, so this combination has no fixed price or guarantee.",
       "storeReview": "App store review time is not part of the delivery guarantee.",
       "failed": "We could not work out an estimate just now. You will see the full price in the configurator."
+    },
+    "fromValidation": {
+      "title": "Brought over from your idea test",
+      "body": "Your name, customers and description are filled in. Check them as you go."
+    },
+    "testFirst": "Not sure yet?",
+    "testFirstLink": "Test the idea first"
+  },
+  "validate": {
+    "meta": {
+      "title": "Test my business idea",
+      "description": "Put your idea in front of real people with a simple landing page, collect interest, and see early validation signals before you build."
+    },
+    "eyebrow": "Test my business idea",
+    "progressLabel": "Test my business idea progress",
+    "status": {
+      "complete": "completed",
+      "current": "current step",
+      "upcoming": "not started"
+    },
+    "steps": {
+      "idea": {
+        "label": "Idea",
+        "title": "What is the idea?",
+        "lead": "A working name and one sentence. You can test an idea before it has a real name."
+      },
+      "description": {
+        "label": "Description",
+        "title": "Describe the business",
+        "lead": "What it does and how it works, in your own words. Visitors will not see this; it carries into your build if you go ahead."
+      },
+      "customer": {
+        "label": "Customer",
+        "title": "Who is it for?",
+        "lead": "The people you expect to want it, and the problem it solves for them."
+      },
+      "offer": {
+        "label": "Offer",
+        "title": "What are you offering?",
+        "lead": "This is what visitors read. Say plainly what they get."
+      },
+      "pricing": {
+        "label": "Pricing",
+        "title": "Show a price?",
+        "lead": "A price on the page tells you more than interest alone. You can also leave it off."
+      },
+      "landing": {
+        "label": "Landing page",
+        "title": "Your landing page",
+        "lead": "This is exactly what visitors will see. Go back to change anything."
+      },
+      "capture": {
+        "label": "Lead capture",
+        "title": "How should people respond?",
+        "lead": "Choose what an interested visitor can do, and see what will be measured."
+      },
+      "publish": {
+        "label": "Publish",
+        "title": "Publish your test",
+        "lead": "Your page goes live at its own address. Share it with the people you want to hear from."
+      }
+    },
+    "fields": {
+      "businessName": "Working name",
+      "businessNameHelp": "Shown at the top of the page and in the form.",
+      "oneLiner": "The idea in one sentence",
+      "oneLinerHelp": "Shown under the headline.",
+      "closest": "Closest kind of business",
+      "closestHelp": "Optional. Used if you turn this into a build later.",
+      "closestNone": "Not sure yet",
+      "description": "Description",
+      "descriptionHelp": "A few sentences is enough.",
+      "targetCustomer": "Target customer",
+      "targetCustomerHelp": "For example: busy parents in Laval, small cafés, first-time landlords.",
+      "problem": "The problem it solves",
+      "problemHelp": "Optional.",
+      "headline": "Headline",
+      "headlineHelp": "The biggest words on the page. What they get, not what you are called.",
+      "details": "Details",
+      "detailsHelp": "Optional. How it works, what is included.",
+      "benefits": "Up to three benefits",
+      "benefitN": "Benefit {n}",
+      "availability": "Can people buy it today?",
+      "priceModel": "Price",
+      "amount": "Amount",
+      "currency": "Currency"
+    },
+    "availability": {
+      "now": {
+        "title": "Yes, it is available",
+        "body": "You can deliver it now, or very soon after someone asks."
+      },
+      "soon": {
+        "title": "Not yet",
+        "body": "It is an idea or still being built. People can join a waitlist."
+      }
+    },
+    "priceModels": {
+      "none": {
+        "title": "No price yet",
+        "body": "Test interest first."
+      },
+      "one_time": {
+        "title": "One-time price",
+        "body": "Paid once."
+      },
+      "monthly": {
+        "title": "Monthly",
+        "body": "A recurring price per month."
+      },
+      "from": {
+        "title": "Starting from",
+        "body": "A floor, for something priced to the job."
+      }
+    },
+    "pricingNote": "Nobody is charged. The price is shown to see how people respond to it.",
+    "previewNote": "A preview. The form here does not send anything.",
+    "capture": {
+      "inquiry": {
+        "title": "Inquiry form",
+        "body": "Name, email and a message. For something people can ask about or buy now."
+      },
+      "waitlist": {
+        "title": "Waitlist",
+        "body": "An email address and nothing else. For something that does not exist yet."
+      },
+      "suggested": {
+        "now": "Suggested because it is available now",
+        "soon": "Suggested because it is not available yet"
+      }
+    },
+    "measured": {
+      "title": "What will be measured",
+      "visitors": "Visitors, and how many times the page was viewed",
+      "clicks": "How many visitors pressed the main button",
+      "inquiry": "Inquiries sent through the form",
+      "waitlist": "Waitlist sign-ups",
+      "conversion": "Conversion: responses as a share of visitors",
+      "privacy": "No cookies. Visitors are counted with an anonymous code that changes every day and only works for this page."
+    },
+    "honesty": {
+      "title": "Early validation signals, not proof",
+      "body": "The results show how people responded to this page. They do not prove there is a market. They depend on who you share it with, and below {min} visitors they say very little."
+    },
+    "publishFacts": {
+      "public": "Anyone with the link can see the page. It is not listed in search engines.",
+      "frozen": "The page cannot be edited once published, so its numbers always describe one version. To try a different headline or price, start another test.",
+      "limit": "You can have up to {max} tests live at once."
+    },
+    "signedOut": {
+      "title": "Sign in to publish",
+      "body": "Your test needs an account so the results and responses are yours alone. Everything you have written is kept in this browser.",
+      "signUp": "Create an account",
+      "signIn": "Sign in"
+    },
+    "publishFailure": {
+      "invalid": "Something in the test is incomplete. Go back through the steps.",
+      "limit": "You already have {max} tests live. Pause or close one first.",
+      "rate_limited": "That is a lot of tests in a short time. Try again in a while.",
+      "failed": "We could not publish the test. Please try again."
+    },
+    "publish": "Publish test",
+    "next": "Next",
+    "back": "Back",
+    "issues": {
+      "needName": "Add a working name.",
+      "needOneLiner": "Describe the idea in one sentence.",
+      "describeMore": "Describe the business in at least {min} characters.",
+      "needCustomer": "Say who it is for.",
+      "needHeadline": "Add a headline.",
+      "needPrice": "Enter a price above zero, or choose not to show one.",
+      "links": "Links are not allowed on a test page. Remove any web addresses.",
+      "tooLong": "Something here is too long. Shorten it a little.",
+      "completeEarlierSteps": "Complete the earlier steps first."
+    }
+  },
+  "validationPage": {
+    "cta": {
+      "inquiry": "Ask about this",
+      "waitlist": "Join the waitlist"
+    },
+    "price": {
+      "one_time": "{price}",
+      "monthly": "{price} a month",
+      "from": "From {price}"
+    },
+    "comingSoon": "Not available yet. Join the waitlist to hear when it is.",
+    "forWho": "For {who}.",
+    "form": {
+      "inquiry": {
+        "title": "Interested?",
+        "body": "Send a question to {business}."
+      },
+      "waitlist": {
+        "title": "Join the waitlist",
+        "body": "{business} will email you when it is ready."
+      },
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "consent": "I agree that {business} may contact me about this.",
+      "privacy": "Your details go only to {business}. They are not sold or shared.",
+      "submit": {
+        "inquiry": "Send",
+        "waitlist": "Join the waitlist"
+      },
+      "sent": {
+        "title": "Thank you",
+        "inquiry": "Your message has been sent to {business}.",
+        "waitlist": "You are on the waitlist for {business}."
+      },
+      "errors": {
+        "invalid": "Check your email address and the agreement box.",
+        "closed": "This page is no longer taking responses.",
+        "rate_limited": "Too many attempts. Please try again later.",
+        "failed": "That did not go through. Please try again."
+      }
+    },
+    "disclosure": "This is an early test of an idea by {business}, published with Buildline. It is not an offer of sale, and nothing can be bought here.",
+    "report": "Report this page",
+    "status": {
+      "paused": {
+        "title": "Paused",
+        "body": "This page is not taking responses right now."
+      },
+      "closed": {
+        "title": "This test has ended",
+        "body": "Thank you for your interest."
+      }
+    }
+  },
+  "ideas": {
+    "list": {
+      "title": "Ideas",
+      "subtitle": "Ideas you are testing, and how people have responded so far.",
+      "new": "Test another idea",
+      "empty": {
+        "title": "No ideas tested yet",
+        "body": "Put an idea in front of real people before you build it.",
+        "cta": "Test my business idea"
+      },
+      "visitors": "{count, plural, one {# visitor} other {# visitors}}",
+      "leads": "{count, plural, one {# response} other {# responses}}"
+    },
+    "status": {
+      "live": "Live",
+      "paused": "Paused",
+      "closed": "Closed"
+    },
+    "copyLink": "Copy link",
+    "copied": "Link copied",
+    "copyFailed": "Could not copy the link",
+    "openPage": "Open page",
+    "turnIntoBusiness": "Turn this into my business",
+    "controls": {
+      "pause": "Pause",
+      "resume": "Resume",
+      "close": "Close test",
+      "closeNote": "Closing is final: the results stay, and the page stops taking responses.",
+      "errors": {
+        "not_found": "That test could not be found.",
+        "closed": "This test is closed.",
+        "limit": "You already have the most tests live. Pause or close another first."
+      }
+    },
+    "results": {
+      "back": "All ideas",
+      "signalsTitle": "Early validation signals",
+      "signalsBody": "These numbers show how people responded to this page. They do not prove there is a market: they depend on who saw it, how you shared it, and what it said.",
+      "tooEarlyTitle": "Too early to read much into",
+      "tooEarlyBody": "{count, plural, one {# visitor} other {# visitors}} so far. Below {min}, a single response moves the percentages a long way.",
+      "metricsTitle": "Signals",
+      "viewsOnly": "Distinct visitors cannot be counted on this installation, so visitors here are page views.",
+      "dailyTitle": "Last 14 days",
+      "day": "Day (UTC)",
+      "leads": "Responses",
+      "trend": "Views, relative",
+      "leadsTitle": {
+        "inquiry": "Inquiries",
+        "waitlist": "Waitlist"
+      },
+      "leadsPrivacy": "These people agreed to be contacted about this idea. Only you can see them.",
+      "received": "Received",
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "noLeads": "No responses yet."
+    },
+    "metrics": {
+      "visitors": "Visitors",
+      "views": "Page views",
+      "ctaClicks": "Button clicks",
+      "inquiries": "Inquiries",
+      "signups": "Sign-ups",
+      "conversion": "Conversion",
+      "ofVisitors": "{rate} of visitors",
+      "conversionNote": "Inquiries and sign-ups as a share of visitors."
+    },
+    "next": {
+      "title": "Ready to build it?",
+      "body": "Take what you wrote here into Start my business. It recommends what the business needs, prices it, and builds it with a delivery guarantee."
     }
   }
 }

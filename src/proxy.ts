@@ -39,6 +39,7 @@ export const PRIVATE_SEGMENTS = [
   "account",
   "admin",
   "billing",
+  "ideas",
   "invoices",
   "notifications",
   "orders",

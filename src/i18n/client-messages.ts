@@ -32,6 +32,8 @@ export const PUBLIC_CLIENT_NAMESPACES = [
   "checkout",
   "growth",
   "startBusiness",
+  "validate",
+  "validationPage",
 ] as const;
 
 export const APP_CLIENT_NAMESPACES = [
@@ -41,6 +43,7 @@ export const APP_CLIENT_NAMESPACES = [
   "maintenance",
   "notifications",
   "languages",
+  "ideas",
 ] as const;
 
 /**
